@@ -7,7 +7,7 @@ local is_int = is_int
 local math = math
 local table = table
 
-bit = {}
+local bit = {}
 
 --位运算操作
 local function _And(left,right)	--与  
@@ -106,3 +106,5 @@ function bit.bit_get(src,begs,ends)
 	
 	return src % (2 ^(ends - begs + 1))
 end
+
+return bit

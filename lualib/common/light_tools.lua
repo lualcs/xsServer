@@ -133,21 +133,3 @@ end
 --math end
 
 
---net work
-
-function light_tools.is_link(socketID)
-    return CLIENT_SOCKET_MAP[socketID]
-end
-
-
-function light_tools.is_online(userID)
-    return USER_SOCKET_MAP[userID]
-end
-
-function light_tools.socketByUserID(socketID)
-    return SOCKET_USER_MAP[socketID]
-end
-
-function light_tools.userBySocket(userID)
-    return USER_SOCKET_MAP[userID]
-end
