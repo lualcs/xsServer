@@ -367,4 +367,5 @@ function table.forFunction(tabs,...)
     end
 end
 
+print(table)
 return table
