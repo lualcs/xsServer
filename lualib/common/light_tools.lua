@@ -15,8 +15,6 @@ end
 
 
 -- is type
-light_tools.is_datak = is_datak
-light_tools.is_datav = is_datav
 light_tools.is_nil = is_nil
 light_tools.is_bool = is_bool
 light_tools.is_number = is_number

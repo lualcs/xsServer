@@ -4,12 +4,13 @@
 ]]
 
 local os = os
+local is_number = is_number
 
 local MIN_SEC = 60
 local HOUR_SEC = MIN_SEC * 60
 local DAY_SEC = HOUR_SEC * 24
 
-time = {}
+local time = {}
 
 --获得计算机当前时间
 function time.now()
@@ -164,3 +165,6 @@ function time.is_sec_end(CD_SEC,iTime,is_day)
         return time.is_day_end(iTime)
     end
 end
+
+
+return time

@@ -4,7 +4,7 @@
 
 local is_number,is_string,is_table
 
-query = {}
+local query = {}
 --[[
 	ÕÛ°ë²éÕÒº¯Êı
 ]]
@@ -49,3 +49,5 @@ function query.traverse(arry,val,key)
 	end
 	
 end
+
+return query

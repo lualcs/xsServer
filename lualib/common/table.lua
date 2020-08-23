@@ -2,17 +2,12 @@
 	desc:标准库扩展
 ]]
 
+local table = table
 local select = select
 local math = math
 local is_nil,is_number,is_string,is_table = is_nil,is_number,is_string,is_table
 local pairs,ipairs = pairs,ipairs
 local setmetatable = setmetatable
---避免系统库接口丢失
-if not table._concat then
-	table._concat = table.concatEx
-end
-local _concat = table._concat
-
 --table 中的值交换
 function table.exchange(tab,idx1,idx2)
 	local temp = tab[idx1]
@@ -177,8 +172,6 @@ function table.recycle(t)
 	table.clr(t)
     
 	uv_fortab[count + 1] = t
-
-    
 
 end
 
@@ -373,3 +366,5 @@ function table.forFunction(tabs,...)
         end
     end
 end
+
+return table
