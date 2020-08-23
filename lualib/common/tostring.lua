@@ -99,13 +99,7 @@ end
 
 return function(v)
 	if is_table(v) then
-
-		print(table)
-		for k,v in pairs(table) do
-			print(k,v)
-		end
-
-		table.clear(strlist)
+		--table.clear(strlist)
 		_tablestring(v,0,nil," = ")
 		return table.concat(strlist)
 	end
