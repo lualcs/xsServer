@@ -9,6 +9,9 @@ local is_table = require("is_table")
 local is_string = require("is_string")
 
 local tostring = tostring
+local print = print
+local pairs = pairs
+
 local strlist = {}
 local function _tablestring(val,level,key,ex_cm)
 	
@@ -91,12 +94,17 @@ local function _tablestring(val,level,key,ex_cm)
 	else
 		table.insert( strlist,"}")
 	end
-	return str
 end
 
 
 return function(v)
 	if is_table(v) then
+
+		print(table)
+		for k,v in pairs(table) do
+			print(k,v)
+		end
+
 		table.clear(strlist)
 		_tablestring(v,0,nil," = ")
 		return table.concat(strlist)
