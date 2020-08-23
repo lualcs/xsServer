@@ -8,7 +8,12 @@ local select = select
 local pcall = pcall
 local pairs,ipairs = pairs,ipairs
 local __G = _G
+local print = print
+local tostring = tostring
 
+--[[
+	string.fromat("xxx:%s xxx:%s xxx:%s",1,"字符串")
+]]
 function string.formatEx(str,...)
 	local args = table.fortab()
 	local arg_val
@@ -48,22 +53,23 @@ function string.gsplit(s, p)
 	return ret
 end
 
---[[
-	回调成员函数
-]]
-
-function string.pcall(str,VarTab)
+function string.pcall(str,...)
 	local array = string.gsplit(str, ':')
 	local object = __G[array[1]]
 	local fun = object[array[2]]
-	local ret,info = pcall(fun,object,VarTab)
+	local ret,info = pcall(fun,object,...)
 	if not ret then
-		errorEx(ret,'string.MemberCall',info)
+		print("string.pcall error ",str,info)
 	end
 	table.recycle(array)
 end
 
-function string.call(str,VarTab)
+function string.call(str,...)
 	local fun = __G[str]
-	return fun(VarTab)
+	return fun(...)
+end
+
+--字符串连接
+function string.concat(...)
+	return table.concat(...)
 end

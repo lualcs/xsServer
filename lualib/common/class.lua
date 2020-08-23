@@ -1,4 +1,6 @@
 local table = require("table")
+local string = require("string")
+local is_string = require("is_string")
 
 --[[class ： 
 	
@@ -83,13 +85,9 @@ local function class(name,...)
 		new = new
 	}
 	--访问继承对象成员 字段
-	local uv_met
 	function met.__index(t_v,t_k)
-		if class_keyword[t_k] and _G[t_k] then
-			return _G[t_k]
-		end
-		uv_met = getmetatable(t_v)
-		for _idx,_super in ipairs(uv_met) do
+		local met = getmetatable(t_v)
+		for _,_super in ipairs(met) do
 			if _super[t_k] then
 				return _super[t_k]
 			end

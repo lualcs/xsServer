@@ -3,15 +3,20 @@
     desc:堆数据结构 -> 优先队列（最大堆）
 ]]
 
-local is_number,is_string,is_table = is_number,is_string,is_table
+local is_function = require("is_function")
+local is_number = require("is_number")
+local is_table = require("is_table")
+local is_string = require("is_string")
+local class = require("class")
+local table = require("table")
+local math = require("math")
 
-local table = table
-
-heap = class('heap')
+local heap = class('heap')
 
 function heap:ctor(comp_fun)
     if not is_function(comp_fun) then
-        error'优先队列必须传入比较方法'
+        print("head:ctor error not compare function(a{ticks},b{ticks})")
+        return
     end
     self.size = 0--大小
     self.list = table.fortab()--数据
