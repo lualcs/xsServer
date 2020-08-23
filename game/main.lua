@@ -1,6 +1,7 @@
 local skynet = require "skynet"
 local sprotoloader = require "sprotoloader"
 local tostring = require("tostring")
+local class = require("class")
 skynet.start(function()
 	skynet.error("Server start")
 	-- skynet.error(tostring({
@@ -18,8 +19,8 @@ skynet.start(function()
 	-- 	}
 	-- }))
 
-	for k,v in pairs(_G.package.preload) do
-		print(k,v)
-	end
+	local a = class('test')
+	function a.a()end
+	function a.a()end
 
 end)
