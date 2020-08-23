@@ -7,13 +7,10 @@
 	ctor = 构造函数关键字
 	super = 继承对象关键字
 ]]
-local _G = _G
-local tostring = tostring
-local error,select = error,select
-local is_table,is_function  = is_table,is_function
 --类对象库
 local class_list = {}
 local single_list = {}
+local single_object= {}
 local class_keyword = {--A global public method for editable modifications
     new = true,
 }
@@ -26,7 +23,9 @@ local keyword = {--Special field check filtering
 }
 
 local function class_chack_undefine(name,superS)
-	if not is_table(superS) then return end
+	if not is_table(superS) then
+	 	return
+	end
 
 	local tabResult = {}
 
@@ -37,14 +36,14 @@ local function class_chack_undefine(name,superS)
 					tabResult[memberName] = memberValue
 				elseif not keyword[memberName] then
 					errorEx('class:',name,' memberName:',memberName,' warning:undfine If you rewrite it yourself, ignore it')
+					return
 				end
 			end
 		end
 	end
 	return true
 end
---[[对象创建
-]]
+
 function class(name,...)
 	if not is_string(name) then
 		errorEx('the class name is not a string:',tostring(name))
@@ -113,21 +112,23 @@ end
     single = true --设置了这个字节标志是一个单例类
 ]]
 function new(self,...)
-    if self.single then
-        errorEx('class->',self.name,'error:this class is a singe')
-        os.execute('pause')
-    end
+
+	local name = self.__classname
+	if not name then
+		errorEx("this not class name")
+		return
+	end
+
+	
+	if self.single and single_object[name] then
+		return single_object[name]
+	end
+	
 	local new_obj = table.fortab()
 	setmetatable(new_obj,self)
 	
 	--自动调用构造函数
 	new_obj:ctor(...)
+	single_object[self.__classname] = new_obj
 	return new_obj
-end
-
---调用单例构造
-function constructor_single()
-	for k,v in ipairs(single_list) do
-		v.ctor()
-	end
 end

@@ -1,6 +1,6 @@
 local skynet = require "skynet"
 local sprotoloader = require "sprotoloader"
-require("type")
+local myLibrary = require("myLibrary")
 
 skynet.start(function()
 	skynet.error("Server start")
