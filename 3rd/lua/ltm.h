@@ -17,6 +17,7 @@
 */
 typedef enum {
   TM_INDEX,
+  TM_ASSIGN,
   TM_NEWINDEX,
   TM_GC,
   TM_MODE,
