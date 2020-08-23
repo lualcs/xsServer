@@ -138,7 +138,5 @@ function is_types(fun,...)
 	return true
 end
 
---返回一个对象--用于模块标记已加载 避免报错
-return {}
 
 
