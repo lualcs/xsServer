@@ -13,7 +13,7 @@ local print = print
 local pairs = pairs
 
 local strlist = {}
-local function _tablestring(val,level,key,ex_cm)
+local function _tablestring(val,level,key)
 	
 	if is_string(val) then
 		table.insert( strlist,val)
@@ -32,14 +32,14 @@ local function _tablestring(val,level,key,ex_cm)
 	if is_string(key) then
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,key)
-		table.insert( strlist,ex_cm)
+		table.insert( strlist," = ")
 		table.insert( strlist,"{")
 	elseif is_number(key) then
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,"[")
 		table.insert( strlist,key)
 		table.insert( strlist,"]")
-		table.insert( strlist,ex_cm)
+		table.insert( strlist," = ")
 		table.insert( strlist,"{")
 	elseif is_table(val) then
 		table.insert( strlist,"\r\n")
@@ -59,7 +59,7 @@ local function _tablestring(val,level,key,ex_cm)
 
 			if is_string(k) then
 				table.insert( strlist,k)
-				table.insert( strlist,ex_cm)
+				table.insert( strlist," = ")
 				if is_string(v) then
 					table.insert( strlist,"\"")
 					table.insert( strlist,v)
@@ -72,7 +72,7 @@ local function _tablestring(val,level,key,ex_cm)
 				table.insert( strlist,"[")
 				table.insert( strlist,tostring(k))
 				table.insert( strlist,"]")
-				table.insert( strlist,ex_cm)
+				table.insert( strlist," = ")
 				if is_string(v) then
 					table.insert( strlist,"\"")
 					table.insert( strlist,v)
@@ -99,8 +99,8 @@ end
 
 return function(v)
 	if is_table(v) then
-		--table.clear(strlist)
-		_tablestring(v,0,nil," = ")
+		table.clear(strlist)
+		_tablestring(v,0)
 		return table.concat(strlist)
 	end
 	return tostring(v)

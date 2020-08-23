@@ -165,8 +165,7 @@ function table.recycle(t)
 
     local count = #uv_fortab
     if count >= 1000 then
-        errorEx('table.recycle:'..count)
-        look(t)
+        print('warning table.recycle:',count)
     end
 
 	table.clr(t)
@@ -367,5 +366,4 @@ function table.forFunction(tabs,...)
     end
 end
 
-print(table)
 return table
