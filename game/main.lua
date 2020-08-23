@@ -18,7 +18,7 @@ skynet.start(function()
 	-- 	}
 	-- }))
 
-	for k,v in pairs(_G.package) do
+	for k,v in pairs(_G.package.preload) do
 		print(k,v)
 	end
 

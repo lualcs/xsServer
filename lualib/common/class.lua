@@ -1,6 +1,18 @@
 local table = require("table")
 local string = require("string")
+local tostring = require("tostring")
 local is_string = require("is_string")
+local is_table = require("is_table")
+local is_function = require("is_function")
+
+
+local ipairs = ipairs
+local pairs = pairs
+local print = print
+local setmetatable = setmetatable
+local getmetatable = getmetatable
+local select = select
+local rawset = rawset
 
 --[[class £º 
 	

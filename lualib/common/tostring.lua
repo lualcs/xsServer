@@ -26,7 +26,7 @@ local function _tablestring(val,level,key)
 	if level > 0 then
 		indent = string.rep("\t",level)
 	else
-		indent = " "
+		indent = "\t"
 	end
 
 	if is_string(key) then
