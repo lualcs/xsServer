@@ -5,9 +5,15 @@
 local table = table
 local select = select
 local math = math
-local is_nil,is_number,is_string,is_table = is_nil,is_number,is_string,is_table
 local pairs,ipairs = pairs,ipairs
 local setmetatable = setmetatable
+local print = print
+
+local tostring = require("tostring")
+local is_table = require("is_table")
+local is_string = require("is_string")
+local is_function = require("is_function")
+
 --table 中的值交换
 function table.exchange(tab,idx1,idx2)
 	local temp = tab[idx1]
@@ -15,27 +21,6 @@ function table.exchange(tab,idx1,idx2)
 	tab[idx2] = temp
 end
 
---联合数组包装
-function table.concatEx(...)
-	
-	local _concat_tab = table.fortab()
-	local uv_arg
-	for i = 1,select('#',...) do
-		uv_arg = select(i,...)
-		--特殊情况nil也要联合成字符串
-		if nil == uv_arg then
-			uv_arg = tostring(uv_arg) .. ' '
-		elseif is_table(uv_arg) then
-			uv_arg = toinfo(uv_arg)
-		elseif not is_string(uv_arg) then
-			uv_arg = tostring(uv_arg)
-		end
-		_concat_tab[#_concat_tab + 1] = uv_arg
-	end
-	local str = table.concat(_concat_tab)
-	table.clr(_concat_tab)
-	return str
-end
 
 --desc:	将data压入t的尾部
 function table.push(t, data, maxNum)
@@ -263,11 +248,11 @@ end
 
 local _read_only_tm = {
 	__newindex = function(t,k,v)
-		errorEx('__newindex:Read - only table read - write failed')
+		print('__newindex:Read - only table read - write failed')
 	end,
 	
 	__assign = function(t,k,v)
-		errorEx('__assign:The reassignment failed')
+		print('__assign:The reassignment failed')
 	end
 }
 
@@ -279,7 +264,7 @@ end
 
 local _noassign_tm = {
 	__assign = function(t,k,v)
-		errorEx('__assign:The reassignment failed')
+		print('__assign:The reassignment failed')
 	end
 }
 --设置不可再次覆盖的表

@@ -1,7 +1,5 @@
 local skynet = require "skynet"
 local sprotoloader = require "sprotoloader"
-local tostring = require("tostring")
-local class = require("class")
 skynet.start(function()
 	skynet.error("Server start")
 
