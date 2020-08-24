@@ -2,9 +2,19 @@ local skynet = require "skynet"
 local sprotoloader = require "sprotoloader"
 skynet.start(function()
 	skynet.error("Server start")
-
-	for k,v in pairs(package.loaded) do
-		print(k,v)
-	end
-
 end)
+
+
+--[[
+	game = {
+		lualib = {
+			mahjongHelper = 麻将辅助
+			pokerHelper = 扑克辅助
+		},
+
+		service = {
+
+		},
+
+	}
+]]

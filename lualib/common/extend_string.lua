@@ -73,3 +73,5 @@ end
 function string.concat(...)
 	return table.concat(...)
 end
+
+return string

@@ -1,4 +1,4 @@
-package table: 0x7f20f159e7c0
+--[[package table: 0x7f20f159e7c0
 skynet.debug    table: 0x7f20f15a3e80
 skynet.codecache        table: 0x7f20f159ecc0
 sprotoloader    table: 0x7f20f16413c0
@@ -19,3 +19,4 @@ os      table: 0x7f20f159eb00
 io      table: 0x7f20f159e9c0
 table   table: 0x7f20f159e940
 debug   table: 0x7f20f159ec40
+]]

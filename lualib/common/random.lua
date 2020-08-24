@@ -7,12 +7,17 @@ update:2018-7-15
 ]]--
 
 local table = table
-local is_number,is_string,is_table,is_types = is_number,is_string,is_table,is_types
+local math = math
 local ipairs,pairs = ipairs,pairs
 
-local math = math
+local is_number = require("is_number")
+local is_string = require("is_string")
+local is_table = require("is_table")
+local is_types = require("is_types")
 
-random = {}
+local sort = require("sort")
+
+local random = {}
 
 --[[随机出不重复随机数     常用版本
     random_list:传入一个tab 存放随机出来的随机数下标
@@ -95,3 +100,5 @@ function random.out_card(arrayCard)
 
 	return value
 end
+
+return random
