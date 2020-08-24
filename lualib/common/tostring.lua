@@ -1,7 +1,3 @@
---[[
-	desc:µ÷ÊÔÀ©Õ¹
-]]
-
 local table = require("table")
 local string = require("string")
 local is_number = require("is_number")
