@@ -8,6 +8,7 @@ local math = math
 local pairs,ipairs = pairs,ipairs
 local setmetatable = setmetatable
 local print = print
+local next = next
 
 local tostring = require("tostring")
 local is_table = require("is_table")
@@ -22,17 +23,25 @@ function table.exchange(tab,idx1,idx2)
 end
 
 
---desc:	将data压入t的尾部
-function table.push(t, data, maxNum)
+--desc:	将v压入t的尾部
+function table.push(t, v, maxNum)
 	if maxNum == nil or #t < maxNum then
-		t[#t+ 1] = data
+		t[#t+ 1] = v
 	else
 		for i = 1, #t - 1 do
 			t[i] = t[i + 1]
 		end
-		t[maxNum] = data
+		t[maxNum] = v
 	end
 	return t
+end
+
+--合并 at[k] += bt[k] 然后 bt[k] = 0
+function table.mergeNumber(at,bt)
+	for k,v in pairs(bt) do
+		at[k] = (at[k] or 0)+v
+		bt[k] = 0
+	end
 end
 
 --移除函数修改
@@ -56,11 +65,11 @@ function table.removeEx(tab,b_idx,e_idx)
 end
 
 --深度拷贝
-function table.copy(tab)
+function table.copy(tab,new)
 	if not is_table(tab) then
 		return -1
 	end
-	local new_tab = table.fortab()
+	local new_tab = new or table.fortab()
 	for _k,_v in pairs(tab) do
 
         if not is_table(_v) then
@@ -119,45 +128,44 @@ function table.clear(t)
     end
 end
 --清空数据(不删除tab)
-function table.clearEx(t)
+local function clearEmpty(t)
     if not is_table(t) then return end
 	for k,v in pairs(t) do
 		if not is_table(v) then
 			t[k] = nil
 		else
-			table.clearEx(v)
+			clearEmpty(v)
 		end
 	end
 	return t
 end
+
+table.clearEmpty = clearEmpty
+
 local uv_fortab = {}
---数据清空并且回收
-function table.clr(t)
-	if not is_table(t) then return end
-    for k,v in pairs(t) do
+
+--直接回收
+local function recycle(t)
+	if not is_table(t) then
+        return 
+	end
+	
+	for k,v in pairs(t) do
 		if is_table(v) then
-			table.clr(v)
-			uv_fortab[#uv_fortab + 1] = v
+			recycle(v)
 		end
 		t[k] = nil
 	end
-end
---直接回收
-function table.recycle(t)
-	if not is_table(t) then
-        return 
-    end
 
     local count = #uv_fortab
     if count >= 1000 then
         print('warning table.recycle:',count)
     end
-
-	table.clr(t)
-    
 	uv_fortab[count + 1] = t
 
 end
+
+table.recycle = recycle
 
 --直接回收
 function table.recycles(...)
@@ -178,14 +186,7 @@ function table.fortab()
 end
 --判断空表
 function table.empty(t)
-	if is_table(t) then
-		for k,v in pairs(t) do
-			return false
-		end
-	else
-		return false
-	end
-	return true
+	return nil == next(t)
 end
 
 --获取通用方法
@@ -288,25 +289,25 @@ local _zero_mt = {
 }
 
 --设置默认值0表
-function table.zeroRead(tab)
+function table.default_zero(tab)
     setmetatable(tab,_zero_mt)
 end
 
 --设置只读配置表递归
-function table.read_onlyS(tab)
+function table.only_read(tab)
 	for k,v in pairs(tab) do
 		if is_table(v) then
-			table.read_onlyS(v)
+			table.only_read(v)
 		end
 	end
-	table.read_only(tab)
+	table.only_read(tab)
 end
 
 --设置不可覆盖配置表递归
-function table.noassignS(tab)
+function table.noassigns(tab)
 	for k,v in pairs(tab) do
 		if is_table(v) then
-			table.noassignS(v)
+			table.noassigns(v)
 		end
 	end
 	table.noassign(tab)

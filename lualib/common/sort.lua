@@ -13,10 +13,12 @@
 	sort.shuffle(arr)--Ï´ÅÆÂÒÐò
 ]]
 
-local is_number,is_string,is_table,is_function = is_number,is_string,is_table,is_function
-local table,math = table,math
+local is_number = require("is_number")
+local is_table = require("is_table")
+local table = require("extend_table")
+local math = require("extend_math")
 
-sort = class('sort')
+local sort = {}
 --Ã°ÅÝÅÅÐò
 function sort.bubble(arr,comp,num)  
 	local uv_len = #arr
@@ -28,7 +30,7 @@ function sort.bubble(arr,comp,num)
     for i = 1,num do
         for j = i + 1,uv_len do  
             if not comp(arr[i],arr[j]) then  
-                exchange(arr,i,j)
+                table.exchange(arr,i,j)
             end  
         end  
     end  
@@ -51,7 +53,7 @@ function sort.select(arr,comp,num)
             end  
         end
 		if uv_k ~= i then
-			 exchange(arr,i,uv_k)
+			table.exchange(arr,i,uv_k)
 		end
     end  
 end
@@ -103,8 +105,8 @@ function sort.quick(arr,comp,left,right)
 		if uv_help ~= left then
 			table.exchange(arr,uv_help,left)
 		end
-		quick(arr,comp,left,uv_help - 1)
-		quick(arr,comp,uv_help + 1,right)
+		sort.quick(arr,comp,left,uv_help - 1)
+		sort.quick(arr,comp,uv_help + 1,right)
 	end
 end
 
@@ -145,7 +147,9 @@ end
 
 --Ï´ÅÆÂÒÐò
 function sort.shuffle(list)
-	if not is_table(list) then return end
+	if not is_table(list) then
+		return 
+	end
 	
 	local size = #list
 	local r_idx
