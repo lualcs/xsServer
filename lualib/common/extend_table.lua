@@ -64,6 +64,16 @@ function table.removeEx(tab,b_idx,e_idx)
 	end
 end
 
+--查找移除
+function table.find_remove(tab,v)
+	for _inx,_v in ipairs(tab) do
+		if v == _v then
+			table.remove(tab,_inx)
+			return
+		end
+	end
+end
+
 --深度拷贝
 function table.copy(tab,new)
 	if not is_table(tab) then
@@ -122,7 +132,9 @@ end
 --清空数据包装
 function table.clear(t)
 	--直接进行数据清空
-    if not is_table(t) then return end
+	if not is_table(t) then
+		return
+	end
     for k,v in pairs(t) do
         t[k] = nil
     end
@@ -142,7 +154,9 @@ end
 
 table.clearEmpty = clearEmpty
 
-local uv_fortab = {}
+local uv_fortab = {} --回收表
+local uv_waitls = {} --待回收
+local uv_waitrecycle = false
 
 --直接回收
 local function recycle(t)
@@ -162,6 +176,7 @@ local function recycle(t)
         print('warning table.recycle:',count)
     end
 	uv_fortab[count + 1] = t
+	uv_waitls[t] = nil
 
 end
 
@@ -170,20 +185,37 @@ table.recycle = recycle
 --直接回收
 function table.recycles(...)
 	for k,v in pairs(...) do
-		table.recycle(v)
+		recycle(v)
 	end
 end
 
---从缓存表中申请一个空表
+--等待回收：之后所有新申请的table into uv_waitls
+function table.wait_fortab()
+	uv_waitrecycle = true
+end
+
+--等待回收：之后回收所有临时表
+function table.wait_recycle()
+	for _t,_ in pairs(uv_waitls) do
+		recycle(_t)
+	end
+	uv_waitrecycle = false
+end
+
+--从缓存表中申请一个空表 bRecycle:true 表示待回收
 function table.fortab()
     --去除数据
 	local idx = #uv_fortab
-	local tab = uv_fortab[idx]
-    uv_fortab[idx] = nil
+	local tab = uv_fortab[idx] or {}
+    uv_fortab[tab] = true
 	
-	--如果没有新table 则创建一个
-	return tab or {}
+	if uv_waitrecycle then
+		table.insert(uv_waitls,tab)
+	end
+	return tab
 end
+
+
 --判断空表
 function table.empty(t)
 	return nil == next(t)
@@ -316,16 +348,14 @@ end
 
 
 function table.empty(tab)
-	for k,v in pairs(tab) do
-		return false
-	end
-	return true
+	return nil == next(tab)
 end
 
+--统计表元素个数
 function table.element_count(tab)
 	local nCount = 0
 	for k,v in pairs(tab) do
-		nCount = (nCount or 0) + 1
+		nCount = nCount + 1
 	end
 	return nCount
 end
@@ -350,6 +380,31 @@ function table.forFunction(tabs,...)
             v(...)
         end
     end
+end
+
+--统计表和
+function table.sum_has(t)
+	local sum = 0
+	for _,v in pairs(t) do
+		sum = sum + v
+	end
+end
+
+--统计数组和
+function table.sum_arr(t)
+	local sum = 0
+	for _,v in ipairs(t) do
+		sum = sum + v
+	end
+end
+
+--table计数
+function table.has_count(t)
+	local has = table.fortab()
+	for k,v in pairs(t) do
+		has[v] = (has[v] or 0) + 1
+	end
+	return has
 end
 
 return table
