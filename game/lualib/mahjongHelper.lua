@@ -340,15 +340,15 @@ function helper.wttPing(hasWTT,hasColor)
         local unit = {}
         group[mj] = unit
         if 1 == count then
-            table.insert(unit,groupType.sz1)
+            table.insert(unit,groupType.sz1)--1个顺子
         elseif 2 == count then
-            table.insert(unit,groupType.sz2)
+            table.insert(unit,groupType.sz2)--2个顺子
         elseif 3 == count then
-            table.insert(unit,groupType.kz1)
-            table.insert(unit,groupType.sz3)
+            table.insert(unit,groupType.kz1)--1个刻子
+            table.insert(unit,groupType.sz3)--3个顺子
         elseif 4 == count then
-            table.insert(unit,groupType.sz4)
-            table.insert(unit,groupType.ks1)
+            table.insert(unit,groupType.sz4)--4个顺子
+            table.insert(unit,groupType.ks1)--1刻子+1顺子
         end
     end
 end
