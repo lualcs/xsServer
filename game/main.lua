@@ -28,7 +28,7 @@ skynet.start(function()
 	end
 
 	local class = require("class")
-	local testClass = class()
+	local testClass = class("testClass")
 	testClass.a = function() end
 	testClass.b = function() end
 
