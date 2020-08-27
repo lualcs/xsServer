@@ -86,10 +86,10 @@ function table.copy(tab,new)
 			    new_tab[_k] = _v
 		else
 			new_tab[_k] = table.copy(tab)
-			print('----------------------------------------')
-			print(_k,_v)
-			print('----------------------------------------')
 		end
+		print('----------------------------------------')
+		print(_k,_v)
+		print('----------------------------------------')
 	end
 	return new_tab
 end
