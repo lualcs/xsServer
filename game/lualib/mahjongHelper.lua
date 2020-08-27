@@ -207,9 +207,6 @@ end
 --麻将分析
 function helper.getAnalyze(mjCard)
 
-
-    this.bFirst = false
-
     local an = this.newAnalyzeData()
     local hasCard = an.hasCard 
     local hasColor = an.hasColor 
