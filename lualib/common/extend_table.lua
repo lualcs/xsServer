@@ -89,9 +89,11 @@ function table.copy(tab,new)
 		end
 	end
 
+	print("-----------------------------------------")
 	for k,v in pairs(new_tab) do
 		print(k,v)
 	end
+	print("-----------------------------------------")
 
 	return new_tab
 end
