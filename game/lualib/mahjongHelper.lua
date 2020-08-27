@@ -657,10 +657,6 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
                 --花色 < 2 连将对都 无法组成
                 local color = this.getColor(_ting_mj)
                 local cNumber = an.hasColor[color] or 0
-                skynet.error("655 look",
-                tostring{
-                        _ting_mj,color,cNumber
-                    })
                 if cNumber >= 2 then
                     table.insert(mjCardCopy,_ting_mj)
                     if this.checkAbleHu(mjCardCopy) then
