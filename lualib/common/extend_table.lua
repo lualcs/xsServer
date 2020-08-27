@@ -388,6 +388,7 @@ function table.sum_has(t)
 	for _,v in pairs(t) do
 		sum = sum + v
 	end
+	return sum
 end
 
 --统计数组和
@@ -396,6 +397,7 @@ function table.sum_arr(t)
 	for _,v in ipairs(t) do
 		sum = sum + v
 	end
+	return sum
 end
 
 --table计数
