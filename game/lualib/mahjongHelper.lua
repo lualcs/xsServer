@@ -560,6 +560,7 @@ function helper.wttPing(hasWTT,hasColor)
     skynet.error("may_types:",tostring(may_types))
     skynet.error("mj_types:",tostring(mj_types))
     skynet.error("hasType:",tostring(hasType))
+    skynet.error("group:",tostring(group))
 
     --递归执行组合
     return this.dg_group_hu(hasWTT,mj_types)
