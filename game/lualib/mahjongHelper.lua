@@ -9,6 +9,8 @@ local table = require("extend_table")
 local math = require("extend_math")
 local sort = require("sort")
 
+local tostring = require("tostring")
+
 --1:各种刻子
 local wan111 = {[0x01]=3}
 local wan222 = {[0x02]=3}
@@ -615,7 +617,6 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
 
     local len = #mjCard
     if 14 == len then
-        skynet.error(require("tostring")(mjCard))
         local mjCardCopy = table.copy(mjCard)
         local an = this.getAnalyze(mjCardCopy)
         local hasMahjongSelf = this.getHasCount(mjCardCopy)
