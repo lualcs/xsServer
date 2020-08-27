@@ -18,11 +18,11 @@ skynet.start(function()
 			},
 			mjCards,
 			hasMahjongFull)
-		if 0 == i % 1000 then
+		--if 0 == i % 1000 then
 			skynet.error(require("tostring")(ting))
 			local close = os.time()
 			skynet.error("elapsed time:"..tostring(close-start))
-		end
+		--end
 		table.wait_recycle()
 		break
 	end
