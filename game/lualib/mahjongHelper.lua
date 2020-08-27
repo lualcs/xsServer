@@ -548,9 +548,19 @@ function helper.wttPing(hasWTT,hasColor)
         end
     end
 
+    skynet.error("--------------------hasWTT----------------------------")
+    for k,v in ipairs(hasWTT) do
+        print(k,v)
+    end
+    skynet.error("------------------------------------------------------")
+
+    skynet.error("--------------------mj_types--------------------------")
+    for k,v in ipairs(mj_types) do
+        print(k,v)
+    end
+    skynet.error("------------------------------------------------------")
+
     --递归执行组合
-    local tostring = require("tostring")
-    skynet.error(tostring({hasWTT,mj_types}))
     return this.dg_group_hu(hasWTT,mj_types)
 end
 
