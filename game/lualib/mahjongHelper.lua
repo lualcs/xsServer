@@ -231,14 +231,13 @@ end
 --分析可以组合哪些牌型 仅仅支持万条筒
 function helper.getHasType(hasMahjong)
     local has = {}
-
     for mj,count in pairs(hasMahjong) do
         local ts = wttMap[mj]  --牌型列表
         local sc = #ts - 1     --0~sc 顺子牌型下标
         --刻子牌型
         if count >= 3 then
             local mt = ts[#ts]
-            has[mt] = (has[mt] or 0) + (count // 3)
+            has[mt] = (count // 3)
         end
 
         --顺子牌型
@@ -248,7 +247,7 @@ function helper.getHasType(hasMahjong)
             for _mj,_count in pairs(mt) do
                 mc = math.min(mc,_count)
             end
-            has[mt] = (has[mt] or 0) + mc
+            has[mt] = mc
         end
     end
     return has
