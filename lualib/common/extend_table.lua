@@ -85,7 +85,10 @@ function table.copy(tab,new)
         if not is_table(_v) then
 			    new_tab[_k] = _v
 		else
-		    new_tab[_k] = table.copy(tab)
+			new_tab[_k] = table.copy(tab)
+			print('----------------------------------------')
+			print(_k,_v)
+			print('----------------------------------------')
 		end
 	end
 	return new_tab
