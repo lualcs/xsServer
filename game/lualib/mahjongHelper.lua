@@ -620,6 +620,7 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
 
     local len = #mjCard
     if 14 == len then
+        skynet.error(require("tostring")(mjCard))
         local mjCardCopy = table.copy(mjCard)
         local hasMahjongSelf = this.getHasCount(mjCardCopy)
         for _out_mj,_count in pairs(hasMahjongSelf) do
