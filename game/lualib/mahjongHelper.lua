@@ -668,7 +668,7 @@ function helper.start_dg_count()
 end
 
 function helper.Look_dg_count()
-    skynet.error("递归次数：",dg_count,"听检查次数：",for_able_count)
+    skynet.error("递归次数：",dg_count,"听检查次数：",for_able_count,"平均递归次数",dg_count//for_able_count)
 end
 
 
