@@ -549,7 +549,7 @@ function helper.wttPing(hasWTT,hasColor)
     end
 
     skynet.error("--------------------hasWTT----------------------------")
-    for k,v in ipairs(hasWTT) do
+    for k,v in pairs(hasWTT) do
         print(k,v)
     end
     skynet.error("------------------------------------------------------")
@@ -568,6 +568,11 @@ local function dg_group_hu(hasWTT,mj_types)
     local mjCount = table.sum_has(hasWTT)
     if 0 == mjCount then
         return true
+    end
+
+    if 0 == #mj_types then
+        skynet.error("dg_group_hu 1")
+        return false
     end
     
     local hasBack = table.fortab()
@@ -602,7 +607,7 @@ local function dg_group_hu(hasWTT,mj_types)
         end
     end
 
-    skynet.error("dg_group_hu 1")
+    skynet.error("dg_group_hu 2")
     return false
 end
 
