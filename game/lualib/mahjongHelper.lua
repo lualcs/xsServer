@@ -630,15 +630,20 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
             table.find_remove(mjCardCopy,_out_mj)
             for _ting_mj,_count in pairs(hasMahjongFull) do
 
-                --过滤不存在的花色
+                --花色 < 2 连将对都 无法组成
                 local color = this.getColor(_ting_mj)
-                if an.hasColor[color] then
+                local cNumber = an.hasColor[color] or 0
+                if cNumber >= 2 then
+                    skynet.error("mjCardCopy1",tostring(mjCardCopy))
                     table.insert(mjCardCopy,_ting_mj)
+                    skynet.error("mjCardCopy2",tostring(mjCardCopy))
                     if this.checkAbleHu(mjCardCopy) then
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
                         ting[_out_mj][_ting_mj] = true
                     end
+                    skynet.error("mjCardCopy3",tostring(mjCardCopy))
                     table.remove(mjCardCopy,#mjCardCopy)
+                    skynet.error("mjCardCopy4",tostring(mjCardCopy))
                 end
             end
             table.insert(mjCardCopy,_out_mj)
