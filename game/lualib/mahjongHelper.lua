@@ -233,11 +233,6 @@ function helper.getHasType(hasMahjong)
     local has = {}
     for mj,count in pairs(hasMahjong) do
         local ts = wttMap[mj]  --牌型列表
-        if nil == ts then
-            skynet.error("getHasType:",tostring{
-                mj,wttMap
-            })
-        end
         local sc = #ts - 1     --0~sc 顺子牌型下标
         --刻子牌型
         if count >= 3 then
@@ -605,9 +600,7 @@ helper.dg_group_hu = dg_group_hu
     @param mjCard = {
         [1~n] = mj
     }
-    @param mjCards = {--一整副麻将
-        [1~n] = mj
-    }
+   
     @return ting = {--mj:麻将
         [mj] = {--inx:1~n
             [inx] = mj
@@ -615,7 +608,7 @@ helper.dg_group_hu = dg_group_hu
     }
 ]]
 
-function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
+function helper.getTingInfo(mjCard,hasMahjongFull)
     local ting = table.fortab()
 
     local len = #mjCard

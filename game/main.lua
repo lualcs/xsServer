@@ -17,7 +17,6 @@ skynet.start(function()
 				0x01,0x02,0x03,
 				0x01,0x01
 			},
-			mjCards,
 			hasMahjongFull)
 		table.wait_recycle()
 		skynet.error(i)
