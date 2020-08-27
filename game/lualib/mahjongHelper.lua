@@ -452,12 +452,8 @@ end
 ]]
 function helper.wttPing(hasWTT,hasColor)
 
-    skynet.error("hasWTT:",tostring(hasWTT))
-    skynet.error("hasColor:",tostring(hasColor))
 
     local hasType = helper.getHasType(hasWTT)
-    skynet.error("hasType:",tostring(hasType))
-
     local mjCount = table.sum_has(hasWTT)
     local mtCount = table.sum_has(hasType)
 
@@ -530,6 +526,8 @@ function helper.wttPing(hasWTT,hasColor)
             
         end
     end
+
+    skynet.error("group:",tostring(group))
 
     --统计允许牌型
     local may_types = table.fortab()
