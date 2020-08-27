@@ -540,12 +540,6 @@ function helper.wttPing(hasWTT,hasColor)
         end
     end
 
-    skynet.error("--------------------may_types----------------------------")
-    for k,v in pairs(may_types) do
-        print(tostring(k),v)
-    end
-    skynet.error("------------------------------------------------------")
-
     --获得实际牌型
     local mj_types = table.fortab()
     for _mt,_count in pairs(hasType) do
@@ -553,18 +547,6 @@ function helper.wttPing(hasWTT,hasColor)
             table.insert(mj_types,_mt)
         end
     end
-
-    -- skynet.error("--------------------hasWTT----------------------------")
-    -- for k,v in pairs(hasWTT) do
-    --     print(k,v)
-    -- end
-    -- skynet.error("------------------------------------------------------")
-
-    -- skynet.error("--------------------mj_types--------------------------")
-    -- for k,v in ipairs(mj_types) do
-    --     print(k,v)
-    -- end
-    -- skynet.error("------------------------------------------------------")
 
     --递归执行组合
     return this.dg_group_hu(hasWTT,mj_types)
