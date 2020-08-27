@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+local tostring = require("tostring")
 skynet.start(function()
 	skynet.error("Server start")
 	local table = require("extend_table")
@@ -19,7 +20,7 @@ skynet.start(function()
 			mjCards,
 			hasMahjongFull)
 		--if 0 == i % 1000 then
-			skynet.error(require("tostring")(ting))
+			skynet.error("ting:",tostring(ting))
 			local close = os.time()
 			skynet.error("elapsed time:"..tostring(close-start))
 		--end
