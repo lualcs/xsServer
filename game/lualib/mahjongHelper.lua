@@ -517,7 +517,7 @@ function helper.wttPing(hasWTT,hasColor)
     --统计允许牌型
     local may_types = table.fortab()
     for _mj,_lis in pairs(hasType) do
-        local ts = #wttMap[_mj]
+        local ts = wttMap[_mj]
         for _inx,_group in pairs(_lis) do
             if is_allow_sz(_group) then
                 local kp = #ts
