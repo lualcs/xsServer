@@ -291,7 +291,7 @@ function helper.checkAbleHu(mjCard)
     local an = this.getAnalyze(mjCard)
     local hasCard = an.hasCard
     local hasColor = an.hasColor
-    for k,count in pairs(mjCard) do
+    for k,count in pairs(hasCard) do
         if count >= 2 then
             local c = this.getColor(k)
             hasCard[k] = hasCard[k] - 2
