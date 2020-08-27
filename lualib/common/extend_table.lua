@@ -212,10 +212,10 @@ function table.fortab()
     --ШЅГ§Ъ§Он
 	local idx = #uv_fortab
 	local tab = uv_fortab[idx] or {}
-    uv_fortab[tab] = true
+    uv_fortab[tab] = nil
 	
 	if uv_waitrecycle then
-		table.insert(uv_waitls,tab)
+		uv_waitls[tab] = true
 	end
 	return tab
 end

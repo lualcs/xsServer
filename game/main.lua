@@ -25,7 +25,7 @@ skynet.start(function()
 
 	local close = os.time()
 	local pass = close-start
-	skynet.error("秒:",tostring(pass),"次数：",pass)
+	skynet.error("秒:",tostring(pass))
 
 	-- if mjHelper.checkAbleHu({
 	-- 	0x01,0x02,0x03,
