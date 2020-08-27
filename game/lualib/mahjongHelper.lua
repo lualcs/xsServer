@@ -640,10 +640,6 @@ function helper.getTingInfo(mjCard,hasMahjongFull)
             return ting
         end
 
-        skynet.error("mjCardCopy:",tostring(mjCardCopy))
-        skynet.error("hasMahjongFull:",tostring(hasMahjongFull))
-        skynet.error("hasMahjongFull:",tostring(hasMahjongFull))
-
         local hasMahjongSelf = this.getHasCount(mjCardCopy)
         for _out_mj,_count in pairs(hasMahjongSelf) do
             table.find_remove(mjCardCopy,_out_mj)
