@@ -251,7 +251,6 @@ function helper.getHasType(hasMahjong)
             has[mt] = mc
         end
     end
-    this.first = true
     return has
 end
 
