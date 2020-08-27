@@ -618,7 +618,7 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
             table.find_remove(mjCardCopy,_out_mj)
             for _ting_mj,_count in pairs(hasMahjongFull) do
                 table.insert(mjCardCopy,_ting_mj)
-                if hasMahjongSelf[_ting_mj] < 4 and this.checkAbleHu(mjCardCopy) then
+                if (hasMahjongSelf[_ting_mj] or 0) < 4 and this.checkAbleHu(mjCardCopy) then
                     ting[_out_mj] = ting[_out_mj] or table.fortab()
                     ting[_out_mj][_ting_mj] = true
                 end
