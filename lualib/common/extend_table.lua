@@ -206,16 +206,15 @@ end
 
 --从缓存表中申请一个空表 bRecycle:true 表示待回收
 function table.fortab()
-    -- --去除数据
-	-- local idx = #uv_fortab
-	-- local tab = uv_fortab[idx] or {}
-    -- uv_fortab[tab] = nil
+    --去除数据
+	local idx = #uv_fortab
+	local tab = uv_fortab[idx] or {}
+    uv_fortab[idx] = nil
 	
-	-- if uv_waitrecycle then
-	-- 	uv_waitls[tab] = true
-	-- end
-	-- return tab
-	return {}
+	if uv_waitrecycle then
+		uv_waitls[tab] = true
+	end
+	return tab
 end
 
 
