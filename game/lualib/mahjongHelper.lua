@@ -554,7 +554,9 @@ function helper.wttPing(hasWTT,hasColor)
     return this.dg_group_hu(hasWTT,mj_types)
 end
 
+local dg_count = 0
 local function dg_group_hu(hasWTT,mj_types)
+    dg_count = dg_count + 1
     local mjCount = table.sum_has(hasWTT)
     if 0 == mjCount then
         return true
@@ -661,6 +663,14 @@ function helper.getTingInfo(mjCard,hasMahjongFull)
     end
     
     return ting
+end
+
+function helper.start_dg_count()
+    dg_count = 0
+end
+
+function helper.Look_dg_count()
+    skynet.error("递归次数：",dg_count)
 end
 
 
