@@ -657,10 +657,6 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
                         _ting_mj,color,cNumber
                     })
                 if cNumber >= 2 then
-                    skynet.error("660 look",
-                    tostring{
-                        _ting_mj,color,cNumber
-                    })
                     table.insert(mjCardCopy,_ting_mj)
                     if this.checkAbleHu(mjCardCopy) then
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
