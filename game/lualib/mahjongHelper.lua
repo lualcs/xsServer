@@ -625,11 +625,30 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
     if 14 == len then
         local mjCardCopy = table.copy(mjCard)
         local an = this.getAnalyze(mjCardCopy)
+
+        --听牌过滤花色 < 2的
+        local smallColor = 0
+        for _color,_count in pairs(an.hasColor) do
+            --少于2张牌连 对子都无法组成
+            if _count < 2 then
+                return ting
+            end
+
+            --2个花色 <= 2 无法听牌
+            if _count <= 2 then
+                smallColor = smallColor + 1
+            end
+        end
+
+        --最多一个花色的牌 为2张
+        if smallColor > 1 then
+            return ting
+        end
+
         local hasMahjongSelf = this.getHasCount(mjCardCopy)
         for _out_mj,_count in pairs(hasMahjongSelf) do
             table.find_remove(mjCardCopy,_out_mj)
             for _ting_mj,_count in pairs(hasMahjongFull) do
-
                 --花色 < 2 连将对都 无法组成
                 local color = this.getColor(_ting_mj)
                 local cNumber = an.hasColor[color] or 0
