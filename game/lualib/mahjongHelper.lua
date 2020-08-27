@@ -230,6 +230,7 @@ end
 
 --分析可以组合哪些牌型 仅仅支持万条筒
 function helper.getHasType(hasMahjong)
+    
     local has = {}
     for mj,count in pairs(hasMahjong) do
         local ts = wttMap[mj]  --牌型列表
@@ -246,10 +247,14 @@ function helper.getHasType(hasMahjong)
             local mc = count
             for _mj,_count in pairs(mt) do
                 mc = math.min(mc,_count)
+                if wan123 == mt and not this.first then
+                    print(mc)
+                end
             end
             has[mt] = mc
         end
     end
+    this.first = true
     return has
 end
 
