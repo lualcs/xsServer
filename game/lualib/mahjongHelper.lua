@@ -118,11 +118,11 @@ local wttMap = {
 local helper = {}
 local this = helper
 function helper.getColor(mj)
-    return (mj & 0x0f)>>4
+    return (mj & 0xf0)>>4
 end
 
 function helper.getValue(mj)
-    return mj & 0xf0
+    return mj & 0x0f
 end
 
 function helper.getCard(color,card)
@@ -634,15 +634,6 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
                 local color = this.getColor(_ting_mj)
                 local cNumber = an.hasColor[color] or 0
                 if cNumber >= 2 then
-
-                    skynet.error("look:",tostring(
-                        {
-                            color=color,
-                            _ting_mj=_ting_mj,
-                            cNumber = cNumber,
-                        }
-                        ))
-
                     table.insert(mjCardCopy,_ting_mj)
                     if this.checkAbleHu(mjCardCopy) then
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
