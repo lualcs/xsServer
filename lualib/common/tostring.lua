@@ -63,7 +63,6 @@ local function _tablestring(val,level,key)
 					table.insert( strlist,v)
 					table.insert( strlist,"\"")
 				else
-					table.insert( strlist,k)
 					table.insert( strlist,tostring(v))
 				end
 			else
