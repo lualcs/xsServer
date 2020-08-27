@@ -12,7 +12,7 @@ local sort = require("sort")
 
 local tostring = require("tostring")
 
---设置元方法
+--设置tostring 好做打印 调试
 local function set_mt_tostring(t)
     local mt_tostring = t.__tostring
     t.__tostring = nil
@@ -452,7 +452,7 @@ end
 function helper.wttPing(hasWTT,hasColor)
 
     skynet.error("hasWTT:",tostring(hasWTT))
-    skynet.error("hasWTT:",tostring(hasColor))
+    skynet.error("hasColor:",tostring(hasColor))
 
     local hasType = helper.getHasType(hasWTT)
     skynet.error("hasType:",tostring(hasType))
