@@ -557,6 +557,7 @@ function helper.wttPing(hasWTT,hasColor)
         end
     end
 
+    skynet.error("may_types:",tostring(may_types))
     skynet.error("mj_types:",tostring(mj_types))
 
     --递归执行组合
