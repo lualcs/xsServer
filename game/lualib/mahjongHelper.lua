@@ -12,64 +12,64 @@ local sort = require("sort")
 local tostring = require("tostring")
 
 --1:各种刻子
-local wan111 = {[0x01]=3}
-local wan222 = {[0x02]=3}
-local wan333 = {[0x03]=3}
-local wan444 = {[0x04]=3}
-local wan555 = {[0x05]=3}
-local wan666 = {[0x06]=3}
-local wan777 = {[0x07]=3}
-local wan888 = {[0x08]=3}
-local wan999 = {[0x09]=3}
+local wan111 = {[0x01]=3,__tostring = function() return "wan111" end}
+local wan222 = {[0x02]=3,__tostring = function() return "wan222" end}
+local wan333 = {[0x03]=3,__tostring = function() return "wan333" end}
+local wan444 = {[0x04]=3,__tostring = function() return "wan444" end}
+local wan555 = {[0x05]=3,__tostring = function() return "wan555" end}
+local wan666 = {[0x06]=3,__tostring = function() return "wan666" end}
+local wan777 = {[0x07]=3,__tostring = function() return "wan777" end}
+local wan888 = {[0x08]=3,__tostring = function() return "wan888" end}
+local wan999 = {[0x09]=3,__tostring = function() return "wan999" end}
 
-local suo111 = {[0x11]=3}
-local suo222 = {[0x12]=3}
-local suo333 = {[0x13]=3}
-local suo444 = {[0x14]=3}
-local suo555 = {[0x15]=3}
-local suo666 = {[0x16]=3}
-local suo777 = {[0x17]=3}
-local suo888 = {[0x18]=3}
-local suo999 = {[0x19]=3}
+local suo111 = {[0x11]=3,__tostring = function() return "suo111" end}
+local suo222 = {[0x12]=3,__tostring = function() return "suo222" end}
+local suo333 = {[0x13]=3,__tostring = function() return "suo333" end}
+local suo444 = {[0x14]=3,__tostring = function() return "suo444" end}
+local suo555 = {[0x15]=3,__tostring = function() return "suo555" end}
+local suo666 = {[0x16]=3,__tostring = function() return "suo666" end}
+local suo777 = {[0x17]=3,__tostring = function() return "suo777" end}
+local suo888 = {[0x18]=3,__tostring = function() return "suo888" end}
+local suo999 = {[0x19]=3,__tostring = function() return "suo999" end}
 
-local ton111 = {[0x21]=3}
-local ton222 = {[0x22]=3}
-local ton333 = {[0x23]=3}
-local ton444 = {[0x24]=3}
-local ton555 = {[0x25]=3}
-local ton666 = {[0x26]=3}
-local ton777 = {[0x27]=3}
-local ton888 = {[0x28]=3}
-local ton999 = {[0x29]=3}
+local ton111 = {[0x21]=3,__tostring = function() return "ton111" end}
+local ton222 = {[0x22]=3,__tostring = function() return "ton222" end}
+local ton333 = {[0x23]=3,__tostring = function() return "ton333" end}
+local ton444 = {[0x24]=3,__tostring = function() return "ton444" end}
+local ton555 = {[0x25]=3,__tostring = function() return "ton555" end}
+local ton666 = {[0x26]=3,__tostring = function() return "ton666" end}
+local ton777 = {[0x27]=3,__tostring = function() return "ton777" end}
+local ton888 = {[0x28]=3,__tostring = function() return "ton888" end}
+local ton999 = {[0x29]=3,__tostring = function() return "ton999" end}
 
 --2:各种顺子
-local wan123 = {[0x01]=1,[0x02]=1,[0x03]=1}
-local suo123 = {[0x11]=1,[0x12]=1,[0x13]=1}
-local ton123 = {[0x21]=1,[0x22]=1,[0x23]=1}
+local wan123 = {[0x01]=1,[0x02]=1,[0x03]=1,__tostring = function() return "wan123" end}
+local suo123 = {[0x11]=1,[0x12]=1,[0x13]=1,__tostring = function() return "suo123" end}
+local ton123 = {[0x21]=1,[0x22]=1,[0x23]=1,__tostring = function() return "ton123" end}
 
-local wan234 = {[0x02]=1,[0x03]=1,[0x04]=1}
-local suo234 = {[0x12]=1,[0x13]=1,[0x14]=1}
-local ton234 = {[0x22]=1,[0x23]=1,[0x24]=1}
+local wan234 = {[0x02]=1,[0x03]=1,[0x04]=1,__tostring = function() return "wan234" end}
+local suo234 = {[0x12]=1,[0x13]=1,[0x14]=1,__tostring = function() return "suo234" end}
+local ton234 = {[0x22]=1,[0x23]=1,[0x24]=1,__tostring = function() return "ton234" end}
 
-local wan345 = {[0x03]=1,[0x04]=1,[0x05]=1}
-local suo345 = {[0x13]=1,[0x14]=1,[0x15]=1}
-local ton345 = {[0x23]=1,[0x24]=1,[0x25]=1}
+local wan345 = {[0x03]=1,[0x04]=1,[0x05]=1,__tostring = function() return "wan345" end}
+local suo345 = {[0x13]=1,[0x14]=1,[0x15]=1,__tostring = function() return "suo345" end}
+local ton345 = {[0x23]=1,[0x24]=1,[0x25]=1,__tostring = function() return "ton345" end}
 
-local wan456 = {[0x04]=1,[0x05]=1,[0x06]=1}
-local suo456 = {[0x14]=1,[0x15]=1,[0x16]=1}
-local ton456 = {[0x24]=1,[0x25]=1,[0x26]=1}
+local wan456 = {[0x04]=1,[0x05]=1,[0x06]=1,__tostring = function() return "wan456" end}
+local suo456 = {[0x14]=1,[0x15]=1,[0x16]=1,__tostring = function() return "suo456" end}
+local ton456 = {[0x24]=1,[0x25]=1,[0x26]=1,__tostring = function() return "ton456" end}
 
-local wan567 = {[0x05]=1,[0x06]=1,[0x07]=1}
-local suo567 = {[0x15]=1,[0x16]=1,[0x17]=1}
-local ton567 = {[0x25]=1,[0x26]=1,[0x27]=1}
+local wan567 = {[0x05]=1,[0x06]=1,[0x07]=1,__tostring = function() return "wan567" end}
+local suo567 = {[0x15]=1,[0x16]=1,[0x17]=1,__tostring = function() return "suo567" end}
+local ton567 = {[0x25]=1,[0x26]=1,[0x27]=1,__tostring = function() return "ton567" end}
 
-local wan678 = {[0x06]=1,[0x07]=1,[0x08]=1}
-local suo678 = {[0x16]=1,[0x17]=1,[0x18]=1}
-local ton678 = {[0x26]=1,[0x27]=1,[0x28]=1}
+local wan678 = {[0x06]=1,[0x07]=1,[0x08]=1,__tostring = function() return "wan678" end}
+local suo678 = {[0x16]=1,[0x17]=1,[0x18]=1,__tostring = function() return "suo678" end}
+local ton678 = {[0x26]=1,[0x27]=1,[0x28]=1,__tostring = function() return "ton678" end}
 
-local wan789 = {[0x07]=1,[0x08]=1,[0x09]=1}
-local suo789 = {[0x17]=1,[0x18]=1,[0x19]=1}
-local ton789 = {[0x27]=1,[0x28]=1,[0x29]=1}
+local wan789 = {[0x07]=1,[0x08]=1,[0x09]=1,__tostring = function() return "wan789" end}
+local suo789 = {[0x17]=1,[0x18]=1,[0x19]=1,__tostring = function() return "suo789" end}
+local ton789 = {[0x27]=1,[0x28]=1,[0x29]=1,__tostring = function() return "ton789" end}
 
 --2:扑克隐射
 local wttMap = {
@@ -442,7 +442,12 @@ end
     @param 
 ]]
 function helper.wttPing(hasWTT,hasColor)
+
+    skynet.error("hasWTT:",tostring(hasWTT))
+    skynet.error("hasWTT:",tostring(hasColor))
+
     local hasType = helper.getHasType(hasWTT)
+    skynet.error("hasType:",tostring(hasType))
 
     local mjCount = table.sum_has(hasWTT)
     local mtCount = table.sum_has(hasType)
