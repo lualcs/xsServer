@@ -174,7 +174,7 @@ local function recycle(t)
 	end
 
     local count = #uv_fortab
-    if count >= 1000 then
+    if count >= 10000 then
         print('warning table.recycle:',count)
     end
 	uv_fortab[count + 1] = t

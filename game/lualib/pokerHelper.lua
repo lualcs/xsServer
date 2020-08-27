@@ -28,7 +28,6 @@ function helper.getString(arrCard)
         table.insert(t,this.getName(v))
     end
     local s = table.concat(t)
-    table.recycle(t)
     return s
 end
 

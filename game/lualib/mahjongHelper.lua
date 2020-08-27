@@ -171,7 +171,6 @@ function helper.getString(mjCard)
         table.insert(t,this.getName(mj))
     end
     local s = table.concat(t)
-    table.recycle(t)
     return s
 end
 
