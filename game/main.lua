@@ -26,6 +26,12 @@ skynet.start(function()
 		table.wait_recycle()
 		break
 	end
+
+	local class = require("class")
+	local testClass = class()
+	testClass.a = function() end
+	testClass.b = function() end
+
 end)
 
 
