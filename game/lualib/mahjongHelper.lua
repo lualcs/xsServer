@@ -3,7 +3,7 @@
 
 local ipairs = ipairs
 local pairs = pairs
-
+local skynet = require("skynet")
 local mahjongName = require("mahjongName")
 local table = require("extend_table")
 local math = require("extend_math")
@@ -279,12 +279,12 @@ function helper.checkAbleHu(mjCard)
     --数量检查
     local len = #mjCard
     if 2 ~= len % 3 then
-        print("checkAbleHu 1")
+        skynet.error("checkAbleHu 1")
         return false
     end
 
     if this.checkQiDui(mjCard) then
-        print("checkAbleHu 2")
+        skynet.error("checkAbleHu 2")
         return true
     end
 
@@ -304,7 +304,7 @@ function helper.checkAbleHu(mjCard)
         end
     end
 
-    print("checkAbleHu 3")
+    skynet.error("checkAbleHu 3")
     return false
 end
 
@@ -312,13 +312,13 @@ end
 function helper.checkQiDui(mjCard)
     local len = #mjCard
     if 14 ~= len then
-        print("checkQiDui 1")
+        skynet.error("checkQiDui 1")
         return false
     end
     local has = helper.getHasCount(mjCard)
     for _,count in pairs(has) do
         if 0 ~= count % 2 then
-            print("checkQiDui 2")
+            skynet.error("checkQiDui 2")
             return false
         end
     end
@@ -332,7 +332,7 @@ function helper.checkPing(hasCard,hasColor)
     --每个花色数量
     for c,count in pairs(hasColor) do
         if 0 ~= count % 3 then
-            print("checkPing 1")
+            skynet.error("checkPing 1")
             return false
         end
     end
@@ -354,7 +354,7 @@ function helper.helpPing(hasMahjong)
         --字牌
         else
             if 0 ~= count % 3 then
-                print("helpPing 1")
+                skynet.error("helpPing 1")
                 return false
             end
         end
@@ -455,13 +455,13 @@ function helper.wttPing(hasWTT,hasColor)
         group[mj] = unit
         if 1 == count  then
             if not this.checkSun(hasType,mj,count) then
-                print("wttPing 1")
+                skynet.error("wttPing 1")
                 return false
             end
             table.insert(unit,groupType.sz1)--1个顺子
         elseif 2 == count then
             if not this.checkSun(hasType,mj,count) then
-                print("wttPing 2")
+                skynet.error("wttPing 2")
                 return false
             end
             table.insert(unit,groupType.sz2)--2个顺子
@@ -507,7 +507,7 @@ function helper.wttPing(hasWTT,hasColor)
             if this.checkSunKe(hasType,mj,1,1) then
                 table.insert(unit,groupType.ks1)--1刻子+1顺子
             else
-                print("wttPing 3")
+                skynet.error("wttPing 3")
                 return false
             end
             
@@ -587,7 +587,7 @@ local function dg_group_hu(hasWTT,mj_types)
         end
     end
 
-    print("wttPing 4")
+    skynet.error("wttPing 4")
     return false
 end
 
