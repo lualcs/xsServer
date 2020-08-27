@@ -27,11 +27,13 @@ local function _tablestring(val,level,key)
 
 	if is_string(key) then
 		table.insert( strlist,"\r\n")
+		table.insert( strlist,indent)
 		table.insert( strlist,key)
 		table.insert( strlist," = ")
 		table.insert( strlist,"{")
 	elseif is_number(key) then
 		table.insert( strlist,"\r\n")
+		table.insert( strlist,indent)
 		table.insert( strlist,"[")
 		table.insert( strlist,key)
 		table.insert( strlist,"]")
