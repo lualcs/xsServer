@@ -206,6 +206,8 @@ end
 
 --麻将分析
 function helper.getAnalyze(mjCard)
+
+
     local an = this.newAnalyzeData()
     local hasCard = an.hasCard 
     local hasColor = an.hasColor 
@@ -213,6 +215,7 @@ function helper.getAnalyze(mjCard)
         local color = this.getColor(v)
         hasCard[v] = (hasCard[v] or 0) + 1
         hasColor[color] = (hasColor[color] or 0) + 1
+        print(k,v)
     end
 	return an
 end
