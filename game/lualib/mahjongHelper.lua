@@ -246,7 +246,7 @@ function helper.getHasType(hasMahjong)
             local mt = ts[i]
             local mc = count
             for _mj,_count in pairs(mt) do
-                mc = math.min(mc,hasMahjong[_mj])
+                mc = math.min(mc,hasMahjong[_mj] or 0)
             end
             has[mt] = mc
         end
