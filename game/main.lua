@@ -24,6 +24,7 @@ skynet.start(function()
 			skynet.error("elapsed time:"..tostring(close-start))
 		end
 		table.wait_recycle()
+		break
 	end
 end)
 
