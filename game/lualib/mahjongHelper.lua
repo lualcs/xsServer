@@ -244,9 +244,9 @@ function helper.getHasType(hasMahjong)
         --顺子牌型
         for i=1,sc do
             local mt = ts[i]
-            local mc = 4--这里写一个最大值
+            local mc = count
             for _mj,_count in pairs(mt) do
-                mc = math.min(mc,_count)
+                mc = math.min(mc,hasMahjong[_mj])
             end
             has[mt] = mc
         end
