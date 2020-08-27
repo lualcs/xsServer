@@ -234,7 +234,7 @@ function helper.getHasType(hasMahjong)
     for mj,count in pairs(hasMahjong) do
         local ts = wttMap[mj]  --牌型列表
         if nil == ts then
-            skynet.error("getHasType:",{
+            skynet.error("getHasType:",tostring{
                 mj,wttMap
             })
         end
