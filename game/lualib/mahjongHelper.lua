@@ -532,6 +532,7 @@ function helper.wttPing(hasWTT,hasColor)
         local ts = wttMap[_mj]
         for _inx,_group in pairs(_lis) do
             if is_allow_sz(_group) then
+                skynet.error("is_allow_sz:",_group)
                 local kp = #ts
                 local kt = ts[kp]
                 for _,_mt in ipairs(ts) do
@@ -542,6 +543,7 @@ function helper.wttPing(hasWTT,hasColor)
                 end
             end
             if is_allow_kz(_group) then
+                skynet.error("is_allow_kz:",_group)
                 local kp = #ts
                 local kt = ts[kp]
                 may_types[kt] = true
