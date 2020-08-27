@@ -7,7 +7,6 @@ skynet.start(function()
 	local mjCards = require("mahjongCardsXZ")
 	local hasMahjongFull = require("mahjongHasCardXZ")
 	local start = os.time()
-	local last = 0
 	for i=1,100000 do
 		table.wait_fortab()
 		local ting = mjHelper.getTingInfo(
@@ -20,16 +19,13 @@ skynet.start(function()
 			},
 			mjCards,
 			hasMahjongFull)
-
-		local close = os.time()
-		local pass = close-start
-		if pass > (last + 10) then
-			skynet.error("秒:",tostring(pass),"次数：",pass)
-			last = pass
-		end
 		table.wait_recycle()
+		skynet.error(i)
 	end
 
+	local close = os.time()
+	local pass = close-start
+	skynet.error("秒:",tostring(pass),"次数：",pass)
 
 	-- if mjHelper.checkAbleHu({
 	-- 	0x01,0x02,0x03,
