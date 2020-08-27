@@ -233,6 +233,11 @@ function helper.getHasType(hasMahjong)
     local has = {}
     for mj,count in pairs(hasMahjong) do
         local ts = wttMap[mj]  --牌型列表
+        if nil == ts then
+            skynet.error("getHasType:",{
+                mj,wttMap
+            })
+        end
         local sc = #ts - 1     --0~sc 顺子牌型下标
         --刻子牌型
         if count >= 3 then
