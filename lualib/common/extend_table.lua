@@ -88,13 +88,6 @@ function table.copy(tab,new)
 			new_tab[_k] = table.copy(tab)
 		end
 	end
-
-	print("-----------------------------------------")
-	for k,v in pairs(new_tab) do
-		print(k,v)
-	end
-	print("-----------------------------------------")
-
 	return new_tab
 end
 

@@ -214,12 +214,7 @@ function helper.getAnalyze(mjCard)
         local color = this.getColor(v)
         hasCard[v] = (hasCard[v] or 0) + 1
         hasColor[color] = (hasColor[color] or 0) + 1
-        if not this.bFirst then
-            print(k,v)
-        end
     end
-
-    this.bFirst = true
 	return an
 end
 
@@ -622,18 +617,23 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
     if 14 == len then
         skynet.error(require("tostring")(mjCard))
         local mjCardCopy = table.copy(mjCard)
+        local an = this.getAnalyze(mjCardCopy)
         local hasMahjongSelf = this.getHasCount(mjCardCopy)
         for _out_mj,_count in pairs(hasMahjongSelf) do
             table.find_remove(mjCardCopy,_out_mj)
             for _ting_mj,_count in pairs(hasMahjongFull) do
-                table.insert(mjCardCopy,_ting_mj)
-                if (hasMahjongSelf[_ting_mj] or 0) < 4  then
-                    if this.checkAbleHu(mjCardCopy) then
-                        ting[_out_mj] = ting[_out_mj] or table.fortab()
-                        ting[_out_mj][_ting_mj] = true
+                --过滤不存在的花色
+                local tColor = this.getColor(_ting_mj)
+                if not an.hasColor[tColor] then
+                    table.insert(mjCardCopy,_ting_mj)
+                    if (hasMahjongSelf[_ting_mj] or 0) < 4  then
+                        if this.checkAbleHu(mjCardCopy) then
+                            ting[_out_mj] = ting[_out_mj] or table.fortab()
+                            ting[_out_mj][_ting_mj] = true
+                        end
                     end
+                    table.remove(mjCardCopy,#mjCardCopy)
                 end
-                table.remove(mjCardCopy,#mjCardCopy)
             end
             table.insert(mjCardCopy,_out_mj)
         end
