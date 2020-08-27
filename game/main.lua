@@ -7,7 +7,7 @@ skynet.start(function()
 	local mjCards = require("mahjongCardsXZ")
 	local hasMahjongFull = require("mahjongHasCardXZ")
 	local start = os.time()
-	for i=1,100000 do
+	for i=1,100 do
 		table.wait_fortab()
 		local ting = mjHelper.getTingInfo(
 			{
