@@ -219,9 +219,14 @@ function helper.getAnalyze(mjCard)
     local an = this.newAnalyzeData()
     local hasCard = an.hasCard 
     local hasColor = an.hasColor 
-    for k,v in pairs(mjCard) do
-        local color = this.getColor(v)
-        hasCard[v] = (hasCard[v] or 0) + 1
+    for _inx,_mj in pairs(mjCard) do
+
+        if 10 == _mj then
+            skynet.error("error getAnalyze:",tostring(mjCard))
+        end
+
+        local color = this.getColor(_mj)
+        hasCard[_mj] = (hasCard[_mj] or 0) + 1
         hasColor[color] = (hasColor[color] or 0) + 1
     end
 	return an
@@ -299,15 +304,15 @@ function helper.checkAbleHu(mjCard)
     local an = this.getAnalyze(mjCard)
     local hasCard = an.hasCard
     local hasColor = an.hasColor
-    for k,count in pairs(hasCard) do
+    for _mj,count in pairs(hasCard) do
         if count >= 2 then
-            local c = this.getColor(k)
-            hasCard[k] = hasCard[k] - 2
+            local c = this.getColor(_mj)
+            hasCard[_mj] = hasCard[_mj] - 2
             hasColor[c] = hasColor[c] - 2
             if this.checkPing(hasCard,hasColor) then
                 return true
             end
-            hasCard[k] = hasCard[k] + 2
+            hasCard[_mj] = hasCard[_mj] + 2
             hasColor[c] = hasColor[c] + 2
         end
     end
