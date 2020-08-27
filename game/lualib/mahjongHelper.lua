@@ -467,13 +467,11 @@ function helper.wttPing(hasWTT,hasColor)
         group[mj] = unit
         if 1 == count  then
             if not this.checkSun(hasType,mj,count) then
-                skynet.error("wttPing 1")
                 return false
             end
             table.insert(unit,groupType.sz1)--1个顺子
         elseif 2 == count then
             if not this.checkSun(hasType,mj,count) then
-                skynet.error("wttPing 2")
                 return false
             end
             table.insert(unit,groupType.sz2)--2个顺子
@@ -519,7 +517,6 @@ function helper.wttPing(hasWTT,hasColor)
             if this.checkSunKe(hasType,mj,1,1) then
                 table.insert(unit,groupType.ks1)--1刻子+1顺子
             else
-                skynet.error("wttPing 3")
                 return false
             end
             
@@ -556,12 +553,6 @@ function helper.wttPing(hasWTT,hasColor)
             table.insertEx(mj_types,_mt,_count)
         end
     end
-
-    skynet.error("may_types:",tostring(may_types))
-    skynet.error("mj_types:",tostring(mj_types))
-    skynet.error("hasType:",tostring(hasType))
-    skynet.error("group:",tostring(group))
-
     --递归执行组合
     return this.dg_group_hu(hasWTT,mj_types)
 end
@@ -573,7 +564,6 @@ local function dg_group_hu(hasWTT,mj_types)
     end
 
     if 0 == #mj_types then
-        skynet.error("dg_group_hu 1")
         return false
     end
     
@@ -609,7 +599,6 @@ local function dg_group_hu(hasWTT,mj_types)
         end
     end
 
-    skynet.error("dg_group_hu 2")
     return false
 end
 
