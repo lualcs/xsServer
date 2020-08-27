@@ -404,11 +404,11 @@ local groupType = {
 }
 
 local function is_allow_sz(group)
-    return (groupType.sz1 >= group and group <= groupType.sz4) or (group == groupType.ks1)
+    return (groupType.sz1 <= group and group <= groupType.sz4) or (group == groupType.ks1)
 end
 
 local function is_allow_kz(group)
-    return (not(groupType.sz1 >= group and group <= groupType.sz4)) or (group == groupType.ks1)
+    return groupType.kz1 <= group and group <= groupType.ks1
 end
 
 
