@@ -622,7 +622,7 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
                     ting[_out_mj] = ting[_out_mj] or table.fortab()
                     ting[_out_mj][_ting_mj] = true
                 end
-                table.remove(mjCardCopy,_ting_mj)
+                table.remove(mjCardCopy,#mjCardCopy)
             end
             table.insert(mjCardCopy,_out_mj)
         end
