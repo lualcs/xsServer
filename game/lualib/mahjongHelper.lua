@@ -623,10 +623,10 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
         for _out_mj,_count in pairs(hasMahjongSelf) do
             table.find_remove(mjCardCopy,_out_mj)
             for _ting_mj,_count in pairs(hasMahjongFull) do
+
                 --过滤不存在的花色
-                local tColor = this.getColor(_ting_mj)
-                local colorCount = an.hasColor[tColor] or 0
-                if colorCount > 0 and colorCount < 4 then
+                local color = this.getColor(_ting_mj)
+                if an.hasColor[color] then
                     table.insert(mjCardCopy,_ting_mj)
                     if this.checkAbleHu(mjCardCopy) then
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
