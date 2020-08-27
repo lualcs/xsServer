@@ -526,8 +526,6 @@ function helper.wttPing(hasWTT,hasColor)
         end
     end
 
-    skynet.error("group:",tostring(group))
-
     --统计允许牌型
     local may_types = table.fortab()
     for _mj,_lis in pairs(group) do
@@ -550,6 +548,8 @@ function helper.wttPing(hasWTT,hasColor)
             end
         end
     end
+
+    skynet.error("may_types:",tostring(may_types))
 
     --获得实际牌型
     local mj_types = table.fortab()
