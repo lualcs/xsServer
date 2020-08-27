@@ -610,6 +610,7 @@ helper.dg_group_hu = dg_group_hu
     }
 ]]
 
+local for_able_count = 0
 function helper.getTingInfo(mjCard,hasMahjongFull)
     local ting = table.fortab()
 
@@ -646,6 +647,7 @@ function helper.getTingInfo(mjCard,hasMahjongFull)
                 local cNumber = an.hasColor[color] or 0
                 if cNumber >= 2 then
                     table.insert(mjCardCopy,_ting_mj)
+                    for_able_count = for_able_count + 1
                     if this.checkAbleHu(mjCardCopy) then
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
                         ting[_out_mj][_ting_mj] = true
@@ -661,11 +663,12 @@ function helper.getTingInfo(mjCard,hasMahjongFull)
 end
 
 function helper.start_dg_count()
+    for_able_count = 0
     dg_count = 0
 end
 
 function helper.Look_dg_count()
-    skynet.error("递归次数：",dg_count)
+    skynet.error("递归次数：",dg_count,"听检查次数：",for_able_count)
 end
 
 
