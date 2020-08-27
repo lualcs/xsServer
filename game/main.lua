@@ -21,7 +21,7 @@ skynet.start(function()
 		if 0 == i % 1000 then
 			skynet.error(require("tostring")(ting))
 			local close = os.time()
-			skynet.error("耗费时长："..tostring(close-start))
+			skynet.error("elapsed time:"..tostring(close-start))
 		end
 		table.wait_recycle()
 	end
