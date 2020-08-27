@@ -546,6 +546,8 @@ function helper.wttPing(hasWTT,hasColor)
     end
 
     --递归执行组合
+    local tostring = require("tostring")
+    skynet.error(tostring({hasWTT,mj_types}))
     return this.dg_group_hu(hasWTT,mj_types)
 end
 
@@ -587,7 +589,7 @@ local function dg_group_hu(hasWTT,mj_types)
         end
     end
 
-    skynet.error("wttPing 4")
+    skynet.error("dg_group_hu 1")
     return false
 end
 
