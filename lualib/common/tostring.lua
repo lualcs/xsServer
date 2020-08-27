@@ -35,7 +35,7 @@ local function _tablestring(val,level,key)
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,indent)
 		table.insert( strlist,"[")
-		table.insert( strlist,key)
+		table.insert( strlist,tostring(key))
 		table.insert( strlist,"]")
 		table.insert( strlist," = ")
 		table.insert( strlist,"{")
@@ -76,7 +76,7 @@ local function _tablestring(val,level,key)
 					table.insert( strlist,v)
 					table.insert( strlist,"\"")
 				else
-					table.insert( strlist,v)
+					table.insert( strlist,tostring(v))
 				end
 			end
 
