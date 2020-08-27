@@ -22,6 +22,11 @@ function table.exchange(tab,idx1,idx2)
 	tab[idx2] = temp
 end
 
+function table.insertEx(t,v,_count)
+	for i = 1,_count do
+		table.insert(t,v)
+	end
+end
 
 --desc:	将v压入t的尾部
 function table.push(t, v, maxNum)

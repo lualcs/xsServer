@@ -553,7 +553,7 @@ function helper.wttPing(hasWTT,hasColor)
     local mj_types = table.fortab()
     for _mt,_count in pairs(hasType) do
         if may_types[_mt] then
-            table.insert(mj_types,_mt)
+            table.insertEx(mj_types,_mt,_count)
         end
     end
 
