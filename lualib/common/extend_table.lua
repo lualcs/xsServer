@@ -87,10 +87,12 @@ function table.copy(tab,new)
 		else
 			new_tab[_k] = table.copy(tab)
 		end
-		print('----------------------------------------')
-		print(_k,_v)
-		print('----------------------------------------')
 	end
+
+	for k,v in pairs(new_tab) do
+		print(k,v)
+	end
+
 	return new_tab
 end
 
