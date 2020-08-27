@@ -170,9 +170,6 @@ local function recycle(t)
 	end
 	
 	for k,v in pairs(t) do
-		if is_table(v) then
-			recycle(v)
-		end
 		t[k] = nil
 	end
 
