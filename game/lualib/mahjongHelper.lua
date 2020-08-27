@@ -646,6 +646,11 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
         end
 
         local hasMahjongSelf = this.getHasCount(mjCardCopy)
+
+        skynet.error("hasMahjongSelf:",tostring(hasMahjongSelf))
+        skynet.error("hasMahjongFull:",tostring(hasMahjongFull))
+        skynet.error("an:",tostring(an))
+
         for _out_mj,_count in pairs(hasMahjongSelf) do
             table.find_remove(mjCardCopy,_out_mj)
             for _ting_mj,_count in pairs(hasMahjongFull) do
@@ -667,7 +672,6 @@ function helper.getTingInfo(mjCard,mjCards,hasMahjongFull)
             end
             table.insert(mjCardCopy,_out_mj)
         end
-        skynet.error("an:",tostring(an))
     end
     
     return ting
