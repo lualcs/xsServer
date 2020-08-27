@@ -221,10 +221,10 @@ function helper.getAnalyze(mjCard)
 end
 
 --分析可以组合哪些牌型 仅仅支持万条筒
-function helper.getHasType(harMahjong)
+function helper.getHasType(hasMahjong)
     local has = {}
 
-    for mj,count in pairs(harMahjong) do
+    for mj,count in pairs(hasMahjong) do
         local ts = wttMap[mj]  --牌型列表
         local sc = #ts - 1     --0~sc 顺子牌型下标
         --刻子牌型
@@ -554,11 +554,11 @@ function helper.wttPing(hasWTT,hasColor)
     end
     skynet.error("------------------------------------------------------")
 
-    skynet.error("--------------------mj_types--------------------------")
-    for k,v in ipairs(mj_types) do
-        print(k,v)
-    end
-    skynet.error("------------------------------------------------------")
+    -- skynet.error("--------------------mj_types--------------------------")
+    -- for k,v in ipairs(mj_types) do
+    --     print(k,v)
+    -- end
+    -- skynet.error("------------------------------------------------------")
 
     --递归执行组合
     return this.dg_group_hu(hasWTT,mj_types)
