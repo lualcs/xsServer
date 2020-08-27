@@ -23,12 +23,11 @@ skynet.start(function()
 
 		local close = os.time()
 		local pass = close-start
-		if pass > last then
+		if pass > (last + 10) then
 			skynet.error("秒:",tostring(pass),"次数：",pass)
+			last = pass
 		end
-		last = pass
 		table.wait_recycle()
-		break
 	end
 
 
