@@ -612,7 +612,7 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
             goto continue
         end
 
-        skynet.error(string.format("deep:%d _inx:%d 取牌:%s ",deep,_inx,_mt))
+        skynet.error(string.format("deep:%d _inx:%d 取牌:%s mj_count:%d",deep,_inx,_mt,mj_count))
 
        
 
