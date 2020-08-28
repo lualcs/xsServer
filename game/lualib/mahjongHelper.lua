@@ -547,14 +547,17 @@ function helper.wttPing(hasWTT,hasColor)
     for _mt,_count in pairs(hasType) do
         if may_types[_mt] then
             table.insertEx(mj_types,_mt,_count)
+        else
+            hasType[_mt] = nil
         end
     end
     --递归执行组合
-    return this.dg_group_hu(hasWTT,mj_types)
+    local typeCount = table.fortab()
+    return this.dg_group_hu(hasWTT,mj_types,hasType,typeCount)
 end
 
 local dg_count = 0
-local function dg_group_hu(hasWTT,mj_types)
+local function dg_group_hu(hasWTT,mj_types,hasType,typeCount)
     dg_count = dg_count + 1
     local mjCount = table.sum_has(hasWTT)
     if 0 == mjCount then
@@ -567,6 +570,11 @@ local function dg_group_hu(hasWTT,mj_types)
     
     local hasBack = table.fortab()
     for _inx,_mt in pairs(mj_types) do
+        --类型过滤
+        if hasType[_mt] - (typeCount[_mt] or 0) <= 0 then
+            goto continue
+        end
+
         local ok = true
         for _mj,_count in pairs(_mt) do
             if (hasWTT[_mj] or 0) < _count then
@@ -578,23 +586,35 @@ local function dg_group_hu(hasWTT,mj_types)
                 --统计数据
                 hasWTT[_mj] = hasWTT[_mj] - _count
                 hasBack[_mj] = (hasBack[_mj] or 0) + _count
+                --类型统计
+                typeCount[_mt]  = (typeCount[_mt] or 0) + 1
+               
+                --有些类型也不能使用
+                for _inx,_mt in pairs(wttMap[_mj]) do
+                    local lef_mt = hasType[_mt] - (typeCount[_mt] or 0)
+                    local lef_mj = hasWTT[_mj] - hasBack[_mj]
+                    if lef_mj < lef_mt then
+                        typeCount[_mt] = (typeCount[_mt] or 0) + (lef_mt-lef_mj)
+                    end
+                end
+                
             end
         end
         --取牌成功
         if ok then
             --移除类型
-            mj_types[_inx] = nil
-            if dg_group_hu(hasWTT,mj_types) then
+            if dg_group_hu(hasWTT,mj_types,hasType,typeCount) then
                 --数据还原
                 table.mergeNumber(hasWTT,hasBack)
-                mj_types[_inx] = _mt
+                table.clear(typeCount)
                 return true
             else
                 --数据还原
                 table.mergeNumber(hasWTT,hasBack)
-                mj_types[_inx] = _mt
+                table.clear(typeCount)
             end
         end
+        ::continue::
     end
 
     return false
