@@ -585,8 +585,8 @@ end
 
 function helper.mt_compare(a,b)
     local av = get_sk_logic(a)
-    local bv = get_sk_logic(a)
-    return av > bv
+    local bv = get_sk_logic(b)
+    return av < bv
 end
 
 
