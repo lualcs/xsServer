@@ -597,6 +597,7 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
     dg_count = dg_count + 1
     local mj_count = table.sum_has(hasWTT)
     if 0 == mj_count then
+        skynet.error("return true 2")
         return true
     end
 
@@ -645,7 +646,8 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
          --移除数据
          table.ventgas(has_mt,has_rmt)
          if dg_group_hu(hasWTT,arr_mt,has_mt,deep+1) then
-             return true
+            skynet.error("return true 1")
+            return true
          end
          --恢复数据
          table.absorb(has_mt,has_rmt)
