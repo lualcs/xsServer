@@ -614,6 +614,10 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
 
         skynet.error(string.format("deep:%d _inx:%d 取牌:%s ",deep,_inx,_mt))
 
+        for _mt,_count in pairs(has_mt) do
+            skynet.error(string.format("_mt:%s _count:%d",_mt,_count))
+        end
+
         --记录取牌
         for _mj,_count in pairs(_mt) do
             hasWTT[_mj] = hasWTT[_mj] - _count
