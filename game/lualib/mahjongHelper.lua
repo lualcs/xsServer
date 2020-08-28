@@ -373,7 +373,7 @@ end
 
 --是否顺子
 local function is_shun(t)
-    for mj,count in pairs() do
+    for mj,count in pairs(t) do
         if 1 == count then
             return true
         end
@@ -383,7 +383,7 @@ end
 
 --是否刻子
 local function is_ke(t)
-    for mj,count in pairs() do
+    for mj,count in pairs(t) do
         if 3 == count then
             return true
         end
