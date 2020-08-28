@@ -423,7 +423,7 @@ end
     }
 
     --手牌里的万条筒-牌型统计
-    @local hasType = { type:只包含万条筒的牌型：表地址
+    @local has_mt = { type:只包含万条筒的牌型：表地址
         [table:type] = count,
     }
  
@@ -435,12 +435,12 @@ end
     }
 
     --筛选允许牌型
-    @local may_types = {--
+    @local may_mt = {--
         [table:type] = true
     }
 
     --允许组合牌型
-    @local mj_types {--index:1 ~ n
+    @local arr_mt {--index:1 ~ n
         [index] = table:type 牌型表
     }
 
@@ -449,9 +449,9 @@ end
 function helper.wttPing(hasWTT,hasColor)
 
 
-    local hasType = helper.getHasType(hasWTT)
+    local has_mt = helper.getHasType(hasWTT)
     local mjCount = table.sum_has(hasWTT)
-    local mtCount = table.sum_has(hasType)
+    local mtCount = table.sum_has(has_mt)
 
     if mtCount < mjCount // 3 then
         return false
@@ -462,18 +462,18 @@ function helper.wttPing(hasWTT,hasColor)
         local unit = table.fortab()
         group[mj] = unit
         if 1 == count  then
-            if not this.checkSun(hasType,mj,count) then
+            if not this.checkSun(has_mt,mj,count) then
                 return false
             end
             table.insert(unit,groupType.sz1)--1个顺子
         elseif 2 == count then
-            if not this.checkSun(hasType,mj,count) then
+            if not this.checkSun(has_mt,mj,count) then
                 return false
             end
             table.insert(unit,groupType.sz2)--2个顺子
         elseif 3 == count then
             table.insert(unit,groupType.kz1)--1个刻子
-            if this.checkSun(hasType,mj,count) then
+            if this.checkSun(has_mt,mj,count) then
                 table.insert(unit,groupType.sz3)--3个顺子
                 --[[
                     4444：分析情况
@@ -491,7 +491,7 @@ function helper.wttPing(hasWTT,hasColor)
             end
         elseif 4 == count then
             --4个顺子
-            if this.checkSun(hasType,mj,count) then
+            if this.checkSun(has_mt,mj,count) then
                 return true--直接胡牌
                 --[[
                     4444：分析情况
@@ -510,7 +510,7 @@ function helper.wttPing(hasWTT,hasColor)
 
                 ]]
             end
-            if this.checkSunKe(hasType,mj,1,1) then
+            if this.checkSunKe(has_mt,mj,1,1) then
                 table.insert(unit,groupType.ks1)--1刻子+1顺子
             else
                 return false
@@ -520,7 +520,7 @@ function helper.wttPing(hasWTT,hasColor)
     end
 
     --统计允许牌型
-    local may_types = table.fortab()
+    local may_mt = table.fortab()
     for _mj,_lis in pairs(group) do
         local ts = wttMap[_mj]
         for _inx,_group in pairs(_lis) do
@@ -531,55 +531,55 @@ function helper.wttPing(hasWTT,hasColor)
                     if kt == _mt then
                        break
                     end
-                    may_types[_mt] = true
+                    may_mt[_mt] = true
                 end
             end
             if is_allow_kz(_group) then
                 local kp = #ts
                 local kt = ts[kp]
-                may_types[kt] = true
+                may_mt[kt] = true
             end
         end
     end
 
     --获得实际牌型
-    local mj_types = table.fortab()
-    for _mt,_count in pairs(hasType) do
-        if may_types[_mt] then
-            table.insertEx(mj_types,_mt,_count)
+    local arr_mt = table.fortab()
+    for _mt,_count in pairs(has_mt) do
+        if may_mt[_mt] then
+            table.insertEx(arr_mt,_mt,_count)
         else
-            hasType[_mt] = nil
+            has_mt[_mt] = nil
         end
     end
     if not this.first then
         --递归执行组合
         skynet.error(tostring{
             hasWTT = hasWTT,
-            mj_types = mj_types,
-            hasType = hasType,
+            mj_types = arr_mt,
+            hasType = has_mt,
         })
         this.first = true
     end
-    return this.dg_group_hu(hasWTT,mj_types,hasType)
+    return this.dg_group_hu(hasWTT,arr_mt,has_mt)
 end
 
 local dg_count = 0
-local function dg_group_hu(hasWTT,mj_types,hasType)
+local function dg_group_hu(hasWTT,arr_mt,has_mt)
     dg_count = dg_count + 1
     local mjCount = table.sum_has(hasWTT)
     if 0 == mjCount then
         return true
     end
 
-    if 0 == #mj_types then
+    if 0 == #arr_mt then
         return false
     end
     
     local has_rmj = table.fortab()
     local has_rmt = table.fortab()
-    for _inx,_mt in pairs(mj_types) do
+    for _inx,_mt in ipairs(arr_mt) do
         --类型过滤
-        if hasType[_mt] - (has_rmt[_mt] or 0) <= 0 then
+        if has_mt[_mt] - (has_rmt[_mt] or 0) <= 0 then
             goto continue
         end
 
@@ -589,33 +589,43 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
                 ok = false
                 break
             else
-                --统计数据
+                --取牌
                 has_rmj[_mj] = (has_rmj[_mj] or 0) + _count
-                --类型统计
-                has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
-               
-                --有些类型也不能使用
+            end
+        end
+        
+        --取牌成功
+        if ok then
+            --类型统计
+            has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
+            --去除类型
+            for _mj,_count in pairs(_mt) do
                 for _inx,_mt in pairs(wttMap[_mj]) do
-                    local lef_mt = (hasType[_mt] or 0) - (has_rmt[_mt] or 0)
+                    local lef_mt = (has_mt[_mt] or 0) - (has_rmt[_mt] or 0)
                     local lef_mj = hasWTT[_mj] - has_rmj[_mj]
                     if lef_mj < lef_mt then
                         has_rmt[_mt] = (has_rmt[_mt] or 0) + (lef_mt-lef_mj)
                     end
                 end
-                
+            end
+        --取牌失败：还原扑克
+        else
+            for _mj,_count in pairs(_mt) do
+                has_rmj[_mj] = (has_rmj[_mj] or 0) - _count
             end
         end
+
         --取牌成功
         if ok then
             --移除数据
             table.ventgas(hasWTT,has_rmj)
-            table.ventgas(hasType,has_rmt)
-            if dg_group_hu(hasWTT,mj_types,hasType) then
+            table.ventgas(has_mt,has_rmt)
+            if dg_group_hu(hasWTT,arr_mt,has_mt) then
                 return true
             end
             --恢复数据
             table.absorb(hasWTT,has_rmj)
-            table.absorb(hasType,has_rmt)
+            table.absorb(has_mt,has_rmt)
         end
         ::continue::
     end
