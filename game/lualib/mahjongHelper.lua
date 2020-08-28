@@ -577,8 +577,12 @@ function helper.wttPing(hasWTT,hasColor)
         this.first = true
     end
 
-    --排序
+    --排序 先取刻子 然后取顺子
     table.sort(arr_mt,helper.mt_compare)
+
+    for _,_mt in ipairs(arr_mt) do
+        skynet.error(tostring(_mt)..":",get_sk_logic(_mt))
+    end
 
     return this.dg_group_hu(hasWTT,arr_mt,has_mt)
 end
