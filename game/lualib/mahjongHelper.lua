@@ -588,8 +588,12 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
             if ((hasWTT[_mj] or 0) - (has_rmj[_mj] or 0)) < _count then
                 ok = false
                 break
-            else
-                --取牌
+            end
+        end
+
+        --取牌
+        if ok then
+            for _mj,_count in pairs(_mt) do
                 has_rmj[_mj] = (has_rmj[_mj] or 0) + _count
             end
         end
@@ -613,11 +617,6 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
                     end
                 end
             end
-        --取牌失败：还原扑克
-        else
-            for _mj,_count in pairs(_mt) do
-                has_rmj[_mj] = (has_rmj[_mj] or 0) - _count
-            end
         end
 
         --取牌成功
@@ -631,6 +630,8 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
             --恢复数据
             table.absorb(hasWTT,has_rmj)
             table.absorb(has_mt,has_rmt)
+            table.clear(has_rmj)
+            table.clear(has_rmt)
         end
         ::continue::
     end
