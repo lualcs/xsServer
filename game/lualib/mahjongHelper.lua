@@ -604,15 +604,13 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
             has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
             --去除类型
             for _mj,_count in pairs(_mt) do
-                for _inx,_mt in pairs(wttMap[_mj]) do
+                for _,_mt in pairs(wttMap[_mj]) do
                     --顺子
                     if is_shun(_mt) and has_mt[_mt] then
-                        local mc = mjCount--初始化一个最大值
-                        for _mj,_ in pairs(_mt) do
-                            mc = math.min(mc,(hasWTT[_mj] or 0) - (has_rmj[_mj] or 0))
-                        end
-                        if mc >= 0 then
-                            has_rmt[_mt] = has_mt[_mt] - mc
+                        local left_mj = hasWTT[_mj] - has_rmj[_mj]
+                        local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
+                        if left_mt > left_mj then
+                            has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
                         end
                     end
                 end
