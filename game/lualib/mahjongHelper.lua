@@ -551,6 +551,11 @@ function helper.wttPing(hasWTT,hasColor)
             has_mt[_mt] = nil
         end
     end
+
+    if this.first then
+        return false
+    end
+
     if not this.first then
         --递归执行组合
         skynet.error(tostring{
@@ -578,7 +583,7 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
     
     local has_rmt = table.fortab()
     local has_rmj = table.fortab()
-    for _inx,_mt in ipairs(arr_mt) do
+    for _,_mt in ipairs(arr_mt) do
         --类型过滤
         if has_mt[_mt] <= 0 then
             goto continue
