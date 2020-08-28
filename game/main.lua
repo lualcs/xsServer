@@ -21,7 +21,6 @@ skynet.start(function()
 			},
 			hasMahjongFull)
 		table.wait_recycle()
-		skynet.error(i)
 	end
 
 	local close = os.time()
