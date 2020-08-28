@@ -552,12 +552,11 @@ function helper.wttPing(hasWTT,hasColor)
         end
     end
     --递归执行组合
-    local typeCount = table.fortab()
-    return this.dg_group_hu(hasWTT,mj_types,hasType,typeCount)
+    return this.dg_group_hu(hasWTT,mj_types,hasType)
 end
 
 local dg_count = 0
-local function dg_group_hu(hasWTT,mj_types,hasType,typeCount)
+local function dg_group_hu(hasWTT,mj_types,hasType)
     dg_count = dg_count + 1
     local mjCount = table.sum_has(hasWTT)
     if 0 == mjCount then
@@ -569,6 +568,7 @@ local function dg_group_hu(hasWTT,mj_types,hasType,typeCount)
     end
     
     local hasBack = table.fortab()
+    local typeCount = table.fortab()
     for _inx,_mt in pairs(mj_types) do
         --类型过滤
         if hasType[_mt] - (typeCount[_mt] or 0) <= 0 then
