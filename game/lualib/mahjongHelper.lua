@@ -603,8 +603,11 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
                 for _inx,_mt in pairs(wttMap[_mj]) do
                     local lef_mt = (has_mt[_mt] or 0) - (has_rmt[_mt] or 0)
                     local lef_mj = hasWTT[_mj] - has_rmj[_mj]
-                    if lef_mj < lef_mt then
-                        has_rmt[_mt] = (has_rmt[_mt] or 0) + (lef_mt-lef_mj)
+                    --顺子
+                    if is_shun(_mt) then
+                        if lef_mj < lef_mt then
+                            has_rmt[_mt] = (has_rmt[_mt] or 0) + (lef_mt-lef_mj)
+                        end
                     end
                 end
             end
