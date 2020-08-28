@@ -580,7 +580,7 @@ function helper.wttPing(hasWTT,hasColor)
         this.first = true
     end
 
-    return this.dg_group_hu(hasWTT,arr_mt,has_mt)
+    return this.dg_group_hu(hasWTT,arr_mt,has_mt,0)
 end
 
 function helper.mt_compare(a,b)
@@ -593,7 +593,7 @@ end
 
 
 local dg_count = 0
-local function dg_group_hu(hasWTT,arr_mt,has_mt)
+local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
     dg_count = dg_count + 1
     local mj_count = table.sum_has(hasWTT)
     if 0 == mj_count then
@@ -606,11 +606,13 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
     end
     
     local has_rmt = table.fortab()
-    for _,_mt in ipairs(arr_mt) do
+    for _inx,_mt in ipairs(arr_mt) do
         --类型过滤
         if has_mt[_mt] <= 0 then
             goto continue
         end
+
+        skynet.error(string.format("deep:%d _inx:%d 取牌:%s ",deep,_inx,_mt))
 
         --记录取牌
         for _mj,_count in pairs(_mt) do
