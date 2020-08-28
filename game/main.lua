@@ -9,7 +9,8 @@ skynet.start(function()
 	local start = os.time()
 	mjHelper.start_dg_count()
 	local ting
-	for i=1,1 do
+	local count = 100000
+	for i=1,count do
 		table.wait_fortab()
 		ting = mjHelper.getTingInfo(
 			{
@@ -21,6 +22,9 @@ skynet.start(function()
 			},
 			hasMahjongFull)
 		table.wait_recycle()
+		if 0 == i % 100 then
+			skynet.error(i/count*100)
+		end
 	end
 
 	local close = os.time()
