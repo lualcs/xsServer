@@ -555,8 +555,8 @@ function helper.wttPing(hasWTT,hasColor)
         --递归执行组合
         skynet.error(tostring{
             hasWTT = hasWTT,
-            mj_types = arr_mt,
-            hasType = has_mt,
+            arr_mt = arr_mt,
+            has_mt = has_mt,
         })
         this.first = true
     end
