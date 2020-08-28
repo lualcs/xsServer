@@ -459,7 +459,6 @@ end
 ]]
 function helper.wttPing(hasWTT,hasColor)
 
-
     local has_mt = helper.getHasType(hasWTT)
     local mjCount = table.sum_has(hasWTT)
     local mtCount = table.sum_has(has_mt)
@@ -580,6 +579,11 @@ function helper.wttPing(hasWTT,hasColor)
         this.first = true
     end
 
+    if this.dg_group_hu(hasWTT,arr_mt,has_mt,0) then
+        skynet.error("胡牌了")
+        return true
+    end
+
     return this.dg_group_hu(hasWTT,arr_mt,has_mt,0)
 end
 
@@ -597,7 +601,6 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
     dg_count = dg_count + 1
     local mj_count = table.sum_has(hasWTT)
     if 0 == mj_count then
-        skynet.error("return true 2")
         return true
     end
 
@@ -612,10 +615,6 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
         if has_mt[_mt] <= 0 then
             goto continue
         end
-
-        skynet.error(string.format("deep:%d _inx:%d 取牌:%s mj_count:%d",deep,_inx,_mt,mj_count))
-
-       
 
         --记录取牌
         for _mj,_count in pairs(_mt) do
@@ -639,14 +638,9 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
             end
         end
 
-        for _mt,_count in pairs(has_mt) do
-            skynet.error(string.format("_mt:%s _count:%d",_mt,_count))
-        end
-
          --移除数据
          table.ventgas(has_mt,has_rmt)
          if dg_group_hu(hasWTT,arr_mt,has_mt,deep+1) then
-            skynet.error("return true 1")
             return true
          end
          --恢复数据
