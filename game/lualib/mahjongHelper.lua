@@ -453,6 +453,10 @@ function helper.wttPing(hasWTT,hasColor)
     local mjCount = table.sum_has(hasWTT)
     local mtCount = table.sum_has(hasType)
 
+    if mtCount < mjCount // 3 then
+        return false
+    end
+
     local group = table.fortab()
     for mj,count in pairs(hasWTT) do
         local unit = table.fortab()
