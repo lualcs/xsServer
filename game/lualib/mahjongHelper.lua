@@ -582,7 +582,6 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
     end
     
     local has_rmt = table.fortab()
-    local has_rmj = table.fortab()
     for _,_mt in ipairs(arr_mt) do
         --类型过滤
         if has_mt[_mt] <= 0 then
@@ -591,7 +590,7 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
 
         --记录取牌
         for _mj,_count in pairs(_mt) do
-            has_rmj[_mj] = (has_rmj[_mj] or 0) + _count
+            hasWTT[_mj] = hasWTT[_mj] - _count
         end
         
         --取出类型
@@ -602,7 +601,7 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
             for _,_mt in pairs(wttMap[_mj]) do
                 --顺子
                 if is_shun(_mt) and has_mt[_mt] then
-                    local left_mj = hasWTT[_mj] - has_rmj[_mj]
+                    local left_mj = hasWTT[_mj]
                     local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
                     if left_mt > left_mj then
                         has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
@@ -612,16 +611,18 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt)
         end
 
          --移除数据
-         table.ventgas(hasWTT,has_rmj)
          table.ventgas(has_mt,has_rmt)
          if dg_group_hu(hasWTT,arr_mt,has_mt) then
              return true
          end
          --恢复数据
-         table.absorb(hasWTT,has_rmj)
          table.absorb(has_mt,has_rmt)
-         table.clear(has_rmj)
          table.clear(has_rmt)
+
+         --还原取牌
+         for _mj,_count in pairs(_mt) do
+            hasWTT[_mj] = hasWTT[_mj] + _count
+        end
 
         ::continue::
     end
