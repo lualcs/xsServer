@@ -551,7 +551,15 @@ function helper.wttPing(hasWTT,hasColor)
             hasType[_mt] = nil
         end
     end
-    --递归执行组合
+    if not this.first then
+        --递归执行组合
+        skynet.error(tostring{
+            hasWTT = hasWTT,
+            mj_types = mj_types,
+            hasType = hasType,
+        })
+        this.first = true
+    end
     return this.dg_group_hu(hasWTT,mj_types,hasType)
 end
 
@@ -564,7 +572,6 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
     end
 
     if 0 == #mj_types then
-        skynet.error("dg_group_hu 1")
         return false
     end
     
@@ -618,7 +625,6 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
         ::continue::
     end
 
-    skynet.error("dg_group_hu 2")
     return false
 end
 
