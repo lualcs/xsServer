@@ -638,7 +638,7 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
 
          --移除数据
          table.ventgas(has_mt,has_rmt)
-         if dg_group_hu(hasWTT,arr_mt,has_mt) then
+         if dg_group_hu(hasWTT,arr_mt,has_mt,deep+1) then
              return true
          end
          --恢复数据
