@@ -591,7 +591,7 @@ local function dg_group_hu(hasWTT,mj_types,hasType,typeCount)
                
                 --有些类型也不能使用
                 for _inx,_mt in pairs(wttMap[_mj]) do
-                    local lef_mt = hasType[_mt] - (typeCount[_mt] or 0)
+                    local lef_mt = (hasType[_mt] or 0) - (typeCount[_mt] or 0)
                     local lef_mj = hasWTT[_mj] - hasBack[_mj]
                     if lef_mj < lef_mt then
                         typeCount[_mt] = (typeCount[_mt] or 0) + (lef_mt-lef_mj)
