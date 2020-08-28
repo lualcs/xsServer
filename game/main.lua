@@ -9,7 +9,7 @@ skynet.start(function()
 	local start = os.time()
 	mjHelper.start_dg_count()
 	local ting
-	for i=1,1000 do
+	for i=1,1 do
 		table.wait_fortab()
 		ting = mjHelper.getTingInfo(
 			{
