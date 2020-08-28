@@ -687,7 +687,6 @@ function helper.getTingInfo(mjCard,hasMahjongFull)
                     table.insert(mjCardCopy,_ting_mj)
                     for_able_count = for_able_count + 1
                     if this.checkAbleHu(mjCardCopy) then
-                        skynet.error("胡牌了")
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
                         ting[_out_mj][_ting_mj] = true
                     end
