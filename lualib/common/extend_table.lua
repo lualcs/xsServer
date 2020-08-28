@@ -175,10 +175,6 @@ local function recycle(t)
 	if not is_table(t) then
         return 
 	end
-	
-	for k,v in pairs(t) do
-		t[k] = nil
-	end
 
     local count = #uv_fortab
     if count >= 10000 then
@@ -216,7 +212,11 @@ function table.fortab()
     --ШЅГ§Ъ§Он
 	local idx = #uv_fortab
 	local tab = uv_fortab[idx] or {}
-    uv_fortab[idx] = nil
+	uv_fortab[idx] = nil
+	
+	for k,v in pairs(tab) do
+		tab[k] = nil
+	end
 	
 	if uv_waitrecycle then
 		uv_waitls[tab] = true
