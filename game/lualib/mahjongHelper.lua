@@ -575,31 +575,31 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
         return false
     end
     
-    local hasBack = table.fortab()
-    local typeCount = table.fortab()
+    local has_rmj = table.fortab()
+    local has_rmt = table.fortab()
     for _inx,_mt in pairs(mj_types) do
         --类型过滤
-        if hasType[_mt] - (typeCount[_mt] or 0) <= 0 then
+        if hasType[_mt] - (has_rmt[_mt] or 0) <= 0 then
             goto continue
         end
 
         local ok = true
         for _mj,_count in pairs(_mt) do
-            if ((hasWTT[_mj] or 0) - (hasBack[_mj] or 0)) < _count then
+            if ((hasWTT[_mj] or 0) - (has_rmj[_mj] or 0)) < _count then
                 ok = false
                 break
             else
                 --统计数据
-                hasBack[_mj] = (hasBack[_mj] or 0) + _count
+                has_rmj[_mj] = (has_rmj[_mj] or 0) + _count
                 --类型统计
-                typeCount[_mt]  = (typeCount[_mt] or 0) + 1
+                has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
                
                 --有些类型也不能使用
                 for _inx,_mt in pairs(wttMap[_mj]) do
-                    local lef_mt = (hasType[_mt] or 0) - (typeCount[_mt] or 0)
-                    local lef_mj = hasWTT[_mj] - hasBack[_mj]
+                    local lef_mt = (hasType[_mt] or 0) - (has_rmt[_mt] or 0)
+                    local lef_mj = hasWTT[_mj] - has_rmj[_mj]
                     if lef_mj < lef_mt then
-                        typeCount[_mt] = (typeCount[_mt] or 0) + (lef_mt-lef_mj)
+                        has_rmt[_mt] = (has_rmt[_mt] or 0) + (lef_mt-lef_mj)
                     end
                 end
                 
@@ -608,21 +608,21 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
         --取牌成功
         if ok then
             --移除数据
-            table.ventgas(hasWTT,hasBack)
-            table.ventgas(hasType,typeCount)
+            table.ventgas(hasWTT,has_rmj)
+            table.ventgas(hasType,has_rmt)
             if dg_group_hu(hasWTT,mj_types,hasType) then
                 return true
             end
             --恢复数据
-            table.absorb(hasWTT,hasBack)
-            table.absorb(hasType,typeCount)
+            table.absorb(hasWTT,has_rmj)
+            table.absorb(hasType,has_rmt)
         end
         ::continue::
     end
 
     --数据还原
-    table.clear(hasWTT,hasBack)
-    table.clear(typeCount)
+    table.clear(has_rmj)
+    table.clear(has_rmt)
     return false
 end
 
