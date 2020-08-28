@@ -220,11 +220,6 @@ function helper.getAnalyze(mjCard)
     local hasCard = an.hasCard 
     local hasColor = an.hasColor 
     for _inx,_mj in pairs(mjCard) do
-
-        if 10 == _mj then
-            skynet.error("error getAnalyze:",tostring(mjCard))
-        end
-
         local color = this.getColor(_mj)
         hasCard[_mj] = (hasCard[_mj] or 0) + 1
         hasColor[color] = (hasColor[color] or 0) + 1
@@ -565,25 +560,6 @@ function helper.wttPing(hasWTT,hasColor)
     --排序 先取刻子 然后取顺子
     table.sort(arr_mt,helper.mt_compare)
 
-    if this.first then
-        return false
-    end
-
-    if not this.first then
-        --递归执行组合
-        skynet.error(tostring{
-            hasWTT = hasWTT,
-            arr_mt = arr_mt,
-            has_mt = has_mt,
-        })
-        this.first = true
-    end
-
-    if this.dg_group_hu(hasWTT,arr_mt,has_mt,0) then
-        skynet.error("胡牌了")
-        return true
-    end
-
     return this.dg_group_hu(hasWTT,arr_mt,has_mt,0)
 end
 
@@ -711,6 +687,7 @@ function helper.getTingInfo(mjCard,hasMahjongFull)
                     table.insert(mjCardCopy,_ting_mj)
                     for_able_count = for_able_count + 1
                     if this.checkAbleHu(mjCardCopy) then
+                        skynet.error("胡牌了")
                         ting[_out_mj] = ting[_out_mj] or table.fortab()
                         ting[_out_mj][_ting_mj] = true
                     end
