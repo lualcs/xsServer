@@ -566,77 +566,61 @@ end
 local dg_count = 0
 local function dg_group_hu(hasWTT,arr_mt,has_mt)
     dg_count = dg_count + 1
-    local mjCount = table.sum_has(hasWTT)
-    if 0 == mjCount then
+    local mj_count = table.sum_has(hasWTT)
+    if 0 == mj_count then
         return true
     end
 
-    if 0 == #arr_mt then
+    local mt_count = table.sum_has(has_mt)
+    if 0 == mt_count then
         return false
     end
     
-    local has_rmj = table.fortab()
     local has_rmt = table.fortab()
+    local has_rmj = table.fortab()
     for _inx,_mt in ipairs(arr_mt) do
         --类型过滤
-        if has_mt[_mt] - (has_rmt[_mt] or 0) <= 0 then
+        if has_mt[_mt] <= 0 then
             goto continue
         end
 
-        local ok = true
+        --记录取牌
         for _mj,_count in pairs(_mt) do
-            if ((hasWTT[_mj] or 0) - (has_rmj[_mj] or 0)) < _count then
-                ok = false
-                break
-            end
-        end
-
-        --取牌
-        if ok then
-            for _mj,_count in pairs(_mt) do
-                has_rmj[_mj] = (has_rmj[_mj] or 0) + _count
-            end
+            has_rmj[_mj] = (has_rmj[_mj] or 0) + _count
         end
         
-        --取牌成功
-        if ok then
-            --类型统计
-            has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
-            --去除类型
-            for _mj,_count in pairs(_mt) do
-                for _,_mt in pairs(wttMap[_mj]) do
-                    --顺子
-                    if is_shun(_mt) and has_mt[_mt] then
-                        local left_mj = hasWTT[_mj] - has_rmj[_mj]
-                        local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
-                        if left_mt > left_mj then
-                            has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
-                        end
+        --取出类型
+        has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
+
+        --取出扑克-会影响其他-牌型的组合-是否还可以组成
+        for _mj,_count in pairs(_mt) do
+            for _,_mt in pairs(wttMap[_mj]) do
+                --顺子
+                if is_shun(_mt) and has_mt[_mt] then
+                    local left_mj = hasWTT[_mj] - has_rmj[_mj]
+                    local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
+                    if left_mt > left_mj then
+                        has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
                     end
                 end
             end
         end
 
-        --取牌成功
-        if ok then
-            --移除数据
-            table.ventgas(hasWTT,has_rmj)
-            table.ventgas(has_mt,has_rmt)
-            if dg_group_hu(hasWTT,arr_mt,has_mt) then
-                return true
-            end
-            --恢复数据
-            table.absorb(hasWTT,has_rmj)
-            table.absorb(has_mt,has_rmt)
-            table.clear(has_rmj)
-            table.clear(has_rmt)
-        end
+         --移除数据
+         table.ventgas(hasWTT,has_rmj)
+         table.ventgas(has_mt,has_rmt)
+         if dg_group_hu(hasWTT,arr_mt,has_mt) then
+             return true
+         end
+         --恢复数据
+         table.absorb(hasWTT,has_rmj)
+         table.absorb(has_mt,has_rmt)
+         table.clear(has_rmj)
+         table.clear(has_rmt)
+
         ::continue::
     end
 
-    --数据还原
-    table.clear(has_rmj)
-    table.clear(has_rmt)
     return false
 end
 
