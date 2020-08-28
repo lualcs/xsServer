@@ -391,6 +391,17 @@ local function is_ke(t)
     return false
 end
 
+--[[
+    获取排序值 poker = 255 * 3
+]]
+local function get_sk_logic(t)
+    local sum = table.sum_has_k(t)
+    if is_ke(t) then
+        sum = sum + 1000
+    end
+    return sum
+end
+
 local groupType = {
     sz1 = 1,--1个顺子的情况 1张牌必须有包含此牌的顺子1个
     sz2 = 2,--2个顺子的情况 2张牌必须有包含此牌的顺子2个
@@ -565,8 +576,21 @@ function helper.wttPing(hasWTT,hasColor)
         })
         this.first = true
     end
+
+    --排序
+    table.sort(arr_mt,helper.mt_compare)
+
     return this.dg_group_hu(hasWTT,arr_mt,has_mt)
 end
+
+function helper.mt_compare(a,b)
+    local av = get_sk_logic(a)
+    local bv = get_sk_logic(a)
+    return av > bv
+end
+
+
+
 
 local dg_count = 0
 local function dg_group_hu(hasWTT,arr_mt,has_mt)

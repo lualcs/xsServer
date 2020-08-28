@@ -400,6 +400,15 @@ function table.sum_has(t)
 	return sum
 end
 
+--统计表和
+function table.sum_has_k(t)
+	local sum = 0
+	for k,_ in pairs(t) do
+		sum = sum + k
+	end
+	return sum
+end
+
 --统计数组和
 function table.sum_arr(t)
 	local sum = 0
