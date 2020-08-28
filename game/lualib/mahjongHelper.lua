@@ -585,14 +585,11 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
 
         local ok = true
         for _mj,_count in pairs(_mt) do
-            if (hasWTT[_mj] or 0) < _count then
-                --数据还原
-                table.mergeNumber(hasWTT,hasBack)
+            if ((hasWTT[_mj] or 0) - (hasBack[_mj] or 0)) < _count then
                 ok = false
                 break
             else
                 --统计数据
-                hasWTT[_mj] = hasWTT[_mj] - _count
                 hasBack[_mj] = (hasBack[_mj] or 0) + _count
                 --类型统计
                 typeCount[_mt]  = (typeCount[_mt] or 0) + 1
@@ -611,20 +608,16 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
         --取牌成功
         if ok then
             --移除类型
-            if dg_group_hu(hasWTT,mj_types,hasType,typeCount) then
-                --数据还原
-                table.mergeNumber(hasWTT,hasBack)
-                table.clear(typeCount)
+            if dg_group_hu(hasWTT,mj_types,hasType) then
                 return true
-            else
-                --数据还原
-                table.mergeNumber(hasWTT,hasBack)
-                table.clear(typeCount)
             end
         end
         ::continue::
     end
 
+    --数据还原
+    table.clear(hasWTT,hasBack)
+    table.clear(typeCount)
     return false
 end
 
