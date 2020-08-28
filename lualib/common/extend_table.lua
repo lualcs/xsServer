@@ -41,13 +41,20 @@ function table.push(t, v, maxNum)
 	return t
 end
 
---合并 at[k] += bt[k] 然后 bt[k] = 0
-function table.mergeNumber(at,bt)
+--吸收 at[k] += bt[k]
+function table.absorb(at,bt)
 	for k,v in pairs(bt) do
 		at[k] = (at[k] or 0)+v
-		bt[k] = 0
 	end
 end
+
+--吐出 at[k] -= bt[k]
+function table.ventgas(at,bt)
+	for k,v in pairs(bt) do
+		at[k] = (at[k] or 0)-v
+	end
+end
+
 
 --移除函数修改
 function table.removeEx(tab,b_idx,e_idx)

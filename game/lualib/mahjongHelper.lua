@@ -607,10 +607,15 @@ local function dg_group_hu(hasWTT,mj_types,hasType)
         end
         --取牌成功
         if ok then
-            --移除类型
+            --移除数据
+            table.ventgas(hasWTT,hasBack)
+            table.ventgas(hasType,typeCount)
             if dg_group_hu(hasWTT,mj_types,hasType) then
                 return true
             end
+            --恢复数据
+            table.absorb(hasWTT,hasBack)
+            table.absorb(hasType,typeCount)
         end
         ::continue::
     end
