@@ -117,54 +117,118 @@ local wttMap = {
 
 local helper = {}
 local this = helper
+
+---@field getColor 麻将花色
 function helper.getColor(mj)
     return (mj & 0xf0)>>4
 end
 
+---@field getValue 麻将值
 function helper.getValue(mj)
     return mj & 0x0f
 end
 
+---@field getCard 合成麻将
 function helper.getCard(color,card)
     return (color<<4)|card
 end
 
+---@field is_wan 万
 function helper.is_wan(mj)
     return 0 == this.getColor(mj)
 end
 
+---@field is_tiao 条
 function helper.is_tiao(mj)
     return 1 == this.getColor(mj)
 end
 
+---@field is_tong 筒
 function helper.is_tong(mj)
     return 2 == this.getColor(mj)
 end
 
+---@field is_wtt 万条筒
 function helper.is_wtt(mj)
     return mj >= 0x01 and mj <= 0x29
 end
 
+---@field is_zi 东南西北中发白
 function helper.is_zi(mj)
     return 3 == this.getColor(mj)
 end
 
+---@field is_hua 春夏秋冬菊梅兰竹
 function helper.is_hua(mj)
     return 4 == this.getColor(mj)
 end
 
+---@field is_feng 东南西北
 function helper.is_feng(mj)
     return mj >= 0x31 and mj <= 0x34
 end
 
+---@field is_zfb 中发白
 function helper.is_zfb(mj)
     return mj >= 0x35 and mj <= 0x37
 end
 
+---@field getName 单张麻将名字
 function helper.getName(mj)
     return mahjongName[mj]
 end
 
+---@field gt_ag 暗杠
+function helper.gt_ag()
+    return "暗杠"--暗杠
+end
+---@field gt_mg 明杠
+function helper.gt_mg()
+    return "明杠"--明杠
+end
+---@field gt_bg 补杠
+function helper.gt_bg()
+    return "补杠"--补杠
+end
+---@field wk_mo_pai 摸牌
+function helper.wk_mp()
+    return "摸牌"--摸牌
+end
+---@field wk_chu_pai 出牌
+function helper.wk_cp()
+    return "出牌"--出牌
+end
+
+---@field wk_chi 吃
+function helper.wk_chi()
+    return "吃"--吃
+end
+
+---@field wk_peng 碰
+function helper.wk_peng()
+    return "碰"--碰
+end
+---@field wk_ming_gang 明杠
+function helper.wk_ming_gang()
+    return "明杠"--杠
+end
+---@field wk_an_gang 明杠
+function helper.wk_an_gang()
+    return "暗杠"--杠
+end
+---@field wk_ming_gang 明杠
+function helper.wk_bu_gang()
+    return "补杠"--杠
+end
+---@field wk_hu 胡牌
+function helper.wk_hu()
+    return "胡"--胡
+end
+
+
+
+
+---@field getString 多张扑克名字
 function helper.getString(mjCard)
     local t = table.fortab()
     for _,mj in ipairs(mjCard) do
@@ -174,34 +238,18 @@ function helper.getString(mjCard)
     return s
 end
 
---逻辑值排序
+---@field Sort 排序万条筒东南西北菊梅兰竹
 function helper.Sort(mjCard)
 	table.sort(mjCard)
 end
 
---扑克乱序
+---@field shuffle 扑克乱序
 function helper.shuffle(mjCard)
 	sort.shuffle(mjCard)
 end
 
---分析数据库存
-local anStock = {}
-function helper.newAnalyzeData()
-    local an = anStock[#anStock]
-    anStock[#anStock] = nil
-    return an or {
-        hasCard={},
-        hasColor={},
-    }
-end
 
---分析数据回收
-function helper.delAnalyzeData(an)
-    table.clearEmpty(an)
-    anStock[#anStock+1] = an
-end
-
---扑克统计
+---@field getHasCount 统计麻将数量
 function helper.getHasCount(mjCard)
     return table.has_count(mjCard)
 end
@@ -212,18 +260,19 @@ end
         hasColor    = {扑克花色}
     }
 ]]
-
 --麻将分析
 function helper.getAnalyze(mjCard)
 
-    local an = this.newAnalyzeData()
-    local hasCard = an.hasCard 
-    local hasColor = an.hasColor 
+    local an = table.fortab()
+    local hasCard = table.fortab()
+    local hasColor = table.fortab()
     for _inx,_mj in pairs(mjCard) do
         local color = this.getColor(_mj)
         hasCard[_mj] = (hasCard[_mj] or 0) + 1
         hasColor[color] = (hasColor[color] or 0) + 1
     end
+    an.hasCard = hasCard
+    an.hasColor = hasColor
 	return an
 end
 

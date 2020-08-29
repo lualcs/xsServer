@@ -76,14 +76,35 @@ function table.removeEx(tab,b_idx,e_idx)
 	end
 end
 
---查找移除
-function table.find_remove(tab,v)
+---@field find_remove 查找移除
+---@param tab 列表
+---@param v   移除的值
+---@param c   移除个数
+function table.find_remove(tab,v,c)
+
+	c = c or 1
+	local count = 0
 	for _inx,_v in ipairs(tab) do
 		if v == _v then
-			table.remove(tab,_inx)
-			return
+			count = count + 1
 		end
 	end
+
+	if count < c then
+		return false
+	end
+
+	for _inx,_v in ipairs(tab) do
+		if v == _v then
+			if c > 0 then
+				table.remove(tab,_inx)
+				c = c - 1
+			else
+				break
+			end
+		end
+	end
+	return true
 end
 
 --深度拷贝

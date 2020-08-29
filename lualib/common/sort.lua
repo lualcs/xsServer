@@ -4,31 +4,22 @@
 	比如在排行排序的时候 按照比较函数 返回false 交换原则
 ]]
 
---[[函数列表
-	sort.bubble(arr,comp,num)--冒泡排序
-	sort.select(arr,comp,num)--选择排序
-	sort.insert(arr,comp,num)--插入排序
-	sort.quick(arr,comp,num)--快速排序
-	sort.merge(arr,comp,num)--归并排序
-	sort.shuffle(arr)--洗牌乱序
-]]
-
 local is_number = require("is_number")
 local is_table = require("is_table")
 local table = require("extend_table")
 local math = require("extend_math")
 
 local sort = {}
---冒泡排序
+---@field bubble 冒泡排序
 function sort.bubble(arr,comp,num)  
-	local uv_len = #arr
+	local len = #arr
 	if not is_number(num) then
-		num = uv_len - 1
-	elseif num > uv_len then
-		num = uv_len - 1--避免不必呀的循环
+		num = len - 1
+	elseif num > len then
+		num = len - 1--避免不必呀的循环
 	end
     for i = 1,num do
-        for j = i + 1,uv_len do  
+        for j = i + 1,len do  
             if not comp(arr[i],arr[j]) then  
                 table.exchange(arr,i,j)
             end  
@@ -36,29 +27,30 @@ function sort.bubble(arr,comp,num)
     end  
 end
 
---选择排序（num = 这个可以选择只排多少个比较适合）
-local uv_k
+---@field bubble 选择排序
 function sort.select(arr,comp,num)  
-	local uv_len = #arr
+	local len = #arr
 	if not is_number(num) then
-		num = uv_len - 1
-	elseif num > uv_len then
-		num = uv_len - 1--避免不必呀的循环
+		num = len - 1
+	elseif num > len then
+		num = len - 1--避免不必呀的循环
 	end
+
+	local sk
     for i = 1,num do
-		uv_k = i
-        for j = i + 1,uv_len do  
-            if not comp(arr[uv_k],arr[j]) then  
-                uv_k = j
+		sk = i
+        for j = i + 1,len do  
+            if not comp(arr[sk],arr[j]) then  
+                sk = j
             end  
         end
-		if uv_k ~= i then
-			table.exchange(arr,i,uv_k)
+		if sk ~= i then
+			table.exchange(arr,i,sk)
 		end
     end  
 end
 
---插入排序（适合棋牌摸牌插入 默认是对一个有序的数组进行插入）
+---@field insert_sort 查入排序
 function sort.insert_sort(arr,comp,num,val)  
 	local len = #arr
 	local is_insert = false
@@ -88,39 +80,36 @@ function sort.insert_sort(arr,comp,num,val)
 	end
 end
 
---快排序(快排序不支持 限制数量排序)
-local uv_help
+---@field insert_sort 快速排序
 function sort.quick(arr,comp,left,right)
 	if left < right then
-		uv_help = left
+		local help = left
 		for i = left + 1,right do
 			if not comp(arr[i],arr[left]) then
-				uv_help = uv_help + 1
-				if uv_help ~= i then
-					table.exchange(arr,uv_help,i)
+				help = help + 1
+				if help ~= i then
+					table.exchange(arr,help,i)
 				end
 			end
 		end
 		--基准点 = arr[left] 纠正基准值
-		if uv_help ~= left then
-			table.exchange(arr,uv_help,left)
+		if help ~= left then
+			table.exchange(arr,help,left)
 		end
-		sort.quick(arr,comp,left,uv_help - 1)
-		sort.quick(arr,comp,uv_help + 1,right)
+		sort.quick(arr,comp,left,help - 1)
+		sort.quick(arr,comp,help + 1,right)
 	end
 end
 
---归并排序
-local uv_half
-local i1,i2,i3
+---@field insert_sort 归并排序
 function sort.merge(arr,comp,left,right,help)
 	if left < right then
-		uv_half = math.floor((left + right) / 2)
-		sort.merge(arr,comp,left,right,uv_half)
-		sort.merge(arr,comp,uv_half + 1,right,help)
+		local half = math.floor((left + right) / 2)
+		sort.merge(arr,comp,left,right,half)
+		sort.merge(arr,comp,half + 1,right,help)
 		
-		i1,i2,i3 = left,uv_half + 1,left;
-		while i1 <= uv_half and i2 <= right do
+		local i1,i2,i3 = left,half + 1,left;
+		while i1 <= half and i2 <= right do
 			if not comp(arr[i1],arr[i2]) then
 				help[i3] = arr[i1]
 				i1 = i1 + 1
@@ -130,7 +119,7 @@ function sort.merge(arr,comp,left,right,help)
 			end
 			i3 = i3 + 1
 		end
-		while (i1 <= uv_half) do
+		while (i1 <= half) do
 			help[i3] = arr[i1]
 			i3,i1 = i3 + 1,i1 + 1
 		end
@@ -144,8 +133,7 @@ function sort.merge(arr,comp,left,right,help)
 	end
 end
 
-
---洗牌乱序
+---@field shuffle 洗牌乱序
 function sort.shuffle(list)
 	if not is_table(list) then
 		return 
@@ -158,4 +146,6 @@ function sort.shuffle(list)
 		table.exchange(list,i,r_idx)
 	end
 end
--- file end
+
+
+return sort
