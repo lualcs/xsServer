@@ -11,20 +11,20 @@ skynet.start(function()
 	local ting
 	local count = 100000
 	for i=1,count do
-		table.wait_fortab()
-		ting = mjHelper.getTingInfo(
-			{
-				0x01,0x02,0x03,
-				0x04,0x05,0x06,
-				0x07,0x08,0x09,
-				0x01,0x02,0x03,
-				0x01,0x01
-			},
-			hasMahjongFull)
-		table.wait_recycle()
-		if 0 == i % 100 then
-			skynet.error(i/count*100)
-		end
+		-- table.wait_fortab()
+		-- ting = mjHelper.getTingInfo(
+		-- 	{
+		-- 		0x01,0x02,0x03,
+		-- 		0x04,0x05,0x06,
+		-- 		0x07,0x08,0x09,
+		-- 		0x01,0x02,0x03,
+		-- 		0x01,0x01
+		-- 	},
+		-- 	hasMahjongFull)
+		-- table.wait_recycle()
+		-- if 0 == i % 100 then
+		-- 	skynet.error(i/count*100)
+		-- end
 	end
 
 	local close = os.time()
