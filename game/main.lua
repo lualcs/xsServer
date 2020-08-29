@@ -10,6 +10,7 @@ skynet.start(function()
 	mjHelper.start_dg_count()
 	local ting
 	local count = 100000
+	local test = 0
 	for i=1,count do
 		-- table.wait_fortab()
 		-- ting = mjHelper.getTingInfo(
@@ -25,13 +26,14 @@ skynet.start(function()
 		-- if 0 == i % 100 then
 		-- 	skynet.error(i/count*100)
 		-- end
+		test = test + 1
 	end
 
 	local close = os.time()
 	local pass = close-start
-	skynet.error("秒:",tostring(pass))
-	mjHelper.Look_dg_count()
-	skynet.error("ting",tostring(ting))
+	skynet.error("秒:",tostring(pass),"次数：",test)
+	--mjHelper.Look_dg_count()
+	--skynet.error("ting",tostring(ting))
 	-- if mjHelper.checkAbleHu({
 	-- 	0x01,0x02,0x03,
 	-- 	0x04,0x05,0x06,
