@@ -1,7 +1,7 @@
 --[[
     file:GameLogic.lua
     desc:血战麻将
-    auth:Karl Luo
+    auth:Carol Luo
 ]]
 
 local math = math

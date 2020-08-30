@@ -1,4 +1,7 @@
 --[[
+    file:game\lualib\mahjongHelper.lua
+    desc:麻将辅助 + 胡牌 + 听牌 算法
+    auto:Carol Luo
 ]]
 
 local ipairs = ipairs

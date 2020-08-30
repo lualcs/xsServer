@@ -4,9 +4,9 @@
     auth:Karl Luo
 ]]
 
+local skynet = require("skynet")
 local class = require("class")
 local mahjongLogic = require("game.logic.mahjongXZ.mahjongLogic")
-
 local gameLogic = class("mahjongGameLogicXZ")
 
 --[[
@@ -59,7 +59,7 @@ end
 
 --[[
     游戏开始-发牌
-    
+
     游戏开始-换三张
 
     游戏开始-定缺
