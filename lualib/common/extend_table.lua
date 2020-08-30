@@ -449,3 +449,7 @@ function table.has_count(t)
 end
 
 return table
+
+--[[
+	系统标准库请不要覆盖
+]]

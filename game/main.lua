@@ -46,7 +46,7 @@ skynet.start(function()
 	-- end
 
 
-	skynet.error("debug:",tostring(string))
+	skynet.error("table:",tostring(table))
 
 end)
 
