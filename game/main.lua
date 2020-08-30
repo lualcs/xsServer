@@ -1,5 +1,6 @@
 local skynet = require "skynet"
 local tostring = require("tostring")
+local tostring_outer = require("tostring_outer")
 skynet.start(function()
 	-- skynet.error("Server start")
 	-- local table = require("extend_table")
@@ -46,7 +47,7 @@ skynet.start(function()
 	-- -- end
 
 
-	skynet.error("table:",tostring(table))
+	skynet.error("table:",tostring_outer(table))
 
 end)
 
