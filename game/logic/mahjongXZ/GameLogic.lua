@@ -7,7 +7,7 @@
 local class = require("class")
 local mahjongLogic = require("game.logic.mahjongXZ.mahjongLogic")
 
-local GameLogic = class("mahjongGameLogicXZ")
+local gameLogic = class("mahjongGameLogicXZ")
 
 --[[
     @param rule = {
@@ -24,7 +24,7 @@ local GameLogic = class("mahjongGameLogicXZ")
         }
     }
 ]]
-function GameLogic:cotr(rule)
+function gameLogic:cotr(rule)
     --游戏规则
     self.rule = rule
     --游戏逻辑
@@ -33,7 +33,7 @@ end
 
 ---@field gameStart 游戏开始
 ---@param playerLis 用户列表
-function GameLogic:gameStart(playerLis)
+function gameLogic:gameStart(playerLis)
     self.playerLis = playerLis --[[
         [sitID] = {
                 rid  = 用户id,
@@ -52,13 +52,13 @@ end
 
 --[[游戏结束
 ]]
-function GameLogic:gameClose()
+function gameLogic:gameClose()
 end
 
 --[[
     通知游戏开始
     {
         bankerID = 庄家
-        
+
     }
 ]]
