@@ -1,6 +1,7 @@
 --[[
 	file:string.lua
-	desc:string 标准库扩展 和 使用说明
+	desc:string 标准库扩展
+	auto:Carol Luo
 ]]
 local string = string
 local table = table
@@ -75,3 +76,7 @@ function string.concat(...)
 end
 
 return string
+
+--[[
+	
+]]

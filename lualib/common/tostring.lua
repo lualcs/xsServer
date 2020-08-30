@@ -1,3 +1,9 @@
+--[[
+    file:tostring.lua
+    desc:table 转字符串
+    auto:Carol Luo
+]]
+
 local table = require("table")
 local string = require("string")
 local is_number = require("is_number")
