@@ -4,8 +4,8 @@
     auto:Carol Luo
 ]]
 
-local table = require("table")
-local string = require("string")
+local table = require("extend_table")
+local string = require("extend_string")
 local is_number = require("is_number")
 local is_table = require("is_table")
 local is_string = require("is_string")
