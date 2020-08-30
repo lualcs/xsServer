@@ -10,7 +10,6 @@ local setmetatable = setmetatable
 local print = print
 local next = next
 
-local tostring = require("tostring")
 local is_table = require("is_table")
 local is_string = require("is_string")
 local is_function = require("is_function")
