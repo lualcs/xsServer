@@ -4,6 +4,7 @@
     auth:Karl Luo
 ]]
 
+local math = math
 local ipairs = ipairs
 
 local class = require("class")
@@ -60,6 +61,12 @@ function mahjongLogic:cotr(rule)
 
     ---@field out_uniq 出牌id
     self.out_uniq = 0
+
+    ---@field bankerID 庄家
+    self.bankerID = nil
+
+    ---@field firstHu 第一个胡牌
+    self.firstHu = nil
 
 end
 
@@ -140,6 +147,21 @@ function mahjongLogic:initialize()
     end
 end
 
+---@field gameStartBanker 随机庄家
+function mahjongLogic:gameStartBanker()
+
+    local maxCount = self.rule.sitCount
+
+    --随机一个庄家
+    if not self.bankerID then
+        self.bankerID = math.random(1,maxCount)
+    --第一个胡做庄
+    else
+        self.bankerID = self.firstHu
+        self.firstHu = nil
+    end
+
+end
 
 ---@field gameStartXP 洗牌
 function mahjongLogic:gameStartXP()
@@ -153,9 +175,9 @@ end
 
 ---@field gameStartFP 发牌
 ---@param bankerID 庄家
-function mahjongLogic:gameStartFP(bankerID)
+function mahjongLogic:gameStartFP()
     ---@field bankerID 庄家
-    self.bankerID = bankerID
+    local bankerID = self.bankerID
     local max_sit = self.rule.sitCount
     for i=1,13 do
         for sit=bankerID,bankerID+max_sit do

@@ -25,9 +25,9 @@ local gameLogic = class("mahjongGameLogicXZ")
     }
 ]]
 function gameLogic:cotr(rule)
-    --游戏规则
+    ---@field rule 游戏规则
     self.rule = rule
-    --游戏逻辑
+    ---@field logic 游戏逻辑
     self.logic = mahjongLogic:new(rule)
 end
 
@@ -43,10 +43,12 @@ function gameLogic:gameStart(playerLis)
             },
     ]]
 
-    local logic = self.logic
-
-    logic:gameStartXP()
-
+    --设庄
+    self.logic:gameStartBanker()
+    --洗牌
+    self.logic:gameStartXP()
+    --发牌
+    self.logic:gameStartFP()
 end
 
 
@@ -56,9 +58,9 @@ function gameLogic:gameClose()
 end
 
 --[[
-    通知游戏开始
-    {
-        bankerID = 庄家
+    游戏开始-发牌
+    
+    游戏开始-换三张
 
-    }
+    游戏开始-定缺
 ]]
