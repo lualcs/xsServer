@@ -451,4 +451,13 @@ return table
 
 --[[
 	系统标准库请不要覆盖
+	{
+        insert = function: 0x560b976e4790,	
+        sort = function: 0x560b976e4e80,
+        pack = function: 0x560b976e4280,
+        concat = function: 0x560b976e48a0,
+        move = function: 0x560b976e44b0,
+        remove = function: 0x560b976e4680,
+        unpack = function: 0x560b976e4180,
+}
 ]]
