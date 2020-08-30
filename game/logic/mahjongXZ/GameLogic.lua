@@ -25,26 +25,28 @@ local GameLogic = class("mahjongGameLogicXZ")
     }
 ]]
 function GameLogic:cotr(rule)
-    self.playerLis = {  --玩家信息
-        --[[
-            [sitID] = {
-                rid  = 用户id,
-                name = 名字,
-                logo = 头像,
-                coin = 金钱,
-            },
-        ]]
-    }
     --游戏规则
     self.rule = rule
     --游戏逻辑
     self.logic = mahjongLogic:new(rule)
 end
 
+---@field gameStart 游戏开始
+---@param playerLis 用户列表
+function GameLogic:gameStart(playerLis)
+    self.playerLis = playerLis --[[
+        [sitID] = {
+                rid  = 用户id,
+                name = 名字,
+                logo = 头像,
+                coin = 金钱,
+            },
+    ]]
 
---[[游戏开始
-]]
-function GameLogic:gameStart()
+    local logic = self.logic
+
+    logic:gameStartXP()
+
 end
 
 
@@ -52,3 +54,11 @@ end
 ]]
 function GameLogic:gameClose()
 end
+
+--[[
+    通知游戏开始
+    {
+        bankerID = 庄家
+        
+    }
+]]

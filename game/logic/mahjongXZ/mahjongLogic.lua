@@ -143,6 +143,8 @@ end
 
 ---@field gameStartXP 洗牌
 function mahjongLogic:gameStartXP()
+    --初始化数据
+    self:initialize()
     --拷贝扑克
     table.absorb(self.left_mahjong,self.rule.mahjongCard)
     --麻将乱序
