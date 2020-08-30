@@ -13,7 +13,7 @@ local pairs = pairs
 
 return function(t)
     local lis = table.fortab()
-    table.insert(lis,"{")
+    table.insert(lis,"{\r\n")
     for k,v in pairs(t) do
         table.insert(lis,"\t")
         if is_number(k) then
@@ -26,7 +26,7 @@ return function(t)
         
         table.insert(lis," = ")
         table.insert(lis,tostring(v))
-        table.insert(lis,",")
+        table.insert(lis,",\r\n")
     end
     table.insert(lis,"}")
     return table.concat(lis)
