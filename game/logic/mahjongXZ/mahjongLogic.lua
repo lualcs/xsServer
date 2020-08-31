@@ -20,45 +20,6 @@ function mahjongLogic:cotr(rule)
     ---@field rule 游戏规则
     self.rule = rule
 
-    ---@field left_mahjong 剩余麻将
-    self.left_mahjong = {
-        --[[
-            [1~n:108] = mj
-        ]]
-    }
-
-    ---@field left_mahjong 已发麻将
-    self.deal_mahjong = {
-        --[[
-            [mj] = count
-        ]]
-    }
-
-    ---@field show_mahjong 明牌麻将
-    self.show_mahjong = {
-        --[[
-            [mj] = count
-        ]]
-    }
-
-    ---@field left_mahjong 玩家麻将
-    self.user_mahjong = {
-    }
-
-    ---@field work_mahjong 动作记录
-    self.work_mahjong = {
-        --[[
-            [self.out_uniq] = {
-                [1~n] = {
-                    wt =  摸牌  出牌 碰牌  杠牌  胡牌
-                    mj =  麻将
-                    sit = 哪个玩家的操作
-                    pos =  哪家的牌：摸牌出牌 都是自己 碰牌杠牌胡牌 自己或者别人
-                }
-            }
-        ]]
-    }
-
     ---@field out_uniq 出牌id
     self.out_uniq = 0
 
@@ -67,6 +28,21 @@ function mahjongLogic:cotr(rule)
 
     ---@field firstHu 第一个胡牌
     self.firstHu = nil
+
+    ---@field left_mahjong 库存麻将
+    self.left_mahjong = {}
+
+    ---@field deal_mahjong 已发麻将
+    self.deal_mahjong = {}
+
+    ---@field show_mahjong 明牌麻将
+    self.show_mahjong = {}
+
+    ---@field left_mahjong 玩家麻将
+    self.user_mahjong = {}
+
+    ---@field work_mahjong 动作记录
+    self.work_mahjong = {}
 
 end
 
@@ -83,65 +59,13 @@ function mahjongLogic:initialize()
     --初始化
     for sit=1,self.rule.sitCount do
         self.user_mahjong[sit] = {
-            ---@field hand 玩家手牌
-            hand = {
-                --[[
-                    [1~14] = mj
-                ]]
-            },
-
-            ---@field gang 玩家杠牌
-            gang = {
-                --[[
-                    [1~n:4] = {
-                        mj = 杠牌
-                        gt = 类型  暗杠  明杠  补杠
-                        st = 杠哪家牌
-                    }
-                ]]
-            },
-            ---@field peng 玩家碰牌
-            peng = {
-                --[[
-                    [1~n:4] = {
-                        mj = 碰牌
-                        st = 碰哪家牌
-                    }
-
-                ]]
-            },
-
-            ---@field hsz_set 换三张换出去
-            hsz_set = {
-                --[[
-                    [1~3] = mj
-                ]]
-            },
-
-            ---@field hsz_get 换三张换回来
-            hsz_get = {
-                --[[
-                    [1~3] = mj
-                ]]
-            },
-
-            ---@field hsz_get 换三张换回来
-            hsz_get = {
-                --[[
-                    [1~3] = mj
-                ]]
-            },
-
-            ---@field out_mj 玩家出牌
-            out_mj = {--如果 被吃 碰 杠 胡 不在此列
-                --[[
-                    [1~n] = mj
-                ]]
-            },
-            
-            ---@field dq_color 定缺花色
+            hand = {},
+            gang = {},
+            peng = {},
+            hsz_set = {},
+            hsz_get = {},
+            out_mj = {},
             dq_color = nil,
-            ---@field hu_type 胡牌类型
             hu_type = nil,
         }
     end
@@ -396,3 +320,84 @@ end
 
 
 return mahjongLogic
+
+--[[
+    {   
+        self.out_uniq = 出牌id
+
+        self.bankerID = 庄家id
+
+        self.firstHu  = 第一个胡牌玩家
+
+        --库存麻将
+        left_mahjong = {
+            [index] = mj
+        }
+
+        --已发麻将
+        deal_mahjong = {
+            [mj] = count
+        }
+
+        --可见麻将
+        show_mahjong = {
+            [mj] = count
+        }
+        
+        --操作记录
+        work_mahjong = {
+            [self.out_uniq] = {
+                [1~n] = {
+                    wt =  摸牌  出牌 碰牌  杠牌  胡牌
+                    mj =  麻将
+                    sit = 哪个玩家的操作
+                    pos =  哪家的牌：摸牌出牌 都是自己 碰牌杠牌胡牌 自己或者别人
+                }
+            }
+        }
+
+        --用户麻将
+        user_mahjong = {
+            [seat] = {
+
+                dingQue = 定缺0~2花色,
+                huPai   = 玩家胡牌类型,
+                --玩家手牌
+                hand = {
+                    [index] = mj
+                },
+
+                --玩家杠牌
+                gang = {
+                    [index] = {
+                        mj = 杠牌
+                        gt = 类型  暗杠  明杠  补杠
+                        st = 杠哪家牌
+                    }
+                },
+                --玩家碰牌
+                peng = {
+                        [index] = {
+                            mj = 碰牌
+                            st = 碰哪家牌
+                        }
+
+                },
+
+                --换三张换出去
+                hsz_set = {
+                        [1~3] = mj
+                },
+
+                --换三张换回来
+                hsz_get = {
+                        [1~3] = mj
+                },
+
+                --玩家出牌
+                out_mj = {--如果 被吃 碰 杠 胡 不在此列
+                        [1~n] = mj
+                },
+        }
+    }
+]]
