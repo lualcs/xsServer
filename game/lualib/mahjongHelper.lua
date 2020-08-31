@@ -529,50 +529,23 @@ function helper.wttPing(hasWTT,hasColor)
             end
             table.insert(unit,groupType.sz2)--2个顺子
         elseif 3 == count then
-            table.insert(unit,groupType.kz1)--1个刻子
             if this.checkSun(has_mt,mj,count) then
                 table.insert(unit,groupType.sz3)--3个顺子
-                --[[
-                    4444：分析情况
-                    {
-                        --其他情况类似
-                        1:234 + 345 + 456
-                        2:234 + 345 + 345
-                        3:234 + 234 + 345
-                        4:234 + 234 + 456
-                        5:234 + 234 + 234
-                    }
-
-                ]]
-
             end
+            table.insert(unit,groupType.kz1)--1个刻子
         elseif 4 == count then
-            --4个顺子
+            local ok = false
             if this.checkSun(has_mt,mj,count) then
-                return true--直接胡牌
-                --[[
-                    4444：分析情况
-                    {
-                        --其他情况类似
-                        1:234+345+456+456
-                        2:234+345+345+456
-                        3:234+345+345+345
-                        4:234+456+456+456
-                        5:234+234+345+456
-                        6:234+234+345+345
-                        7:234+234+456+456
-                        7:234+234+234+345
-                        8:234+234+234+456
-                    }
-
-                ]]
+                table.insert(unit,groupType.sz4)--4个顺子
+                ok = true
             end
             if this.checkSunKe(has_mt,mj,1,1) then
                 table.insert(unit,groupType.ks1)--1刻子+1顺子
-            else
+                ok = true
+            end
+            if not ok then
                 return false
             end
-            
         end
     end
 
