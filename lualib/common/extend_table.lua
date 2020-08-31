@@ -10,141 +10,187 @@ local setmetatable = setmetatable
 local print = print
 local next = next
 
-local tostring = require("tostring")
 local is_table = require("is_table")
 local is_string = require("is_string")
 local is_function = require("is_function")
 
---table 中的值交换
-function table.exchange(tab,idx1,idx2)
-	local temp = tab[idx1]
-	tab[idx1] = tab[idx2]
-	tab[idx2] = temp
+
+---@field copy 浅拷贝好像没有意义
+---@param t 要拷贝的表
+---@return 返回一个新的浅拷贝的表
+function table.copy(t)
+	local new = table.fortab()
+	for k,v in pairs(t) do
+		new[k]=v
+	end
+	return new
 end
 
-function table.insertEx(t,v,_count)
+--深拷贝:这个用很多
+function table.copy_deep(t,out)
+	local new = out or table.fortab()
+	for k,v in pairs(t) do
+		if is_table(v) then
+			new[k]=table.copy_deep(v)
+		else
+			new[k]=v
+		end
+	end
+	return new
+end
+
+---@field 	exchange 值交换
+---@param	t 一个表
+---@param	a 交换的键
+---@param	b 交换的键
+function table.exchange(t,a,b)
+	local old = t[a]
+	t[a] = t[b]
+	t[b] = old
+end
+
+---@field	push 	添加t尾部数据v
+---@param	maxlen  固定长度
+function table.push(t, v, maxlen)
+	local len = #t
+	if maxlen then
+		if  len > maxlen then
+			local pos = maxlen-len
+			table.remove_chun(t,1,pos)
+		end
+	end
+	table.insert(t,v)
+end
+
+---@field 	insert_repeat 尾部重复添加同一个值
+---@param	t 一个表
+---@param	a 交换的键
+---@param	b 交换的键
+function table.push_repeat(t,v,_count)
 	for i = 1,_count do
 		table.insert(t,v)
 	end
 end
 
---desc:	将v压入t的尾部
-function table.push(t, v, maxNum)
-	if maxNum == nil or #t < maxNum then
-		t[#t+ 1] = v
-	else
-		for i = 1, #t - 1 do
-			t[i] = t[i + 1]
-		end
-		t[maxNum] = v
-	end
-	return t
+---@field remove_card 移除pos的值
+---@return 返回移除的值
+function table.remove_pos(t,pos)
+	local len = #t
+	local val = t[pos]
+	t[pos] = t[len]
+	t[len] = nil
+	return val
 end
 
---合并 at[k] += bt[k] 然后 bt[k] = 0
-function table.mergeNumber(at,bt)
-	for k,v in pairs(bt) do
-		at[k] = (at[k] or 0)+v
-		bt[k] = 0
-	end
-end
-
---移除函数修改
-function table.removeEx(tab,b_idx,e_idx)
-	if not is_table(tab) then return end
+---@field	移除t star到close数据
+---@param	star  开始位置
+---@param	close 结束位置
+function table.remove_chun(t,star,close)
 	
-	local len = #tab
+	local len = #t
 	--删除数据
-	for i = b_idx,e_idx do
-		tab[i] = nil
+	for i = star,close do
+		t[i] = nil
 	end
 	--数据移位
-	local num = len - e_idx + 1
+	local num = len - star + 1
 	for i = 0,num - 1 do
-		tab[b_idx + i] = tab[e_idx + i]
+		t[star + i] = t[star + i]
 	end
 	--清楚残留数据
 	for i = len,len - num,-1 do
-		tab[i] = nil
+		t[i] = nil
 	end
 end
 
---查找移除
-function table.find_remove(tab,v)
-	for _inx,_v in ipairs(tab) do
-		if v == _v then
-			table.remove(tab,_inx)
-			return
+---@field check_v_count 检查数组值个数
+---@param t 			数组
+---@param v				查值
+---@param c				个数
+function table.check_v_count(t,v,c)
+	for _,_v in ipairs(t) do
+		if _v == v then
+			c = c - 1
+		end
+		if c <= 0 then
+			return true
 		end
 	end
+	return false
 end
 
---深度拷贝
-function table.copy(tab,new)
-	if not is_table(tab) then
-		return -1
-	end
-	local new_tab = new or table.fortab()
-	for _k,_v in pairs(tab) do
+---@field find_remove 	查找移除
+---@param tab 			列表
+---@param v   			移除的值
+---@param c		   		移除个数默认值为1
+---@return  			失败数据没有变
+---@return  			成功数据已移除
+function table.find_remove(t,v,c)
 
-        if not is_table(_v) then
-			    new_tab[_k] = _v
+	c = c or 1
+	if table.check_v_count(t,v,c) then
+		return false
+	end
+
+	local len = #t
+
+	--删除数据
+	local del = c
+	for _k,_v in ipairs(t) do
+		if del > 0 then
+			if _v == v then
+				t[_k] = nil
+				del = del - 1
+			end
 		else
-			new_tab[_k] = table.copy(tab)
+			break
 		end
 	end
-	return new_tab
-end
 
---深度拷贝 v:跳过的值 nil 不起作用 c 跳过次数
-function table.copy_arr(tab,v,c)
-	if not is_table(tab) then
-		return -1
-	end
-	local new_tab = table.fortab()
-	for _k,_v in ipairs(tab) do
-
-        if v == _v and c > 0 then
-            c = c - 1
-        else
-            if not is_table(_v) then
-			    new_tab[#new_tab+1] = _v
-		    else
-			    new_tab[#new_tab+1] = table.copy_arr(_v)
-		    end
-        end
-	end
-	return new_tab
-end
-
---不会递归拷贝 不会拷贝重复的值
---GetValue 计算值得方法
-function table.copy_sole(tab,GetValue)
-	local new_tab = table.fortab()
-	local chk_map = table.fortab()
-	local swithVal
-	for _k,_v in pairs(tab) do
-		swithVal = GetValue(_v)
-		if not chk_map[swithVal] then
-			new_tab[#new_tab + 1] = _v
-			chk_map[swithVal] = true
+	--消除nil
+	local remove = c
+	for i1=1,len do
+		if nil == t[i1] then
+			for i2=i1+1,len do
+				if nil ~= t[i2] then
+					t[i1] = t[i2]
+					t[i2] = nil
+					remove = remove - 1
+					if remove <= 0 then
+						return true
+					end
+					break
+				end
+			end
 		end
 	end
-	table.recycle(chk_map)
-	return new_tab
+	
+	return true
 end
 
---清空数据包装
+---@field absorb 吸收
+function table.absorb(at,bt)
+	for k,v in pairs(bt) do
+		at[k] = (at[k] or 0)+v
+	end
+end
+
+---@field ventgas 吐出
+function table.ventgas(at,bt)
+	for k,v in pairs(bt) do
+		at[k] = (at[k] or 0)-v
+	end
+end
+
+
+---@field clear 清空table
 function table.clear(t)
-	--直接进行数据清空
-	if not is_table(t) then
-		return
-	end
     for k,v in pairs(t) do
         t[k] = nil
     end
 end
---清空数据(不删除tab)
+
+---@field clearEmpty 清空非table
 local function clearEmpty(t)
     if not is_table(t) then return end
 	for k,v in pairs(t) do
@@ -154,7 +200,6 @@ local function clearEmpty(t)
 			clearEmpty(v)
 		end
 	end
-	return t
 end
 
 table.clearEmpty = clearEmpty
@@ -163,16 +208,25 @@ local uv_fortab = {} --回收表
 local uv_waitls = {} --待回收
 local uv_waitrecycle = false
 
---直接回收
-local function recycle(t)
-	if not is_table(t) then
-        return 
+---@field fortab 申请一个空表
+function table.fortab()
+    --去除数据
+	local idx = #uv_fortab
+	local tab = uv_fortab[idx] or {}
+	uv_fortab[idx] = nil
+	
+	for k,v in pairs(tab) do
+		tab[k] = nil
 	end
 	
-	for k,v in pairs(t) do
-		t[k] = nil
+	if uv_waitrecycle then
+		uv_waitls[tab] = true
 	end
+	return tab
+end
 
+---@field recycle 浅回收 这个函数建议只用于非table.fortab申请的进行回收
+function table.recycle(t)
     local count = #uv_fortab
     if count >= 10000 then
         print('warning table.recycle:',count)
@@ -182,95 +236,36 @@ local function recycle(t)
 
 end
 
-table.recycle = recycle
-
---直接回收
-function table.recycles(...)
-	for k,v in pairs(...) do
-		recycle(v)
+---@field recycle 深回收 这个函数建议只用于非table.fortab申请的进行回收
+function table.recycle_deep(t)
+	for k,v in pairs(t) do
+		if is_table(v) then
+			table.recycle_deep(v)
+		end
 	end
+	table.recycle(t)
 end
 
---等待回收：之后所有新申请的table into uv_waitls
+---@field wait_fortab  开始标记回收
 function table.wait_fortab()
 	uv_waitrecycle = true
 end
 
---等待回收：之后回收所有临时表
+---@field wait_recycle 回收所有标记
 function table.wait_recycle()
 	for _t,_ in pairs(uv_waitls) do
-		recycle(_t)
+		table.recycle(_t)
 	end
 	uv_waitrecycle = false
 end
 
---从缓存表中申请一个空表 bRecycle:true 表示待回收
-function table.fortab()
-    --去除数据
-	local idx = #uv_fortab
-	local tab = uv_fortab[idx] or {}
-    uv_fortab[idx] = nil
-	
-	if uv_waitrecycle then
-		uv_waitls[tab] = true
-	end
-	return tab
-end
 
 
---判断空表
+---@field empty 判断table是否空表
 function table.empty(t)
 	return nil == next(t)
 end
 
---获取通用方法
-function table.get(tab,...)
-	if not is_table(tab) then
-        return
-    end
-
-    local tem = tab
-    local key
-    for i=1,select('#',...) do
-        key = select(i,...)
-        if not is_table(tem) then
-            return
-        end
-        tem = tem[key]
-    end
-
-    return tem
-end
-
---通用设置数据
-function table.set(tab,val,...)
-	if not is_table(tab) then
-        return
-    end
-
-    local tem = tab
-    local count = select('#',...)
-
-    for i=1,count - 1 do
-        tem = tem[select(i,...)]
-    end
-    tem[select(count,...)] = val
-end
-
---通用设置数据
-function table.default(t,k)
-	if not is_table(t[k]) then
-		t[k] = table.fortab()
-	end
-	return t[k]
-end
-
---抽牌
-function table.remove_card(array,pos)
-	table.exchange(array,pos,#array)
-	local oval = array[#array]
-	array[#array] = nil
-end
 
 --扑克拷贝
 function table.copy_card(GetArray,OtherArray,OtherB,OtherE)
@@ -297,6 +292,16 @@ function table.read_only(tab)
 	return tab
 end
 
+--设置只读配置表递归
+function table.read_only_deep(tab)
+	for k,v in pairs(tab) do
+		if is_table(v) then
+			table.read_only(v)
+		end
+	end
+	table.read_only(tab)
+end
+
 local _noassign_tm = {
 	__assign = function(t,k,v)
 		print('__assign:The reassignment failed')
@@ -315,6 +320,16 @@ function table.noassign(tab)
 	return tab
 end
 
+--设置不可覆盖配置表递归
+function table.noassign_deep(tab)
+	for k,v in pairs(tab) do
+		if is_table(v) then
+			table.noassign(v)
+		end
+	end
+	table.noassign(tab)
+end
+
 
 local _zero_mt = {
 	__index = function(t,k)
@@ -327,26 +342,15 @@ function table.default_zero(tab)
     setmetatable(tab,_zero_mt)
 end
 
---设置只读配置表递归
-function table.only_read(tab)
-	for k,v in pairs(tab) do
+--设置默认值0表 
+function table.default_zero_deep(tab)
+    for k,v in pairs(tab) do
 		if is_table(v) then
-			table.only_read(v)
+			table.default_zero(v)
 		end
 	end
-	table.only_read(tab)
+	table.default_zero(tab)
 end
-
---设置不可覆盖配置表递归
-function table.noassigns(tab)
-	for k,v in pairs(tab) do
-		if is_table(v) then
-			table.noassigns(v)
-		end
-	end
-	table.noassign(tab)
-end
-
 
 
 function table.empty(tab)
@@ -393,6 +397,15 @@ function table.sum_has(t)
 	return sum
 end
 
+--统计表和
+function table.sum_has_k(t)
+	local sum = 0
+	for k,_ in pairs(t) do
+		sum = sum + k
+	end
+	return sum
+end
+
 --统计数组和
 function table.sum_arr(t)
 	local sum = 0
@@ -412,3 +425,16 @@ function table.has_count(t)
 end
 
 return table
+
+--[[
+	系统标准库请不要覆盖
+	{
+        insert = function: 0x560b976e4790,	
+        sort = function: 0x560b976e4e80,
+        pack = function: 0x560b976e4280,
+        concat = function: 0x560b976e48a0,
+        move = function: 0x560b976e44b0,
+        remove = function: 0x560b976e4680,
+        unpack = function: 0x560b976e4180,
+}
+]]

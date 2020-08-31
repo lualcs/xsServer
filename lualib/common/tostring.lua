@@ -1,5 +1,11 @@
-local table = require("table")
-local string = require("string")
+--[[
+    file:tostring.lua
+    desc:table 转字符串
+    auto:Carol Luo
+]]
+
+local table = require("extend_table")
+local string = require("extend_string")
 local is_number = require("is_number")
 local is_table = require("is_table")
 local is_string = require("is_string")
@@ -63,7 +69,6 @@ local function _tablestring(val,level,key)
 					table.insert( strlist,v)
 					table.insert( strlist,"\"")
 				else
-					table.insert( strlist,k)
 					table.insert( strlist,tostring(v))
 				end
 			else

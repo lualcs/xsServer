@@ -1,6 +1,7 @@
 --[[
 	file:string.lua
-	desc:string 标准库扩展 和 使用说明
+	desc:string 标准库扩展
+	auto:Carol Luo
 ]]
 local string = string
 local table = table
@@ -75,3 +76,26 @@ function string.concat(...)
 end
 
 return string
+
+--[[
+	--标准库 请不要覆盖
+	{
+        char = function: 0x556008af6330,
+        byte = function: 0x556008af8030,
+        format = function: 0x556008af64a0,
+        len = function: 0x556008af59b0,
+        dump = function: 0x556008af7e60,
+        upper = function: 0x556008af5c50,
+        match = function: 0x556008af8ab0,
+        pack = function: 0x556008af7670,
+        gsub = function: 0x556008af8ad0,
+        gmatch = function: 0x556008af6260,
+        rep = function: 0x556008af5db0,
+        sub = function: 0x556008af7f20,
+        unpack = function: 0x556008af72d0,
+        packsize = function: 0x556008af7180,
+        reverse = function: 0x556008af5d00,
+        lower = function: 0x556008af5f40,
+        find = function: 0x556008af8ac0,
+}
+]]

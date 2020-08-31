@@ -69,6 +69,8 @@ local function new(self,...)
 	return new_obj
 end
 
+--- @param 	name 对象名字
+--- @return object
 local function class(name,...)
 	if not is_string(name) then
 		print('the class name is not a string:',tostring(name))
@@ -113,6 +115,11 @@ local function class(name,...)
 			return
 		end
 		rawset(t, k, v)
+	end
+
+	--返回对象名字
+	function met.__tostring()
+		return name
 	end
 
 	class_list[name] = obj
