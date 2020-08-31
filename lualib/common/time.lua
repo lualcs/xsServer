@@ -4,7 +4,7 @@
 ]]
 
 local os = os
-local is_number = is_number
+local is_number = require("is_number")
 
 local MIN_SEC = 60
 local HOUR_SEC = MIN_SEC * 60
@@ -12,65 +12,50 @@ local DAY_SEC = HOUR_SEC * 24
 
 local time = {}
 
---获得计算机当前时间
-function time.now()
-    return os.time()
-end
 
 --将一个数值时间打印成为一个日期时间
-function time.tosdate(iTime)
-	return os.date("%Y-%m-%d-%H:%M:%S",iTime)
+function time.tosdate(time)
+	return os.date("%Y-%m-%d-%H:%M:%S",time)
 end
 
 --将一个日期转换成一个数值时间
-function time.totime(tData)
-	return os.time(tData)
+function time.totime(date)
+	return os.time(date)
 end
 --将一个数值时间转化成一个日期表
-function time.todate(iTime)
-	return os.date('*t',iTime)
+function time.todate(time)
+	return os.date('*t',time)
 end 
 
 --[[将一个日期表写成一个cd时间
 	最大只支持天单位
 	因为年,月 单位的时间是不固定的
 ]]
-function time.tocd(tDate)
-	local iCD = 0
-	if is_number(tDate.day) then
-		iCD = iCD + DAY_SEC * tDate.day
+function time.totime(date)
+	local second = 0
+	if is_number(date.day) then
+		second = second + DAY_SEC * date.day
 	end
-	if is_number(tDate.hour) then
-		iCD = iCD + HOUR_SEC * tDate.hour
+	if is_number(date.hour) then
+		second = second + HOUR_SEC * date.hour
 	end
-	if is_number(tDate.min) then
-		iCD = iCD + MIN_SEC * tDate.min
+	if is_number(date.min) then
+		second = second + MIN_SEC * date.min
 	end
-	if is_number(tDate.yaer) then
-		iCD = iCD + tDate.sec
+	if is_number(date.sec) then
+		second = second + date.sec
 	end
+
+	return second
 end
 
---同上最大只支持小时
-function time.tocdEx(tDate)
-    local iCD = 0
-	if is_number(tDate.hour) then
-		iCD = iCD + HOUR_SEC * tDate.hour
-	end
-	if is_number(tDate.min) then
-		iCD = iCD + MIN_SEC * tDate.min
-	end
-	if is_number(tDate.yaer) then
-		iCD = iCD + tDate.sec
-	end
-end
 
 --将一个日期表的 时 分 秒 清零
-function time.format_hms(tDate)
-	tDate.hour = 0
-	tDate.min = 0
-	tDate.sec = 0
-    return os.time(tDate)
+function time.clear_sfm(date)
+	date.hour = 0
+	date.min = 0
+	date.sec = 0
+    return os.time(date)
 end
 
 --获得今天0点 + {hour,min,sec}

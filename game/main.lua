@@ -46,21 +46,6 @@ skynet.start(function()
 
 	-- -- end
 
-	skynet.error("测试 print r")
-
-	for i = 1,10 do
-		skynet.error(string.format("i=%d /r",i))
-	end
-
-
-	skynet.error("测试 table.pack")
-
-	skynet.error(tostring(table.pack(1,2,3,4,5,6)))
-
-
-	skynet.error("测试 table.unpack")
-
-	skynet.error(table.unpack({1,2,3,4,5,6,7,8,9}))
 
 end)
 
