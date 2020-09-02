@@ -44,9 +44,7 @@ end
 ---@param	a 交换的键
 ---@param	b 交换的键
 function table.exchange(t,a,b)
-	local old = t[a]
-	t[a] = t[b]
-	t[b] = old
+	t[a],t[b] = t[b],t[a]
 end
 
 ---@field	push 	添加t尾部数据v

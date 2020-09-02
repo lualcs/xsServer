@@ -135,15 +135,10 @@ end
 
 ---@field shuffle Ï´ÅÆÂÒÐò
 function sort.shuffle(list)
-	if not is_table(list) then
-		return 
-	end
-	
-	local size = #list
-	local r_idx
-	for i=1,size do
-		r_idx = math.random(i,size)
-		table.exchange(list,i,r_idx)
+	local len = #list
+	for i=1,len do
+		local pos = math.random(i,len)
+		list[i],list[pos] = list[pos],list[i]
 	end
 end
 
