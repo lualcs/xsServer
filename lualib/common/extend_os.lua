@@ -15,7 +15,7 @@ return os
         rename = function: 0x55e2616d0fa0,
         difftime = function: 0x55e2616d1150,
         date = function: 0x55e2616d1660,
-        clock = function: 0x55e2616d11a0, 返回该程序使用的CPU时间（以秒为单位）的近似值。
+        clock = function: 0x55e2616d11a0
         time = function: 0x55e2616d14b0,
         remove = function: 0x55e2616d0ff0,
         execute = function: 0x55e2616d10f0,

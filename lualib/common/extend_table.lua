@@ -39,6 +39,17 @@ function table.copy_deep(t,out)
 	return new
 end
 
+--过滤拷贝:这个用很多
+function table.copy_filter(t,filter)
+	local new =  table.fortab()
+	for k,v in ipairs(t) do
+		if filter(v) then
+			table.insert(new,v)
+		end
+	end
+	return new
+end
+
 ---@field 	exchange 值交换
 ---@param	t 一个表
 ---@param	a 交换的键
@@ -117,52 +128,36 @@ function table.check_v_count(t,v,c)
 	return false
 end
 
----@field find_remove 	查找移除
+---@field find_remove 	数组查找移除
 ---@param tab 			列表
 ---@param v   			移除的值
 ---@param c		   		移除个数默认值为1
----@return  			失败数据没有变
----@return  			成功数据已移除
-function table.find_remove(t,v,c)
-
+---@param no		   	不检查
+---@return  false		失败数据没有变
+---@return  true		成功数据已移除
+function table.find_remove(t,v,c,no)
 	c = c or 1
-	if table.check_v_count(t,v,c) then
-		return false
+	if not no then
+		if not table.check_v_count(t,v,c) then
+			return false
+		end
 	end
 
 	local len = #t
-
 	--删除数据
-	local del = c
-	for _k,_v in ipairs(t) do
-		if del > 0 then
-			if _v == v then
-				t[_k] = nil
-				del = del - 1
+	local i = 1
+	while t[i] do
+		if c > 0 then
+			if t[i] == v then
+				table.remove(t,i)
+				c = c - 1
+			else
+				i=i+1
 			end
 		else
 			break
 		end
 	end
-
-	--消除nil
-	local remove = c
-	for i1=1,len do
-		if nil == t[i1] then
-			for i2=i1+1,len do
-				if nil ~= t[i2] then
-					t[i1] = t[i2]
-					t[i2] = nil
-					remove = remove - 1
-					if remove <= 0 then
-						return true
-					end
-					break
-				end
-			end
-		end
-	end
-	
 	return true
 end
 

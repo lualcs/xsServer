@@ -9,131 +9,37 @@ local pairs = pairs
 local setmetatable = setmetatable
 local skynet = require("skynet")
 local mahjongName = require("mahjongName")
+local groupMap = require("mahjongGroup")
 local table = require("extend_table")
 local math = require("extend_math")
-local sort = require("sort")
+local sort = require("extend_sort")
+local tostring = require("extend_tostring")
 
-local tostring = require("tostring")
 
---设置tostring 好做打印 调试
-local function set_mt_tostring(t)
-    local mt_tostring = t.__tostring
-    t.__tostring = nil
-    setmetatable(t,{__tostring=mt_tostring})
-end
-
---1:各种刻子
-local wan111 = {[0x01]=3,__tostring = function() return "wan111" end}  set_mt_tostring(wan111)
-local wan222 = {[0x02]=3,__tostring = function() return "wan222" end}  set_mt_tostring(wan222)
-local wan333 = {[0x03]=3,__tostring = function() return "wan333" end}  set_mt_tostring(wan333)
-local wan444 = {[0x04]=3,__tostring = function() return "wan444" end}  set_mt_tostring(wan444)
-local wan555 = {[0x05]=3,__tostring = function() return "wan555" end}  set_mt_tostring(wan555)
-local wan666 = {[0x06]=3,__tostring = function() return "wan666" end}  set_mt_tostring(wan666)
-local wan777 = {[0x07]=3,__tostring = function() return "wan777" end}  set_mt_tostring(wan777)
-local wan888 = {[0x08]=3,__tostring = function() return "wan888" end}  set_mt_tostring(wan888)
-local wan999 = {[0x09]=3,__tostring = function() return "wan999" end}  set_mt_tostring(wan999)
-
-local suo111 = {[0x11]=3,__tostring = function() return "suo111" end}   set_mt_tostring(suo111)
-local suo222 = {[0x12]=3,__tostring = function() return "suo222" end}   set_mt_tostring(suo222)
-local suo333 = {[0x13]=3,__tostring = function() return "suo333" end}   set_mt_tostring(suo333)
-local suo444 = {[0x14]=3,__tostring = function() return "suo444" end}   set_mt_tostring(suo444)
-local suo555 = {[0x15]=3,__tostring = function() return "suo555" end}   set_mt_tostring(suo555)
-local suo666 = {[0x16]=3,__tostring = function() return "suo666" end}   set_mt_tostring(suo666)
-local suo777 = {[0x17]=3,__tostring = function() return "suo777" end}   set_mt_tostring(suo777)
-local suo888 = {[0x18]=3,__tostring = function() return "suo888" end}   set_mt_tostring(suo888)
-local suo999 = {[0x19]=3,__tostring = function() return "suo999" end}   set_mt_tostring(suo999)
-
-local ton111 = {[0x21]=3,__tostring = function() return "ton111" end}   set_mt_tostring(ton111)
-local ton222 = {[0x22]=3,__tostring = function() return "ton222" end}   set_mt_tostring(ton222)
-local ton333 = {[0x23]=3,__tostring = function() return "ton333" end}   set_mt_tostring(ton333)
-local ton444 = {[0x24]=3,__tostring = function() return "ton444" end}   set_mt_tostring(ton444)
-local ton555 = {[0x25]=3,__tostring = function() return "ton555" end}   set_mt_tostring(ton555)
-local ton666 = {[0x26]=3,__tostring = function() return "ton666" end}   set_mt_tostring(ton666)
-local ton777 = {[0x27]=3,__tostring = function() return "ton777" end}   set_mt_tostring(ton777)
-local ton888 = {[0x28]=3,__tostring = function() return "ton888" end}   set_mt_tostring(ton888)
-local ton999 = {[0x29]=3,__tostring = function() return "ton999" end}   set_mt_tostring(ton999)
-
---2:各种顺子
-local wan123 = {[0x01]=1,[0x02]=1,[0x03]=1,__tostring = function() return "wan123" end} set_mt_tostring(wan123) 
-local suo123 = {[0x11]=1,[0x12]=1,[0x13]=1,__tostring = function() return "suo123" end} set_mt_tostring(suo123)
-local ton123 = {[0x21]=1,[0x22]=1,[0x23]=1,__tostring = function() return "ton123" end} set_mt_tostring(ton123)
-
-local wan234 = {[0x02]=1,[0x03]=1,[0x04]=1,__tostring = function() return "wan234" end} set_mt_tostring(wan234)
-local suo234 = {[0x12]=1,[0x13]=1,[0x14]=1,__tostring = function() return "suo234" end} set_mt_tostring(suo234)
-local ton234 = {[0x22]=1,[0x23]=1,[0x24]=1,__tostring = function() return "ton234" end} set_mt_tostring(ton234)
-
-local wan345 = {[0x03]=1,[0x04]=1,[0x05]=1,__tostring = function() return "wan345" end} set_mt_tostring(wan345)
-local suo345 = {[0x13]=1,[0x14]=1,[0x15]=1,__tostring = function() return "suo345" end} set_mt_tostring(suo345)
-local ton345 = {[0x23]=1,[0x24]=1,[0x25]=1,__tostring = function() return "ton345" end} set_mt_tostring(ton345)
-
-local wan456 = {[0x04]=1,[0x05]=1,[0x06]=1,__tostring = function() return "wan456" end} set_mt_tostring(wan456)
-local suo456 = {[0x14]=1,[0x15]=1,[0x16]=1,__tostring = function() return "suo456" end} set_mt_tostring(suo456)
-local ton456 = {[0x24]=1,[0x25]=1,[0x26]=1,__tostring = function() return "ton456" end} set_mt_tostring(ton456)
-
-local wan567 = {[0x05]=1,[0x06]=1,[0x07]=1,__tostring = function() return "wan567" end} set_mt_tostring(wan567)
-local suo567 = {[0x15]=1,[0x16]=1,[0x17]=1,__tostring = function() return "suo567" end} set_mt_tostring(suo567)
-local ton567 = {[0x25]=1,[0x26]=1,[0x27]=1,__tostring = function() return "ton567" end} set_mt_tostring(ton567)
-
-local wan678 = {[0x06]=1,[0x07]=1,[0x08]=1,__tostring = function() return "wan678" end} set_mt_tostring(wan678)
-local suo678 = {[0x16]=1,[0x17]=1,[0x18]=1,__tostring = function() return "suo678" end} set_mt_tostring(suo678)
-local ton678 = {[0x26]=1,[0x27]=1,[0x28]=1,__tostring = function() return "ton678" end} set_mt_tostring(ton678)
-
-local wan789 = {[0x07]=1,[0x08]=1,[0x09]=1,__tostring = function() return "wan789" end} set_mt_tostring(wan789)
-local suo789 = {[0x17]=1,[0x18]=1,[0x19]=1,__tostring = function() return "suo789" end} set_mt_tostring(suo789)
-local ton789 = {[0x27]=1,[0x28]=1,[0x29]=1,__tostring = function() return "ton789" end} set_mt_tostring(ton789)
-
---2:扑克隐射
-local wttMap = {
-    --万
-    [0x01] = {wan123,wan111},
-    [0x02] = {wan123,wan234,wan222},
-    [0x03] = {wan123,wan234,wan345,wan333},
-    [0x04] = {wan234,wan345,wan456,wan444},
-    [0x05] = {wan345,wan456,wan567,wan555},
-    [0x06] = {wan456,wan567,wan789,wan666},
-    [0x07] = {wan567,wan678,wan789,wan777},
-    [0x08] = {wan678,wan789,wan888},
-    [0x09] = {wan789,wan999},
-
-    --条
-    [0x11] = {suo123,suo111},
-    [0x12] = {suo123,suo234,suo222},
-    [0x13] = {suo123,suo234,suo345,suo333},
-    [0x14] = {suo234,suo345,suo456,suo444},
-    [0x15] = {suo345,suo456,suo567,suo555},
-    [0x16] = {suo456,suo567,suo789,suo666},
-    [0x17] = {suo567,suo678,suo789,suo777},
-    [0x18] = {suo678,suo789,suo888},
-    [0x19] = {suo789,suo999},
-	
-	--筒
-    [0x21] = {ton123,ton111},
-    [0x22] = {ton123,ton234,ton222},
-    [0x23] = {ton123,ton234,ton345,ton333},
-    [0x24] = {ton234,ton345,ton456,ton444},
-    [0x25] = {ton345,ton456,ton567,ton555},
-    [0x26] = {ton456,ton567,ton789,ton666},
-    [0x27] = {ton567,ton678,ton789,ton777},
-    [0x28] = {ton678,ton789,ton888},
-    [0x29] = {ton789,ton999},
+---@class 麻将辅助对象
+local helper = {
+    support_qidui = true
 }
-
-local helper = {}
 local this = helper
+
+---@field setSupportQiDui 设置七对标志
+function helper.setSupportQiDui(suppor)
+    this.support_qidui = suppor
+end
 
 ---@field getColor 麻将花色
 function helper.getColor(mj)
-    return (mj & 0xf0)>>4
+    return math.floor(mj/16)
 end
 
 ---@field getValue 麻将值
 function helper.getValue(mj)
-    return mj & 0x0f
+    return mj % 16
 end
 
 ---@field getCard 合成麻将
 function helper.getCard(color,card)
-    return (color<<4)|card
+    return color * 16 + card
 end
 
 ---@field is_wan 万
@@ -176,60 +82,33 @@ function helper.is_zfb(mj)
     return mj >= 0x35 and mj <= 0x37
 end
 
+---@field getChiLis 获取吃牌列表
+function helper.getChiLis(mj)
+    if not this.is_wtt(mj) then
+        return table.fortab()
+    end
+
+    local lis = table.copy(groupMap[mj])
+    --去除刻子
+    local len = #lis
+    lis[len] = nil
+    return lis
+end
+
+---@field has_mt 转 arr_mt
+function helper.hasToArr(mt)
+    local arr = table.fortab()
+    for mj,count in pairs(mt) do
+        table.push_repeat(arr,mj,count)
+    end
+    table.sort(arr)
+    return arr
+end
+
 ---@field getName 单张麻将名字
 function helper.getName(mj)
     return mahjongName[mj]
 end
-
----@field gt_ag 暗杠
-function helper.gt_ag()
-    return "暗杠"--暗杠
-end
----@field gt_mg 明杠
-function helper.gt_mg()
-    return "明杠"--明杠
-end
----@field gt_bg 补杠
-function helper.gt_bg()
-    return "补杠"--补杠
-end
----@field wk_mo_pai 摸牌
-function helper.wk_mp()
-    return "摸牌"--摸牌
-end
----@field wk_chu_pai 出牌
-function helper.wk_cp()
-    return "出牌"--出牌
-end
-
----@field wk_chi 吃
-function helper.wk_chi()
-    return "吃"--吃
-end
-
----@field wk_peng 碰
-function helper.wk_peng()
-    return "碰"--碰
-end
----@field wk_ming_gang 明杠
-function helper.wk_ming_gang()
-    return "明杠"--杠
-end
----@field wk_an_gang 明杠
-function helper.wk_an_gang()
-    return "暗杠"--杠
-end
----@field wk_ming_gang 明杠
-function helper.wk_bu_gang()
-    return "补杠"--杠
-end
----@field wk_hu 胡牌
-function helper.wk_hu()
-    return "胡"--胡
-end
-
-
-
 
 ---@field getString 多张扑克名字
 function helper.getString(mjCard)
@@ -237,8 +116,7 @@ function helper.getString(mjCard)
     for _,mj in ipairs(mjCard) do
         table.insert(t,this.getName(mj))
     end
-    local s = table.concat(t)
-    return s
+    return table.concat(t)
 end
 
 ---@field Sort 排序万条筒东南西北菊梅兰竹
@@ -257,39 +135,64 @@ function helper.getHasCount(mjCard)
     return table.has_count(mjCard)
 end
 
+---@field getHasCount_wtt 统计麻将数量万条筒
+function helper.getHasCount_wtt(mjCard)
+    local has = table.has_count(mjCard)
+    for mj,count in pairs(has) do
+        if not groupMap[mj] then
+            has[mj] = nil
+        end
+    end
+    return has
+end
+
 --[[
+    @mjCard         手牌麻将
+    @lz_mj     癞子麻将
     return {
         hasCard		= {扑克数量},
         hasColor    = {扑克花色}
+        lz_num    = 癞子数量
     }
 ]]
---麻将分析
-function helper.getAnalyze(mjCard)
+---@param getAnalyze 麻将分析
+function helper.getAnalyze(mjCard,lz_mj)
 
     local an = table.fortab()
     local hasCard = table.fortab()
     local hasColor = table.fortab()
     for _inx,_mj in pairs(mjCard) do
+
         local color = this.getColor(_mj)
         hasCard[_mj] = (hasCard[_mj] or 0) + 1
         hasColor[color] = (hasColor[color] or 0) + 1
     end
+
     an.hasCard = hasCard
     an.hasColor = hasColor
+    an.lz_num = hasCard[lz_mj] or 0
+
+    --清楚癞子
+    if lz_mj then
+        hasCard[lz_mj] = nil
+        local lz_color = this.getColor(lz_mj)
+        hasColor[lz_color] = hasColor[lz_color] - an.lz_num
+    end 
+
 	return an
 end
 
---分析可以组合哪些牌型 仅仅支持万条筒
-function helper.getHasType(hasMahjong)
+---@field getHasType 统计万条筒可以组牌类型
+function helper.getHasType(has_wtt)
     
-    local has = {}
-    for mj,count in pairs(hasMahjong) do
-        local ts = wttMap[mj]  --牌型列表
+    local has = table.fortab()
+    for mj,count in pairs(has_wtt) do
+        local ts = groupMap[mj]  --牌型列表
         local sc = #ts - 1     --0~sc 顺子牌型下标
         --刻子牌型
         if count >= 3 then
             local mt = ts[#ts]
-            has[mt] = (count // 3)
+            has[mt] = math.floor(count / 3)
         end
 
         --顺子牌型
@@ -297,8 +200,10 @@ function helper.getHasType(hasMahjong)
             local mt = ts[i]
             local mc = count
             for _mj,_count in pairs(mt) do
-                mc = math.min(mc,hasMahjong[_mj] or 0)
+                local cc = has_wtt[_mj] or 0
+                mc = math.min(mc,cc)
             end
+
             has[mt] = mc
         end
     end
@@ -306,9 +211,9 @@ function helper.getHasType(hasMahjong)
 end
 
 
---检查顺子数量
+---@field checkSun 检查顺子数量
 function helper.checkSun(hasType,mj,count)
-    local ts = wttMap[mj]
+    local ts = groupMap[mj]
     local sc = #ts - 1
     local sz_count = 0
     for i=1,sc do
@@ -320,32 +225,39 @@ end
 
 
 
---检查刻子数量
+---@field checkKe 检查刻子数量
 function helper.checkKe(hasType,mj,count)
-    local ts = wttMap[mj]
+    local ts = groupMap[mj]
     local ki = #ts
     local kt = ts[ki]
     local kz_count = hasType[kt]
     return kz_count >= count
 end
 
---检查顺刻
+---@field checkSunKe    检查顺子和刻子数量
+---@param hasType       类型统计
+---@param mj            参与麻将
+---@param sc            顺子数量
+---@param kc            刻子数量
 function helper.checkSunKe(hasType,mj,sc,kc)
     return this.checkSun(hasType,mj,sc) and this.checkKe(hasType,mj,kc)
 end
 
 
---胡牌检查
+---@field checkAbleHu  胡牌检查
+---@param mjCard       手牌麻将
 function helper.checkAbleHu(mjCard)
-    
+
     --数量检查
     local len = #mjCard
     if 2 ~= len % 3 then
         return false
     end
 
-    if this.checkQiDui(mjCard) then
-        return true
+    if this.support_qidui then
+        if this.checkQiDui(mjCard) then
+            return true
+        end
     end
 
     local an = this.getAnalyze(mjCard)
@@ -356,25 +268,26 @@ function helper.checkAbleHu(mjCard)
             local c = this.getColor(_mj)
             hasCard[_mj] = hasCard[_mj] - 2
             hasColor[c] = hasColor[c] - 2
-            if this.checkPing(hasCard,hasColor) then
+            if this.checkPing(hasCard,hasColor,an.lz_num) then
                 return true
             end
             hasCard[_mj] = hasCard[_mj] + 2
             hasColor[c] = hasColor[c] + 2
         end
     end
-
     return false
 end
 
 --七对检查
-function helper.checkQiDui(mjCard)
+function helper.checkQiDui(mjCard,lz_mj)
     local len = #mjCard
     if 14 ~= len then
         return false
     end
+    local an = this.getAnalyze(mjCard,lz_mj)
     local has = helper.getHasCount(mjCard)
-    for _,count in pairs(has) do
+    local lz_num = an.lz_num
+    for _,count in pairs(an.hasCard) do
         if 0 ~= count % 2 then
             return false
         end
@@ -384,27 +297,26 @@ function helper.checkQiDui(mjCard)
 end
 
 --平胡检查
-function helper.checkPing(hasCard,hasColor)
-
-    --每个花色数量
+function helper.checkPing(hasMahjong,hasColor,lz_num)
+	--每个花色数量
     for c,count in pairs(hasColor) do
         if 0 ~= count % 3 then
             return false
         end
     end
-    
-    return this.helpPing(hasCard)
+  
+    return this.helpPing(hasMahjong,lz_num)
 end
 
 --平胡检查
-function helper.helpPing(hasMahjong)
+function helper.helpPing(hasMahjong,lz_num)
 
-    local hasWTT = table.fortab()
+    local has_wtt = table.fortab()
     local hasColor = table.fortab()
     for v,count in pairs(hasMahjong) do
         --万条筒
         if this.is_wtt(v) then
-            hasWTT[v] = count
+            has_wtt[v] = count
             local c = this.getColor(v)
             hasColor[c] = (hasColor[c] or 0) + count
         --字牌
@@ -415,7 +327,7 @@ function helper.helpPing(hasMahjong)
         end
     end
 
-    return this.wttPing(hasWTT,hasColor)
+    return this.wttPing(has_wtt,hasColor,lz_num)
 end
 
 --是否顺子
@@ -436,6 +348,15 @@ local function is_ke(t)
         end
     end
     return false
+end
+
+--统计表和
+function table.sum_has_k(t)
+	local sum = 0
+	for k,_ in pairs(t) do
+		sum = sum + k
+	end
+	return sum
 end
 
 --[[
@@ -471,7 +392,7 @@ end
     检查 万条筒 是否可胡
 
     --手牌里的万条筒-麻将统计
-    @param hasWTT = {--mj:只包含万条筒
+    @param has_wtt = {--mj:只包含万条筒
         [mj] = count,
     }
 
@@ -504,18 +425,18 @@ end
 
     @param 
 ]]
-function helper.wttPing(hasWTT,hasColor)
+function helper.wttPing(has_wtt,hasColor,lz_num)
 
-    local has_mt = helper.getHasType(hasWTT)
-    local mjCount = table.sum_has(hasWTT)
+    local has_mt = helper.getHasType(has_wtt)
+    local mjCount = table.sum_has(has_wtt)
     local mtCount = table.sum_has(has_mt)
 
-    if mtCount < mjCount // 3 then
+    if mtCount < math.floor(mjCount/3) then
         return false
     end
 
     local group = table.fortab()
-    for mj,count in pairs(hasWTT) do
+    for mj,count in pairs(has_wtt) do
         local unit = table.fortab()
         group[mj] = unit
         if 1 == count  then
@@ -552,7 +473,7 @@ function helper.wttPing(hasWTT,hasColor)
     --统计允许牌型
     local may_mt = table.fortab()
     for _mj,_lis in pairs(group) do
-        local ts = wttMap[_mj]
+        local ts = groupMap[_mj]
         for _inx,_group in pairs(_lis) do
             if is_allow_sz(_group) then
                 local kp = #ts
@@ -576,7 +497,7 @@ function helper.wttPing(hasWTT,hasColor)
     local arr_mt = table.fortab()
     for _mt,_count in pairs(has_mt) do
         if may_mt[_mt] then
-            table.insertEx(arr_mt,_mt,_count)
+            table.push_repeat(arr_mt,_mt,_count)
         else
             has_mt[_mt] = nil
         end
@@ -585,26 +506,37 @@ function helper.wttPing(hasWTT,hasColor)
     --排序 先取刻子 然后取顺子
     table.sort(arr_mt,helper.mt_compare)
 
-    return this.dg_group_hu(hasWTT,arr_mt,has_mt,0)
+    return this.dg_group_hu(has_wtt,arr_mt,has_mt,0)
 end
 
+
+---@field mt_compare 牌型比较
+---@param a wan111
+---@param b wan111
 function helper.mt_compare(a,b)
     local av = get_sk_logic(a)
     local bv = get_sk_logic(b)
-    return av < bv
+    return av > bv
 end
 
 
 
 
 local dg_count = 0
-local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
+---@param has_wtt 万条筒统计
+---@param arr_mt  牌型数组
+---@param has_mt  牌型统计
+---@param deep    递归深度
+local function dg_group_hu(has_wtt,arr_mt,has_mt,deep)
     dg_count = dg_count + 1
-    local mj_count = table.sum_has(hasWTT)
+
+    --扑克刚好取完
+    local mj_count = table.sum_has(has_wtt)
     if 0 == mj_count then
         return true
     end
 
+    --无法组合牌型
     local mt_count = table.sum_has(has_mt)
     if 0 == mt_count then
         return false
@@ -613,59 +545,78 @@ local function dg_group_hu(hasWTT,arr_mt,has_mt,deep)
     local has_rmt = table.fortab()
     for _inx,_mt in ipairs(arr_mt) do
         --类型过滤
-        if has_mt[_mt] <= 0 then
-            goto continue
+        if has_mt[_mt] - (has_rmt[_mt] or 0) > 0 then
+			
+			--记录取牌
+			for _mj,_count in pairs(_mt) do
+				has_wtt[_mj] = has_wtt[_mj] - _count
+			end
+			
+			--取出类型
+			has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
+	
+			--取出扑克-影响其他顺子牌型无法构成
+			for _mj,_count in pairs(_mt) do
+				for _,_mt in pairs(groupMap[_mj]) do
+					--顺子
+					if is_shun(_mt) and has_mt[_mt] then
+						local left_mj = has_wtt[_mj]
+						local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
+						if left_mt > left_mj then
+							has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
+						end
+					--刻子也要减
+					elseif is_ke(_mt) and has_mt[_mt]  then
+						local left_mj = has_wtt[_mj]
+						local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
+						if left_mt > math.floor(left_mj / 3) then
+							has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
+						end
+					end
+				end
+			end
+	
+			--移除数据
+			table.ventgas(has_mt,has_rmt)
+			if dg_group_hu(has_wtt,arr_mt,has_mt,deep+1) then
+				return true
+			end
+			--恢复数据
+			table.absorb(has_mt,has_rmt)
+			table.clear(has_rmt)
+	
+			--还原取牌
+			for _mj,_count in pairs(_mt) do
+				has_wtt[_mj] = has_wtt[_mj] + _count
+			end
+
         end
-
-        --记录取牌
-        for _mj,_count in pairs(_mt) do
-            hasWTT[_mj] = hasWTT[_mj] - _count
-        end
-        
-        --取出类型
-        has_rmt[_mt]  = (has_rmt[_mt] or 0) + 1
-
-        --取出扑克-会影响其他-牌型的组合-是否还可以组成
-        for _mj,_count in pairs(_mt) do
-            for _,_mt in pairs(wttMap[_mj]) do
-                --顺子
-                if is_shun(_mt) and has_mt[_mt] then
-                    local left_mj = hasWTT[_mj]
-                    local left_mt = has_mt[_mt] - (has_rmt[_mt] or 0)
-                    if left_mt > left_mj then
-                        has_rmt[_mt] = (has_rmt[_mt] or 0) + 1
-                    end
-                end
-            end
-        end
-
-         --移除数据
-         table.ventgas(has_mt,has_rmt)
-         if dg_group_hu(hasWTT,arr_mt,has_mt,deep+1) then
-            return true
-         end
-         --恢复数据
-         table.absorb(has_mt,has_rmt)
-         table.clear(has_rmt)
-
-         --还原取牌
-         for _mj,_count in pairs(_mt) do
-            hasWTT[_mj] = hasWTT[_mj] + _count
-        end
-
-        ::continue::
     end
 
     return false
 end
 
+--[[
+    bug 1 可胡
+    {0x18,0x18,0x27,0x27,0x27,0x34,0x35,0x36,0x36,0x36,0x37,0x37,0x38,0x38}
+    bug 2 不能胡
+    {0x14,0x14,0x14,0x27,0x28,0x28,0x28,0x29,0x41,0x41,0x26}
+]]
+
+---@field dg_group_hu 万条筒组牌递归
 helper.dg_group_hu = dg_group_hu
 
 --[[听牌提示
-    @param mjCard = {
+    @param arrMahjong = {           --玩家手牌
         [1~n] = mj
     }
-   
+    
+    @param hasMahjong = {           --听牌映射
+        [mj] = count
+    }
+
+    @param lz_mahjong 癞子麻将
+
     @return ting = {--mj:麻将
         [mj] = {--inx:1~n
             [inx] = mj
@@ -674,54 +625,34 @@ helper.dg_group_hu = dg_group_hu
 ]]
 
 local for_able_count = 0
-function helper.getTingInfo(mjCard,hasMahjongFull)
+---@field getTingInfo 获取听牌提示
+---@param hand 手牌数据
+---@param hasfull 包含麻将
+---@return MJTing
+function helper.getTingInfo(hand,hasfull)
     local ting = table.fortab()
+    local handCopy = table.copy(hand)
+    local an = this.getAnalyze(handCopy,this.lz_mj)
 
-    local len = #mjCard
-    if 14 == len then
-        local mjCardCopy = table.copy(mjCard)
-        local an = this.getAnalyze(mjCardCopy)
+    local hasMahjongSelf = this.getHasCount(handCopy)
+    for _out_mj,_count in pairs(hasMahjongSelf) do
 
-        --听牌过滤花色 < 2的
-        local smallColor = 0
-        for _color,_count in pairs(an.hasColor) do
-            --少于2张牌连 对子都无法组成
-            if _count < 2 then
-                return ting
-            end
+        table.find_remove(handCopy,_out_mj)
 
-            --2个花色 <= 2 无法听牌
-            if _count <= 2 then
-                smallColor = smallColor + 1
-            end
-        end
-
-        --最多一个花色的牌 为2张
-        if smallColor > 1 then
-            return ting
-        end
-
-        local hasMahjongSelf = this.getHasCount(mjCardCopy)
-        for _out_mj,_count in pairs(hasMahjongSelf) do
-            table.find_remove(mjCardCopy,_out_mj)
-            for _ting_mj,_count in pairs(hasMahjongFull) do
-                --花色 < 2 连将对都 无法组成
-                local color = this.getColor(_ting_mj)
-                local cNumber = an.hasColor[color] or 0
-                if cNumber >= 2 then
-                    table.insert(mjCardCopy,_ting_mj)
-                    for_able_count = for_able_count + 1
-                    if this.checkAbleHu(mjCardCopy) then
-                        ting[_out_mj] = ting[_out_mj] or table.fortab()
-                        ting[_out_mj][_ting_mj] = true
-                    end
-                    table.remove(mjCardCopy,#mjCardCopy)
+        for _ting_mj,_count in pairs(hasfull) do
+            --自己没有的不检查
+            if an.hasColor[this.getColor(_ting_mj)] then
+                table.insert(handCopy,_ting_mj)
+                for_able_count = for_able_count + 1
+                if this.checkAbleHu(handCopy,this.lz_mj) then
+                    ting[_out_mj] = ting[_out_mj] or table.fortab()
+                    ting[_out_mj][_ting_mj] = true
                 end
+                table.remove(handCopy,#handCopy)
             end
-            table.insert(mjCardCopy,_out_mj)
         end
+        table.insert(handCopy,_out_mj)
     end
-    
     return ting
 end
 
@@ -731,14 +662,18 @@ function helper.start_dg_count()
 end
 
 function helper.Look_dg_count()
+    if 0 == for_able_count then
+        for_able_count = 1
+    end
     skynet.error("递归次数：",dg_count,"听检查次数：",for_able_count,"平均递归次数",dg_count//for_able_count)
 end
-
-
 
 return helper
 
 
 --[[
-   
+   {
+       this.lz_mj = 癞子麻将值 nil 表示没有癞子
+       this.support_qidui = true 默认支持七对
+   }
 ]]
