@@ -12,8 +12,6 @@ local string = require("extend_string")
 local table = require("extend_table")
 local mjHelper = require("mahjongHelper")
 ---@class arithmetic 麻将算法
----@field ableHu 胡牌检查
----@field init   是否初始化
 local arithmetic = {
     init = false,       --是否初始化
     
@@ -41,22 +39,6 @@ local function mappingKey(...)
         key = key + (v << (i*4))
     end
     return key
-end
-
-local function mappingKey4(a,b,c,d)
-    return mappingKey(a,b,c,d)
-end
-
-local function mappingKey3(a,b,c)
-    return mappingKey(a,b,c)
-end
-
-local function mappingKey2(a,b)
-    return mappingKey(a,b)
-end
-
-local function mappingKey1(a)
-    return mappingKey(a)
 end
 
 --所有刻子
@@ -113,54 +95,38 @@ local hasGroup = {
     [9] = {sz789,kz999},
 }
 
+--允许顺牌隐射
+local mapSun = {}
+--允许顺牌分组(为了兼容类似乱三风)
+local sunGroup = {}
 
-local mapSun = {            --允许组顺子
-    [0x01] = true,     --1万
-    [0x02] = true,     --2万
-    [0x03] = true,     --3万
-    [0x04] = true,     --4万
-    [0x05] = true,     --5万
-    [0x06] = true,     --6万
-    [0x07] = true,     --7万
-    [0x08] = true,     --8万
-    [0x09] = true,     --9万
-
-    [0x11] = true,     --1条
-    [0x12] = true,     --2条
-    [0x13] = true,     --3条
-    [0x14] = true,     --4条
-    [0x15] = true,     --5条
-    [0x16] = true,     --6条
-    [0x17] = true,     --7条
-    [0x18] = true,     --8条
-    [0x19] = true,     --9条
-
-    [0x21] = true,     --1筒
-    [0x22] = true,     --2筒
-    [0x23] = true,     --3筒
-    [0x24] = true,     --4筒
-    [0x25] = true,     --5筒
-    [0x26] = true,     --6筒
-    [0x27] = true,     --7筒
-    [0x28] = true,     --8筒
-    [0x29] = true,     --9筒
-}
-
-function arithmetic.inittialize()
+---@field inittialize 胡牌算法初始化
+---@param sunData 允许顺的牌
+function arithmetic.inittialize(sunData)
     --避免重复初始化
     if this.init then
         return
     end
 
-    --填充隐射
+    --填充允许顺子信息
+    for _id,_item in pairs(sunData) do
+        for value = _item.start,_item.close do
+            local mj = mjHelper.getCard(_item.color,value)
+            mapSun[mj] = true
+            sunGroup[mj] = _id
+        end
+    end
+
+    --填充隐射 不需要癞子
     -- for _,m1 in ipairs(arrGroup) do
     --     for _,m2 in ipairs(arrGroup) do
     --         for _,m3 in ipairs(arrGroup) do
     --             for _,m4 in ipairs(arrGroup) do
-    --                 mapping[mappingKey4(m1,m2,m3,m4)] = true
-    --                 mapping[mappingKey3(m1,m2,m3)] = true
-    --                 mapping[mappingKey2(m1,m2)] = true
-    --                 mapping[mappingKey1(m1)] = true
+    --                 --没有癞子的情况
+    --                 mapping[mappingKey(m1,m2,m3,m4)]=0
+    --                 mapping[mappingKey(m1,m2,m3)]=0
+    --                 mapping[mappingKey(m1,m2)]=0
+    --                 mapping[mappingKey(m1)]=0
     --             end
     --         end
     --     end
@@ -177,41 +143,75 @@ end
 ---@param hasHand  手牌
 ---@return an       分析数据
 ---@return mj      将对麻将
-function arithmetic.analyze(hasHand)
+function arithmetic.analyze(hasHand,lzCount)
     local an = {}
     --统计每种花色的牌
     local dui = 0
     --只能组成刻子牌
     local jiang = false
+    --必须要有将对
+    local hasJiang = false
     for mj,count in pairs(hasHand) do
         if mapSun[mj] then
-            local color = mjHelper.getColor(mj)
+            local sunID = sunGroup[mj]
             local value = mjHelper.getValue(mj)
-            local has = an[color] or {}
+            local has = an[sunID] or {}
             has[value] = count
-            an[color] = has
+            an[sunID] = has
         else
-            if 0 == count % 2 then
-                jiang = mj
-                dui = dui + 1
-            elseif 0 ~= count % 2 and 0 ~= count % 3 then
-                return false
+            --没有癞子的情况
+            if 0 == lzCount then
+                --可以取将
+                if 0 == count % 2 then
+                    jiang = mj
+                    dui = dui + 1
+                --无法取将并且无法成刻
+                elseif 0 ~= count % 2 and 0 ~= count % 3 then
+                    return false
+                end
             end
         end
-        
+
+        if count > 1 then
+            hasJiang = true
+        end
     end
 
-    --只能有一个将对
-    if dui > 1 then
-        return false
+    --没有癞子的情况
+    if 0 == lzCount then
+        --只能有一个将对
+        if dui > 1 then
+            return false
+        end
+        --必须要有将对
+        if not hasJiang then
+            return false
+        end
     end
 
     return an,jiang
 end
 
+ ---@field checkQiDui 判断是否七对
+ ---@param lzCount 癞子数量
+function arithmetic.checkQiDui(has,lzCount)
+    local mjCount = lzCount
+    for mj,count in pairs(has) do
+        if 0 ~= count then
+            lzCount = lzCount - 1
+            if lzCount < 0 then
+                return false
+            end
+        end
+        mjCount = mjCount + count
+    end
+    return 14 == mjCount
+end
+
 ---@field ableHu 胡牌检查
 ---@param hand  手牌
-function arithmetic.ableHu(hand)
+---@param lz 癞子麻将
+function arithmetic.ableHu(hand,lz)
 
     local len = #hand
     if 2 == len then
@@ -223,7 +223,30 @@ function arithmetic.ableHu(hand)
     end
 
     local has = table.has_count(hand)
-    local an,jiang = this.analyze(has)
+
+    local lzCount = has[lz] or 0
+    if lz then
+        has[lz] = nil
+    end
+
+    --癞子到达一定数量直接胡
+    if lzCount > ((len-2)/3*2) then
+        return true
+    end
+
+    --是否七对
+    if this.checkQiDui(has,lzCount) then
+        return true
+    end
+
+    if lzCount > 0 then
+    end
+
+    return this.ableKanHu(has,lzCount)
+end
+
+function arithmetic.ableKanHu(has,lzCount)
+    local an,jiang = this.analyze(has,lzCount)
    
     if not an then
         return false
@@ -233,48 +256,94 @@ function arithmetic.ableHu(hand)
 
     --如果将对固定了
     if jiang then
-        return this.ableKanHu(an,mks)
+        return this.ableKan(an,mks)
     end
     
-    for mj,count in pairs(has) do
-        local color = mjHelper.getColor(mj)
-        local value = mjHelper.getValue(mj)
-        --去除将对
-        if count >= 2 then
-            if mapSun[mj] then
-                mks[color] = nil
-                an[color][value] = an[color][value] - 2
-                if this.ableKanHu(an,mks) then
+    --没有癞子
+    if 0 == lzCount then
+        for mj,count in pairs(has) do
+            local value = mjHelper.getValue(mj)
+            --去除将对
+            if count >= 2 then
+                --不成顺的不能做将牌
+                if mapSun[mj] then
+                    local sunID = sunGroup[mj]
+                    mks[sunID] = nil
+
+                    local lis = an[sunID]
+                    --是否可以取将对
+                    if 2 == count % 3 then
+                        lis[value] = lis[value] - 2
+                        if this.ableKan(an,mks,lzCount) then
+                            return true
+                        end
+                        lis[value] = lis[value] + 2
+                    end
+                end
+            end      
+        end
+    --存在癞子
+    else
+        for mj,count in pairs(has) do
+            local value = mjHelper.getValue(mj)
+            local sunID = sunGroup[mj]
+            local lis = an[sunID]
+            --清除key
+            mks[sunID] = nil
+            --去除将对
+            if count < 2 then
+                --包含癞子
+                lis[value] = lis[value] - 1
+                if this.ableKan(an,mks,lzCount - 1) then
                     return true
                 end
-                an[color][value] = an[color][value] + 2
+                lis[value] = lis[value] + 1
+            else
+                --没有癞子
+                lis[value] = lis[value] - 2
+                if this.ableKan(an,mks,lzCount) then
+                    return true
+                end
+                lis[value] = lis[value] + 2
             end
-        end      
-    end
-
-    --判断是否七对
-    if mjHelper.checkQiDui(hand) then
-        return true
+        end
     end
 
     return false
 end
 
----@field ableKanHu 坎胡检查
+---@field ableKan 坎胡检查
 ---@param an  分析数据
-function arithmetic.ableKanHu(an,mks)
-    --判断每种花色
-    for color,has in pairs(an) do
-        mks[color] = mks[color] or mappingKey(has)
-        if not mapping[mks[color]] then
+---@param mks 隐射键
+function arithmetic.ableKan(an,mks,lzCount)
+
+    --判断已经存在的（避免不必要的mappingKey消耗）
+    for sunID,key in pairs(mks) do
+        if -1 == key then
             return false
         end
     end
-    --require("skynet").error("ableKanHu:",tostring({mks=mks,an=an}))
+
+    --判断每种花色
+    local totalNeed = 0
+    for sunID,has in pairs(an) do
+        mks[sunID] = mks[sunID] or mappingKey(has)
+        local need = mapping[mks[sunID]]
+        --隐射不存在
+        if not need then
+            mks[sunID] = -1
+            return false
+        end
+
+        --如果癞子不够了
+        totalNeed = totalNeed + need
+        if lzCount < totalNeed then
+            return false
+        end
+    end
+    --require("skynet").error("ableKan:",tostring({mks=mks,an=an}))
     return true
 end
-
-arithmetic.inittialize()
 
 return arithmetic
 
