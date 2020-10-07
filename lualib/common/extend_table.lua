@@ -1,5 +1,5 @@
 --[[
-	desc:±ê×¼¿âÀ©Õ¹
+	desc:æ ‡å‡†åº“æ‰©å±•
 ]]
 
 local table = table
@@ -15,9 +15,9 @@ local is_string = require("is_string")
 local is_function = require("is_function")
 
 
----@field copy Ç³¿½±´ºÃÏñÃ»ÓĞÒâÒå
----@param t Òª¿½±´µÄ±í
----@return ·µ»ØÒ»¸öĞÂµÄÇ³¿½±´µÄ±í
+---@field copy æµ…æ‹·è´å¥½åƒæ²¡æœ‰æ„ä¹‰
+---@param t è¦æ‹·è´çš„è¡¨
+---@return è¿”å›ä¸€ä¸ªæ–°çš„æµ…æ‹·è´çš„è¡¨
 function table.copy(t)
 	local new = table.fortab()
 	for k,v in pairs(t) do
@@ -26,7 +26,7 @@ function table.copy(t)
 	return new
 end
 
---Éî¿½±´:Õâ¸öÓÃºÜ¶à
+--æ·±æ‹·è´:è¿™ä¸ªç”¨å¾ˆå¤š
 function table.copy_deep(t,out)
 	local new = out or table.fortab()
 	for k,v in pairs(t) do
@@ -39,7 +39,7 @@ function table.copy_deep(t,out)
 	return new
 end
 
---¹ıÂË¿½±´:Õâ¸öÓÃºÜ¶à
+--è¿‡æ»¤æ‹·è´:è¿™ä¸ªç”¨å¾ˆå¤š
 function table.copy_filter(t,filter)
 	local new =  table.fortab()
 	for k,v in ipairs(t) do
@@ -50,16 +50,16 @@ function table.copy_filter(t,filter)
 	return new
 end
 
----@field 	exchange Öµ½»»»
----@param	t Ò»¸ö±í
----@param	a ½»»»µÄ¼ü
----@param	b ½»»»µÄ¼ü
+---@field 	exchange å€¼äº¤æ¢
+---@param	t ä¸€ä¸ªè¡¨
+---@param	a äº¤æ¢çš„é”®
+---@param	b äº¤æ¢çš„é”®
 function table.exchange(t,a,b)
 	t[a],t[b] = t[b],t[a]
 end
 
----@field	push 	Ìí¼ÓtÎ²²¿Êı¾İv
----@param	maxlen  ¹Ì¶¨³¤¶È
+---@field	push 	æ·»åŠ tå°¾éƒ¨æ•°æ®v
+---@param	maxlen  å›ºå®šé•¿åº¦
 function table.push(t, v, maxlen)
 	local len = #t
 	if maxlen then
@@ -71,18 +71,18 @@ function table.push(t, v, maxlen)
 	table.insert(t,v)
 end
 
----@field 	insert_repeat Î²²¿ÖØ¸´Ìí¼ÓÍ¬Ò»¸öÖµ
----@param	t Ò»¸ö±í
----@param	a ½»»»µÄ¼ü
----@param	b ½»»»µÄ¼ü
+---@field 	insert_repeat å°¾éƒ¨é‡å¤æ·»åŠ åŒä¸€ä¸ªå€¼
+---@param	t ä¸€ä¸ªè¡¨
+---@param	a äº¤æ¢çš„é”®
+---@param	b äº¤æ¢çš„é”®
 function table.push_repeat(t,v,_count)
 	for i = 1,_count do
 		table.insert(t,v)
 	end
 end
 
----@field remove_card ÒÆ³ıposµÄÖµ
----@return ·µ»ØÒÆ³ıµÄÖµ
+---@field remove_card ç§»é™¤posçš„å€¼
+---@return è¿”å›ç§»é™¤çš„å€¼
 function table.remove_pos(t,pos)
 	local len = #t
 	local val = t[pos]
@@ -91,31 +91,31 @@ function table.remove_pos(t,pos)
 	return val
 end
 
----@field	ÒÆ³ıt starµ½closeÊı¾İ
----@param	star  ¿ªÊ¼Î»ÖÃ
----@param	close ½áÊøÎ»ÖÃ
+---@field	ç§»é™¤t staråˆ°closeæ•°æ®
+---@param	star  å¼€å§‹ä½ç½®
+---@param	close ç»“æŸä½ç½®
 function table.remove_chun(t,star,close)
 	
 	local len = #t
-	--É¾³ıÊı¾İ
+	--åˆ é™¤æ•°æ®
 	for i = star,close do
 		t[i] = nil
 	end
-	--Êı¾İÒÆÎ»
+	--æ•°æ®ç§»ä½
 	local num = len - star + 1
 	for i = 0,num - 1 do
 		t[star + i] = t[star + i]
 	end
-	--Çå³ş²ĞÁôÊı¾İ
+	--æ¸…æ¥šæ®‹ç•™æ•°æ®
 	for i = len,len - num,-1 do
 		t[i] = nil
 	end
 end
 
----@field check_v_count ¼ì²éÊı×éÖµ¸öÊı
----@param t 			Êı×é
----@param v				²éÖµ
----@param c				¸öÊı
+---@field check_v_count æ£€æŸ¥æ•°ç»„å€¼ä¸ªæ•°
+---@param t 			æ•°ç»„
+---@param v				æŸ¥å€¼
+---@param c				ä¸ªæ•°
 function table.check_v_count(t,v,c)
 	for _,_v in ipairs(t) do
 		if _v == v then
@@ -128,13 +128,13 @@ function table.check_v_count(t,v,c)
 	return false
 end
 
----@field find_remove 	Êı×é²éÕÒÒÆ³ı
----@param tab 			ÁĞ±í
----@param v   			ÒÆ³ıµÄÖµ
----@param c		   		ÒÆ³ı¸öÊıÄ¬ÈÏÖµÎª1
----@param no		   	²»¼ì²é
----@return  false		Ê§°ÜÊı¾İÃ»ÓĞ±ä
----@return  true		³É¹¦Êı¾İÒÑÒÆ³ı
+---@field find_remove 	æ•°ç»„æŸ¥æ‰¾ç§»é™¤
+---@param tab 			åˆ—è¡¨
+---@param v   			ç§»é™¤çš„å€¼
+---@param c		   		ç§»é™¤ä¸ªæ•°é»˜è®¤å€¼ä¸º1
+---@param no		   	ä¸æ£€æŸ¥
+---@return  false		å¤±è´¥æ•°æ®æ²¡æœ‰å˜
+---@return  true		æˆåŠŸæ•°æ®å·²ç§»é™¤
 function table.find_remove(t,v,c,no)
 	c = c or 1
 	if not no then
@@ -144,7 +144,7 @@ function table.find_remove(t,v,c,no)
 	end
 
 	local len = #t
-	--É¾³ıÊı¾İ
+	--åˆ é™¤æ•°æ®
 	local i = 1
 	while t[i] do
 		if c > 0 then
@@ -161,14 +161,14 @@ function table.find_remove(t,v,c,no)
 	return true
 end
 
----@field absorb ÎüÊÕ
+---@field absorb å¸æ”¶
 function table.absorb(at,bt)
 	for k,v in pairs(bt) do
 		at[k] = (at[k] or 0)+v
 	end
 end
 
----@field ventgas ÍÂ³ö
+---@field ventgas åå‡º
 function table.ventgas(at,bt)
 	for k,v in pairs(bt) do
 		at[k] = (at[k] or 0)-v
@@ -176,14 +176,14 @@ function table.ventgas(at,bt)
 end
 
 
----@field clear Çå¿Õtable
+---@field clear æ¸…ç©ºtable
 function table.clear(t)
     for k,v in pairs(t) do
         t[k] = nil
     end
 end
 
----@field clearEmpty Çå¿Õ·Çtable
+---@field clearEmpty æ¸…ç©ºétable
 local function clearEmpty(t)
     if not is_table(t) then return end
 	for k,v in pairs(t) do
@@ -197,13 +197,13 @@ end
 
 table.clearEmpty = clearEmpty
 
-local uv_fortab = {} --»ØÊÕ±í
-local uv_waitls = {} --´ı»ØÊÕ
+local uv_fortab = {} --å›æ”¶è¡¨
+local uv_waitls = {} --å¾…å›æ”¶
 local uv_waitrecycle = false
 
----@field fortab ÉêÇëÒ»¸ö¿Õ±í
+---@field fortab ç”³è¯·ä¸€ä¸ªç©ºè¡¨
 function table.fortab()
-    --È¥³ıÊı¾İ
+    --å»é™¤æ•°æ®
 	local idx = #uv_fortab
 	local tab = uv_fortab[idx] or {}
 	uv_fortab[idx] = nil
@@ -218,7 +218,7 @@ function table.fortab()
 	return tab
 end
 
----@field recycle Ç³»ØÊÕ Õâ¸öº¯Êı½¨ÒéÖ»ÓÃÓÚ·Çtable.fortabÉêÇëµÄ½øĞĞ»ØÊÕ
+---@field recycle æµ…å›æ”¶ è¿™ä¸ªå‡½æ•°å»ºè®®åªç”¨äºétable.fortabç”³è¯·çš„è¿›è¡Œå›æ”¶
 function table.recycle(t)
     local count = #uv_fortab
     if count >= 10000 then
@@ -229,7 +229,7 @@ function table.recycle(t)
 
 end
 
----@field recycle Éî»ØÊÕ Õâ¸öº¯Êı½¨ÒéÖ»ÓÃÓÚ·Çtable.fortabÉêÇëµÄ½øĞĞ»ØÊÕ
+---@field recycle æ·±å›æ”¶ è¿™ä¸ªå‡½æ•°å»ºè®®åªç”¨äºétable.fortabç”³è¯·çš„è¿›è¡Œå›æ”¶
 function table.recycle_deep(t)
 	for k,v in pairs(t) do
 		if is_table(v) then
@@ -239,12 +239,12 @@ function table.recycle_deep(t)
 	table.recycle(t)
 end
 
----@field wait_fortab  ¿ªÊ¼±ê¼Ç»ØÊÕ
+---@field wait_fortab  å¼€å§‹æ ‡è®°å›æ”¶
 function table.wait_fortab()
 	uv_waitrecycle = true
 end
 
----@field wait_recycle »ØÊÕËùÓĞ±ê¼Ç
+---@field wait_recycle å›æ”¶æ‰€æœ‰æ ‡è®°
 function table.wait_recycle()
 	for _t,_ in pairs(uv_waitls) do
 		table.recycle(_t)
@@ -254,13 +254,13 @@ end
 
 
 
----@field empty ÅĞ¶ÏtableÊÇ·ñ¿Õ±í
+---@field empty åˆ¤æ–­tableæ˜¯å¦ç©ºè¡¨
 function table.empty(t)
 	return nil == next(t)
 end
 
 
---ÆË¿Ë¿½±´
+--æ‰‘å…‹æ‹·è´
 function table.copy_card(GetArray,OtherArray,OtherB,OtherE)
 	OtherE = math.min(OtherE,#OtherArray)
 	for i=OtherB,OtherE do
@@ -279,13 +279,13 @@ local _read_only_tm = {
 	end
 }
 
---ÉèÖÃÒ»¸öÖ»¶Á±í
+--è®¾ç½®ä¸€ä¸ªåªè¯»è¡¨
 function table.read_only(tab)
 	setmetatable(tab,_read_only_tm)
 	return tab
 end
 
---ÉèÖÃÖ»¶ÁÅäÖÃ±íµİ¹é
+--è®¾ç½®åªè¯»é…ç½®è¡¨é€’å½’
 function table.read_only_deep(tab)
 	for k,v in pairs(tab) do
 		if is_table(v) then
@@ -300,7 +300,7 @@ local _noassign_tm = {
 		print('__assign:The reassignment failed')
 	end
 }
---ÉèÖÃ²»¿ÉÔÙ´Î¸²¸ÇµÄ±í
+--è®¾ç½®ä¸å¯å†æ¬¡è¦†ç›–çš„è¡¨
 function table.noassign(tab)
 
     for k,v in pairs(tab) do
@@ -313,7 +313,7 @@ function table.noassign(tab)
 	return tab
 end
 
---ÉèÖÃ²»¿É¸²¸ÇÅäÖÃ±íµİ¹é
+--è®¾ç½®ä¸å¯è¦†ç›–é…ç½®è¡¨é€’å½’
 function table.noassign_deep(tab)
 	for k,v in pairs(tab) do
 		if is_table(v) then
@@ -330,12 +330,12 @@ local _zero_mt = {
 	end
 }
 
---ÉèÖÃÄ¬ÈÏÖµ0±í
+--è®¾ç½®é»˜è®¤å€¼0è¡¨
 function table.default_zero(tab)
     setmetatable(tab,_zero_mt)
 end
 
---ÉèÖÃÄ¬ÈÏÖµ0±í 
+--è®¾ç½®é»˜è®¤å€¼0è¡¨ 
 function table.default_zero_deep(tab)
     for k,v in pairs(tab) do
 		if is_table(v) then
@@ -350,7 +350,7 @@ function table.empty(tab)
 	return nil == next(tab)
 end
 
---Í³¼Æ±íÔªËØ¸öÊı
+--ç»Ÿè®¡è¡¨å…ƒç´ ä¸ªæ•°
 function table.element_count(tab)
 	local nCount = 0
 	for k,v in pairs(tab) do
@@ -359,7 +359,7 @@ function table.element_count(tab)
 	return nCount
 end
 
---Ëæ»úÒ»¸ö¹şÏ£ÔªËØ
+--éšæœºä¸€ä¸ªå“ˆå¸Œå…ƒç´ 
 function table.random_hash(tab)
 	if table.empty(tab) then return end
 
@@ -372,7 +372,7 @@ function table.random_hash(tab)
 	end
 end
 
---Ñ­»·Ö´ĞĞÒ»¸öº¯Êı
+--å¾ªç¯æ‰§è¡Œä¸€ä¸ªå‡½æ•°
 function table.forFunction(tabs,...)
     for k,v in pairs(tabs) do
         if is_function(v) then
@@ -381,7 +381,7 @@ function table.forFunction(tabs,...)
     end
 end
 
---Í³¼Æ±íºÍ
+---@field sum_has å“ˆå¸Œæ€»å’Œv
 function table.sum_has(t)
 	local sum = 0
 	for _,v in pairs(t) do
@@ -390,7 +390,7 @@ function table.sum_has(t)
 	return sum
 end
 
---Í³¼Æ±íºÍ
+---@field sum_has å“ˆå¸Œæ€»å’Œk
 function table.sum_has_k(t)
 	local sum = 0
 	for k,_ in pairs(t) do
@@ -399,7 +399,7 @@ function table.sum_has_k(t)
 	return sum
 end
 
---Í³¼ÆÊı×éºÍ
+---@field sum_arr æ•°ç»„æ€»å’Œv
 function table.sum_arr(t)
 	local sum = 0
 	for _,v in ipairs(t) do
@@ -407,20 +407,33 @@ function table.sum_arr(t)
 	end
 	return sum
 end
-
---table¼ÆÊı
-function table.has_count(t)
+ 
+---@field 	arrToHas  è½¬å“ˆå¸Œ
+---@param 	arr 	  æ•°ç»„è¡¨
+---@return  table	  å“ˆå¸Œè¡¨
+function table.arrToHas(arr)
 	local has = table.fortab()
-	for k,v in pairs(t) do
+	for k,v in pairs(arr) do
 		has[v] = (has[v] or 0) + 1
 	end
 	return has
 end
 
+---@field 	hasToArr 	è½¬æ•°ç»„
+---@param 	has 	    ç»Ÿè®¡è¡¨
+---@return 	table		æ•°ç»„è¡¨
+function table.hasToArr(has)
+	local arr = table.fortab()
+	for k,count in pairs(has) do
+		table.push_repeat(arr,k,count)
+	end
+	return arr
+end
+
 return table
 
 --[[
-	ÏµÍ³±ê×¼¿âÇë²»Òª¸²¸Ç
+	ç³»ç»Ÿæ ‡å‡†åº“è¯·ä¸è¦è¦†ç›–
 	{
         insert = function: 0x560b976e4790,	
         sort = function: 0x560b976e4e80,

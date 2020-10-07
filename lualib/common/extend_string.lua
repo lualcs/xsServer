@@ -1,6 +1,6 @@
 --[[
 	file:string.lua
-	desc:string ±ê×¼¿âÀ©Õ¹
+	desc:string æ ‡å‡†åº“æ‰©å±•
 	auto:Carol Luo
 ]]
 local string = string
@@ -12,24 +12,12 @@ local __G = _G
 local print = print
 local tostring = tostring
 
---[[
-	string.fromat("xxx:%s xxx:%s xxx:%s",1,"×Ö·û´®")
-]]
-function string.formatEx(str,...)
-	local args = table.fortab()
-	local arg_val
-	for i = 1,select('#',...) do
-		arg_val = select(i,...)
-		args[i] = tostring(arg_val)
-	end
-	return string.format(str,args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10])
-end
 
 --[[
-	×Ö·û´®·Ö¸î Ö§³ÖÕıÔò
-	param:	s	±»²ğ·ÖµÄstring	
-			p	·Ö¸ô·û(¿ÉÒÔÊÇÕıÔò±í´ïÊ½)
-	return: {}²ğ·Ö³öÀ´µÄĞòÁĞ±í
+	å­—ç¬¦ä¸²åˆ†å‰² æ”¯æŒæ­£åˆ™
+	param:	s	è¢«æ‹†åˆ†çš„string	
+			p	åˆ†éš”ç¬¦(å¯ä»¥æ˜¯æ­£åˆ™è¡¨è¾¾å¼)
+	return: {}æ‹†åˆ†å‡ºæ¥çš„åºåˆ—è¡¨
 ]]
 function string.gsplit(s, p)
 	local init = 1
@@ -40,11 +28,11 @@ function string.gsplit(s, p)
 		if nil ~= bpos then
 			if bpos~=init then
 				local preP = string.sub(s, init, bpos-1)
-				table.push( ret, preP)
+				table.insert( ret, preP)
 			end
 
 			if cap then
-				table.push( ret, cap)
+				table.insert( ret, cap)
 			end
 			init = epos+1
 		elseif string.len(s)>=init then
@@ -54,31 +42,11 @@ function string.gsplit(s, p)
 	return ret
 end
 
-function string.pcall(str,...)
-	local array = string.gsplit(str, ':')
-	local object = __G[array[1]]
-	local fun = object[array[2]]
-	local ret,info = pcall(fun,object,...)
-	if not ret then
-		print("string.pcall error ",str,info)
-	end
-	table.recycle(array)
-end
-
-function string.call(str,...)
-	local fun = __G[str]
-	return fun(...)
-end
-
---×Ö·û´®Á¬½Ó
-function string.concat(...)
-	return table.concat(...)
-end
 
 return string
 
 --[[
-	--±ê×¼¿â Çë²»Òª¸²¸Ç
+	--æ ‡å‡†åº“ è¯·ä¸è¦è¦†ç›–
 	{
         char = function: 0x556008af6330,
         byte = function: 0x556008af8030,

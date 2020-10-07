@@ -1,6 +1,5 @@
 local skynet = require "skynet"
 local tostring = require("extend_tostring")
-local tostring_outer = require("tostring_outer")
 local table = require("extend_table")
 local sort = require("extend_sort")
 local mjHelper = require("mahjongHelper")
@@ -15,7 +14,7 @@ skynet.start(function()
 
 	skynet.error("经过时间",passd)
 
-	local hand = {0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x18,0x11,0x12,0x13,0x14,0x15,0x16}
+	local hand = {0x11,0x12,0x13,0x14,0x15,0x16,0x17,0x17,0x11,0x12,0x13,0x14,0x15,0x16}
 
 	arithmetic.inittialize({
 		{color=1,start=1,close=9},
@@ -38,6 +37,7 @@ skynet.start(function()
 	local passd = close - start
 
 	skynet.error("经过时间",passd)
+
 	
 end)
 

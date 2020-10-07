@@ -1,7 +1,7 @@
 --[[
-	desc:ÅÅĞò·½·¨
-	ÓĞµÄÊ±ºòÏ£Íû¶ÔÅÅĞò»áÓĞÌØÊâĞèÇó
-	±ÈÈçÔÚÅÅĞĞÅÅĞòµÄÊ±ºò °´ÕÕ±È½Ïº¯Êı ·µ»Øfalse ½»»»Ô­Ôò
+	desc:æ’åºæ–¹æ³•
+	æœ‰çš„æ—¶å€™å¸Œæœ›å¯¹æ’åºä¼šæœ‰ç‰¹æ®Šéœ€æ±‚
+	æ¯”å¦‚åœ¨æ’è¡Œæ’åºçš„æ—¶å€™ æŒ‰ç…§æ¯”è¾ƒå‡½æ•° è¿”å›false äº¤æ¢åŸåˆ™
 ]]
 
 local is_number = require("is_number")
@@ -10,13 +10,13 @@ local table = require("extend_table")
 local math = require("extend_math")
 
 local sort = {}
----@field bubble Ã°ÅİÅÅĞò
+---@field bubble å†’æ³¡æ’åº
 function sort.bubble(arr,comp,num)  
 	local len = #arr
 	if not is_number(num) then
 		num = len - 1
 	elseif num > len then
-		num = len - 1--±ÜÃâ²»±ØÑ½µÄÑ­»·
+		num = len - 1--é¿å…ä¸å¿…å‘€çš„å¾ªç¯
 	end
     for i = 1,num do
         for j = i + 1,len do  
@@ -27,13 +27,13 @@ function sort.bubble(arr,comp,num)
     end  
 end
 
----@field bubble Ñ¡ÔñÅÅĞò
+---@field bubble é€‰æ‹©æ’åº
 function sort.select(arr,comp,num)  
 	local len = #arr
 	if not is_number(num) then
 		num = len - 1
 	elseif num > len then
-		num = len - 1--±ÜÃâ²»±ØÑ½µÄÑ­»·
+		num = len - 1--é¿å…ä¸å¿…å‘€çš„å¾ªç¯
 	end
 
 	local sk
@@ -50,37 +50,21 @@ function sort.select(arr,comp,num)
     end  
 end
 
----@field insert_sort ²éÈëÅÅĞò
-function sort.insert_sort(arr,comp,num,val)  
+---@field insert_sort æŸ¥å…¥æ’åº
+function sort.insert_sort(arr,comp,val)  
 	local len = #arr
-	local is_insert = false
-
-	local is_limit = true
-	if not is_number(num) then
-		num = len - 1
-		is_limit = false
-	elseif num > len then
-		num = len - 1--±ÜÃâ²»±ØµÄÑ­»·
-	end
-    for i = 1,num do
+    for i = 1,len do
        if not comp(arr[i],val) then  
 		   table.insert(arr,i,val)
-		   is_insert = true
-		   break
+		   return
        end  
 	end
 	
-	--Ò»¸ö ¿ÕÊı×é »òÕß ²åÈëÄ©Î²Î»ÖÃ
-	if not is_insert then
-		arr[len+1] = val
-	end
-
-	if is_limit then
-		arr[num + 1] = nil--±ÜÃâÓĞ¶àÓà±ØĞëÒªµÄÊı¾İ
-	end
+	--åˆ°è¿™é‡Œç›´æ¥æ·»åŠ åˆ°æœ«å°¾
+	table.insert(arr,val)
 end
 
----@field insert_sort ¿ìËÙÅÅĞò
+---@field quick å¿«é€Ÿæ’åº
 function sort.quick(arr,comp,left,right)
 	if left < right then
 		local help = left
@@ -92,7 +76,7 @@ function sort.quick(arr,comp,left,right)
 				end
 			end
 		end
-		--»ù×¼µã = arr[left] ¾ÀÕı»ù×¼Öµ
+		--åŸºå‡†ç‚¹ = arr[left] çº æ­£åŸºå‡†å€¼
 		if help ~= left then
 			table.exchange(arr,help,left)
 		end
@@ -101,7 +85,7 @@ function sort.quick(arr,comp,left,right)
 	end
 end
 
----@field insert_sort ¹é²¢ÅÅĞò
+---@field merge å½’å¹¶æ’åº
 function sort.merge(arr,comp,left,right,help)
 	if left < right then
 		local half = math.floor((left + right) / 2)
@@ -133,7 +117,7 @@ function sort.merge(arr,comp,left,right,help)
 	end
 end
 
----@field shuffle Ï´ÅÆÂÒĞò
+---@field shuffle æ´—ç‰Œä¹±åº
 function sort.shuffle(list)
 	local len = #list
 	for i=1,len do

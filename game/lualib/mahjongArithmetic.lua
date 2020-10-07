@@ -10,11 +10,12 @@ local skynet = require("skynet")
 local tostring = require("extend_tostring")
 local string = require("extend_string")
 local table = require("extend_table")
+local math = require("extend_math")
 local mjHelper = require("mahjongHelper")
 ---@class arithmetic 麻将算法
 local arithmetic = {
-    init = false,       --是否初始化
-    
+    init = false,           --是否初始化
+    support_qidui = true,   --默认支持七对
 }
 
 local this = arithmetic
@@ -140,9 +141,9 @@ function arithmetic.inittialize(sunData)
 end
 
 ---@field ableKanHu 坎胡检查
----@param hasHand  手牌
+---@param hasHand   手牌
 ---@return an       分析数据
----@return mj      将对麻将
+---@return jiang    将对麻将
 function arithmetic.analyze(hasHand,lzCount)
     local an = {}
     --统计每种花色的牌
@@ -222,7 +223,7 @@ function arithmetic.ableHu(hand,lz)
         return false
     end
 
-    local has = table.has_count(hand)
+    local has = table.arrToHas(hand)
 
     local lzCount = has[lz] or 0
     if lz then
@@ -235,11 +236,10 @@ function arithmetic.ableHu(hand,lz)
     end
 
     --是否七对
-    if this.checkQiDui(has,lzCount) then
-        return true
-    end
-
-    if lzCount > 0 then
+    if this.support_qidui then
+        if this.checkQiDui(has,lzCount) then
+            return true
+        end
     end
 
     return this.ableKanHu(has,lzCount)
@@ -256,7 +256,7 @@ function arithmetic.ableKanHu(has,lzCount)
 
     --如果将对固定了
     if jiang then
-        return this.ableKan(an,mks)
+        return this.ableKan(an,mks,lzCount)
     end
     
     --没有癞子
@@ -328,12 +328,7 @@ function arithmetic.ableKan(an,mks,lzCount)
     local totalNeed = 0
     for sunID,has in pairs(an) do
         mks[sunID] = mks[sunID] or mappingKey(has)
-        local need = mapping[mks[sunID]]
-        --隐射不存在
-        if not need then
-            mks[sunID] = -1
-            return false
-        end
+        local need = this.needLaiZi(has,mks[sunID])
 
         --如果癞子不够了
         totalNeed = totalNeed + need
@@ -345,11 +340,123 @@ function arithmetic.ableKan(an,mks,lzCount)
     return true
 end
 
+
+---@field needLaiZi 需要癞子数量
+---@return number 需要的癞子数量
+function arithmetic.needLaiZi(has,key)
+    --不需要癞子
+    if mapping[key] then
+        return 0
+    end
+    
+    --统计多少张牌
+    local sum = table.sum_has(has)
+
+    --一张牌一定缺2张癞子
+    if 1 == sum then
+        return 2
+    end
+
+    --2张牌
+    local arr = table.hasToArr(has)
+    if 2 == sum then
+        --刻子
+        if arr[1] == arr[2] then
+            return 1
+        end
+        --顺子
+        if math.abs(arr[1]-arr[2]) <= 2 then
+            return 1
+        end
+    end
+    
+    --穷举所有可能-返回需要最小的癞子
+    local max = sum * 2         --最大需要癞子
+    local min = sum % 3         --最少需要癞子
+    local fin = max             --实际需要癞子
+
+    local hastm = this.referType(has)
+    local arrtm = table.hasToArr(hastm)
+    fin = this.poorLaiZi(has,arrtm)
+    --最多就是自身2倍
+    return fin
+end
+
+---@field referType 获得涉及的所有牌型
+function arithmetic.referType(has)
+    local hastm = table.fortab()
+    for mj,_ in pairs(has) do
+        for _,mt in pairs(hasGroup[mj]) do
+            hastm[mt]=1
+        end
+    end
+    return hastm
+end
+
+--穷举所有癞子
+function arithmetic.poorLaiZi(has,arrtm)
+end
+
+
+
+
+
+---@field getTingInfo   听牌检查
+---@param hand          手牌
+---@param hasfull       所有牌
+---@param lz_mj         癞子
+function arithmetic.getTingInfo(hand,hasfull,lz_mj)
+    local ting = table.fortab()
+    --重新拷贝一份
+    local hand = table.copy(hand)
+    local an = mjHelper.getAnalyze(hand,lz_mj)
+
+    local hasMahjongSelf = table.arrToHas(hand)
+    for _out,_ in pairs(hasMahjongSelf) do
+        --移除出牌
+        table.find_remove(hand,_out)
+        for _get,_ in pairs(hasfull) do
+            --自己没有的不检查(除非有癞子)
+            local color = mjHelper.getColor(_get)
+            if an.hasColor[color] or an.lz_num > 0 then
+                --添加获取
+                table.insert(hand,_get)
+                if this.checkAbleHu(hand,this.lz_mj) then
+                    ting[_out] = ting[_out] or table.fortab()
+                    ting[_out][_get] = true
+                end
+                --移除获取
+                table.remove(hand,#hand)
+            end
+        end
+        --还原出牌
+        table.insert(hand,_out)
+    end
+    return ting
+end
+
+---@field setSupportQiDui 设置七对标志
+function arithmetic.setSupportQiDui(suppor)
+    this.support_qidui = suppor
+end
+
 return arithmetic
 
 
 
 --[[
+
+    {
+        this.support_qidui = true 默认支持七对
+    }
+
     胡牌思路
     查表法 总数量 46375 种
+
+    听牌检查-无癞子情况
+        1、自己没有的牌不用考虑
+        2、无法得到将牌不用考虑
+
+    将牌确定-无癞子情况
+        1、字牌不成顺如果只有一对那么将牌就固定了
 ]]
