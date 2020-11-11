@@ -16,15 +16,5 @@ end)
 
 
 --[[
-	game = {
-		lualib = {
-			mahjongHelper = 麻将辅助
-			pokerHelper = 扑克辅助
-		},
-
-		service = {
-			wswatchdog
-		},
-
-	}
+	
 ]]

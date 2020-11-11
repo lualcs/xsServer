@@ -216,11 +216,11 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
     const TValue *tm;  /* '__newindex' metamethod */
     if (slot != NULL) {  /* is 't' a table? */
-		  Table *h = hvalue(t);  /* save 't' table */
-		  if (isshared(h))
-        luaG_typeerror(L, t, "change");
+			Table *h = hvalue(t);  /* save 't' table */
+			if (isshared(h))
+			luaG_typeerror(L, t, "change");
 
-		  //lua_assert(ttisnil(slot));  /* old value must be nil */
+			//lua_assert(ttisnil(slot));  /* old value must be nil */
 	  
 	    // old value is nil call __newindex
 	    if(ttisnil(slot))
@@ -229,6 +229,7 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
 		    if (tm == NULL) {  /* no metamethod? */
 		    	if (slot == luaO_nilobject)  /* no previous entry? */
 					  slot = luaH_newkey(L, h, key);  /* create one */
+					  
 		    	/* no metamethod and (now) there is an entry with given key */
 		    	setobj2t(L, cast(TValue *, slot), val);  /* set its new value */
 		    	invalidateTMcache(h);
@@ -243,6 +244,7 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
 		    if (tm == NULL) {  /* no metamethod? */
 		    	if (slot == luaO_nilobject)  /* no previous entry? */
 					  slot = luaH_newkey(L, h, key);  /* create one */
+					  
 		    	/* no metamethod and (now) there is an entry with given key */
 		    	setobj2t(L, cast(TValue *, slot), val);  /* set its new value */
 		    	invalidateTMcache(h);
@@ -269,7 +271,7 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
       return;  /* done */
     /* else loop */
   }
-  luaG_runerror(L, "'__newindex or __assing' chain too long; possible loop");
+  luaG_runerror(L, "'__newindex or __assign' chain too long; possible loop");
 }
 
 

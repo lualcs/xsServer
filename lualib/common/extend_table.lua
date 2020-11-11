@@ -43,12 +43,23 @@ end
 function table.copy_filter(t,filter)
 	local new =  table.fortab()
 	for k,v in ipairs(t) do
-		if filter(v) then
+		if not filter or filter(k,v) then
 			table.insert(new,v)
 		end
 	end
 	return new
 end
+
+---@field copy_line 不连续数组 拷贝成连续数组
+function table.copy_line(t)
+	local new =  table.fortab()
+	for k,v in pairs(t) do
+		table.insert(new,v)
+	end
+	return new
+end
+
+
 
 ---@field 	exchange 值交换
 ---@param	t 一个表
@@ -117,11 +128,24 @@ end
 ---@param v				查值
 ---@param c				个数
 function table.check_v_count(t,v,c)
+	c = c or 1
 	for _,_v in ipairs(t) do
 		if _v == v then
 			c = c - 1
 		end
 		if c <= 0 then
+			return true
+		end
+	end
+	return false
+end
+
+---@field exist 是否存在某个值
+---@param t		表数据
+---@param v		值数据
+function table.exist(t,v)
+	for _,_v in pairs(t) do
+		if _v == v then
 			return true
 		end
 	end
@@ -178,84 +202,31 @@ end
 
 ---@field clear 清空table
 function table.clear(t)
+	if not is_table(t) then
+		return
+	end
     for k,v in pairs(t) do
         t[k] = nil
     end
 end
 
 ---@field clearEmpty 清空非table
-local function clearEmpty(t)
+function table.clearEmpty(t)
     if not is_table(t) then return end
 	for k,v in pairs(t) do
 		if not is_table(v) then
 			t[k] = nil
 		else
-			clearEmpty(v)
+			table.clearEmpty(v)
 		end
 	end
 end
-
-table.clearEmpty = clearEmpty
-
-local uv_fortab = {} --回收表
-local uv_waitls = {} --待回收
-local uv_waitrecycle = false
-
----@field fortab 申请一个空表
-function table.fortab()
-    --去除数据
-	local idx = #uv_fortab
-	local tab = uv_fortab[idx] or {}
-	uv_fortab[idx] = nil
-	
-	for k,v in pairs(tab) do
-		tab[k] = nil
-	end
-	
-	if uv_waitrecycle then
-		uv_waitls[tab] = true
-	end
-	return tab
-end
-
----@field recycle 浅回收 这个函数建议只用于非table.fortab申请的进行回收
-function table.recycle(t)
-    local count = #uv_fortab
-    if count >= 10000 then
-        print('warning table.recycle:',count)
-    end
-	uv_fortab[count + 1] = t
-	uv_waitls[t] = nil
-
-end
-
----@field recycle 深回收 这个函数建议只用于非table.fortab申请的进行回收
-function table.recycle_deep(t)
-	for k,v in pairs(t) do
-		if is_table(v) then
-			table.recycle_deep(v)
-		end
-	end
-	table.recycle(t)
-end
-
----@field wait_fortab  开始标记回收
-function table.wait_fortab()
-	uv_waitrecycle = true
-end
-
----@field wait_recycle 回收所有标记
-function table.wait_recycle()
-	for _t,_ in pairs(uv_waitls) do
-		table.recycle(_t)
-	end
-	uv_waitrecycle = false
-end
-
-
 
 ---@field empty 判断table是否空表
 function table.empty(t)
+	if not t then
+		return true
+	end
 	return nil == next(t)
 end
 
@@ -271,11 +242,11 @@ end
 
 local _read_only_tm = {
 	__newindex = function(t,k,v)
-		print('__newindex:Read - only table read - write failed')
+		print('只读表不能新增加值')
 	end,
 	
 	__assign = function(t,k,v)
-		print('__assign:The reassignment failed')
+		print('只读表不能修改此值')
 	end
 }
 
@@ -343,11 +314,6 @@ function table.default_zero_deep(tab)
 		end
 	end
 	table.default_zero(tab)
-end
-
-
-function table.empty(tab)
-	return nil == next(tab)
 end
 
 --统计表元素个数
@@ -428,6 +394,96 @@ function table.hasToArr(has)
 		table.push_repeat(arr,k,count)
 	end
 	return arr
+end
+
+---@field 	hasToArr 	转数组
+---@param 	has 	    统计表
+---@return 	table		数组表
+function table.hasToArrEx(has)
+	local arr = table.fortab()
+	for k,count in pairs(has) do
+		table.insert(arr,k)
+	end
+	return arr
+end
+
+---@field include 包含
+function table.include(a,b)
+
+	--数据对比
+	if a == b then
+		return true
+	end
+
+	--类型检查
+	if type(a) ~= type(b) then
+		return false
+	end
+
+	--不是table
+	if not is_table(a) then
+		return false
+	end
+
+	--不是table
+	if not is_table(b) then
+		return false
+	end
+
+	for ak,av in pairs(a) do
+		local bv = b[ak]
+		--数据不同
+		if av ~= bv then
+			if not table.include(av,bv) then
+				return false
+			end
+		end
+	end
+	return true
+end
+
+
+---@field compare_table 对比表数据是否一样
+function table.compare(a,b)
+	if not table.include(a,b) then
+		return false
+	end
+
+	if not table.include(b,a) then
+		return false
+	end
+	return true
+end
+
+---@field customMerge 	数组定制合并
+function table.customMerge(arr,iKey,aVal,bVal)
+	local has = {}
+	--填充has
+	for _,item in ipairs(arr) do
+		local k = item[iKey]
+		if not has[k] then
+			has[k] = {
+				[iKey] = k,
+				[aVal] = 0,
+				[bVal] = 0,
+			}
+		end
+	end
+	--合并数据
+	for _,item in ipairs(arr) do
+		local k = item[iKey]
+		local v = item[aVal]
+		has[k][aVal] = has[k][aVal] + v
+		local v = item[bVal]
+		has[k][bVal] = has[k][bVal] + v
+	end
+	--格式还原
+	local new = {}
+	for _,item in pairs(has) do
+		table.insert(new,item)
+	end
+
+	return new
 end
 
 return table
