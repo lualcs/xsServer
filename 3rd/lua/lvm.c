@@ -216,39 +216,40 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
     const TValue *tm;  /* '__newindex' metamethod */
     if (slot != NULL) {  /* is 't' a table? */
-      Table *h = hvalue(t);  /* save 't' table */
-      if (isshared(h))
+		Table *h = hvalue(t);  /* save 't' table */
+		if (isshared(h))
         luaG_typeerror(L, t, "change");
-      //lua_assert(ttisnil(slot));  /* old value must be nil */
+        
+		  //lua_assert(ttisnil(slot));  /* old value must be nil */
 	  
-	  // old value is nil call __newindex
-	  if(ttisnil(slot))
-	  {
-		tm = fasttm(L, h->metatable, TM_NEWINDEX);  /* get metamethod */
-		if (tm == NULL) {  /* no metamethod? */
-			if (slot == luaO_nilobject)  /* no previous entry? */
-			slot = luaH_newkey(L, h, key);  /* create one */
-			/* no metamethod and (now) there is an entry with given key */
-			setobj2t(L, cast(TValue *, slot), val);  /* set its new value */
-			invalidateTMcache(h);
-			luaC_barrierback(L, h, val);
-			return;
-		}
-	  }
-	  // old value not is nil call __assign
-	  else
-	  {
-		tm = fasttm(L, h->metatable, TM_ASSIGN);  /* get metamethod */
-		if (tm == NULL) {  /* no metamethod? */
-			if (slot == luaO_nilobject)  /* no previous entry? */
-			slot = luaH_newkey(L, h, key);  /* create one */
-			/* no metamethod and (now) there is an entry with given key */
-			setobj2t(L, cast(TValue *, slot), val);  /* set its new value */
-			invalidateTMcache(h);
-			luaC_barrierback(L, h, val);
-			return;
-		}
-	  }
+	    // old value is nil call __newindex
+	    if(ttisnil(slot))
+	    {
+		    tm = fasttm(L, h->metatable, TM_NEWINDEX);  /* get metamethod */
+		    if (tm == NULL) {  /* no metamethod? */
+		    	if (slot == luaO_nilobject)  /* no previous entry? */
+					slot = luaH_newkey(L, h, key);  /* create one */
+		    	/* no metamethod and (now) there is an entry with given key */
+		    	setobj2t(L, cast(TValue *, slot), val);  /* set its new value */
+		    	invalidateTMcache(h);
+		    	luaC_barrierback(L, h, val);
+		    	return;
+		    }
+	    }
+	    // old value not is nil call __assign
+	    else
+	    {
+		    tm = fasttm(L, h->metatable, TM_ASSIGN);  /* get metamethod */
+		    if (tm == NULL) {  /* no metamethod? */
+		    	if (slot == luaO_nilobject)  /* no previous entry? */
+					slot = luaH_newkey(L, h, key);  /* create one */
+		    	/* no metamethod and (now) there is an entry with given key */
+		    	setobj2t(L, cast(TValue *, slot), val);  /* set its new value */
+		    	invalidateTMcache(h);
+		    	luaC_barrierback(L, h, val);
+		    	return;
+		    }
+	    }
       
       /* else will try the metamethod */
     }
