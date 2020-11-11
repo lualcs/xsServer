@@ -239,8 +239,6 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
 	    // old value not is nil call __assign
 	    else
 	    {
-        int a = 0;
-        a = a/a;
 		    tm = fasttm(L, h->metatable, TM_ASSIGN);  /* get metamethod */
 		    if (tm == NULL) {  /* no metamethod? */
 		    	if (slot == luaO_nilobject)  /* no previous entry? */
@@ -255,7 +253,8 @@ void luaV_finishset (lua_State *L, const TValue *t, TValue *key,
       
       /* else will try the metamethod */
     }
-    else {  /* not a table; check metamethod */
+    else 
+    {  /* not a table; check metamethod */
 	
       if (ttisnil(tm = luaT_gettmbyobj(L, t, TM_NEWINDEX)))
         luaG_typeerror(L, t, "index");
