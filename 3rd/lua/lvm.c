@@ -791,8 +791,8 @@ void luaV_finishOp (lua_State *L) {
 
 
 /* same for 'luaV_settable' */
-#define settableProtected(L,t,k,v) { const TValue *slot; \
-  if (!luaV_fastset(L,t,k,slot,luaH_get,v) || 1) \
+#define settableProtected(L,t,k,v) { const TValue *slot = NULL; \
+	if(ttistable(t)) slot = luaH_get(hvalue(t), k); \
     Protect(luaV_finishset(L,t,k,v,slot)); }
 
 
