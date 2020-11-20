@@ -1,3 +1,8 @@
+--[[
+    file:mapNames.lua 
+    desc:名字隐射
+    auth:Carol Luo
+]]
 return {
     [0x11] = "一万",
     [0x12] = "二万",

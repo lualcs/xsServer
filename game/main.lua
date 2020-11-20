@@ -1,20 +1,10 @@
 local skynet = require "skynet"
-local tostring = require("extend_tostring")
-local table = require("extend_table")
-local sort = require("extend_sort")
-local mjHelper = require("mahjongHelper")
-
-
+local sharedata = require("skynet.sharedata")
+--启动
 skynet.start(function()
-	
-	local a = {test=2}
-	table.read_only(a)
-	a.test = 1
-	a.test = 1
-	
+    --启动调试
+    skynet.newservice("debug_console",20001)
+    --共享启动
+    local serviceShare = skynet.uniqueservice("service/serviceShare")
 end)
 
-
---[[
-	
-]]
