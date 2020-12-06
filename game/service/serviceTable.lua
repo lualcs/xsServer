@@ -10,12 +10,13 @@ local queue = require("skynet.queue")
 local queue = queue()
 local string = string
 local format = string.format
-
+local tostring = require("extend_tostring")
 
 local infomation = {}
 local service = {}
 
 function service.start()
+    local mapNames = sharedata.query("canaster.mapNames")
 end
 
 skynet.start(function()
@@ -29,5 +30,6 @@ skynet.start(function()
         else
             skynet.error(format("unknown:%s",cmd))
         end
+        skynet.retpack(false)
     end)
 end)
