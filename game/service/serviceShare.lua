@@ -33,5 +33,10 @@ skynet.start(function()
     local deploy = require(name)
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
+    --服务信息数据
+    local name = "listener.mapServers"
+    local deploy = require(name)
+    sharedata.new(name,deploy)
+    _G.package.loaded[name] = nil
 end)
 
