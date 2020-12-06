@@ -63,29 +63,45 @@ end
 ---是否方块
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper:is_fk(card)
+function pokerHelper:is_fangKuai(card)
     return 1 == self:getColor(card)
 end
 
 ---是否梅花
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper:is_fk(card)
+function pokerHelper:is_meiHua(card)
     return 2 == self:getColor(card)
 end
 
 ---是否红桃
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper:is_fk(card)
+function pokerHelper:is_hongTao(card)
     return 3 == self:getColor(card)
 end
 
 ---是否黑桃
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper:is_fk(card)
+function pokerHelper:is_heiTao(card)
     return 4 == self:getColor(card)
+end
+
+---是否黑色
+---@param card cardPoker @牌值
+---@return boolean
+function pokerHelper:is_black(card)
+    local color = self:getColor(card)
+    return 1 == color or 3 == color
+end
+
+---是否红色
+---@param card cardPoker @牌值
+---@return boolean
+function pokerHelper:is_red(card)
+    local color = self:getColor(card)
+    return 0 == color or 2 == color
 end
 
 return pokerHelper
