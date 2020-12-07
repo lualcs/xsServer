@@ -4,7 +4,7 @@
     auth:Carol Luo
 ]]
 
-
+---@type table<string,boolean>
 return {
 	["899547113070864"] = true,
 	["1200882018558480"] = true,

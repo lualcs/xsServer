@@ -10,13 +10,15 @@ lualoader = root .. "lualib/loader.lua"
 lua_path = 
 root.."lualib/?.lua;"..
 root.."lualib/?/init.lua;"..
-root.."lualib/common/?.lua;"
-..root.."lualib/common/type/?.lua;"..
+root.."lualib/common/?.lua;"..
+root.."lualib/common/type/?.lua;"..
+root.."lualib/common/system/?.lua;"..
 root.."game/lualib/?.lua;"..
 root.."game/deploy/?.lua;"..
-root.."game/logic/mjHelper/?.lua;"..
-root.."game/logic/pkHelper/?.lua;"..
-root.."game/table/?.lua;"
+root.."game/mjHelper/?.lua;"..
+root.."game/pkHelper/?.lua;"..
+root.."game/table/?.lua;"..
+root.."3rd/rmq/?.lua;"
 
-lua_cpath = root .. "luaclib/?.so"
+lua_cpath = root .. "luaclib/?.so;".."3rd/lua-cjson/?.so;"
 snax = root.."examples/?.lua;"..root.."test/?.lua"

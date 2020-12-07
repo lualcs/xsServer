@@ -10,10 +10,11 @@ local pairs = pairs
 
 local query = {}
 
----@field binart 折半查找函数
----@param arr 数组
----@param comp 比较函数
----@param val 查找值
+---折半查找函数
+---@param arr any[] @数组
+---@param comp function @比较函数
+---@param val any @查找值
+---@return INDEX
 function query.binart(arr,comp,val)
 
 	local start = 1
