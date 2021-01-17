@@ -10,6 +10,9 @@
 ---@alias url string
 ---超链接
 ---
+---@alias host url|ip
+---目标地址
+
 ---@alias ip string
 ---ip
 ---
@@ -28,15 +31,38 @@
 ---@alias name string
 ---名字
 ---
+---@alias path string
+---路径
+---
 ---@alias password string
 ---密码
-
----数值类型别名
+---
+---@alias senum string
+---枚举
+---
+---@alias mysql_cmd string
+---mysql 语句
+---
+---@alias double number
+---浮点数
+---
+---@alias integer number
+---整数
+---
+---@alias level  number
+---表示有优先级
+---
 ---@alias index number
----数组索引 
+---索引 
 ---
 ---@alias score number
 ---积分类型
+---
+---@alias base number
+---倍数
+---
+---@alias leng number
+---长度
 ---
 ---@alias gold number
 ---金币类型
@@ -46,6 +72,12 @@
 ---
 ---@alias userID number
 ---用户ID
+---
+---@alias seatID number
+---座位ID
+---
+---@alias gameID number
+---游戏ID
 ---
 ---@alias cardColor number
 ---0:方块 1:红桃 2:梅花 4:黑桃

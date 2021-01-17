@@ -13,8 +13,10 @@ local class = require("class")
 local table = require("table")
 local math = require("math")
 
-local heap = class('heap')
+---@class heap @最大堆
+local heap = class()
 
+---构造函数
 function heap:ctor(comp_fun)
     if not is_function(comp_fun) then
         return
@@ -25,7 +27,7 @@ function heap:ctor(comp_fun)
     self.gid = 0--用于数据查找
 end
 
---插入节点
+---插入节点
 function heap:insert(ticks,node)
     self.size = self.size + 1
     self.gid = self.gid + 1
@@ -33,7 +35,7 @@ function heap:insert(ticks,node)
     self:siftUp(self.size)
     return self.gid
 end
---查找节点
+---查找节点
 function heap:find(gid)
     local list = self.list
     for _pos,_date in pairs(list) do
@@ -45,7 +47,7 @@ function heap:find(gid)
     end
 end
 
---调整结点队列
+---调整结点队列
 function heap:adjust(event)
     if not is_table(event) then return end
 
@@ -55,7 +57,7 @@ function heap:adjust(event)
     self:siftUp(self.size)
     return event.gid
 end
---取出堆节点
+---取出堆节点
 function heap:extractMin()
     local list = self.list
     local val = list[1]
@@ -64,11 +66,11 @@ function heap:extractMin()
     self:siftDown(1)
     return val
 end
---查看堆节点
+---查看堆节点
 function heap:peek()
     return self.list[1]
 end
---删除堆节点
+---删除堆节点
 function heap:delete(pos)
     local list = self.list
     local del_val = list[pos]
@@ -87,7 +89,7 @@ function heap:delete(pos)
 end
 
 
---一下是辅助函数
+---向上调整位置
 function heap:siftUp(pos)
     local list = self.list
     local child = list[pos]
@@ -103,6 +105,7 @@ function heap:siftUp(pos)
     list[pos] = child
 end
 
+---向下调整位置
 function heap:siftDown(pos)
     local list = self.list
     local pos_val = list[pos]

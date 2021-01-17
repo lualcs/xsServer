@@ -15,9 +15,12 @@ root.."lualib/common/type/?.lua;"..
 root.."lualib/common/system/?.lua;"..
 root.."game/lualib/?.lua;"..
 root.."game/deploy/?.lua;"..
+root.."game/gmHelper/?.lua;"..
+root.."game/gmAssign/?.lua;"..
 root.."game/mjHelper/?.lua;"..
 root.."game/pkHelper/?.lua;"..
-root.."game/table/?.lua;"..
+root.."game/slotsHelper/?.lua;"..
+root.."game/gameList/?.lua;"..
 root.."3rd/rmq/?.lua;"
 
 lua_cpath = root .. "luaclib/?.so;".."3rd/lua-cjson/?.so;"

@@ -4,19 +4,50 @@
     auto:Carol Luo
 ]]
 
-local skynet = require("skynet")
+local os = os
 local debug = debug
+local table = table
+local pairs = pairs
+local tostring = tostring
+local is_table = require("is_table")
+local is_boolean = require("is_boolean")
+local extend_tostring = require("extend_tostring")
+
+local skynet = require("skynet")
+
+function debug.print(...)
+    local tb_lis = {}
+    table.insert(tb_lis,"[")
+    table.insert(tb_lis,os.date("%Y-%m-%d %H:%M:%S"))
+    table.insert(tb_lis,"]")
+    local args = table.pack(...)
+    local res = ""
+    for n, v in pairs(args) do
+        if is_table(v) then
+            table.insert(tb_lis,"\n")
+            table.insert(tb_lis,extend_tostring(v))
+        elseif is_boolean(v) then
+            table.insert(tb_lis,"\n")
+            table.insert(tb_lis,tostring(v))
+        else
+            table.insert(tb_lis,"\n")
+            table.insert(tb_lis,tostring(v))
+        end
+  end
+  
+  return skynet.error(table.concat(tb_lis))
+end
 
 function debug.error(...)
-    skynet.error(...)
+    debug.print(...)
 end
 
 function debug.warning(...)
-    skynet.error(...)
+    debug.print(...)
 end
 
 function debug.normal(...)
-    skynet.error(...)
+    debug.print(...)
 end
 
 

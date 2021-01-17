@@ -5,30 +5,41 @@
 local table = table
 local select = select
 local math = math
-local pairs,ipairs = pairs,ipairs
+local type = type
+local ipairs = ipairs
+local pairs = pairs
 local setmetatable = setmetatable
 local print = print
 local next = next
-
 local is_table = require("is_table")
 local is_string = require("is_string")
 local is_function = require("is_function")
 
 
----@field copy 浅拷贝好像没有意义
----@param t 要拷贝的表
----@return 返回一个新的浅拷贝的表
-function table.copy(t)
-	local new = table.fortab()
+---浅拷贝
+---@param t table @要拷贝的表
+---@param out table @外带表
+---@return table @新表
+function table.copy(t,out)
+	if out then
+		table.clear(out) 
+	end
+	local new = out or {nil}
 	for k,v in pairs(t) do
 		new[k]=v
 	end
 	return new
 end
 
---深拷贝:这个用很多
+---深拷贝
+---@param t 要拷贝的表
+---@param out table @外带表
+---@return table 新表
 function table.copy_deep(t,out)
-	local new = out or table.fortab()
+	if out then
+		table.clear(out) 
+	end
+	local new = out or {nil}
 	for k,v in pairs(t) do
 		if is_table(v) then
 			new[k]=table.copy_deep(v)
@@ -39,9 +50,15 @@ function table.copy_deep(t,out)
 	return new
 end
 
---过滤拷贝:这个用很多
-function table.copy_filter(t,filter)
-	local new =  table.fortab()
+---过滤拷贝
+---@param t any[] @要拷贝的表
+---@param out table @外带表
+---@param filter function|nil @过滤函数
+function table.copy_filter(t,filter,out)
+	if out then
+		table.clear(out) 
+	end
+	local new =  out or {nil}
 	for k,v in ipairs(t) do
 		if not filter or filter(k,v) then
 			table.insert(new,v)
@@ -50,9 +67,11 @@ function table.copy_filter(t,filter)
 	return new
 end
 
----@field copy_line 不连续数组 拷贝成连续数组
+---处理成连续表
+---@param t table @表
+---@return any[]
 function table.copy_line(t)
-	local new =  table.fortab()
+	local new =  {nil}
 	for k,v in pairs(t) do
 		table.insert(new,v)
 	end
@@ -61,16 +80,18 @@ end
 
 
 
----@field 	exchange 值交换
----@param	t 一个表
----@param	a 交换的键
----@param	b 交换的键
+---值交换
+---@param	t any @一个表
+---@param	a any @交换的键
+---@param	b any @交换的键
 function table.exchange(t,a,b)
 	t[a],t[b] = t[b],t[a]
 end
 
----@field	push 	添加t尾部数据v
----@param	maxlen  固定长度
+---添加t尾部数据v
+---@param	t any[]  @数组
+---@param	v any	@数值
+---@param	maxlen number @最大位置
 function table.push(t, v, maxlen)
 	local len = #t
 	if maxlen then
@@ -82,18 +103,20 @@ function table.push(t, v, maxlen)
 	table.insert(t,v)
 end
 
----@field 	insert_repeat 尾部重复添加同一个值
----@param	t 一个表
----@param	a 交换的键
----@param	b 交换的键
+---尾部重复添加同一个值
+---@param t 		any[] @一个表
+---@param v 		any   @添加值
+---@param _count 	count @添加几次
 function table.push_repeat(t,v,_count)
 	for i = 1,_count do
 		table.insert(t,v)
 	end
 end
 
----@field remove_card 移除pos的值
----@return 返回移除的值
+---移除pos的值
+---@param t 		table @一个表
+---@param pos 		any   @一个键
+---@return any
 function table.remove_pos(t,pos)
 	local len = #t
 	local val = t[pos]
@@ -102,11 +125,10 @@ function table.remove_pos(t,pos)
 	return val
 end
 
----@field	移除t star到close数据
----@param	star  开始位置
----@param	close 结束位置
+---移除star到close数据
+---@param	star  index @开始位置
+---@param	close index @结束位置
 function table.remove_chun(t,star,close)
-	
 	local len = #t
 	--删除数据
 	for i = star,close do
@@ -123,11 +145,12 @@ function table.remove_chun(t,star,close)
 	end
 end
 
----@field check_v_count 检查数组值个数
----@param t 			数组
----@param v				查值
----@param c				个数
-function table.check_v_count(t,v,c)
+---检查数组值个数
+---@param t any[]	@数组
+---@param v any		@查值
+---@param c count	@个数
+---@return boolean
+function table.existCount(t,v,c)
 	c = c or 1
 	for _,_v in ipairs(t) do
 		if _v == v then
@@ -140,29 +163,66 @@ function table.check_v_count(t,v,c)
 	return false
 end
 
----@field exist 是否存在某个值
----@param t		表数据
----@param v		值数据
+---是否存在某个值
+---@param t  table<any,any> @表数据
+---@param v  any 			@值数据
+---@return boolean
 function table.exist(t,v)
-	for _,_v in pairs(t) do
+	for _k,_v in pairs(t) do
 		if _v == v then
-			return true
+			return _k
 		end
 	end
 	return false
 end
 
----@field find_remove 	数组查找移除
----@param tab 			列表
----@param v   			移除的值
----@param c		   		移除个数默认值为1
----@param no		   	不检查
----@return  false		失败数据没有变
----@return  true		成功数据已移除
+---是否存在某个值
+---@param t  table<any,any> @表数据
+---@param ls  any[] 		@值数据
+---@return boolean
+function table.existlis(t,ls)
+	for _,v in ipairs(ls) do
+		if not table.exist(t,v) then
+			return false
+		end
+	end
+	return true
+end
+
+---是否存在某个值
+---@param t  table<any,any> @表数据
+---@param ls  any[] 		@值数据
+---@return boolean
+function table.existarg(t,...)
+	for i=1,select("#",...) do
+		local v = select(i,...)
+		if not table.exist(t,v) then
+			return false
+		end
+	end
+	return true
+end
+
+---删除
+---@param t table @表数据
+---@param k any	  @任意数据
+---@return V
+function table.delete(t,k)
+	local v = t[k]
+	t[k] = nil
+	return v
+end
+
+---数组查找移除
+---@param t any[] 		@数组
+---@param v any	  		@移除的值
+---@param c count 		@移除个数默认值为1
+---@param no boolean 	@不检查
+---@return  boolean
 function table.find_remove(t,v,c,no)
 	c = c or 1
 	if not no then
-		if not table.check_v_count(t,v,c) then
+		if not table.existCount(t,v,c) then
 			return false
 		end
 	end
@@ -185,14 +245,72 @@ function table.find_remove(t,v,c,no)
 	return true
 end
 
----@field absorb 吸收
+---删除列表
+---@param t any[] @数组
+---@param ... any[] @变长参数
+function table.remove_args(t,...)
+	for i=1,select("#",...) do
+		local v = select(i,...)
+		if not table.find_remove(t,v) then
+			return false
+		end
+	end
+	return true
+end
+
+---删除列表
+---@param t any[] @数组
+---@param ... any[] @变长参数
+function table.remove_list(t,lis)
+	for _,v in ipairs(lis) do
+		if not table.find_remove(t,v) then
+			return false
+		end
+	end
+	return true
+end
+
+---添加列表
+---@param t any[] @数组
+---@param ... any[] @变长参数
+function table.push_args(t,...)
+	for i=1,select("#",...) do
+		local v = select(i,...)
+		table.insert(t,v)
+	end
+	return true
+end
+
+---添加列表
+---@param t any[] @数组
+---@param ... any[] @变长参数
+function table.push_list(t,lis)
+	for _,v in ipairs(lis) do
+		table.insert(t,v)
+	end
+end
+
+---添加列表
+---@param t any[] @数组
+---@param ... any[] @变长参数
+function table.push_maps(t,lis)
+	for _,v in pairs(lis) do
+		table.insert(t,v)
+	end
+end
+
+---吸收另一个表的值 at[k] = at[k] + bt[k]
+---@param at table<any,count> @表1
+---@param bt table<any,count> @表2
 function table.absorb(at,bt)
 	for k,v in pairs(bt) do
 		at[k] = (at[k] or 0)+v
 	end
 end
 
----@field ventgas 吐出
+---吐出另一个表的值 at[k] = at[k] - bt[k]
+---@param at table<any,count> @表1
+---@param bt table<any,count> @表2
 function table.ventgas(at,bt)
 	for k,v in pairs(bt) do
 		at[k] = (at[k] or 0)-v
@@ -200,17 +318,22 @@ function table.ventgas(at,bt)
 end
 
 
----@field clear 清空table
+---清空table {a={1}} to {nil}
+---@param t table @表
+---@return table|nil
 function table.clear(t)
 	if not is_table(t) then
 		return
 	end
+
     for k,v in pairs(t) do
         t[k] = nil
-    end
+	end
+	return t
 end
 
----@field clearEmpty 清空非table
+---清空数据 {a={1}} to {a={nil}}
+---@param t table @表
 function table.clearEmpty(t)
     if not is_table(t) then return end
 	for k,v in pairs(t) do
@@ -220,9 +343,11 @@ function table.clearEmpty(t)
 			table.clearEmpty(v)
 		end
 	end
+	return t
 end
 
----@field empty 判断table是否空表
+---是否空表 {nil} or nil
+---@return boolean
 function table.empty(t)
 	if not t then
 		return true
@@ -230,33 +355,25 @@ function table.empty(t)
 	return nil == next(t)
 end
 
-
---扑克拷贝
-function table.copy_card(GetArray,OtherArray,OtherB,OtherE)
-	OtherE = math.min(OtherE,#OtherArray)
-	for i=OtherB,OtherE do
-		GetArray[#GetArray + 1] = OtherArray[i]
-	end
-end
-
-
 local _read_only_tm = {
 	__newindex = function(t,k,v)
-		print('只读表不能新增加值')
+		filelog.sys_error('只读表不能新增加值',debug.traceback())
 	end,
 	
 	__assign = function(t,k,v)
-		print('只读表不能修改此值')
+		filelog.sys_error('只读表不能新增加值',debug.traceback())
 	end
 }
 
---设置一个只读表
+---设置一个只读表
+---@param tab table @表
 function table.read_only(tab)
 	setmetatable(tab,_read_only_tm)
 	return tab
 end
 
---设置只读配置表递归
+---设置只读配置表递归
+---@param tab table @表
 function table.read_only_deep(tab)
 	for k,v in pairs(tab) do
 		if is_table(v) then
@@ -271,7 +388,8 @@ local _noassign_tm = {
 		print('__assign:The reassignment failed')
 	end
 }
---设置不可再次覆盖的表
+---设置不可再次覆盖的表
+---@param tab table @表
 function table.noassign(tab)
 
     for k,v in pairs(tab) do
@@ -284,7 +402,8 @@ function table.noassign(tab)
 	return tab
 end
 
---设置不可覆盖配置表递归
+---设置不可覆盖配置表递归
+---@param tab table @表
 function table.noassign_deep(tab)
 	for k,v in pairs(tab) do
 		if is_table(v) then
@@ -301,12 +420,14 @@ local _zero_mt = {
 	end
 }
 
---设置默认值0表
+---设置默认值0表
+---@param tab table @表
 function table.default_zero(tab)
     setmetatable(tab,_zero_mt)
 end
 
---设置默认值0表 
+---设置默认值0表
+---@param tab table @表
 function table.default_zero_deep(tab)
     for k,v in pairs(tab) do
 		if is_table(v) then
@@ -316,7 +437,9 @@ function table.default_zero_deep(tab)
 	table.default_zero(tab)
 end
 
---统计表元素个数
+---统计表元素个数
+---@param tab table @表
+---@return count
 function table.element_count(tab)
 	local nCount = 0
 	for k,v in pairs(tab) do
@@ -325,7 +448,31 @@ function table.element_count(tab)
 	return nCount
 end
 
---随机一个哈希元素
+---数组元素个数
+---@param t any[] @数组a
+---@return count 
+function table.arrElementtCount(t)
+	local count = 0
+	for _,_ in ipairs(t) do
+		count = count + 1
+	end
+	return count
+end
+
+---哈希元素个数
+---@param t any[] @数组a
+---@return count 
+function table.hasElementtCount(t)
+	local count = 0
+	for _,_ in pairs(t) do
+		count = count + 1
+	end
+	return count
+end
+
+---随机一个哈希元素
+---@param tab table @表
+---@return any,any @key,val
 function table.random_hash(tab)
 	if table.empty(tab) then return end
 
@@ -338,7 +485,7 @@ function table.random_hash(tab)
 	end
 end
 
---循环执行一个函数
+---循环执行一个函数
 function table.forFunction(tabs,...)
     for k,v in pairs(tabs) do
         if is_function(v) then
@@ -347,7 +494,9 @@ function table.forFunction(tabs,...)
     end
 end
 
----@field sum_has 哈希总和v
+---哈希总和v
+---@param t table @表
+---@return number @sum(v)
 function table.sum_has(t)
 	local sum = 0
 	for _,v in pairs(t) do
@@ -356,7 +505,9 @@ function table.sum_has(t)
 	return sum
 end
 
----@field sum_has 哈希总和k
+---哈希总和k
+---@param t table @表
+---@return number @sum(k)
 function table.sum_has_k(t)
 	local sum = 0
 	for k,_ in pairs(t) do
@@ -365,7 +516,9 @@ function table.sum_has_k(t)
 	return sum
 end
 
----@field sum_arr 数组总和v
+---数组总和v
+---@param t table @表
+---@return number @sum(v)
 function table.sum_arr(t)
 	local sum = 0
 	for _,v in ipairs(t) do
@@ -373,41 +526,56 @@ function table.sum_arr(t)
 	end
 	return sum
 end
- 
----@field 	arrToHas  转哈希
----@param 	arr 	  数组表
----@return  table	  哈希表
-function table.arrToHas(arr)
-	local has = table.fortab()
+
+---转哈希
+---@param 	arr 	any[]				@数组表
+---@param 	out 	any[]				@外传表
+---@return  table<any,count> 			@哈希表
+function table.arrToHas(arr,out)
+	if out then
+		table.clear(out) 
+	end
+	local has = out or {nil}
 	for k,v in pairs(arr) do
 		has[v] = (has[v] or 0) + 1
 	end
 	return has
 end
 
----@field 	hasToArr 	转数组
----@param 	has 	    统计表
----@return 	table		数组表
-function table.hasToArr(has)
-	local arr = table.fortab()
+---转数组有重复
+---@param 	has table<any,count>	@统计表
+---@param 	out 	any[]			@外传表
+---@return 	any[] @数组表 有重复
+function table.hasToArr(has,out)
+	if out then
+		table.clear(out) 
+	end
+	local arr = out or {nil}
 	for k,count in pairs(has) do
 		table.push_repeat(arr,k,count)
 	end
 	return arr
 end
 
----@field 	hasToArr 	转数组
----@param 	has 	    统计表
----@return 	table		数组表
-function table.hasToArrEx(has)
-	local arr = table.fortab()
+---转数组无重复
+---@param 	has table<any,count>	@统计表
+---@param 	out 	any[]			@外传表
+---@return 	any[] @数组表 无重复
+function table.hasToArrEx(has,out)
+	if out then
+		table.clear(out) 
+	end
+	local arr = out or {nil}
 	for k,count in pairs(has) do
 		table.insert(arr,k)
 	end
 	return arr
 end
 
----@field include 包含
+---包含 a{c={1}} b{c={1,2,3}} to true
+---@param a any @值1
+---@param b any @值2
+---@return boolean
 function table.include(a,b)
 
 	--数据对比
@@ -443,47 +611,53 @@ function table.include(a,b)
 end
 
 
----@field compare_table 对比表数据是否一样
-function table.compare(a,b)
+---深比较
+function table.compare_deep(a,b)
+	--正向比较
 	if not table.include(a,b) then
 		return false
 	end
 
+	--反向比较
 	if not table.include(b,a) then
 		return false
 	end
 	return true
 end
 
----@field customMerge 	数组定制合并
-function table.customMerge(arr,iKey,aVal,bVal)
-	local has = {}
-	--填充has
-	for _,item in ipairs(arr) do
-		local k = item[iKey]
-		if not has[k] then
-			has[k] = {
-				[iKey] = k,
-				[aVal] = 0,
-				[bVal] = 0,
-			}
-		end
-	end
-	--合并数据
-	for _,item in ipairs(arr) do
-		local k = item[iKey]
-		local v = item[aVal]
-		has[k][aVal] = has[k][aVal] + v
-		local v = item[bVal]
-		has[k][bVal] = has[k][bVal] + v
-	end
-	--格式还原
-	local new = {}
-	for _,item in pairs(has) do
-		table.insert(new,item)
-	end
 
-	return new
+---数组反
+---@param t any[] @数组
+---@param count count @倒数第几
+---@return any
+function table.lastBy(t,count)
+	return t[#t+1-count]
+end
+
+---gc获取空表
+---@param gcs any[] @数组
+function table.gcforget(gcs)
+	local len = #gcs
+	local tab = gcs[len] or {nil}
+	gcs[len] = nil
+	table.clear(tab)
+	return tab
+end
+
+---gc回收空表
+---@param gcs any[]
+---@param t any
+function table.gcforset(gcs,t)
+	gcs[#gcs] = t
+end
+
+---gc回收空表
+---@param gcs any[]
+---@param t any
+function table.gcforsets(gcs,ts)
+	for _,t in pairs(ts) do
+		gcs[#gcs] = t
+	end
 end
 
 return table

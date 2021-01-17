@@ -1,20 +1,27 @@
+
+--[[
+    file:api_json.lua
+    desc:cjson 的使用
+    auth:Carol Luo
+]]
+
 local cjson = require("cjson")
 
----@class cjson json
-local json = {}
+---@class api_json json
+local api_json = {}
 
 ---转json
 ---@param t any @任意表
 ---@return json
-function json.encode(t)
+function api_json.encode(t)
     return cjson.encode(t)
 end
 
 ---转table
 ---@param s json @json数据
 ---@return any @表格式
-function json.decode(s)
+function api_json.decode(s)
     return cjson.decode(s)
 end
 
-return json
+return api_json

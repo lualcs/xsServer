@@ -9,8 +9,12 @@ local is_table = require("is_table")
 local table = require("extend_table")
 local math = require("extend_math")
 
-local sort = {}
----@field bubble 冒泡排序
+local sort = {nil}
+
+---冒泡排序
+---@param arr any[] @数组
+---@param comp function  @比较函数
+---@param num number  @结束位置
 function sort.bubble(arr,comp,num)  
 	local len = #arr
 	if not is_number(num) then
@@ -27,7 +31,10 @@ function sort.bubble(arr,comp,num)
     end  
 end
 
----@field bubble 选择排序
+---选择排序
+---@param arr any[] @数组
+---@param comp function  @比较函数
+---@param num number  @结束位置
 function sort.select(arr,comp,num)  
 	local len = #arr
 	if not is_number(num) then
@@ -50,7 +57,10 @@ function sort.select(arr,comp,num)
     end  
 end
 
----@field insert_sort 查入排序
+---插入排序
+---@param arr any[] @数组
+---@param comp function  @比较函数
+---@param val any  @插入值
 function sort.insert_sort(arr,comp,val)  
 	local len = #arr
     for i = 1,len do
@@ -64,7 +74,11 @@ function sort.insert_sort(arr,comp,val)
 	table.insert(arr,val)
 end
 
----@field quick 快速排序
+---快速排序
+---@param arr any[] @数组
+---@param comp function @比较函数
+---@param left number @开始位置
+---@param right number @结束位置
 function sort.quick(arr,comp,left,right)
 	if left < right then
 		local help = left
@@ -85,7 +99,12 @@ function sort.quick(arr,comp,left,right)
 	end
 end
 
----@field merge 归并排序
+---归并排序
+---@param arr any[] @数组
+---@param comp function @比较方法
+---@param left number @开始位置
+---@param right number @结束位置
+---@param help any[] @外部传入数据保存
 function sort.merge(arr,comp,left,right,help)
 	if left < right then
 		local half = math.floor((left + right) / 2)
@@ -117,14 +136,26 @@ function sort.merge(arr,comp,left,right,help)
 	end
 end
 
----@field shuffle 洗牌乱序
+---洗牌乱序
+---@param list any[] @数组
 function sort.shuffle(list)
 	local len = #list
 	for i=1,len do
 		local pos = math.random(i,len)
 		list[i],list[pos] = list[pos],list[i]
 	end
+	return list
 end
 
+---反序排序
+---@param list any[] @数组
+function sort.reverse(list)
+	local leng = #list
+	local half = leng // 2
+	for i=1,half do
+		table.exchange(list,i,leng-i+1)
+	end
+	return list
+end
 
 return sort

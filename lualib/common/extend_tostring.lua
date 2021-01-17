@@ -55,12 +55,13 @@ local function _tablestring(strlist,val,level,key)
 		table.insert( strlist,"[")
 		table.insert(strlist,tostring(key))
 		table.insert( strlist,"]")
+	else
+		table.insert( strlist,"{")
 	end
 	
 	if is_table(val) then
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,indent)
-		table.insert( strlist,"{")
 	else
 		return
 	end
