@@ -13,3 +13,9 @@
 ---@field password password @用户密码
 ---@field vhost name @虚拟主机
 ---@field trailing_lf boolean @true启动跟踪功能
+
+
+---@class enumCompare  @大小枚举
+---@field equality   number  @0相等
+---@field greater    number  @1大于
+---@field lessthan   number @-1小于

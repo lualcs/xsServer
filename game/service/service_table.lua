@@ -23,7 +23,7 @@ local this = service_table
 ---@param gameCustom gameCustom @定制
 function service_table.start(gameID,gameCustom)
     ---@type gameInfo
-    local gameInfo = this._gameInfos[gameID]
+    local gameInfo = this.infos[gameID]
     --共享内存
     for _,name in ipairs(gameInfo.sharedList) do
         local deploy = sharedata.query(name)
@@ -32,7 +32,8 @@ function service_table.start(gameID,gameCustom)
     --创建桌子
     local import = require(gameInfo.importTable)
     ---@type gameTable @游戏桌子
-    this._gameTable = import.new(this,gameInfo,gameCustom)
+    this._table = import.new(this,gameInfo,gameCustom)
+    this._table:gameStart()
     skynet.retpack(false)
 end
 
@@ -44,19 +45,19 @@ end
 
 skynet.init(function()
     ---@type gameInfos
-    this._gameInfos = sharedata.query("games.gameInfos")
+    this.infos = sharedata.query("games.gameInfos")
 end)
 
 skynet.start(function()
     skynet.info_func(function()
-        return this._gameTable:getGameInfo()
+        return this._table:getGameInfo()
     end)
     skynet.dispatch("lua",function(_,_,cmd,...)
         local f = this[cmd]
         if f then
             cs(f,...)
         else
-            local table = this._gameTable
+            local table = this._table
             local f = table[cmd]
             cs(f,table,...)
         end

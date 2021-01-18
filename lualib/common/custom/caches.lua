@@ -1,5 +1,5 @@
 --[[
-    file:extend_caches.lua 
+    file:cache.lua 
     desc:缓存
     auth:Carol Luo
 ]]
@@ -46,7 +46,8 @@ end
 ---缓存
 ---@param cache data @数据
 function caches:dataPush(cache)
-    table.insert({
+    local list = self._caches
+    table.insert(list,{
         ocutime = os.time(),
         elatime = self:elapse(),
         cache = cache,

@@ -6,8 +6,8 @@
 
 local class = require("class")
 local slotsSystem = require("slotsSystem")
-
-local jymt_system = class()
+---@class jymt_system
+local jymt_system = class(slotsSystem)
 local this = jymt_system
 
 ---构造函数

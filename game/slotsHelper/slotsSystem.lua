@@ -6,10 +6,9 @@
 
 local class = require("class")
 local gameSystem = require("gameSystem")
-
-local slotsSystem = class()
+---@class slotsSystem
+local slotsSystem = class(gameSystem)
 local this = slotsSystem
-
 ---构造函数
 function slotsSystem:ctor()
 end

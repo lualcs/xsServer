@@ -263,6 +263,7 @@ function mahjongCbat:test_nolaizi()
     local clos = os.clock()
     local pass = (clos - star)
     --debug.error(xuans)
+    debug.error(format("%s %s",star,clos))
     debug.error(format("耗时:%s 胡牌次数:%d 选次数:%d",tostring(pass),tcount,xcount))
     if oalgor:isHuCards(uty) then
         debug.error("胡牌:")

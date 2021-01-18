@@ -9,7 +9,7 @@ local next = next
 local pairs = pairs
 local ipairs = ipairs
 local class = require("class")
-local sort = require("extend_sort")
+local sort = require("sort")
 local table = require("extend_table")
 local gameAlgor = require("gameAlgor")
 local mapHuCards = require("mahjong.mapHuCards")
@@ -546,7 +546,6 @@ end
 ---@param ufy   mjUnify @信息
 ---@return boolean
 function mahjongAlogor:oklaiziJiangHuCard(ufy)
-    --检查刻子
     return true
 end
 

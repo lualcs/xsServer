@@ -49,6 +49,15 @@
 ---@alias integer number
 ---整数
 ---
+---@alias sec  number
+---秒
+---
+---@alias MS number 
+---豪秒
+---
+---@alias timeID  number
+---定时ID
+---
 ---@alias level  number
 ---表示有优先级
 ---

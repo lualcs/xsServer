@@ -8,9 +8,10 @@ local pairs = pairs
 local ipairs = ipairs
 local format = string.format
 local table = require("extend_table")
-local occupy = require("extend_occupy")
-local caches = require("extend_caches")
+local occupy = require("occupy")
+local caches = require("caches")
 local skynet = require("skynet")
+local timer  = require("timer")
 local class = require("class")
 ---@class gameTable @游戏桌子
 local gameTable = class()
@@ -66,6 +67,9 @@ function gameTable:ctor(service,gameInfo,gameCustom)
 
     ---@type caches                     @缓存
     self._cac = caches.new()
+
+    ---@type timer                      @定时器
+    self._tim = timer.new()             
 
     ---@type service_table              @服务
     self._service = service
@@ -267,6 +271,10 @@ end
 function gameTable:gameStart()
     ---数据重置
     self:dataReboot()
+    ---初始缓存
+    self:cacheStart()
+    ---启动定时
+    self:startTimer()
 end
 
 ---缓存开始
@@ -287,6 +295,15 @@ function gameTable:cacheStart()
         combatID    = self:getCombatID(),   --战绩凭证
         players     = players,              --玩家信息
     })
+end
+
+---启动定时
+function gameTable:startTimer()
+    local timer = self._tim
+    timer:poling()
+    timer:appendEver(1*1000,nil,function()
+        print("定时器测试")
+    end)
 end
 
 ---游戏结束

@@ -27,8 +27,8 @@ skynet.start(function()
     --测试创建桌子
     skynet.call(service,"lua","createTable",10001,{})
 
-    local mahjongCbat = require("mahjongCbat")
-    mahjongCbat.test()
+    -- local mahjongCbat = require("mahjongCbat")
+    -- mahjongCbat.test()
     -- local slotsCbat = require("slotsCbat")
     -- slotsCbat.test()
 

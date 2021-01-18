@@ -5,7 +5,7 @@
 ]]
 local ipairs = ipairs
 local math = math
-local sort = require("extend_sort")
+local sort = require("sort")
 local table = require("extend_table")
 local class = require("class")
 local gameLogic = require("gameLogic")
