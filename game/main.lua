@@ -32,5 +32,7 @@ skynet.start(function()
     -- local slotsCbat = require("slotsCbat")
     -- slotsCbat.test()
 
+    print(_G._VERSION)
+
 end)
 
