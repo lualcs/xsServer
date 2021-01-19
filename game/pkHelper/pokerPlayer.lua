@@ -11,6 +11,14 @@ local pokerPlayer = class(gamePlayer)
 
 ---构造
 function pokerPlayer:ctor()
+    ---@type pkCard[]       @玩家手牌
+    self._hands = {nil}
+end
+
+---手牌
+---@return pkCard[]
+function pokerPlayer:getHandCards()
+    return self._hands
 end
 
 return pokerPlayer

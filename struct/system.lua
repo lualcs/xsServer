@@ -19,3 +19,23 @@
 ---@field equality   number  @0相等
 ---@field greater    number  @1大于
 ---@field lessthan   number @-1小于
+
+
+---@class wbListenInf @监听信息
+---@field host          ip       @地址
+---@field port          port     @端口
+---@field protocol      string   @类型 "ws"
+
+
+---@class serviceInf @服务信息
+---@field share         service  @共享服务
+---@field debug         service  @调试服务
+---@field soles         service  @唯一服务
+---@field single        service  @单人游戏
+---@field gates         service  @入口服务
+
+
+---@class mapServers @监听信息
+---@field debug address     @调试
+---@field login address     @登陆
+---@field gate  address     @入口

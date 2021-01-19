@@ -130,7 +130,7 @@ local gameInfos = {
     [10001] = {
         name = "金玉满堂",
         assignClass  = "assignSingle",
-        importDeploy = "slots.slots_jymt_cfg",
+        importDeploy = "slots.games.slots_jymt_cfg",
         importTable  = "slots_jymt.jymt_table",
         importPlayer = "slots_jymt.jymt_Player",
         importAlgor  = "slots_jymt.jymt_algor",
@@ -155,7 +155,7 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "slots.slots_jymt_cfg",
+            "slots.games.slots_jymt_cfg",
         },
 
         ---@type boolean @是否双向

@@ -15,7 +15,7 @@ local service_assign = {}
 local this = service_assign
 
 ---启动
----@param import string @相对路径
+---@param simport string @相对路径
 function service_assign.start(simport) 
   --共享数据
   local adrres = skynet.queryservice("service_share")

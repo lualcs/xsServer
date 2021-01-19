@@ -61,7 +61,7 @@ end
 ---@param arr any[] @数组
 ---@param comp function  @比较函数
 ---@param val any  @插入值
-function sort.insert_sort(arr,comp,val)  
+function sort.insert(arr,comp,val)  
 	local len = #arr
     for i = 1,len do
        if not comp(arr[i],val) then  

@@ -24,5 +24,9 @@ root.."game/slotsHelper/?.lua;"..
 root.."game/gameList/?.lua;"..
 root.."3rd/rmq/?.lua;"
 
-lua_cpath = root .. "luaclib/?.so;".."3rd/lua-cjson/?.so;"
-snax = root.."examples/?.lua;"..root.."test/?.lua"
+lua_cpath = 
+root .. "luaclib/?.so;"..
+root .. "3rd/lua-cjson/?.so;"
+snax = 
+root.."examples/?.lua;"..
+root.."test/?.lua"

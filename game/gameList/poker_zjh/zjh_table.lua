@@ -46,9 +46,66 @@ end
 ---看牌
 ---@param player       zjh_player
 function zjh_table:gameSeeCard(player)
-    if not player:isGamepay() then
+    --本局玩家
+    local senum = zjh_enum.join()
+    if not player:getStatusBy(senum) then
         return false,"看牌:非参与者"
     end
+
+    --重复检查
+    local senum = zjh_enum.zjh_kp()
+    if player:getStatusBy(senum) then
+        return false,"看牌:重复请求"
+    end
+
+    player:setStatusBy(senum,true)
+    self:ntfMsgToSeeCard({
+        seatID = player:getSeatID(),        --玩家位置
+        hand   = player:getHandCards(),     --玩家手牌
+    })
+end
+
+---弃牌
+---@param player       zjh_player
+function zjh_table:gameCastCard(player)
+    --本局玩家
+    local senum = zjh_enum.join()
+    if not player:getStatusBy(senum) then
+        return false,"弃牌:非参与者"
+    end
+
+    --重复检查
+    local senum = zjh_enum.zjh_qp()
+    if player:getStatusBy(senum) then
+        return false,"弃牌:重复请求"
+    end
+
+    player:setStatusBy(senum,true)
+    self:ntfMsgToGiveup({
+        seatID = player:getSeatID(),        --玩家位置
+        hand   = player:getHandCards(),     --玩家手牌
+    })
+end
+
+---跟注
+---@param player       zjh_player
+function zjh_table:gameWithBet(player)
+    --本局玩家
+    local senum = zjh_enum.join()
+    if not player:getStatusBy(senum) then
+        return false,"跟注:非参与者"
+    end
+
+    --操作玩家
+    if not false then
+        return false,"跟注:非等待者"
+    end
+
+    --检查金币
+    if not player:usageCoin() then
+        return false,"跟注:金币不足"
+    end
+
 end
 
 ---开始通知
@@ -74,10 +131,15 @@ function zjh_table:ntfMsgToSeeCard(data)
     self:ntfMsgToTable(data,see_info)
 end
 
+---@type message_see_info   @隐私
+local see_info = {
+    fields = {"hand"},
+}
 ---放弃通知
 ---@param data zjh_giveup_ntc @数据
 function zjh_table:ntfMsgToGiveup(data)
-    self:ntfMsgToTable(data)
+    see_info.chairs = {data.seatID}
+    self:ntfMsgToTable(data,see_info)
 end
 
 ---加注通知

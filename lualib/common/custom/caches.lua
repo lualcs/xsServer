@@ -4,8 +4,9 @@
     auth:Carol Luo
 ]]
 
-local os = os
+
 local next = next
+local os = require("extend_os")
 local table = require("extend_table")
 local class = require("class")
 
@@ -28,31 +29,18 @@ end
 
 ---重启
 function caches:dataReboot()
-    self._elatime = self:clock()
     table.clear(self._caches)
 end
 
----毫秒
----@return integer
-function caches:clock()
-    return os.clock() * 1000 // 1
-end
-
----间隔
-function caches:elapse()
-    return self:clock() - self._elatime
-end
 
 ---缓存
 ---@param cache data @数据
 function caches:dataPush(cache)
     local list = self._caches
     table.insert(list,{
-        ocutime = os.time(),
-        elatime = self:elapse(),
-        cache = cache,
+        ocutime = os.getmillisecond(),
+        cache   = cache,
     })
-    self._elatime = self:clock()
 end
 
 return  caches

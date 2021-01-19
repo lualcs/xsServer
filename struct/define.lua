@@ -49,6 +49,9 @@
 ---@alias integer number
 ---整数
 ---
+---@alias float number
+---浮点数
+---
 ---@alias sec  number
 ---秒
 ---
@@ -122,7 +125,12 @@
 ---@alias count number
 ---个数 
 ---
----复合类型
+---@alias socket number
+---套接字
+---
+---@alias service number
+---服务地址
+---
 ---
 ---@alias mjSnap table<mjValue,count>
 ---麻将1~9成扑(顺子 刻子)

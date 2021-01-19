@@ -357,11 +357,11 @@ end
 
 local _read_only_tm = {
 	__newindex = function(t,k,v)
-		filelog.sys_error('只读表不能新增加值',debug.traceback())
+		local a = nil * nil
 	end,
 	
 	__assign = function(t,k,v)
-		filelog.sys_error('只读表不能新增加值',debug.traceback())
+		local a = nil * nil
 	end
 }
 

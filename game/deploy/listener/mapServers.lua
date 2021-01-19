@@ -1,7 +1,15 @@
+---@type mapServers @监听信息
 return {
-    game = {
-        host = "192.168.0.94",
-        port = 24001,
-        debugPort = 24002
-    }
+    debug = {
+        host = "127.0.0.1",
+        port = 21001,
+    },
+    login = {
+        host = "127.0.0.1",
+        port = 22001,
+    },
+    gate = {
+        host = "192.168.0.37",
+        port = 23001,
+    },
 }

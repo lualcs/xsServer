@@ -170,4 +170,10 @@ function gameEnum.table()
     return "table"
 end
 
+---参与
+---@return senum
+function gameEnum.join()
+    return "join"
+end
+
 return gameEnum

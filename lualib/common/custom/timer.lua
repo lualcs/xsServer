@@ -6,17 +6,11 @@
 
 local ipairs = ipairs
 local table = table
+local os = require("extend_os")
 local skynet = require("skynet")
 local class = require("class")
 local heap = require("heap")
 local reusable = require("reusable")
-
----cpu时间
----@return number @毫秒
-local function clock()
-    local ms = os.clock()
-    return ms * 1000 // 1
-end
 
 ---@class timer
 local timer = class()
@@ -32,33 +26,39 @@ function timer:ctor()
     end
 end
 
+---重置
+function timer:dataReboot()
+    ---@type integer        @暂停时间
+    self._pauset = nil
+    ---@type heap           @清空数据
+    self._heap:clear()
+end
+
 ---定时回调
 ---@param  elapse   MS          @流逝时间
 ---@param  count    count       @回调次数
 ---@param  obj      class       @回调对象
 ---@param  call     function    @回调函数
 ---@return timeID @定时ID
-function timer:append(elapse,count,obj,call,...)
+function timer:append(elapse,count,call,...)
     local store = self._store
     ---@type tagTimer @定时数据
     local item = store:get()
     item.elapse = elapse
     item.count  = count
-    item.obj    = obj
     item.call   = call
     item.args   = {...}
-    local ulti = clock() + elapse
+    local ulti = os.getmillisecond() + elapse
     local head = self._heap
     return head:append(ulti,item)
 end
 
 ---无限回调
 ---@param  elapse   MS          @流逝时间
----@param  obj      class       @回调对象
 ---@param  call     function    @回调函数
 ---@return timeID @定时ID
-function timer:appendEver(elapse,obj,call,...)
-    return self:append(elapse,nil,obj,call,...)
+function timer:appendEver(elapse,call,...)
+    return self:append(elapse,nil,call,...)
 end
 
 ---删除定时
@@ -77,14 +77,46 @@ function timer:remove(timeID)
     end
 end
 
----清空定时
-function timer:clear()
-    self._heap:clear()
+---剩余时间
+---@param timeID timeID
+function timer:remaining(timeID)
+    local now = self._pauset or os.getmillisecond()
+    for _,item in ipairs(self._heap.list) do
+        if item.auto == timeID then
+            return now - item.ticks
+        end
+    end
+    return 0
 end
+
+---暂停定时
+function timer:ePause()
+    if not self._pauset then
+        self._pauset = os.getmillisecond()
+    end
+end
+
+---暂停取消
+function timer:uPause()
+    local pause = self._pauset
+    if pause then
+        self._pauset = nil
+        local now = os.getmillisecond()
+        local dif = now - pause
+        for _,item in ipairs(self._heap.list) do
+            item.ticks = item.ticks + dif
+        end
+        --启动轮询
+        self:poling()
+    end
+end
+
 
 ---定时轮询
 function timer:poling()
-    
+    if self._pauset then
+        return
+    end
     skynet.timeout(10,self._poling)
     ---@type heap       @最大堆
     local heap = self._heap
@@ -97,7 +129,7 @@ function timer:poling()
     end
 
     ---@type MS         @时间
-    local alter = clock()
+    local alter = os.getmillisecond()
     local ticks = rede.ticks
     if ticks > alter then
         --未到时间
@@ -128,8 +160,7 @@ function timer:poling()
 
     ---每次只调用一个定时
     local args = item.args
-    local obj = item.obj
-    item.call(obj,table.unpack(args))
+    item.call(table.unpack(args))
 end
 
 return timer
@@ -137,6 +168,5 @@ return timer
 ---@class tagTimer              @定时数据
 ---@field elapse    MS          @间隔时间
 ---@field count     count       @回调次数
----@field obj       class       @回调对象
 ---@field call      function    @回调函数
----@field args      any[]      @回调参数
+---@field args      any[]       @回调参数

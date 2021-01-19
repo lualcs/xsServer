@@ -467,7 +467,7 @@ end
 
 
 function M.write(id, data, fmt, masking_key)
-    local ws_obj = assert(ws_pool[id])
+    local ws_obj = ws_pool[id] or {write = sockethelper.writefunc(id)}
     fmt = fmt or "text"
     assert(fmt == "text" or fmt == "binary")
     write_frame(ws_obj, fmt, data, masking_key)

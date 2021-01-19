@@ -54,7 +54,7 @@ function service_share.start()
     _G.package.loaded[name] = nil
 
     --金玉满堂配置
-    local name = "slots.slots_jymt_cfg"
+    local name = "slots.games.slots_jymt_cfg"
     local deploy = require(name)
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
@@ -65,15 +65,14 @@ end
 ---服务加载
 function service_share.loading()
     skynet.retpack({
-        "mahjong.mapHuCards",
-        "mahjong.mapNames",
-        "mahjong.mapViews",
-        "mahjong.mapSnaps",
-        "poker.mapNames",
-        "listener.mapServers",
         "games.gameInfos",
-        "slots.slots_jymt_cfg",
     })
+end
+
+---设置共享
+function service_share.setShare(name,infos)
+    sharedata.new(name,infos)
+    skynet.retpack(false)
 end
 
 skynet.start(function()

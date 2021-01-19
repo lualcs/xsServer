@@ -13,6 +13,7 @@ local caches = require("caches")
 local skynet = require("skynet")
 local timer  = require("timer")
 local class = require("class")
+local gameEnum = require("gameEnum")
 ---@class gameTable @游戏桌子
 local gameTable = class()
 
@@ -82,6 +83,8 @@ function gameTable:ctor(service,gameInfo,gameCustom)
 
     ---@type table<seatID,gamePlayer>   @玩家
     self._arrPlayer = {nil}
+    ---@type table<senum,any>           @数据
+    self._mapDriver = {nil}
     ---@type historID                   @大局ID
     self._historID  = gameCustom.historID
     ---@type combatID                   @小局战绩
@@ -96,9 +99,16 @@ function gameTable:dataReboot()
     self._ocp:dataReboot()   --占位
     self._cac:dataReboot()   --缓存
     self._tye:dataReboot()   --类型
-    ---清理所有玩家
+    ---清空玩家
     for _,player in ipairs(self._mapPlayer) do
         player:dataReboot()
+    end
+
+    ---初始玩家
+    local senum = gameEnum.join()
+    for _,player in ipairs(self._arrPlayer) do
+        ---参与状态
+        player:setStatusBy(senum,true)
     end
 
     ---@type gamePlayer       @当前玩家
@@ -203,19 +213,24 @@ function gameTable:getMinPlayer()
     return info.minPlayer
 end
 
-
----当前人数
----@return count
-function gameTable:getCurPlayer()
-    local info = self:getGameInfo()
-    return info.curPlayer 
-end
-
 ---玩家导入
 ---@return path
 function gameTable:getImportPlayer()
     local info = self:getGameInfo()
     return info.importPlayer 
+end
+
+---保存数据
+---@param senum senum @映射值
+---@param data  any   @数据值
+function gameTable:setDriver(senum,data)
+    self._mapDriver[senum] = data
+end
+
+---获取数据
+---@return any
+function gameTable:getDriver(senum)
+    return self._mapDriver[senum]
 end
 
 ---玩家插入
@@ -297,19 +312,15 @@ function gameTable:cacheStart()
     })
 end
 
+
 ---启动定时
 function gameTable:startTimer()
-    local timer = self._tim
-    timer:poling()
-    timer:appendEver(1*1000,nil,function()
-        print("定时器测试")
-    end)
+    self._tim:poling()
 end
 
 ---游戏结束
 function gameTable:gameClose()
 end
-
 
 ---请求
 ---@param player        gamePlayer  @玩家

@@ -6,7 +6,6 @@
 
 local class = require("class")
 local pokerPlayer = require("pokerPlayer")
-
 ---@class zjh_player:pokerPlayer
 local zjh_player = class(pokerPlayer)
 local this = zjh_player

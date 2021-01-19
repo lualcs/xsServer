@@ -28,6 +28,8 @@ function gamePlayer:ctor(table,playerInfo)
     self._queues = {nil}
     ---@type table<senum,boolean>   @请求映射
     self._mapues = {nil}
+    ---@type table<senum,boolean>   @标记映射
+    self._mapsig = {nil}
 end
 
 ---重启
@@ -39,8 +41,9 @@ function gamePlayer:dataReboot()
     self._lgc = self._table._lgc
     ---@type gameMsg        @请求缓存
     self._request = nil
-    ---@type boolean        @游戏参与
-    self._gamepay = nil
+    table.clear(self._queues)
+    table.clear(self._mapues)
+    table.clear(self._mapsig)
 end
 
 ---地址
@@ -92,16 +95,21 @@ function gamePlayer:addCoin(change)
     self:setCoin(coin+change)
 end
 
+---使用金币
+---@param change score @变动
+function gamePlayer:usageCoin(change)
+    local coin = self:getCoin()
+    if coin + change < 0 then
+        return false
+    end
+    self:addCoin(change)
+    return true
+end
+
 ---获取请求
 ---@return gameMsg
 function gamePlayer:getRequest()
     return self._request
-end
-
----获取参与
----@return boolean
-function gamePlayer:isGamepay()
-    return self._gamepay
 end
 
 ---机器
@@ -140,6 +148,22 @@ end
 function gamePlayer:online()
     self._player.line = gameEnum.online()
 end
+
+---获取标记
+---@param senum senum @标记 
+---@return boolean
+function gamePlayer:getStatusBy(senum)
+    return self._mapsig[senum]
+end
+
+---获取标记
+---@param senum senum       @标记 
+---@param sign  boolean     @标记
+function gamePlayer:setStatusBy(senum,sign)
+    self._mapsig[senum] = sign
+end
+
+---设置标记
 
 ---玩家
 ---@param msg gameMsg @数据

@@ -3,9 +3,21 @@
     desc:os 扩展
     auto:Carol Luo
 ]]
+
+local utime = require("usertime")
 local os = os
 
+---毫秒
+---@return integer @毫秒
+function os.getmillisecond()
+    return utime.getmillisecond()
+end
 
+---微秒
+---@return float @微妙
+function os.getmicrosecond()
+    return utime.getmicrosecond()
+end
 
 return os
 
