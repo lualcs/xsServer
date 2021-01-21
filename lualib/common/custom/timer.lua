@@ -90,7 +90,7 @@ function timer:remaining(timeID)
 end
 
 ---暂停定时
-function timer:ePause()
+function timer:pause()
     if not self._pauset then
         self._pauset = os.getmillisecond()
     end
@@ -114,26 +114,29 @@ end
 
 ---定时轮询
 function timer:poling()
-    if self._pauset then
+    if not self._pauset then
         return
     end
     skynet.timeout(10,self._poling)
+    --循环执行
+    while self:execute() do end
+end
+
+---执行
+---@return boolean
+function timer:execute()
     ---@type heap       @最大堆
     local heap = self._heap
     ---@type heapNode   @第一个
     local rede = heap:reder()
-
     if not rede then
-        --没有数据
-        return
+        return false
     end
-
     ---@type MS         @时间
     local alter = os.getmillisecond()
     local ticks = rede.ticks
     if ticks > alter then
-        --未到时间
-        return 
+        return false
     end
 
     ---@type tagTimer   @定时器
@@ -148,7 +151,7 @@ function timer:poling()
      ---下次触发
      rede.ticks = ticks + item.elapse
      ---调整位置
-     heap:adjust(item.elapse,1)
+     heap:adjust(rede,1)
 
     if 0 == item.count then
         ---移除事件
@@ -161,6 +164,7 @@ function timer:poling()
     ---每次只调用一个定时
     local args = item.args
     item.call(table.unpack(args))
+    return true
 end
 
 return timer

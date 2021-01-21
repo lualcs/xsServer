@@ -32,12 +32,14 @@ skynet.start(function()
     services.single = service
 
     --启动gate服务
-    local service = skynet.newservice("service_gate", service)
+    local service = skynet.newservice("service_gate")
     skynet.call(service,"lua","start")
     services.gates = service
 
     --服务信息共享
-    skynet.call(services.share,"lua","setShare","globalservice",services)
+    skynet.call(services.share,"lua","setShare","gservices",services)
+    --服务信息广播
+    skynet.call(services.share,"lua","broadcast","gservices")
 
     -- local mahjongCbat = require("mahjongCbat")
     -- mahjongCbat.test()

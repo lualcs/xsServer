@@ -630,7 +630,7 @@ end
 ---@param t any[] @数组
 ---@param count count @倒数第几
 ---@return any
-function table.lastBy(t,count)
+function table.last(t,count)
 	return t[#t+1-count]
 end
 

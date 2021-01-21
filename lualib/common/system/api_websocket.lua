@@ -9,6 +9,7 @@ local websocket = require("http.websocket")
 
 ---@class api_websocket
 local api_websocket = {nil}
+local this = api_websocket
 
 ---监听
 ---@param host      ip                  @地址
@@ -17,9 +18,18 @@ local api_websocket = {nil}
 function api_websocket.listen(host, port,handle)
     local fd = api_socket.listen(host, port)
     api_socket.start(fd,function(fd,addr)
-        websocket.accept(fd,handle,"ws",addr)
+        this.accept(fd,handle,"ws",addr)
     end)
     return fd
+end
+
+---接受
+---@param fd        socket              @套接字
+---@param handle    websocket_handle    @handle
+---@param protocol  string              @ws or wss
+---@param addr      host                @地址
+function api_websocket.accept(fd, handle, protocol, addr)
+    websocket.accept(fd, handle, protocol, addr)
 end
 
 ---地址
@@ -31,8 +41,8 @@ end
 
 ---关闭
 ---@param   fd      socket  @套接字
----@param   code    
----@param   reason    
+---@param   code    number  @掩码
+---@param   reason  string  @原因
 function api_websocket.close(fd, code ,reason)
     return websocket.close(fd, code ,reason)
 end
@@ -53,5 +63,6 @@ end
 function api_websocket.send(fd,data)
     websocket.write(fd,data,"binary")
 end
+
 
 return api_websocket

@@ -11,12 +11,12 @@ local queue = require("skynet.queue")
 local cs = queue()
 
 ---@class service_assign @分配服务
-local service_assign = {}
-local this = service_assign
+local service = {}
+local this = service
 
 ---启动
 ---@param simport string @相对路径
-function service_assign.start(simport) 
+function service.start(simport) 
   --共享数据
   local adrres = skynet.queryservice("service_share")
   local shares = skynet.call(adrres, "lua", "loading")
@@ -32,16 +32,25 @@ function service_assign.start(simport)
   skynet.register("." .. simport)
 end
 
+---服务表
+function service.gservices(name)
+  local services = sharedata.query(name)
+  ---@type serviceInf @服务地址信息
+  this.services = services
+  skynet.retpack(false)
+end
+
 ---退出
-function service_assign.exit()
+function service.exit()
   skynet.exit()
   skynet.retpack(false)
 end
 
 skynet.start(function()
     skynet.dispatch("lua",function(_, _, cmd, ...)
-            if cmd == "start" or cmd == "exit" then
-              cs(this[cmd], ...)
+            local f = this[cmd]
+            if f then
+              cs(f, ...)
             else
               cs(this.assign[cmd], this.assign, ...)
             end

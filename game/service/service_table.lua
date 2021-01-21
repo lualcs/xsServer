@@ -1,5 +1,5 @@
 --[[
-    file:service_table.lua 
+    file:service.lua 
     desc:桌子服务
     auth:Carol Luo
 ]]
@@ -15,13 +15,13 @@ local cs = queue()
 
 
 ---@class service_table @桌子服务
-local service_table = {}
-local this = service_table
+local service = {}
+local this = service
 
 ---服务启动
 ---@param gameID     gameID @游戏ID
 ---@param gameCustom gameCustom @定制
-function service_table.start(gameID,gameCustom)
+function service.start(gameID,gameCustom)
     ---@type gameInfo
     local gameInfo = this.infos[gameID]
     --共享内存
@@ -38,7 +38,7 @@ function service_table.start(gameID,gameCustom)
 end
 
 ---服务退出
-function service_table.exit()
+function service.exit()
     skynet.retpack(true)
     skynet.exit()
 end

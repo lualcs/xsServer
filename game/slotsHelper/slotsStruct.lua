@@ -79,7 +79,7 @@
 ---@field sum   slots_weight        @总权重
 ---@field wgt   slots_weight[]      @权重表
 
----@class slots_rotateNormal_msg:gameMsg    @摇奖
+---@class slots_rotateNormal_msg:messabeBody    @摇奖
 ---@field details slots_jetton          @下注
 
 ---@class slots_icon_post   @图标位置

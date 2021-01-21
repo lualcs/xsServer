@@ -8,6 +8,7 @@ local os = os
 local debug = debug
 local table = table
 local pairs = pairs
+local ipairs = ipairs
 local tostring = tostring
 local is_table = require("is_table")
 local is_boolean = require("is_boolean")
@@ -20,9 +21,9 @@ function debug.print(...)
     table.insert(tb_lis,"[")
     table.insert(tb_lis,os.date("%Y-%m-%d %H:%M:%S"))
     table.insert(tb_lis,"]")
-    local args = table.pack(...)
+    local args = {...}
     local res = ""
-    for n, v in pairs(args) do
+    for n, v in ipairs(args) do
         if is_table(v) then
             table.insert(tb_lis,"\n")
             table.insert(tb_lis,extend_tostring(v))
@@ -38,15 +39,29 @@ function debug.print(...)
   return skynet.error(table.concat(tb_lis))
 end
 
+---错误
 function debug.error(...)
     debug.print(...)
 end
 
+---警告
 function debug.warning(...)
     debug.print(...)
 end
 
+---普通
 function debug.normal(...)
+    debug.print(...)
+end
+
+
+---protobuff
+function debug.protobuff(...)
+    debug.print(...)
+end
+
+---service_gate
+function debug.service_gate(...)
     debug.print(...)
 end
 

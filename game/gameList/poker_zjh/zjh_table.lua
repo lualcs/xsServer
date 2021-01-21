@@ -18,14 +18,14 @@ end
 
 ---请求
 ---@param player        zjh_player  @玩家
----@param msg           gameMsg     @消息
+---@param msg           messabeBody @消息
 ---@return boolean,string|any
-function zjh_table:onRequest(player,msg)
-    local ok,error = self:super(this,"onRequest",player,msg)
+function zjh_table:request(player,msg)
+    local ok,error = self:super(this,"request",player,msg)
     if ok then
         return ok,error
     end
-    local cmd = table.lastBy(msg.channel)
+    local cmd = table.last(msg.channel)
     if cmd == zjh_enum.zjh_kp() then
         ok,error = self:gameSeeCard(player)--看牌
     elseif cmd == zjh_enum.zjh_qp() then

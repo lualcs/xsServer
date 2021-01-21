@@ -18,29 +18,24 @@ end
 function gameEnum:dataReboot()
 end
 
----登陆消息
+---错误消息
 ---@return senum
-function gameEnum.msgLogin()
-    return "msgLogin"
+function gameEnum.error()
+    return "error"
 end
 
----大厅消息
+---登陆消息
 ---@return senum
-function gameEnum.msgHall()
-    return "msgHall"
+function gameEnum.login()
+    return "login"
 end
 
 ---桌子消息
 ---@return senum
-function gameEnum.msgTable()
-    return "msgTable"
+function gameEnum.table()
+    return "table"
 end
 
----玩家请求
----@return senum
-function gameEnum.msgPlayer()
-    return "msgPlayer"
-end
 
 ---私聊
 ---@return senum

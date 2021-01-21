@@ -33,9 +33,23 @@
 ---@field soles         service  @唯一服务
 ---@field single        service  @单人游戏
 ---@field gates         service  @入口服务
+---@field login         service  @登陆服务
 
 
 ---@class mapServers @监听信息
 ---@field debug address     @调试
 ---@field login address     @登陆
 ---@field gate  address     @入口
+
+
+---@class playerInfo @玩家信息
+---@field userID    userID   @玩家ID
+---@field coin      score    @玩家分数
+---@field name      name     @玩家名子
+---@field logo      url      @玩家头像
+
+
+---@class client @前端信息
+---@field address       host        @地址
+---@field tablesvc      service     @所在桌子
+---@field baseinf       playerInfo  @玩家信息    

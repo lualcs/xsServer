@@ -75,11 +75,9 @@ function heap:insert(node)
 end
 
 ---调整节点
----@param change number @变化
----@param pos   index   @位置
-function heap:adjust(change,pos)
-    local node = self:reder()
-    node.ticks = node.ticks + change
+---@param node  heapNode @变化
+---@param pos   index    @位置
+function heap:adjust(node,pos)
     self:upward(pos)
     self:downward(pos)
 end

@@ -106,14 +106,14 @@ function slotsTable:getCurrIconWeights()
 end
 
 ---请求
----@param player    slotsPlayer @玩家
----@param msg       gameMsg     @消息
-function slotsTable:onRequest(player,msg)
-    local ok,result = self:super(this,"onRequest",player,msg)
+---@param player    slotsPlayer     @玩家
+---@param msg       messabeBody     @消息
+function slotsTable:request(player,msg)
+    local ok,result = self:super(this,"request",player,msg)
     if ok then
         return ok,result
     end
-    local cmd = table.lastBy(msg.channel)
+    local cmd = table.last(msg.channel)
     if cmd == slotsEnum.rotateNormal() then
         --摇奖
         ok,result = self:onRotateNormal(player,msg)
@@ -189,7 +189,7 @@ end
 
 ---重转摇将
 ---@param player        slotsPlayer              @玩家
----@param msg           gameMsg                  @消息
+---@param msg           messabeBody              @消息
 function slotsTable:onRotateRoller(player,msg)
     --设置权重
     local wgts = self:getCurrIconWeights()

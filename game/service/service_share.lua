@@ -1,22 +1,23 @@
 
 --[[
-    file:service_share.lua 
+    file:service.lua 
     desc:启动所有共享配置
     auth:Carol Luo
 ]]
 
+local pairs = pairs
 local format = string.format
 local skynet = require("skynet")
 local sharedata = require("skynet.sharedata")
 local queue = require "skynet.queue"
 local cs = queue()
 
----@class service_share @共享服务
-local service_share = {}
-local this = service_share
+---@class service_assign @共享服务
+local service = {}
+local this = service
 
 ---服务启动
-function service_share.start()
+function service.start()
     --麻将成朴映射
     local name = "mahjong.mapHuCards"
     local deploy = require(name)
@@ -62,22 +63,45 @@ function service_share.start()
     skynet.retpack(false)
 end
 
+---服务表
+function service.gservices(name)
+    local services = sharedata.query(name)
+    ---@type serviceInf @服务地址信息
+    this.services = services
+    skynet.retpack(false)
+  end
+
 ---服务加载
-function service_share.loading()
+function service.loading()
     skynet.retpack({
         "games.gameInfos",
     })
 end
 
 ---设置共享
-function service_share.setShare(name,infos)
+function service.setShare(name,infos)
     sharedata.new(name,infos)
+    skynet.retpack(false)
+end
+
+
+---广播服务
+function service.broadcast(name)
+    ---@type serviceInf
+    local gservices = sharedata.query(name)
+    for key,service in pairs(gservices) do
+        if service == gservices.debug then
+        elseif service == gservices.share then
+        else
+            skynet.call(service,"lua",name,name)
+        end
+    end
     skynet.retpack(false)
 end
 
 skynet.start(function()
     skynet.dispatch("lua",function(_,_,cmd,...)
-        local f = service_share[cmd]
+        local f = service[cmd]
         if f then
             cs(f,...)
         else

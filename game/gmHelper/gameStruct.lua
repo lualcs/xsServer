@@ -55,7 +55,7 @@
 ---@field sharedList    name[]      @共享模块
 
 
----@class gameMsg     @游戏消息
+---@class messabeBody     @游戏消息
 ---@field channel      senum[] @类型
 ---@field details      any     @数据
 

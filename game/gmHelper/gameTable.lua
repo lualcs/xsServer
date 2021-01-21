@@ -323,24 +323,24 @@ function gameTable:gameClose()
 end
 
 ---请求
----@param player        gamePlayer  @玩家
----@param msg           gameMsg     @消息
+---@param player        gamePlayer      @玩家
+---@param msg           messabeBody     @消息
 ---@return boolean,string|any
-function gameTable:onRequest(player,msg)
+function gameTable:request(player,msg)
     self:setCurPlayer(player)
-    local cmd = table.lastBy(msg.channel)
+    local cmd = table.last(msg.channel)
 end
 
 ---通知客户端-服务-私有的
----@param address number @服务地址
----@param data    gameMsg @游戏数据
+---@param address number        @服务地址
+---@param data    messabeBody   @游戏数据
 local function ntfMsgToClient(address,data)
     skynet.send(address,"ntfMsgToClient",data)
 end
 
 ---通知客户端-玩家
----@param player gamePlayer @游戏玩家
----@param data   gameMsg    @游戏数据
+---@param player gamePlayer     @游戏玩家
+---@param data   messabeBody    @游戏数据
 function gameTable:ntfMsgToPlayer(player,data)
     ntfMsgToClient(player:getAddress(),data)
     --缓存消息
@@ -350,7 +350,7 @@ end
 
 local copy1 = {nil}
 ---通知客户端-广播
----@param data   gameMsg                 @游戏数据
+---@param data   messabeBody             @游戏数据
 ---@param sees   message_see_info        @可见信息
 function gameTable:ntfMsgToTable(data,sees)
     ---@type table<any,any>    @备份数据

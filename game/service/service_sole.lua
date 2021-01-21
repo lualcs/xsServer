@@ -1,5 +1,5 @@
 --[[
-    file:service_sole.lua 
+    file:service.lua 
     desc:全局唯一
     auth:Caorl Luo
 ]]
@@ -7,29 +7,38 @@
 local next = next
 local table = require("extend_table")
 local skynet = require("skynet.manager")
+local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
 local cs = queue()
 
 ---@class service_sole @唯一服务
-local service_sole = {}
-local this = service_sole
+local service = {}
+local this = service
 local idlels  = {}
 local autoID  = 1
 
 ---启动
-function service_sole.start(start)
+function service.start(start)
     ---@type historID @历史战绩
     this.historID = start.historID
     skynet.retpack(false)
 end
 
+---服务表
+function service.gservices(name)
+    local services = sharedata.query(name)
+    ---@type serviceInf @服务地址信息
+    this.services = services
+    skynet.retpack(false)
+  end
+
 ---退出
-function service_sole.exit()
+function service.exit()
     skynet.exit()
 end
 
 ---战绩ID
-function service_sole.getHistorID()
+function service.getHistorID()
     local historID = this.historID
     this.historID = historID + 1
     skynet.retpack(this.historID)
@@ -37,7 +46,7 @@ end
 
 
 ---申请
-function service_sole.getTableID()
+function service.getTableID()
     if table.empty(idlels) then
         --没有空闲
         local soleID = autoID
@@ -52,7 +61,7 @@ function service_sole.getTableID()
 end
 
 ---回收
-function service_sole.setTableID(ID)
+function service.setTableID(ID)
     idlels[ID] = true
     skynet.retpack(false)
 end

@@ -64,7 +64,7 @@ function slotsLogic:isRotateFree()
     local player = self:getCurPlayer()
     local quest  = player:getRequest()
     local rota = slotsEnum.rotateFree()
-    local scmd = table.lastBy(quest.channel)
+    local scmd = table.last(quest.channel)
     if rota ~= scmd then
         return false
     end
@@ -78,7 +78,7 @@ function slotsLogic:isRotateNormal()
     local player = self:getCurPlayer()
     local quest  = player:getRequest()
     local rota = slotsEnum.rotateNormal()
-    local scmd = table.lastBy(quest.channel)
+    local scmd = table.last(quest.channel)
     if rota ~= scmd then
         return false
     end
@@ -93,7 +93,7 @@ function slotsLogic:isRotateAxle()
     local quest  = player:getRequest()
     
     local rota = slotsEnum.rotateRoller()
-    local scmd = table.lastBy(quest.channel)
+    local scmd = table.last(quest.channel)
     if rota ~= scmd then
         return false
     end

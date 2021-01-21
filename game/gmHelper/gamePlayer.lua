@@ -39,7 +39,7 @@ function gamePlayer:dataReboot()
     self._tye = self._table._tye
     self._hlp = self._table._hlp
     self._lgc = self._table._lgc
-    ---@type gameMsg        @请求缓存
+    ---@type messabeBody    @请求缓存
     self._request = nil
     table.clear(self._queues)
     table.clear(self._mapues)
@@ -107,7 +107,7 @@ function gamePlayer:usageCoin(change)
 end
 
 ---获取请求
----@return gameMsg
+---@return messabeBody
 function gamePlayer:getRequest()
     return self._request
 end
@@ -166,12 +166,12 @@ end
 ---设置标记
 
 ---玩家
----@param msg gameMsg @数据
+---@param msg messabeBody @数据
 function gamePlayer:request(msg)
     self._request = msg
     --转到游戏
-    local ok,error = self._table:onRequest(self,msg)
-    local cmd = table.lastBy(msg.channel)
+    local ok,error = self._table:request(self,msg)
+    local cmd = table.last(msg.channel)
     if ok then
         self._mapues[cmd] = true
         table.insert(self._queues,cmd)
