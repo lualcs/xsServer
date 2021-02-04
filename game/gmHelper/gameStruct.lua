@@ -55,9 +55,9 @@
 ---@field sharedList    name[]      @共享模块
 
 
----@class messabeBody     @游戏消息
----@field channel      senum[] @类型
----@field details      any     @数据
+---@class messageInfo       @游戏消息
+---@field cmds      senum[] @类型
+---@field info      table   @数据
 
 
 ---@class game_start_ntc            @开始通知
@@ -67,3 +67,8 @@
 ---@class message_see_info          @可见数据
 ---@field fields        any[]       @私有字段
 ---@field chairs        seatID[]    @可见位置
+
+
+---@class weight_info   @权重表
+---@field wgt table<index,number>   @权重信息
+---@field sum number                @权重总和

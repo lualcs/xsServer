@@ -25,7 +25,7 @@ function zjh_table:request(player,msg)
     if ok then
         return ok,error
     end
-    local cmd = table.last(msg.channel)
+    local cmd = table.last(msg.cmds)
     if cmd == zjh_enum.zjh_kp() then
         ok,error = self:gameSeeCard(player)--看牌
     elseif cmd == zjh_enum.zjh_qp() then

@@ -3,11 +3,13 @@
     desc:slots逻辑
     auth:Caorl Luo
 ]]
+local pairs = pairs
 local ipairs = ipairs
 local math = math
+local class = require("class")
 local sort = require("sort")
 local table = require("extend_table")
-local class = require("class")
+local is_number = require("is_number")
 local gameLogic = require("gameLogic")
 local slotsEnum = require("slotsEnum")
 ---@class slotsLogic:gameLogic
@@ -63,8 +65,8 @@ end
 function slotsLogic:isRotateFree()
     local player = self:getCurPlayer()
     local quest  = player:getRequest()
-    local rota = slotsEnum.rotateFree()
-    local scmd = table.last(quest.channel)
+    local rota = slotsEnum.fpin()
+    local scmd = table.last(quest.cmds)
     if rota ~= scmd then
         return false
     end
@@ -77,8 +79,8 @@ end
 function slotsLogic:isRotateNormal()
     local player = self:getCurPlayer()
     local quest  = player:getRequest()
-    local rota = slotsEnum.rotateNormal()
-    local scmd = table.last(quest.channel)
+    local rota = slotsEnum.spin()
+    local scmd = table.last(quest.cmds)
     if rota ~= scmd then
         return false
     end
@@ -92,8 +94,8 @@ function slotsLogic:isRotateAxle()
     local player = self:getCurPlayer()
     local quest  = player:getRequest()
     
-    local rota = slotsEnum.rotateRoller()
-    local scmd = table.last(quest.channel)
+    local rota = slotsEnum.xpin()
+    local scmd = table.last(quest.cmds)
     if rota ~= scmd then
         return false
     end
@@ -272,90 +274,75 @@ end
 
 ---正常摇奖
 ---@return slots_result_normal
-function slotsLogic:rotateNormal()
+function slotsLogic:rotateNormal(result)
     ---@type slots_result_normal
-    local result = {nil}
-    local gmtype = slotsEnum.rotateNormal()
-    local jetton = self:getJetton()
-    local costcn = jetton.total
-    local single = jetton.single
-    local icnlis = self:rotateIcon()
-    local linlis = self:getLineList(icnlis)
-    local gmcoin = self:getGainCoin(linlis)
-    local addfre = self:getFreePush(icnlis)
-    local leffre = self:getFreeLeft(addfre)
-    result.game_type    = gmtype                    --正常摇奖
+    result = result or {nil}
+    local game_type     = slotsEnum.fpin()
+    local jetton =      self:getJetton()
+    result.game_cost    = jetton.total              --游戏成本
+    result.game_type    = game_type                 --摇奖类型
     result.game_jetton  = jetton                    --下注信息
-    result.game_cost    = costcn                    --游戏成本
-    result.free_push    = addfre                    --增加免费
-    result.free_left    = leffre                    --剩余免费
-    result.icon_list    = icnlis                    --转出图标
-    result.line_list    = linlis                    --连线结果
-    result.gain_coin    = gmcoin                    --获取分数
+    result.icon_list    = self:rotateIcon()         --转出图标
+    result.line_list    = self:getLineList(result)
+    result.gain_coin    = self:getGainCoin(result)
+    result.free_push    = self:getFreePush(result)
+    result.free_left    = self:getFreeLeft(result)
     return result
 end
 
 ---免费摇奖
 ---@return slots_result_normal
-function slotsLogic:rotateFree()
+function slotsLogic:rotateFree(result)
     ---@type slots_result_normal
-    local result = {nil}
-    local gmtype = slotsEnum.rotateFree()
-    local jetton = self:getJetton()
-    local costcn = jetton.total
-    local single = jetton.single
-    local icnlis = self:rotateIcon()
-    local linlis = self:getLineList(icnlis)
-    local gmcoin = self:getGainCoin(linlis)
-    local addfre = self:getFreePush(icnlis)
-    local leffre = self:getFreeLeft(addfre)
-    result.game_type    = gmtype                    --正常摇奖
-    result.game_jetton  = jetton                    --下注信息
-    result.game_cost    = costcn                    --游戏成本
-    result.free_push    = addfre                    --增加免费
-    result.free_left    = leffre                    --剩余免费
-    result.icon_list    = icnlis                    --转出图标
-    result.line_list    = linlis                    --连线结果
-    result.gain_coin    = gmcoin                    --获取分数
+    result = result or {nil}
+    local game_type     = slotsEnum.fpin()
+    local game_jetton   = self:getJetton()
+    result.game_cost    = 0                         --游戏成本
+    result.game_type    = game_type                 --摇奖类型
+    result.game_jetton  = game_jetton               --下注信息
+    result.icon_list    = self:rotateIcon()         --转出图标
+    result.line_list    = self:getLineList(result)
+    result.gain_coin    = self:getGainCoin(result)
+    result.free_push    = self:getFreePush(result)
+    result.free_left    = self:getFreeLeft(result)
     return result
 end
 
 ---重转摇将
 ---@return slots_result_normal
-function slotsLogic:rotateRoller(axle)
+function slotsLogic:rotateRoller(result)
+    --计算成本
+    local player = self:getCurPlayer()
+    local alxe = self._lgc:getCurAxle()
+    local last = player:getLastResult()
+    local cost = last.heavyCost[alxe]
     ---@type slots_result_normal
-    local result = {nil}
-    local gmtype = slotsEnum.rotateRoller()
-    local jetton = self:getJetton()
-    local costcn = jetton.total
-    local single = jetton.single
-    local icnlis = self:rotateIcon()
-    local linlis = self:getLineList(icnlis)
-    local addfre = self:getFreePush(icnlis)
-    local gmcoin = self:getGainCoin(linlis)
-    local leffre = self:getFreeLeft(addfre)
-    result.game_type    = gmtype                    --正常摇奖
-    result.game_jetton  = jetton                    --下注信息
-    result.game_cost    = costcn                    --游戏成本
-    result.free_push    = addfre                    --增加免费
-    result.free_left    = leffre                    --剩余免费
-    result.icon_list    = icnlis                    --转出图标
-    result.line_list    = linlis                    --连线结果
-    result.gain_coin    = gmcoin                    --获取分数
+    result = result or {nil}
+    local game_type     = slotsEnum.fpin()
+    local game_jetton   = self:getJetton()
+    result.game_cost    = cost                      --游戏成本
+    result.game_type    = game_type                 --摇奖类型
+    result.game_jetton  = game_jetton               --下注信息
+    result.icon_list    = self:rotateIcon()         --转出图标
+    result.line_list    = self:getLineList(result)
+    result.gain_coin    = self:getGainCoin(result)
+    result.free_push    = self:getFreePush(result)
+    result.free_left    = self:getFreeLeft(result)
     return result
 end
 
 ---增加免费
----@param icnlis slots_icon[]
+---@param result slots_result_normal
 ---@return count
-function slotsLogic:getFreePush(icnlis)
+function slotsLogic:getFreePush(result)
     ---@type slots_cfg
     local cfg = self:getGameConf()
     local scf = cfg.scatter_free
 
     ---检查scatter
     local count = 0
-    for _,icon in ipairs(icnlis) do
+    local icons = result.icon_list
+    for _,icon in ipairs(icons) do
         if self:isScatter(icon) then
             count = count + 1
         end        
@@ -427,17 +414,18 @@ function slotsLogic:lineCheck(path,icons,path_index,left_right)
 end
 
 ---连线结果
----@param icnlis slots_icon[]
+---@param result slots_result_normal
 ---@return slots_line_path[]
-function slotsLogic:getLineList(icnlis)
+function slotsLogic:getLineList(result)
     local paths = self:getLinePath()
     if not paths then
         return
     end
     local linePath = {nil}
+    local icons = result.icon_list
     --left->right
     for path_index,line_path in ipairs(paths) do
-        local info = self:lineCheck(line_path,icnlis,path_index,true)
+        local info = self:lineCheck(line_path,icons,path_index,true)
         table.insert(linePath,info)
     end
 
@@ -445,7 +433,7 @@ function slotsLogic:getLineList(icnlis)
         --right->left
         for path_index,line_path in ipairs(paths) do
             sort.reverse(line_path)
-            local info = self:lineCheck(line_path,icnlis,path_index,false)
+            local info = self:lineCheck(line_path,icons,path_index,false)
             table.insert(linePath,info)
             sort.reverse(line_path)
         end
@@ -454,24 +442,68 @@ function slotsLogic:getLineList(icnlis)
 end
 
 ---计算彩金
----@param linlis slots_line_path[]
+---@param result slots_result_normal
 ---@return score
-function slotsLogic:getGainCoin(linlis)
+function slotsLogic:getGainCoin(result)
     local score = 0
-    for _,item in ipairs(linlis) do
+    local lines = result.line_list
+    for _,item in ipairs(lines) do
         score = score + item.line_score
     end
     return score
 end
 
 ---剩余免费
+---@param result   slots_result_normal 
 ---@return count
-function slotsLogic:getFreeLeft(addfre)
+function slotsLogic:getFreeLeft(result)
     local player = self:getCurPlayer()
     local count = player:getFreeCount()
-    return count + addfre
+    return count + result.free_push
 end
 
+---计算重转成本
+---@param result jjbx_result_normal
+function slotsLogic:getHeavyCost(result)
+    ---@class jjbx_game_cfg
+    local cfg = self:getGameConf()
+    local scale = cfg.heavyPro
+    local slbet = self:getLineBet()
+    local mcost = cfg.heavymincost
+    local costs = {mcost,mcost,mcost,mcost,mcost}
+    for ix,_ in ipairs(costs) do
+        ---@type double @轴期望值
+        local expect = self:getAxleBudgeExpect(result)
+        ---@type score  @轴期望分
+        local escore = slbet * expect / scale
+        costs[ix] = math.max(costs[ix],escore)
+    end
+    return costs
+end
+
+
+---连线分析
+---@param icnlis slots_icon[]
+---@return slots_axlels,slots_icons
+function slotsLogic:getAxlesIons(icnlis)
+    local axles = {
+        [1] = {nil},
+        [2] = {nil},
+        [3] = {nil},
+        [4] = {nil},
+        [5] = {nil},
+    }
+
+    for x=1,5 do
+        for y=0,2 do
+            local post = y * 5 + x
+            local icon = icnlis[post]
+            local count = axles[x][icon] or 0
+            axles[x][icon] = count + 1
+        end
+    end
+    return axles
+end
 
 
 return slotsLogic

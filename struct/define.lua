@@ -7,6 +7,9 @@
 ---@alias json string
 ---json数据
 ---
+---@alias blob string
+---二进制数据
+---
 ---@alias url string
 ---超链接
 ---
@@ -65,7 +68,10 @@
 ---表示有优先级
 ---
 ---@alias index number
----索引 
+---索引1开始
+---
+---@alias cindex number
+---索引0开始
 ---
 ---@alias score number
 ---积分类型

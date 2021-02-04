@@ -7,8 +7,8 @@
 local pcall = pcall
 local string = string
 local debug = require("extend_debug")
-local parser = require("parser")
-local protobuf = require("protobuf")
+local parser
+local protobuf
 
 ---@class api_pbc @protbuff 的使用
 local api_pbc = {}
@@ -18,6 +18,8 @@ local this = api_pbc
 ---@param ENV userdata
 function api_pbc.set_protobuf_env(ENV)
     debug.getregistry().PROTOBUF_ENV = ENV
+    protobuf = require("protobuf")
+    parser = require("parser")
 end
 
 ---获取protobuff 的userdata
@@ -29,7 +31,18 @@ end
 ---文件注册 .pd文件
 ---@param file string @文件相对路径
 function api_pbc.register_file(file)
+    protobuf = require("protobuf")
+    parser = require("parser")
     protobuf.register_file(file)
+end
+
+---文件注册 .proto 文件
+---@param fileset    string|string[]    @单个文件或者文件名集
+---@param fileDir    string             @.proto 目录
+function api_pbc.parser_register(fileset,fileDir)
+    protobuf = require("protobuf")
+    parser = require("parser")
+    parser.register(fileset,fileDir)
 end
 
 ---协议编码-table->buffer
@@ -65,29 +78,23 @@ function api_pbc.unpack(pattern, buffer, length)
 end 
 
 
----文件注册 .proto 文件
----@param fileset    string|string[]    @单个文件或者文件名集
----@param fileDir    string             @.proto 目录
-function api_pbc.parser_register(fileset,fileDir)
-    parser.register(fileset,fileDir)
-end
-
 ---编码消息
----@param name  string @结构名
-function api_pbc.encode_message(name,msg)
-
+---@param name  string  @名字
+---@param msg   table   @数据
+---@return blob
+function api_pbc.encode_message(name,cmds,data)
     --消息头
-    local head = {name = name}
-    local ok,msghead = pcall(this.encode, "msgHead",head)
+    local head = {name = name,cmds=cmds}
+    local ok,msghead = pcall(this.encode,"msgHead",head)
     if not ok then
-        debug.protobuff("encode_message msgHead:",{[name]=msg})
+        debug.protobuff("encode_message msgHead:",{head,msghead})
         return
     end
 
     --消息包
-    local ok,msgbody = pcall(this.encode, name, msg)
+    local ok,msgbody = pcall(this.encode,name,data)
     if not ok then
-        debug.protobuff("encode_message msgbody:",{[name]=msg})
+        debug.protobuff("encode_message msgbody:",{[name]=data,msgbody})
         return
     end
 
@@ -97,27 +104,29 @@ end
 ---解码消息
 ---@param msgbuf  string @数据
 ---@param size    number @大小
-function api_pbc.decode_message(msgbuf,size)
+---@return msgBody
+function api_pbc.decode_message(msgbuf,msgsize)
 
     --数据切割
     local headsize = msgbuf:byte(1) * 256 + msgbuf:byte(2)
-    local headbuf,bodybuf = msgbuf:sub(3,2+headsize), msgbuf:sub(3+headsize)
+    local head,body = msgbuf:sub(3,2+headsize), msgbuf:sub(3+headsize)
 
     --头部解析
-    local ok,msghead,error = pcall(this.decode, "msgHead", headbuf, string.len(headbuf))
-    if not ok then
+    local ok,msghead,error = pcall(this.decode,"msgHead",head, string.len(head))
+    if not ok or false == msghead then
         debug.protobuff("decode_message msghead:",error)
-        return
+        --return
     end
 
     --数据解析
-    local ok,msgbody,error = pcall(this.decode, msghead.name, bodybuf, string.len(bodybuf))
-    if not ok then
-        debug.protobuff("decode_message msghead:",error)
-        return
+    local ok,msgbody,error = pcall(this.decode,msghead.name,body,string.len(body))
+    if not ok or false == msgbody then
+        debug.protobuff("decode_message msgBody:",error)
+        --return
     end
-
-    return msghead,msgbody
+    
+    msgbody.cmds = msghead.cmds
+    return msgbody
 end
 
 return api_pbc

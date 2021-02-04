@@ -17,20 +17,20 @@ end
 
 ---摇奖
 ---@return senum
-function slotsEnum:rotateNormal()
-    return "rotateNormal"
+function slotsEnum.spin()
+    return "spin"
 end
 
 ---免费
 ---@return senum
-function slotsEnum:rotateFree()
-    return "rotateFree"
+function slotsEnum.fpin()
+    return "fpin"
 end
 
 ---重转
 ---@return senum
-function slotsEnum:rotateRoller()
-    return "rotateRoller"
+function slotsEnum.xpin()
+    return "xpin"
 end
 
 

@@ -36,6 +36,11 @@ skynet.start(function()
     skynet.call(service,"lua","start")
     services.gates = service
 
+    --启动login服务
+    local service = skynet.newservice("service_login")
+    skynet.call(service,"lua","start")
+    services.login = service
+
     --服务信息共享
     skynet.call(services.share,"lua","setShare","gservices",services)
     --服务信息广播

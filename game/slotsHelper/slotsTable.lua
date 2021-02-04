@@ -19,7 +19,7 @@ function slotsTable:ctor()
     ---@type slots_cfg          @slots配置
     self._cfg       = self._cfg
     ---@type slotsLogic         @slots逻辑
-    self._logic     = self._logic
+    self._lgc     = self._lgc
 end
 
 ---重启
@@ -113,14 +113,14 @@ function slotsTable:request(player,msg)
     if ok then
         return ok,result
     end
-    local cmd = table.last(msg.channel)
-    if cmd == slotsEnum.rotateNormal() then
+    local cmd = table.last(msg.cmds)
+    if cmd == slotsEnum.spin() then
         --摇奖
         ok,result = self:onRotateNormal(player,msg)
-    elseif cmd == slotsEnum.rotateFree() then
+    elseif cmd == slotsEnum.fpin() then
         --摇奖
         ok,result = self:onRotateFree(player,msg)
-    elseif cmd == slotsEnum.rotateRoller() then
+    elseif cmd == slotsEnum.xpin() then
         --重转
         ok,result = self:onRotateRoller(player,msg)
     end
@@ -159,7 +159,7 @@ function slotsTable:onRotateNormal(player,msg)
     self:setRunIconWeithts(wgts)
 
     ---获取结果
-    local result = self._logic:rotateNormal()
+    local result = self._lgc:rotateNormal()
     player:setLastNormal(result)
     ---保存免费
     return true,result
@@ -194,8 +194,19 @@ function slotsTable:onRotateRoller(player,msg)
     --设置权重
     local wgts = self:getCurrIconWeights()
     self:setRunIconWeithts(wgts)
-    local result = self._logic:rotateRoller()
+    --扣除成本
+    local alxe = self._lgc:getCurAxle()
+    local last = player:getLastResult()
+    local cost = last.heavyCost[alxe]
+    --检查金币
+    if player:getCoin() < cost then
+        return false,"您金币不足"
+    end
 
+    --扣除成本
+    player:addCoin(-cost)
+
+    local result = self._lgc:rotateRoller()
     player:setLastRoller(result)
     return true,result
 end

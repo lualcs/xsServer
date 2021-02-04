@@ -164,6 +164,42 @@ local gameInfos = {
         fulllin = true,
     },
     [20001] = {
+        name = "金鸡报喜",
+        assignClass  = "assignSingle",
+        importDeploy = "slots.games.slots_jjbx_cfg",
+        importTable  = "slots_jjbx.jjbx_table",
+        importPlayer = "slots_jjbx.jjbx_Player",
+        importAlgor  = "slots_jjbx.jjbx_algor",
+        importHelper = "slots_jjbx.jjbx_helper",
+        importSystem = "slots_jjbx.jjbx_system",
+        importLogic  = "slots_jjbx.jjbx_algor",
+        importType   = "slots_jjbx.jjbx_type",
+        open = true,
+        minPlayer = 1,
+        curPlayer = 0,
+        maxPlayer = 1000,
+        ---@type slots_layout_info
+        layout = {
+            maximumX = 5,
+            maximumY = 3,
+        },
+
+        ---@type slots_icon[] @转轴只能出现一次
+        soleiconX = {
+            10,--Scatter
+        },
+
+        ---@type path[]
+        sharedList = { --共享模块
+            "slots.games.slots_jjbx_cfg",
+        },
+
+        ---@type boolean @是否双向
+        bothway = false,
+        ---@type boolean @是否满线
+        fulllin = true,
+    },
+    [20001] = {
         name = "龙虎斗",
         open = true,
         minPlayer = 1,

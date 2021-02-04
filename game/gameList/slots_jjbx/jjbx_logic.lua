@@ -1,6 +1,6 @@
 --[[
-    file:jymt_logic.lua 
-    desc:金玉满堂
+    file:jjbx_logic.lua 
+    desc:金鸡报喜
     auth:Carol Luo
 ]]
 
@@ -8,43 +8,92 @@ local math = math
 local table = table
 local pairs = pairs
 local ipairs = ipairs
-local is_number = require("is_number")
-local is_number = require("is_number")
+local random = require("random")
 local class = require("class")
+local is_number = require("is_number")
 local slotsLogic = require("slotsLogic")
----@class jymt_logic:slotsLogic
-local jymt_logic = class(slotsLogic)
-local this = jymt_logic
+local jjbx_enum = require("slots_jjbx.jjbx_enum")
+---@class jjbx_logic:slotsLogic
+local jjbx_logic = class(slotsLogic)
+local this = jjbx_logic
 
 ---构造 
-function jymt_logic:ctor()
+function jjbx_logic:ctor()
 end
 
 ---正常摇奖
----@return slots_result_normal
-function jymt_logic:rotateNormal()
-    ---@type jymt_result_normal     @普通转结果
-    local result = self:super(this,"rotateNormal")
+---@return jjbx_result_normal
+function jjbx_logic:rotateNormal()
+    ---@type jjbx_result_normal     @普通转结果
+    local result = {}
+    result.widDouble = self:randomDouble(result)
+    self:super(this,"rotateNormal",result)
     ---@type slots_score[]          @重转成本
     result.heavyCost = self:getHeavyCost(result)
     return result
 end
 
+---正常摇奖
+---@return jjbx_result_normal
+function jjbx_logic:rotateFree()
+    ---@type jjbx_result_normal     @普通转结果
+    local result = self:super(this,"rotateFree")
+    result.widDouble = self:randomDouble(result)
+    return result
+end
+
+
+---重转摇将
+---@return jjbx_result_normal
+function jjbx_logic:rotateRoller()
+     ---@type jjbx_result_normal     @普通转结果
+     local result = self:super(this,"rotateFree")
+     result.widDouble = self:randomDouble(result)
+     return result
+end
+
+---图标翻倍计算
+---@param axles     slots_axlels    @轴图标数量统计
+---@param icon      slots_icon      @图标
+---@param wdbles    slots_double[]  @图标
+---@return number
+function jjbx_logic:getJoinWildDouble(axles,icon,wdbles)
+    ---@type slots_icon     @wild图标
+    local w = self:getWildID()
+    ---@type slots_double   @统计数量
+    local c = 0
+    for x=1,5 do
+        local s = axles[x]          --图标表
+        local nc = (s[icon] or 0)   --图标数
+        local wc = (s[w] or 0)      --wild数
+        local sc = nc + wc          --总数量
+        if sc > 0 then
+            local bc = wdbles[x] or 0
+            if bc <= 0 then
+                c = math.max(1,c) * math.max(1,nc) --不经过
+            end
+        else
+            break
+        end
+    end
+    return c
+end
 
 ---连线结果
----@param result slots_result_normal
+---@param result jjbx_result_normal
 ---@return slots_full_path[]
-function jymt_logic:getLineList(result)
-    local icons = result.icon_list
+function jjbx_logic:getLineList(result)
+    local icnlis = result.icon_list
+    local wdbles = result.widDouble
     ---@type slots_axlels                            @轴图标统计
-    local axles,icons = self:getAxlesIons(icons)
+    local axles,icons = self:getAxlesIons(icnlis)
     ---@type slots_full_path[]                       @满线路径表
     local full_paths = {nil}
 
     ---@type slots_icon                              @wild图标
     local wcion = self:getWildID()
     ---@type table<leng,slots_base>                  @图标倍数
-    local ibase = self:getLineBases()
+    local idouble = self:getLineBases()
     ---@type slots_score                             @单线下注
     local sbets = self:getLineBet()        
     ---开始图标
@@ -66,8 +115,8 @@ function jymt_logic:getLineList(result)
                     ilen = jx
                 else
                     --已中断
-                    local base = ibase[icon][ilen]
-                    if base <= 0 then
+                    local double = idouble[icon][ilen]
+                    if double <= 0 then
                         break
                     end
 
@@ -79,8 +128,9 @@ function jymt_logic:getLineList(result)
                         end
                     end
 
+                    local count = self:getJoinWildDouble(axles,icon,wdbles)
                     ---@type slots_base         @算倍数
-                    base = base * icnt
+                    local base = double * count
 
                     ---@type slots_score        @算分数
                     local score = base * sbets
@@ -89,7 +139,7 @@ function jymt_logic:getLineList(result)
                     ---@type slots_icon_post[]  @算路线
                     local place = {nil}
 
-                    for kpost,kicon in ipairs(icons) do
+                    for kpost,kicon in ipairs(icnlis) do
                         --检查转轴
                         local kx = ((kpost-1)//5) + 1
                         if kx <= ilen then
@@ -129,11 +179,222 @@ function jymt_logic:getLineList(result)
     return full_paths
 end
 
+---随机翻倍
+---@param result jjbx_result_normal
+function jjbx_logic:randomDouble(result)
+    ---@type slots_jymt_cfg @配置
+    local cfg = self:getGameConf()
+    local typ = result.game_type
+    local wgcfg
+    if jjbx_enum.rotateFree() == typ then
+        wgcfg = cfg.fwdouble_weights
+    else
+        wgcfg = cfg.nwdouble_weights
+    end
+
+    local doublies = {}
+    for index,icon in ipairs(result.icon_list) do
+        if not self:isWild(icon) then
+            doublies[index] = 0
+        else
+            local x = index % 5
+            ---@type weight_info @权重
+            local t = wgcfg[x]
+            doublies[index] = random.weight(t.wgt,t.sum)
+        end
+    end
+    return doublies
+end
+
+---计算轴期望
+---@param result jjbx_result_normal
+---@return double
+function jjbx_logic:getAxleBudgeExpect(result)
+    local icon_list = result.icon_list
+    ---@type jjbx_algor             @金鸡报喜
+    local algor = self._table._gor
+    ---@type postx                  @重转转轴x
+    local axle_xpost  = self:getCurAxle()
+    ---@type slots_icon             @wild图标
+    local wild_icon   = self:getWildID()
+    ---@type slots_icon             @免费图标
+    local free_icon   = self:getScatterID()
+    ---轴图标统计
+    local aicons = self:getAxlesIons(icon_list)
+    ---@type table<slots_icon,name> @所有图标名
+    local icon_names  = self:getIconNames()
+    ---@type slots_wight_info       @轴图标权重
+    local axle_wight  = self:getAxleIconWeithts()
+    ---@type slots_weight           @轴全部权重
+    local summ_wight  = axle_wight.sum
+    ---@type slots_weight           @轴wild权重
+    local wild_wight  = self:getAxleWeithtBy(axle_xpost,wild_icon)
+    ---@type slots_weight
+    local free_wight  = self:getAxleWeithtBy(axle_xpost,free_icon)
+    ---@type slots_expect           @轴免费期望
+    local xFreeExect = algor:scatterAxlePro(free_wight,summ_wight)
+    ---@type slots_expect           @轴wild期望
+    local xWildExect = algor:wildAxlePro(wild_wight,summ_wight,xFreeExect)
+    ---@type slots_base[][]         @连线倍数
+    local line_bases    = self:getLineBases()
+    ---@type slots_expect           @重转期望
+    local axle_expect   = 0
+    ---@type jjbx_game_cfg          @游戏配置
+    local cfg = self:getGameConf()
+    ---@type slots_expect           @翻倍期望
+    local wbexct2 = self._hlp.getwbexct(cfg.nwdouble_weights[2])
+    ---@type slots_expect           @翻倍期望
+    local wbexct4 = self._hlp.getwbexct(cfg.nwdouble_weights[4])
+    --遍历所有图标
+    for icon,iname in ipairs(icon_names) do
+        --普通图标-(scatter|wild-不参与)
+        if not self:isNormal(icon) then
+            ---@type slots_weight       @轴普通权重
+            local nWgt = axle_wight.wgt[icon]
+
+            local wWgt,fWgt,sWgt,fPro = wild_wight,free_wight,summ_wight,xFreeExect
+            ---@type slots_expect       @轴普通期望
+            local xNormExect = algor:normatAxlePro(nWgt,wWgt,fWgt,sWgt,fPro)
+            ---@type count          @线数量
+            local icnt = 0
+            ---@type leng           @线长度
+            local ilen = 0
+            --数量统计
+            for jx,js in ipairs(aicons) do
+                --当前轴此图标数量
+                local jxcnt = (aicons[jx][icon] or 0) + (aicons[jx][wild_icon] or 0)
+                icnt = math.max(1,icnt) * jxcnt
+                if jx == axle_xpost then
+                    --重转轴每个图标1个-这里不考虑wild
+                    jxcnt = 1
+                end
+
+                if jxcnt > 0 then
+                    --未中断
+                    ilen = jx
+                else
+                    --已中断
+                    local base = line_bases[icon][ilen]
+                    if base <= 0 then
+                        break
+                    end
+
+                    --是重转
+                    if axle_xpost > ilen then
+                        break
+                    end
+
+                    ---@type slots_base         @算倍数
+                    base = base * icnt
+
+                    ---@type slots_expect       @算期望
+                    local expect = base * xNormExect
+
+                    if 2 == axle_xpost then--重转 2
+                        local w = self:getWildID()
+                        --计算第二列
+                        local x2wc = xWildExect        --wild概率
+                        local x2nc = xNormExect      --图标概率
+                        if x2wc > 0 then
+                            expect = expect + (expect * x2wc * (wbexct2-1) / x2nc)
+                        end
+                        --计算第四列
+                        local x4wc = (aicons[4][w] or 0)                --wild概率
+                        local x4nc = x4wc + (aicons[4][icon] or 0)       --图标概率
+                        if x4wc > 0 then
+                            expect = expect + (expect * x4wc * (wbexct4-1) / x4nc)
+                        end
+                    elseif 4 == axle_xpost then--重转 4
+                        local w = self:getWildID()
+                        --计算第二列
+                        local x2wc = (aicons[2][w] or 0)                --wild概率
+                        local x2nc = x2wc + (aicons[2][icon] or 0)       --图标概率
+                        if x2wc > 0 then
+                            expect = expect + (expect * x2wc * (wbexct2-1) / x2nc)
+                        end
+
+                        --计算第四列
+                        local x4wc = xWildExect        --wild概率
+                        local x4nc = xNormExect      --图标概率
+                        if x4wc > 0 then
+                            expect = expect + (expect * x4wc * (wbexct4-1) / x4nc)
+                        end
+                    elseif 1 == axle_xpost % 2 then--重转 1 3 5
+                        local w = self:getWildID()
+                        --计算第二列
+                        local x2wc = (aicons[1][w] or 0)                --wild概率
+                        local x2nc = x2wc + (aicons[1][icon] or 0)       --图标概率
+                        if x2wc > 0 then
+                            expect = expect + (expect * x2wc * (wbexct2-1) / x2nc)
+                        end
+
+                        --计算第四列
+                        local x4wc = (aicons[3][w] or 0)                --wild概率
+                        local x4nc = x4wc + (aicons[3][icon] or 0)       --图标概率
+                        if x4wc > 0 then
+                            expect = expect + (expect * x4wc * (wbexct4-1) / x4nc)
+                        end
+                    end
+
+                    axle_expect = axle_expect + expect
+                end
+            end
+        end
+    end
+
+    ---重转免费期望-(免费中无法重转-只有scatter奖励会影响)
+    local function axleFreeExpect(scatterCNT)
+        ---@type slots_double           @scatter图标倍数
+        local scatterDOE     = line_bases[free_icon][scatterCNT] or 0
+
+        ---@type slots_count[]          @增加免费配置
+        local scatter_free     = self:getScatterFrees()
+
+        ---@type slots_count            @增加免费次数
+        local addFreeCNT     = scatter_free[scatterCNT] or 0
+
+        ---@type slots_expect           @免费进免费期望-一次
+        local freeEfree      = addFreeCNT * addFreeCNT
+
+        ---@type slots_expect           @免费进免费期望-所有
+        local freeAfree     = freeEfree/(1-self.getFreeBudgeEnter())
+
+        return freeAfree
+    end
+
+    ---@type slots_count            @scatter图标数量
+    local scatterCNT     = 0
+    for iaxle,ilist in ipairs(aicons) do
+        if axle_xpost ~= iaxle then
+            --重转
+            scatterCNT = scatterCNT + 1
+        else
+            --正常
+            scatterCNT = scatterCNT + (ilist[free_icon] or 0)
+        end
+    end
+
+    ---@type slots_expect   @重转有scatterCNT 期望
+    local axleFreeExpect1 = axleFreeExpect(scatterCNT)
+    ---@type slots_expect   @重转无scatterCNT 期望
+    local axleFreeExpect2 = axleFreeExpect(scatterCNT-1)
+    ---@type slots_expect   @求差值scatterCNT 期望
+    local axleFreeExpect3 = axleFreeExpect1 - axleFreeExpect2
+    ---@type slots_expect   @真实期望
+    local axleFreeExpect4 = axleFreeExpect2 + (axleFreeExpect3*xFreeExect)
+    ---@type slots_expect   @免费期望 
+    local axleFreeExpect5 = axleFreeExpect4 * self:getFreeBudgeExpect()
+
+    axle_expect = axle_expect + axleFreeExpect5
+
+    return axle_expect
+end
+
 
 local expect1
 local expect2
 ---转一次免费期望
-function jymt_logic:getFreeBudgeExpect()
+function jjbx_logic:getFreeBudgeExpect()
     if not expect1 then
         ---@type jymt_table             @桌子
         local game = self._table
@@ -226,7 +487,7 @@ function jymt_logic:getFreeBudgeExpect()
 end
 
 ---免费进入免费期望
-function jymt_logic:getFreeBudgeEnter()
+function jjbx_logic:getFreeBudgeEnter()
     if not expect2 then
         self:getFreeBudgeExpect()
     end
@@ -237,7 +498,7 @@ end
 ---计算轴期望
 ---@param result jymt_result_normal
 ---@return double
-function jymt_logic:getAxleBudgeExpect(result)
+function jjbx_logic:getAxleBudgeExpect(result)
     ---@type jymt_algor             @金玉满堂
     local algor = self._table._gor
     ---@type postx                  @重转转轴x
@@ -364,4 +625,4 @@ function jymt_logic:getAxleBudgeExpect(result)
     return axle_expect
 end
 
-return jymt_logic
+return jjbx_logic

@@ -525,6 +525,7 @@ function M.extract(tbl)
         end
     end
 end
+
 function M.get_protobuf_env()
   return P
 end

@@ -30,12 +30,23 @@ function gameEnum.login()
     return "login"
 end
 
+---大厅消息
+---@return senum
+function gameEnum.lobby()
+    return "lobby"
+end
+
 ---桌子消息
 ---@return senum
 function gameEnum.table()
     return "table"
 end
 
+---旁观
+---@return senum
+function gameEnum.lookon()
+    return "lookon"
+end
 
 ---私聊
 ---@return senum
@@ -169,6 +180,30 @@ end
 ---@return senum
 function gameEnum.join()
     return "join"
+end
+
+---手机
+---@return senum
+function gameEnum.phone()
+    return "phone"
+end
+
+---测试
+---@return senum
+function gameEnum.example()
+    return "example"
+end
+
+---成功
+---@return senum
+function gameEnum.succeed()
+    return "succeed"
+end
+
+---游戏 
+---@return senum
+function gameEnum.gamelis()
+    return "gamelis"
 end
 
 return gameEnum

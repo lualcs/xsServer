@@ -16,7 +16,7 @@ local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
 local cs = queue()
 
-local gatemessage = require("gatemessage")
+local gatemanager = require("gatemanager")
 
 ---@type mapServers 				@监听信息
 local mapServers
@@ -83,9 +83,9 @@ end
 ---@param message   string	@数据 
 ---@param msgtype   string	@类型 "text" or "binary"
 function ws_handle.message(fd, message, msgtype)
-	debug.error("message:",{fd=fd,message=message,msgtype=msgtype})
-	local msgHead,msgBody = protobuff.decode_message(message,#message)
-	this._msg:request(fd,msgBody)
+	local data = protobuff.decode_message(message,#message)
+	this._manger:message(fd,data)
+	skynet.trash(message,#message)
 end
 
 
@@ -96,9 +96,10 @@ function service.start()
 	local fd = websocket.listen(gate.host,gate.port,ws_handle)
 	--协议
 	local list = require("protocol.protobuff")
-    protobuff.parser_register(list,"game_protobuff")
-	--消息
-	this._msg = gatemessage.new(this,mapclients)
+	protobuff.parser_register(list,"game_protobuff")
+	
+	---@type gatemanager
+	this._manger = gatemanager.new(this,mapclients)
 	skynet.retpack(false)
 end
 
@@ -107,8 +108,12 @@ function service.gservices(name)
 	local services = sharedata.query(name)
 	---@type serviceInf @服务地址信息
 	this.services = services
+
+	---@type userdata @共享protobuff
+	local env = protobuff.get_protobuf_env()
+    skynet.send(services.login,"lua","protobuff",env)
 	skynet.retpack(false)
-  end
+end
 
 ---初始
 skynet.init(function()
@@ -123,7 +128,7 @@ skynet.start(function()
         if f then
             cs(f,...)
         else
-            local mgr = this._msg
+            local mgr = this._manger
             local f = mgr[cmd]
             cs(f,mgr,...)
         end

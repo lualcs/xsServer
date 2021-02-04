@@ -26,6 +26,12 @@ function assignSuper:ctor(service)
     self._tables = {nil}
 end
 
+---服务
+---@return serviceInf @服务信息
+function assignSuper:getServices()
+    return self._service.services
+end
+
 ---分配类型
 ---@return senum
 function assignSuper:assignClass()

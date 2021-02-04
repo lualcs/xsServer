@@ -171,7 +171,7 @@ function gamePlayer:request(msg)
     self._request = msg
     --转到游戏
     local ok,error = self._table:request(self,msg)
-    local cmd = table.last(msg.channel)
+    local cmd = table.last(msg.cmds)
     if ok then
         self._mapues[cmd] = true
         table.insert(self._queues,cmd)

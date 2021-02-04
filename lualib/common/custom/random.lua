@@ -89,16 +89,33 @@ function random.no_repetition_sub(min_num,max_num,get_num,list)
 	return sort.shuffle(list)
 end
 
---抽牌
-function random.out_card(arrayCard)
-	local count = #arrayCard
+---随机一个
+---@param t any[]	@数组
+---@return any
+function random.remove(t)
+	local count = #t
 	local rand = math.random(1,count)
-	local value = arrayCard[rand]
-	
-	table.exchange(arrayCard,rand,count)
-	arrayCard[count] = nil
+	table.exchange(t,rand,count)
+	return table.remove(t)
+end
 
-	return value
+---权重随机
+---@param t table<index,number> @映射
+---@param s number				@总和
+---@return index
+function random.weight(t,s)
+	local is = {}
+	for i,_ in pairs(t) do
+		table.insert(is,i)
+	end
+	table.sort(is)
+	local r = math.random(1,s)
+	for _,i in ipairs(is) do
+		r = r - t[i]
+		if r <= 0 then
+			return i
+		end
+	end
 end
 
 return random

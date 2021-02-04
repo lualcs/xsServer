@@ -4,7 +4,9 @@
     auth:Carol Luo
 ]]
 
+local tsort = require("sort")
 local api_socket = require("api_socket")
+local protbuff = require("api_pbc")
 local websocket = require("http.websocket")
 
 ---@class api_websocket
@@ -60,7 +62,9 @@ end
 ---发送
 ---@param fd            socket  @套接字
 ---@param data          string  @数据
-function api_websocket.send(fd,data)
+function api_websocket.sendpbc(fd,name,cmds,info)
+    tsort.reverse(cmds)
+    local data = protbuff.encode_message(name,cmds,info)
     websocket.write(fd,data,"binary")
 end
 

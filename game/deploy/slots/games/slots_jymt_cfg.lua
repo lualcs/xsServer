@@ -14,6 +14,7 @@ return {
     kill_weight_index = 6,
     free_weight_index = 7,
     heavyPro = 0.9, --重转返还率
+    heavymincost = 10,      --最低转成本
     stageLevels = {
         [1] = 0,   --普通
         [2] = 10,  --大奖 
@@ -111,7 +112,7 @@ return {
                 sum      = 11310,
             },
             [3] = {--转轴3
-                wgt = {
+            wgt = {
                 [1]      = 2000,
                 [2]      = 2000,
                 [3]      = 3000,

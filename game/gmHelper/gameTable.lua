@@ -328,7 +328,7 @@ end
 ---@return boolean,string|any
 function gameTable:request(player,msg)
     self:setCurPlayer(player)
-    local cmd = table.last(msg.channel)
+    local cmd = table.last(msg.cmds)
 end
 
 ---通知客户端-服务-私有的

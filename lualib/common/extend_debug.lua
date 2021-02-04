@@ -60,8 +60,11 @@ function debug.protobuff(...)
     debug.print(...)
 end
 
----service_gate
 function debug.service_gate(...)
+    debug.print(...)
+end
+
+function debug.service_login(...)
     debug.print(...)
 end
 
