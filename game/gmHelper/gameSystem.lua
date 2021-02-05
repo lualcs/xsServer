@@ -18,6 +18,10 @@ end
 
 ---重启
 function gameSystem:dataReboot()
+    self._gor = self._table._gor
+    self._tye = self._table._tye
+    self._hlp = self._table._hlp
+    self._lgc = self._table._lgc
 end
 
 return gameSystem

@@ -59,3 +59,42 @@
 ---@field   getCard mjCard                  @拿牌
 ---@field   mjClass mjClass                 @分类
 ---@field   mjGapls mjGapls                 @分类
+
+
+---@class   mjCards                         @麻将
+---@field   cards   mjCard[]                @数据
+
+---@class   mjShow                          @展示
+---@field   type    senum                   @动作
+---@field   from    seatID                  @来源
+---@field   cards   mjCard[]                @数据
+
+
+---@class   mjCardInfo                      @牌数据
+---@field   shows   mjShow[]                @展示
+---@field   hands   mjCard[]                @手牌
+---@field   expor   mjCard[]                @出牌
+---@field   count   count                   @数量
+
+---@class   mjBillDetail                    @流水详情
+---@field   from    seatID                  @来源
+---@field   score   score                   @分数
+---@field   times   count                   @倍数
+---@field   types   senum[]                 @类型
+
+---@class   mjBillDetail                    @积分流水
+---@field   score   score                   @分数
+---@field   froms   seatID[]                @来源
+---@field   types   senum[]                 @类型
+
+
+---@class   mjhandle                        @麻将操作
+---@field   type        senum               @操作类型
+---@field   card        mjCard              @操作数据-可选
+---@field   cards       mjCard[]            @操作数据-可选
+---@field   cardList    mjCards[]           @操作数据-可选
+---@field   value       number              @操作数据-可选
+
+---@class   mjBehavior:mjhandle             @麻将行为
+---@field   seatID      seatID              @操作玩家
+---@field   fromID      seatID              @来源玩家

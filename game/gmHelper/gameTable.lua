@@ -13,7 +13,7 @@ local caches = require("caches")
 local skynet = require("skynet")
 local timer  = require("timer")
 local class = require("class")
-local gameEnum = require("gameEnum")
+local senum = require("gameEnum")
 ---@class gameTable @游戏桌子
 local gameTable = class()
 
@@ -89,6 +89,8 @@ function gameTable:ctor(service,gameInfo,gameCustom)
     self._historID  = gameCustom.historID
     ---@type combatID                   @小局战绩
     self._combatID  = 0
+    ---@type senum                      @游戏状态
+    self._gmstatus  = nil
 end
 
 ---重启
@@ -105,7 +107,7 @@ function gameTable:dataReboot()
     end
 
     ---初始玩家
-    local senum = gameEnum.join()
+    local senum = senum.join()
     for _,player in ipairs(self._arrPlayer) do
         ---参与状态
         player:setStatusBy(senum,true)
@@ -125,6 +127,17 @@ end
 ---小局
 function gameTable:getCombatID()
     return self._combatID
+end
+
+---状态 
+function gameTable:getGameStatus()
+    return self._gmstatus
+end
+
+---状态
+---@param status number @状态
+function gameTable:setGameStatus(status)
+    self._gmstatus = status
 end
 
 ---定制规则

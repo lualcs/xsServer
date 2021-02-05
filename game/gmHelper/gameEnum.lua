@@ -206,4 +206,16 @@ function gameEnum.gamelis()
     return "gamelis"
 end
 
+---空闲
+---@return senum
+function gameEnum.idle()
+    return "idle"
+end
+
+---游戏
+---@return senum
+function gameEnum.game()
+    return "game"
+end
+
 return gameEnum

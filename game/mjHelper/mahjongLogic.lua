@@ -6,14 +6,14 @@
 
 local class = require("class")
 
-
----@class mahjongLogic @麻将扑克
-local mahjongLogic = class()
+local gameLogic = require("gameLogic")
+---@class mahjongLogic:gameLogic @麻将扑克
+local mahjongLogic = class(gameLogic)
 
 ---构造
----@param gameTable slotsTable
-function mahjongLogic:ctor(gameTable)
-    self._table = gameTable
+---@param table mahjongTable
+function mahjongLogic:ctor(table)
+    self._table = table
 end
 
 return mahjongLogic

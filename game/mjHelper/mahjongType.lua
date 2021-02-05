@@ -14,11 +14,10 @@ local mahjongType = class(gameType)
 function mahjongType:ctor()
 end
 
-
 ---类型
----@param mjUnity mjUnify @数据
+---@param mjUnify mjUnify @数据
 ---@return mjPeg
-function mahjongType:getPegItem(mjUnity)
+function mahjongType:getPegItem(mjUnify)
     return true
 end
 
