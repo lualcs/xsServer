@@ -4,6 +4,7 @@
 	比如在排行排序的时候 按照比较函数 返回false 交换原则
 ]]
 
+local ipairs = ipairs
 local is_number = require("is_number")
 local is_table = require("is_table")
 local table = require("extend_table")
@@ -61,17 +62,17 @@ end
 ---@param arr any[] @数组
 ---@param comp function  @比较函数
 ---@param val any  @插入值
-function sort.insert(arr,comp,val)  
+function sort.insert(arr,comp,new)  
 	local len = #arr
-    for i = 1,len do
-       if not comp(arr[i],val) then  
-		   table.insert(arr,i,val)
+    for k,val in ipairs(arr) do
+       if not comp(val,new) then  
+		   table.insert(arr,k,new)
 		   return
        end  
 	end
 	
 	--到这里直接添加到末尾
-	table.insert(arr,val)
+	table.insert(arr,new)
 end
 
 ---快速排序

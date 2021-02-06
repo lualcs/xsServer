@@ -35,7 +35,7 @@ end
 ---@field traverse 遍历查找
 ---@param arr 数组
 ---@param val 查找值
-function search.traverse(arry,val,key)
+function search.traverse(arry,val)
 	for _k,_v in pairs(arry) do
 		if _v == val then
 			return _k
