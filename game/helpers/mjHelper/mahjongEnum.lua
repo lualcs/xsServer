@@ -21,6 +21,12 @@ function mahjongEnum.faPai()
     return "faPai"
 end
 
+---操作
+---@return senum
+function mahjongEnum.handle()
+    return "handle"
+end
+
 ---补花
 ---@return senum
 function mahjongEnum.buHua()

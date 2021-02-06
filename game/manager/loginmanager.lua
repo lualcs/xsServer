@@ -9,7 +9,7 @@ local debug = require("extend_debug")
 local websocket = require("api_websocket")
 local skynet = require("skynet")
 local class = require("class")
-local senum = require("gameEnum")
+local senum = require("managerEnum")
 
 ---@class loginmanager @gate管理
 local loginmanager = class()

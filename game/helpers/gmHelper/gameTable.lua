@@ -7,6 +7,7 @@
 local pairs = pairs
 local ipairs = ipairs
 local format = string.format
+local wsnet = require("api_websocket")
 local table = require("extend_table")
 local occupy = require("occupy")
 local caches = require("caches")
@@ -246,12 +247,6 @@ function gameTable:getDriver(senum)
     return self._mapDriver[senum]
 end
 
----玩家插入
----@param gamePlayer gamePlayer @玩家
-function gameTable:addPlayer(gamePlayer)
-    local map = self:getMapPlayer()
-    local arr = self:getArrPlayer()
-end
 
 ---玩家进入
 ---@param playerInfo playerInfo @玩家信息
@@ -277,6 +272,7 @@ function gameTable:playerEnter(playerInfo)
 
     local lis = self:getArrPlayer()
     lis[playerInfo.seatID] = newobj
+
 end
 
 ---玩家退出
@@ -345,17 +341,22 @@ function gameTable:request(player,msg)
 end
 
 ---通知客户端-服务-私有的
----@param address number        @服务地址
+---@param fd      number        @服务地址
+---@param name    string        @服务地址
+---@param cmd     senum         @消息命令
 ---@param data    messabeBody   @游戏数据
-local function ntfMsgToClient(address,data)
-    skynet.send(address,"ntfMsgToClient",data)
+local function ntfMsgToClient(fd,name,cmd,data)
+    local cmds = {senum.table(),cmd}
+    wsnet.sendpbc(fd,name or "msgBody",cmds,data)
 end
 
 ---通知客户端-玩家
 ---@param player gamePlayer     @游戏玩家
+---@param name    string        @服务地址
+---@param cmd     senum         @消息命令
 ---@param data   messabeBody    @游戏数据
-function gameTable:ntfMsgToPlayer(player,data)
-    ntfMsgToClient(player:getAddress(),data)
+function gameTable:ntfMsgToPlayer(player,name,cmd,data)
+    ntfMsgToClient(player:fd(),name,cmd,data)
     --缓存消息
     self._cac:dataPush(data)
 end
@@ -363,9 +364,11 @@ end
 
 local copy1 = {nil}
 ---通知客户端-广播
+---@param name    string        @服务地址
+---@param cmd     senum         @消息命令
 ---@param data   messabeBody             @游戏数据
 ---@param sees   message_see_info        @可见信息
-function gameTable:ntfMsgToTable(data,sees)
+function gameTable:ntfMsgToTable(name,cmd,data,sees)
     ---@type table<any,any>    @备份数据
     local back = table.clear(copy1)
     if sees then
@@ -377,11 +380,11 @@ function gameTable:ntfMsgToTable(data,sees)
     --通知旁观玩家
     for _,player in ipairs(self._mapPlayer) do
         if not sees then
-            ntfMsgToClient(player:getAddress(),data)
+            ntfMsgToClient(player:fd(),name,cmd,data)
         else
             local seat = player:getSeatID()
             if not table.exist(sees.chairs,seat) then
-                ntfMsgToClient(player:getAddress(),data)
+                ntfMsgToClient(player:fd(),name,cmd,data)
             end
         end
     end
@@ -394,7 +397,7 @@ function gameTable:ntfMsgToTable(data,sees)
         for seat,_ in ipairs(sees.chairs) do
             --通知数据
             local player = self._arrPlayer[seat]
-            ntfMsgToClient(player:getAddress(),data)
+            ntfMsgToClient(player:fd(),name,cmd,data)
         end
     end
     --缓存消息

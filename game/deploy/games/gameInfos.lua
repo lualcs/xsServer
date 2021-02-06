@@ -4,12 +4,13 @@
     auth:Carol Luo
 ]]
 
+local senum = require("gameEnum")
 
 ---@type table<gameID,gameInfo>
 local gameInfos = {
     [1] = {
         name = "炸金花",
-        assignClass  = "assignSingle",
+        assignClass  = senum.assignKilling(),
         importDeploy = "poker.poker_zjh_cfg",
         importTable  = "poker_zjh.zjh_table",
         importPlayer = "poker_zjh.zjh_Player",
@@ -18,7 +19,7 @@ local gameInfos = {
         importSystem = "poker_zjh.zjh_system",
         importLogic  = "poker_zjh.zjh_algor",
         importType   = "poker_zjh.zjh_type",
-        open = true,
+        open = senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -28,7 +29,7 @@ local gameInfos = {
     },
     [2] = {
         name = "牛牛",
-        open = true,
+        open = senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -38,7 +39,7 @@ local gameInfos = {
     },
     [3] = {
         name = "三公",
-        open = true,
+        open = senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -47,7 +48,7 @@ local gameInfos = {
         }
     },
     [4] = {
-        name = "三公",
+        name = "牌九",
         open = true,
         minPlayer = 2,
         curPlayer = 0,
@@ -201,9 +202,9 @@ local gameInfos = {
     },
     [20001] = {
         name = "龙虎斗",
-        open = true,
+        open = senum.timer(),
         minPlayer = 1,
-        curPlayer       = 0,
+        curPlayer = 0,
         maxPlayer = 100,
         sharedList = { --共享模块
 

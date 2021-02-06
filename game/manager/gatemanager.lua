@@ -11,7 +11,7 @@ local protobuff = require("api_pbc")
 local skynet = require("skynet")
 local class = require("class")
 local tsort = require("sort")
-local gameEnum = require("gameEnum")
+local senum = require("managerEnum")
 
 ---@class gatemanager @gate管理
 local gatemanager = class()
@@ -39,13 +39,13 @@ function gatemanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
     local svs = self:getServices()
     local client = self._cens[fd]
-    if gameEnum.login() == cmd then
+    if senum.login() == cmd then
         --登陆请求
         skynet.send(svs.login,"lua","message",fd,msg)
-    elseif gameEnum.assignSingle() == cmd then
+    elseif senum.assignSingle() == cmd then
         --单机游戏
         skynet.send(svs.single,"lua","message",fd,msg)
-    elseif gameEnum.table() == cmd then
+    elseif senum.table() == cmd then
         --桌子消息
         local svc = client.tablesvc
         if svc then

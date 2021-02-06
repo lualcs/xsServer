@@ -16,11 +16,13 @@ local reusable = require("reusable")
 local timer = class()
 ---构造 
 function timer:ctor()
-    ---@type heap           @最大堆
+    ---@type heap                   @最大堆
     self._heap   = heap.new()
-    ---@type reusable       @回收库
+    ---@type table<string,timeID>   @定时器
+    self._list   = {}
+    ---@type reusable               @回收库
     self._store  = reusable.new()
-    ---@type function       @轮询函数
+    ---@type function               @轮询函数
     self._poling = function(_)
         self:poling()
     end
@@ -28,10 +30,12 @@ end
 
 ---重置
 function timer:dataReboot()
-    ---@type integer        @暂停时间
+    ---@type integer                @暂停时间
     self._pauset = nil
-    ---@type heap           @清空数据
+    ---@type heap                   @清空数据
     self._heap:clear()
+    ---@type table<string,timeID>   @定时器
+    self._list   = {}
 end
 
 ---定时回调
@@ -59,6 +63,32 @@ end
 ---@return timeID @定时ID
 function timer:appendEver(elapse,call,...)
     return self:append(elapse,nil,call,...)
+end
+
+---定时回调
+---@param  name     name        @定时名字
+---@param  elapse   MS          @流逝时间
+---@param  count    count       @回调次数
+---@param  obj      class       @回调对象
+---@param  call     function    @回调函数
+---@return timeID @定时ID
+function timer:appendBy(name,elapse,count,call,...)
+    local list = self._list
+    local iden = list[name]
+    local indx,node = self._heap:find(iden)
+    if node then
+        self._heap:delete(indx)
+    end
+    list[name] = self:append(elapse,count,call,...)
+end
+
+---无限回调
+---@param  name     name        @定时名字
+---@param  elapse   MS          @流逝时间
+---@param  call     function    @回调函数
+---@return timeID @定时ID
+function timer:appendEverBy(name,elapse,call,...)
+    return self:appendBy(name,elapse,nil,call,...)
 end
 
 ---删除定时

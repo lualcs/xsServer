@@ -17,7 +17,9 @@ local occupy = class()
 function occupy:ctor(min,max)
     self._min = min --最少数
     self._max = max --最大数
+    self._lim = min --刻度
     self._cur = min --当前取
+    self._cnt = 0   --占数量
     self._lis = {nil}
 end
 
@@ -29,14 +31,17 @@ end
 ---取
 ---@return boolean,number
 function occupy:fetch()
-    if self._cur < self._max then
-        self._cur = self._cur + 1
+    if self._lim < self._max then
+        self._cur = self._lim + 1
+        self._cnt = self._cnt + 1
+        self._lim = self._lim + 1
         return true
     end
 
     local lis = self._lis
     if next(lis) then
         self._cur = table.remove(lis)
+        self._cnt = self._cnt + 1
         return true
     end
 
@@ -46,6 +51,7 @@ end
 ---还
 ---@param mark number
 function occupy:repay(mark)
+    self._cnt = self._cnt - 1
     table.insert(self._lis,mark)
 end
 
@@ -55,5 +61,10 @@ function occupy:read()
     return self._cur
 end
 
+---数量
+---@return count
+function occupy:count()
+    return self._cnt
+end
 
 return  occupy

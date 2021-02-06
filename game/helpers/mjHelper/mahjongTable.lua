@@ -5,6 +5,7 @@
 ]]
 
 local class = require("class")
+local senum = require("mahjongEnum")
 local gameTable = require("gameTable")
 ---@class mahjongTable:gameTable @麻将桌子
 local mahjongTable = class(gameTable)
@@ -50,11 +51,11 @@ local see = {
     fields = {"cards"},
     chairs = {},
 }
----游戏开始
+---游戏发牌
 ---@param data s2cMahjongDealCard @数据
 function mahjongTable:s2cMahjongDealCard(data)
     see.chairs[1]=data.seatID
-    self:ntfMsgToTable(data,see);
+    self:ntfMsgToTable("s2cMahjongDealCard",senum.faPai(),data,see);
 end
 
 ---@class s2cMahjongDetails @游戏详情
@@ -67,7 +68,7 @@ end
 function mahjongTable:s2cMahjongDetails(data)
     local seat = data.seatID
     local player = self._arrPlayer[seat];
-    self:ntfMsgToPlayer(player,data);
+    self:ntfMsgToPlayer(player,"s2cMahjongDetails",senum.scene(),data);
 end
 
 ---@class s2cMahjongBuHua   @补花通知
@@ -77,7 +78,7 @@ end
 ---补花通知
 ---@param data s2cMahjongBuHua @数据
 function mahjongTable:s2cMahjongBuHua(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongBuHua",senum.buHua(),data);
 end
 
 ---@class s2cMahjongChuPai @出牌通知
@@ -88,17 +89,23 @@ end
 ---出牌通知
 ---@param data s2cMahjongChuPai @数据
 function mahjongTable:s2cMahjongChuPai(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongChuPai",senum.chuPai(),data);
 end
 
 ---@class s2cMahjongMoPai @摸牌通知
 ---@field seatID seatID   @摸牌玩家
 ---@field cards  mjCard[] @摸牌数据
 
+local see = {
+    fields = {"cards"},
+    chairs = {},
+}
+
 ---摸牌通知
 ---@param data s2cMahjongMoPai @数据
 function mahjongTable:s2cMahjongMoPai(data)
-    self:ntfMsgToTable(data);
+    see.chairs[1]=data.seatID
+    self:ntfMsgToTable("s2cMahjongMoPai",senum.moPai(),data,see);
 end
 
 ---@class s2cMahjongChiPai  @吃牌通知
@@ -108,7 +115,7 @@ end
 ---吃牌通知
 ---@param data s2cMahjongChiPai @数据
 function mahjongTable:s2cMahjongChiPai(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongChiPai",senum.chiPai(),data);
 end
 
 ---@class s2cMahjongPengPai @碰牌通知
@@ -118,7 +125,7 @@ end
 ---碰牌通知
 ---@param data s2cMahjongPengPai @数据
 function mahjongTable:s2cMahjongPengPai(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongPengPai",senum.pengPai(),data);
 end
 
 ---@class s2cMahjongGangPai @杠牌通知
@@ -129,7 +136,7 @@ end
 ---杠牌通知
 ---@param data s2cMahjongGangPai @数据
 function mahjongTable:s2cMahjongGangPai(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongGangPai",data.senum,data);
 end
 
 ---@class s2cMahjongHuPai @胡牌通知
@@ -140,7 +147,7 @@ end
 ---胡牌通知
 ---@param data s2cMahjongHuPai @数据
 function mahjongTable:s2cMahjongHuPai(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongHuPai",data.senum,data);
 end
 
 ---@class s2cMahjongTimer @计时通知
@@ -149,7 +156,7 @@ end
 ---计时通知
 ---@param data s2cMahjongTimer @数据
 function mahjongTable:s2cMahjongTimer(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongTimer",senum.timer(),data);
 end
 
 ---@class s2cMahjongHandle      @操作通知
@@ -160,7 +167,7 @@ end
 ---操作通知
 ---@param data s2cMahjongHandle @数据
 function mahjongTable:s2cMahjongHandle(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongHandle",senum.handle(),data);
 end
 
 ---@class sc2MahjongDeduct @扣分通知
@@ -171,8 +178,8 @@ end
 
 ---扣分通知
 ---@param data sc2MahjongDeduct @数据
-function mahjongTable:s2cMahjongHuPai(data)
-    self:ntfMsgToTable(data);
+function mahjongTable:sc2MahjongDeduct(data)
+    self:ntfMsgToTable("sc2MahjongDeduct",senum.deduct(),data);
 end
 
 

@@ -36,8 +36,6 @@ function gameLogic:getCurPlayer()
     return self._table:getCurPlayer()
 end
 
-
-
 ---获取游戏信息
 ---@return gameInfo
 function gameLogic:getGameInfo()

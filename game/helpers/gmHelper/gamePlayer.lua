@@ -47,9 +47,9 @@ function gamePlayer:dataReboot()
 end
 
 ---地址
----@return number
-function gamePlayer:getAddress()
-    return self._player.address
+---@return socket
+function gamePlayer:fd()
+    return self._player.fd
 end
 
 ---名字

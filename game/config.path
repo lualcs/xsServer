@@ -19,9 +19,9 @@ root.."game/deploy/?.lua;"..
 root.."game/manager/?.lua;"..
 root.."game/gmHelper/?.lua;"..
 root.."game/gmAssign/?.lua;"..
-root.."game/mjHelper/?.lua;"..
-root.."game/pkHelper/?.lua;"..
-root.."game/slotsHelper/?.lua;"..
+root.."game/helpers/mjHelper/?.lua;"..
+root.."game/helpers/pkHelper/?.lua;"..
+root.."game/helpers/slotsHelper/?.lua;"..
 root.."game/gameList/?.lua;"..
 root.."3rd/rmq/?.lua;"..
 root.."3rd/pbc/binding/lua53/?.lua;"
