@@ -7,7 +7,7 @@
 local class = require("class")
 local gamePlayer = require("gamePlayer")
 ---@class hundredPlayer:gamePlayer
-local hundredPlayer = class(gameAlgor)
+local hundredPlayer = class(gamePlayer)
 
 ---构造 
 function hundredPlayer:ctor()
