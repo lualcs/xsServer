@@ -8,6 +8,7 @@ local table = table
 local tsort = require("sort")
 local search = require("search")
 local class = require("class")
+---@class ranking
 local ranking = class()
 
 ---@class rank
