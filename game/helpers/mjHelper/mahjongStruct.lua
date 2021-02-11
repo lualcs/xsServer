@@ -33,7 +33,7 @@
 
 
 ---@class   mjFill:mjUnit                   @牌库
----@field   again   mjColor                 @几张
+---@field   again   mjCount                 @几张
 
 ---@class   mjUsag                          @调用
 ---@field   player  mahjongPlayer           @玩家

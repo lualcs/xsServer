@@ -299,6 +299,12 @@ function gameTable:gameStart()
     self:cacheStart()
     ---启动定时
     self:startTimer()
+    ---扩展开始
+    self:extendStart() 
+end
+
+---扩展开始
+function gameTable:extendStart()
 end
 
 ---缓存开始
