@@ -13,6 +13,9 @@ local zjh_type = class(pokerType)
 function zjh_type:ctor()
 end
 
-
+---豹子
+---@return senum
+function zjh_type.isBaoZi()
+end
 
 return zjh_type

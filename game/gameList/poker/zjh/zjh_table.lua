@@ -6,7 +6,7 @@
 
 local table = table
 local class = require("class")
-local zjh_enum = require("poker_zjh.zjh_enum")
+local senum = require("zjh.zjh_enum")
 local pokerTable = require("pokerTable")
 ---@class zjh_table:pokerTable
 local zjh_table = class(pokerTable)
@@ -18,7 +18,7 @@ end
 
 ---请求
 ---@param player        zjh_player  @玩家
----@param msg           messabeBody @消息
+---@param msg           msgBody @消息
 ---@return boolean,string|any
 function zjh_table:request(player,msg)
     local ok,error = self:super(this,"request",player,msg)
@@ -26,18 +26,18 @@ function zjh_table:request(player,msg)
         return ok,error
     end
     local cmd = table.last(msg.cmds)
-    if cmd == zjh_enum.zjh_kp() then
+    if cmd == senum.zjh_kp() then
         ok,error = self:gameSeeCard(player)--看牌
-    elseif cmd == zjh_enum.zjh_qp() then
+    elseif cmd == senum.zjh_qp() then
         ok,error = self:gameCastCard(player)--弃牌
-    elseif cmd == zjh_enum.zjh_gz() then
+    elseif cmd == senum.zjh_gz() then
         ok,error = self:gameWithBet(player)--跟注
-    elseif cmd == zjh_enum.zjh_jz() then
+    elseif cmd == senum.zjh_jz() then
         local index = msg.details
         ok,error = self:gameRefuelBet(player,index)--加注
-    elseif cmd == zjh_enum.zjh_sh() then
+    elseif cmd == senum.zjh_sh() then
         ok,error = self:gameShowhandBet(player)--梭哈
-    elseif cmd == zjh_enum.zjh_gdd() then
+    elseif cmd == senum.zjh_gdd() then
         ok,error = self:gameTraceBet(player)--跟到底
     end
     return ok,error
@@ -47,13 +47,13 @@ end
 ---@param player       zjh_player
 function zjh_table:gameSeeCard(player)
     --本局玩家
-    local senum = zjh_enum.join()
+    local senum = senum.join()
     if not player:getStatusBy(senum) then
         return false,"看牌:非参与者"
     end
 
     --重复检查
-    local senum = zjh_enum.zjh_kp()
+    local senum = senum.zjh_kp()
     if player:getStatusBy(senum) then
         return false,"看牌:重复请求"
     end
@@ -69,13 +69,13 @@ end
 ---@param player       zjh_player
 function zjh_table:gameCastCard(player)
     --本局玩家
-    local senum = zjh_enum.join()
+    local senum = senum.join()
     if not player:getStatusBy(senum) then
         return false,"弃牌:非参与者"
     end
 
     --重复检查
-    local senum = zjh_enum.zjh_qp()
+    local senum = senum.zjh_qp()
     if player:getStatusBy(senum) then
         return false,"弃牌:重复请求"
     end
@@ -91,7 +91,7 @@ end
 ---@param player       zjh_player
 function zjh_table:gameWithBet(player)
     --本局玩家
-    local senum = zjh_enum.join()
+    local senum = senum.join()
     if not player:getStatusBy(senum) then
         return false,"跟注:非参与者"
     end

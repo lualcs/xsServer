@@ -6,7 +6,7 @@
 
 local class = require("class")
 local gameEnum = require("gameEnum")
----@class pokerEnum
+---@class pokerEnum:gameEnum
 local pokerEnum = class(gameEnum)
 local this = pokerEnum
 

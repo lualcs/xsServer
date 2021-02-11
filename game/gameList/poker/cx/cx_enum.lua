@@ -14,42 +14,6 @@ local cx_enum = class(pokerEnum)
 function cx_enum:ctor()
 end
 
----豹子
----@return senum
-function cx_enum.cx_bz()
-    return "cx_bz"
-end
-
----同花
----@return senum
-function cx_enum.cx_th()
-    return "cx_th"
-end
-
----同花顺
----@return senum
-function cx_enum.cx_ths()
-    return "cx_ths"
-end
-
----顺子
----@return senum
-function cx_enum.cx_sz()
-    return "cx_sz"
-end
-
----对子
----@return senum
-function cx_enum.cx_dz()
-    return "cx_dz"
-end
-
----高牌
----@return senum
-function cx_enum.cx_dz()
-    return "cx_gp"
-end
-
 ---跟注
 ---@return senum
 function cx_enum.cx_gz()
