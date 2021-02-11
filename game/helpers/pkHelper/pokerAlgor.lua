@@ -4,6 +4,7 @@
     auth:Caorl Luo
 ]]
 
+local pairs = pairs
 local ipairs = ipairs
 local table = require("extend_table")
 local class = require("class")
