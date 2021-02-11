@@ -15,7 +15,6 @@ local is_table = require("is_table")
 local is_string = require("is_string")
 local is_function = require("is_function")
 
-
 ---浅拷贝
 ---@param t table @要拷贝的表
 ---@param out table @外带表
@@ -357,11 +356,11 @@ end
 
 local _read_only_tm = {
 	__newindex = function(t,k,v)
-		local a = nil * nil
+		print(t,k,v)
 	end,
 	
 	__assign = function(t,k,v)
-		local a = nil * nil
+		print(t,k,v)
 	end
 }
 

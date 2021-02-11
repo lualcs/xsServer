@@ -8,6 +8,7 @@ local is_table = require("is_table")
 local math = math
 local pairs = pairs
 
+---@class 搜索算法
 local search = {}
 
 ---折半查找函数

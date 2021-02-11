@@ -1,4 +1,5 @@
----@type mapServers @监听信息
+---集群信息
+---@type mapServers
 return {
     debug = {
         host = "127.0.0.1",
@@ -9,7 +10,7 @@ return {
         port = 22001,
     },
     gate = {
-        host = "192.168.0.37",
+        host = "192.168.204.128",
         port = 23001,
     },
 }

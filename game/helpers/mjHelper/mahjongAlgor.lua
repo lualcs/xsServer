@@ -19,23 +19,31 @@ local this = mahjongAlogor
 
 ---构造函数
 function mahjongAlogor:ctor()
-    ---@type boolean                    @七对
+    ---七对-默认支持
+    ---@type boolean                    
     self.support_7pairs         = true
-    ---@type boolean                    @四混
+    ---四混-默认关闭
+    ---@type boolean                    
     self.support_4laizi         = false
-    ---@type boolean                    @七对-癞子参与
+    ---七对癞子参与-默认关闭
+    ---@type boolean                    
     self.support_7laizi         = false
-    ---@type mjCard|nil                 @癞子-固定表
+    ---癞子牌-默认关闭
+    ---@type mjCard|nil                 
     self.support_dinglz         = nil
-    ---@type table<mjCard,boolean>      @癞子-隐射表
+    ---癞子表-默认空表
+    ---@type table<mjCard,boolean>      
+    ---固定将对-默认空表
     self.support_laizis         = {nil}
-    ---@type table<mjCard,boolean>      @将对-映射表
+    ---@type table<mjCard,boolean>      
     self.support_jiangs         = {nil}
-    ---@type table<mjCard,mjUnit>       @顺子-分类表
+    ---顺子分组-默认空表
+    ---@type table<mjCard,mjUnit>       
     self.support_classs         = {nil}
-    ---@type table<index,mjUnit>       @顺子-分类表
+    ---@type table<index,mjUnit>       
     self.support_mclass         = {nil}
-    ---@type mjUsag                     @使用-信息表
+    ---调用信息-默认空表
+    ---@type mjUsag
     self.current_usages         =  {nil}
 end
 

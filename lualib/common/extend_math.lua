@@ -1,5 +1,9 @@
+--[[
+    file:extend_math.lua
+    desc:扩展算术
+    auth:Carol Luo
+]]
 local math = math
-
 
 ---10进制设置
 ---@param sum number @总值
