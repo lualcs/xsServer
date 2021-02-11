@@ -30,3 +30,34 @@ function math.getSecimal(sum,bit)
 end
 
 return math
+
+--[[
+    floor               function: 0x55a22d0f0b70
+    randomseed         function: 0x55a22d0f0400
+    ult                function: 0x55a22d0f07c0
+    rad                function: 0x55a22d0f02f0
+    modf               function: 0x55a22d0f0a30
+    tan                function: 0x55a22d0f0350
+    cos                function: 0x55a22d0f0830
+    min                function: 0x55a22d0f05b0
+    abs                function: 0x55a22d0f0ca0
+    mininteger         -9223372036854775808
+    maxinteger         +9223372036854775807
+    atan               function: 0x55a22d0f0860
+    exp                function: 0x55a22d0f0800
+    pi                 3.1415926535898
+    type               function: 0x55a22d0f0920
+    acos               function: 0x55a22d0f08f0
+    random             function: 0x55a22d0f0430
+    sqrt               function: 0x55a22d0f0380
+    asin               function: 0x55a22d0f08c0
+    sin                function: 0x55a22d0f03d0
+    max                function: 0x55a22d0f0650
+    log                function: 0x55a22d0f06f0
+    fmod               function: 0x55a22d0f0d10
+    tointeger          function: 0x55a22d0f0c20
+    ceil               function: 0x55a22d0f0990
+    huge               inf
+    deg                function: 0x55a22d0f0320
+]]
+

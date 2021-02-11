@@ -51,8 +51,7 @@ skynet.start(function()
     -- local slotsCbat = require("slotsCbat")
     -- slotsCbat.test()
 
-    local t = table.read_only{a=2}
-    t.b = 1
+   
 
 end)
 

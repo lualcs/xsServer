@@ -19,6 +19,11 @@ local tostring = tostring
 			p	分隔符(可以是正则表达式)
 	return: {}拆分出来的序列表
 ]]
+
+---字符串分割
+---@param s string @字符
+---@param p string @分割
+---@return string[]
 function string.gsplit(s, p)
 	local init = 1
 	local ret = table.fortab()
@@ -65,5 +70,5 @@ return string
         reverse = function: 0x556008af5d00,
         lower = function: 0x556008af5f40,
         find = function: 0x556008af8ac0,
-}
+	a}
 ]]
