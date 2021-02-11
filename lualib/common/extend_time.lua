@@ -15,25 +15,25 @@ local time = {}
 local this = time
 
 
----@field tosdate 	时间戳转日期字符串
+---时间戳转日期字符串
 ---@param time 		时间戳
 function time.tosdate(time)
 	return os.date("%Y-%m-%d-%H:%M:%S",time)
 end
 
----@field totime 	日期转时间戳
+---日期转时间戳
 ---@param date 		日期表
 function time.totime(date)
 	return os.time(date)
 end
 
----@field todate 	时间戳转日期表
+---时间戳转日期表
 ---@param time 		时间戳
 function time.todate(time)
 	return os.date('*t',time)
 end 
 
----@field toSecond 	日期表转秒间隔
+---日期表转秒间隔
 ---@param date 		日期表
 function time.toSecond(date)
 	local second = 0
@@ -54,7 +54,7 @@ function time.toSecond(date)
 end
 
 
----@field clear_sfm 日期表时分秒置零
+---日期表时分秒置零
 function time.clear_sfm(date)
 	date.hour = 0
 	date.min = 0
@@ -62,7 +62,7 @@ function time.clear_sfm(date)
     return os.time(date)
 end
 
----@field todayMidnight 今日零点时间戳
+---今日零点时间戳
 ---@return number
 function time.todayMidnight()
     local date = os.date()
@@ -70,7 +70,7 @@ function time.todayMidnight()
     return this.totime(date)
 end
 
----@field todayMoment 返回今日时间戳
+---返回今日时间戳
 ---@param sfm		  时分秒日期
 function time.todayMoment(sfm)
     local date = os.date()
@@ -81,14 +81,14 @@ function time.todayMoment(sfm)
 end
 
 
----@field diffYear    间隔年数
+---间隔年数
 function time.diffYear(time1,time2)
 	local date1 = this.todate(time1)
 	local date2 = this.todate(time2)
 	return date2.year - date1.year
 end
 
----@field diffMonth    间隔月数
+---间隔月数
 function time.diffMonth(time1,time2)
 	local date1 = this.todate(time1)
 	local date2 = this.todate(time2)
@@ -105,7 +105,7 @@ function time.diffMonth(time1,time2)
 	return diff
 end
 
----@field diffDay 间隔天数
+---间隔天数
 ---@param time1   时间戳1
 ---@param time2   时间戳2
 function time.diffDay(time1,time2)
@@ -114,7 +114,7 @@ function time.diffDay(time1,time2)
 	return (time2 - time1)//DAY_SEC
 end
 
----@field weekID    星期几
+---星期几
 function time.weekID(time)
 	local date = this.todate(time)
 	local wday = date.wday
@@ -124,7 +124,7 @@ function time.weekID(time)
 	return wday
 end
 
----@field todayWeekID 今天是星期几
+---今天是星期几
 function time.todayWeekID()
 	local now = os.time()
 	return this.weekID(now)
