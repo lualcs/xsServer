@@ -35,6 +35,9 @@ function gamePlayer:ctor(table,playerInfo)
     ---标记映射
     ---@type table<senum,boolean>   
     self._mapsig = {nil}
+    ---数据映射
+    ---@type table<senum,any>  
+    self._mapDriver = {nil}
 end
 
 ---重启
@@ -179,7 +182,18 @@ function gamePlayer:setStatusBy(senum,sign)
     self._mapsig[senum] = sign
 end
 
----设置标记
+---保存数据
+---@param senum senum @映射值
+---@param data  any   @数据值
+function gamePlayer:setDriver(senum,data)
+    self._mapDriver[senum] = data
+end
+
+---获取数据
+---@return any
+function gamePlayer:getDriver(senum)
+    return self._mapDriver[senum]
+end
 
 ---玩家
 ---@param msg messabeBody @数据
