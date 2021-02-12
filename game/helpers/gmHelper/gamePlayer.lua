@@ -39,12 +39,23 @@ end
 
 ---重启
 function gamePlayer:dataReboot()
+    ---游戏算法
+    ---@type gameAlgor
     self._gor = self._table._gor
+    ---游戏策略
+    ---@type gameSystem
     self._sys = self._table._sys
+    ---类型判断
+    ---@type gameType
     self._tye = self._table._tye
+    ---游戏辅助
+    ---@type gameHelper
     self._hlp = self._table._hlp
+    ---游戏逻辑
+    ---@type gameLogic
     self._lgc = self._table._lgc
-    ---@type messabeBody    @请求缓存
+    ---游戏请求
+    ---@type msgBody
     self._request = nil
     table.clear(self._queues)
     table.clear(self._mapues)

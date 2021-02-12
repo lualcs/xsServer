@@ -11,8 +11,10 @@ local gameAlgor = class()
 local this = gameAlgor
 
 ---构造函数
----@param table gameTable
+---@param table gameTable @游戏桌子
 function gameAlgor:ctor(table)
+    ---游戏桌子
+    ---@type gameTable
     self._table = table
 end
 
