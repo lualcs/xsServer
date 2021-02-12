@@ -50,11 +50,6 @@ function cx_enum.cx_kp()
     return "cx_kp"
 end
 
----比牌
----@return senum
-function cx_enum.cx_bp()
-    return "cx_bp"
-end
 
 ---丁皇
 ---@return senum
@@ -126,6 +121,18 @@ end
 ---@return senum
 function cx_enum.cx_ptp()
     return "cx_ptp"
+end
+
+---三花六
+---@return senum
+function cx_enum.cx_sh6()
+    return "cx_sh6"
+end
+
+---三花十
+---@return senum
+function cx_enum.cx_sh10()
+    return "cx_sh10"
 end
 
 return cx_enum

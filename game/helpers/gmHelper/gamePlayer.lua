@@ -20,6 +20,7 @@ local this = gamePlayer
 ---@param table      gameTable  @游戏桌子
 ---@param playerInfo playerInfo @玩家信息
 function gamePlayer:ctor(table,playerInfo)
+    ---
     ---@type gameTable              @游戏桌子
     self._table = table
     ---@type playerInfo             @玩家信息

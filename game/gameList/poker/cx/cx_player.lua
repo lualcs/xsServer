@@ -14,9 +14,4 @@ local this = cx_player
 function cx_player:ctor()
 end
 
----重启
-function cx_player:dataReboot()
-end
-
-
 return cx_player
