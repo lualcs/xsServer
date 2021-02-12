@@ -20,16 +20,20 @@ local this = gamePlayer
 ---@param table      gameTable  @游戏桌子
 ---@param playerInfo playerInfo @玩家信息
 function gamePlayer:ctor(table,playerInfo)
-    ---
-    ---@type gameTable              @游戏桌子
+    ---游戏桌子
+    ---@type gameTable              
     self._table = table
-    ---@type playerInfo             @玩家信息
+    ---玩家信息
+    ---@type playerInfo             
     self._player = playerInfo
-    ---@type senum[]                @请求列表
+    ---请求列表
+    ---@type senum[]                
     self._queues = {nil}
-    ---@type table<senum,boolean>   @请求映射
+    ---请求映射
+    ---@type table<senum,boolean>   
     self._mapues = {nil}
-    ---@type table<senum,boolean>   @标记映射
+    ---标记映射
+    ---@type table<senum,boolean>   
     self._mapsig = {nil}
 end
 
