@@ -56,4 +56,76 @@ function cx_enum.cx_bp()
     return "cx_bp"
 end
 
+---丁皇
+---@return senum
+function cx_enum.cx_dh()
+    return "cx_dh"
+end
+
+---对子
+---@return senum
+function cx_enum.cx_dz()
+    return "cx_dz"
+end
+
+---奶狗
+---@return senum
+function cx_enum.cx_ng()
+    return "cx_ng"
+end
+
+---天杠
+---@return senum
+function cx_enum.cx_tg()
+    return "cx_tg"
+end
+
+---地杠
+---@return senum
+function cx_enum.cx_dg()
+    return "cx_dg"
+end
+
+---天关九
+---@return senum
+function cx_enum.cx_tg9()
+    return "cx_tg9"
+end
+
+---地关九
+---@return senum
+function cx_enum.cx_dg9()
+    return "cx_dgj"
+end
+
+---人牌九
+---@return senum
+function cx_enum.cx_rp9()
+    return "cx_rp9"
+end
+
+---和五九
+---@return senum
+function cx_enum.cx_hw9()
+    return "cx_hwj"
+end
+
+---长二九
+---@return senum
+function cx_enum.cx_ce9()
+    return "cx_ce9"
+end
+
+---虎头九
+---@return senum
+function cx_enum.cx_ht9()
+    return "cx_ht9"
+end
+
+---普通牌
+---@return senum
+function cx_enum.cx_ptp()
+    return "cx_ptp"
+end
+
 return cx_enum

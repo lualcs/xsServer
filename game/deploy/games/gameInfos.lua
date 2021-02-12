@@ -62,7 +62,7 @@ local gameInfos = {
         open = true,
         minPlayer = 2,
         curPlayer = 0,
-        maxPlayer = 10,
+        maxPlayer = 8,
         sharedList = { --共享模块
 
         }

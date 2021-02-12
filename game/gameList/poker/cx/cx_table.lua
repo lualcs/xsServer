@@ -25,10 +25,8 @@ function cx_table:request(player,msg)
     if ok then
         return ok,error
     end
-    local cmd = table.last(msg.cmds)
-    if cmd == cx_enum.cx_kp() then
-        ok,error = self:gameSeeCard(player)--看牌
-    elseif cmd == cx_enum.cx_qp() then
+    local cmd = table.last(msg.cmds) 
+    if cmd == cx_enum.cx_qp() then
         ok,error = self:gameCastCard(player)--弃牌
     elseif cmd == cx_enum.cx_gz() then
         ok,error = self:gameWithBet(player)--跟注

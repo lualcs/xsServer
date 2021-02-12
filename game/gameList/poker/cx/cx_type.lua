@@ -13,6 +13,6 @@ local cx_type = class(pokerType)
 function cx_type:ctor()
 end
 
-
+---
 
 return cx_type
