@@ -35,62 +35,67 @@ end
 ---@param gameInfo      gameInfo         @游戏信息
 ---@param gameCustom    gameCustom       @定制规则
 function gameTable:ctor(service,gameInfo,gameCustom)
-
-    ---@type tableCustom
+    ---游戏规则
+    ---@type table<string,any>
     self._def = customDecode(gameCustom.customs)
-
-    ---@type custom[]                   @定制规则
+    ---定制规则
+    ---@type custom[]                   
     self._csm = gameCustom.customs
-    ---@type table                      @配置
+    ---游戏配置
+    ---@type table                     
     self._cfg = require(gameInfo.importDeploy)
-
     local import = require(gameInfo.importAlgor)
-    ---@type gameAlgor                  @算法
+    ---游戏算法
+    ---@type gameAlgor                  
     self._gor = import.new(self)
-
     local import = require(gameInfo.importHelper)
-    ---@type gameHelper                 @工具
+    ---游戏辅助
+    ---@type gameHelper                 
     self._hlp = import.new(self)
-
     local import = require(gameInfo.importSystem)
-    ---@type gameSystem                 @策略
+    ---游戏策略
+    ---@type gameSystem                 
     self._sys = import.new(self)
-
     local import = require(gameInfo.importLogic)
-    ---@type gameSystem                 @逻辑
+    ---游戏逻辑
+    ---@type gameLogic                 
     self._lgc = import.new(self)
-
     local import = require(gameInfo.importType)
-    ---@type gameType                   @类型 
+    ---类型判断
+    ---@type gameType                    
     self._tye = import.new(self)
-
-    ---@type occupy                     @占位
+    ---游戏占位
+    ---@type occupy                    
     self._ocp = occupy.new(1,gameInfo.maxPlayer)
-
-    ---@type caches                     @缓存
+    ---游戏缓存
+    ---@type caches                     
     self._cac = caches.new()
-
-    ---@type timer                      @定时器
+    --游戏定时
+    ---@type timer                      
     self._tim = timer.new()             
-
-    ---@type service_table              @服务
+    --桌子服务
+    ---@type service_table              
     self._service = service
-
-    ---@type gameInfo                   @游戏
+    ---游戏信息
+    ---@type gameInfo                   
     self._gameInfo = gameInfo
-
-    ---@type table<userID,gamePlayer>   @玩家
+    ---玩家映射
+    ---@type table<userID,gamePlayer>
     self._mapPlayer = {nil}
-
-    ---@type table<seatID,gamePlayer>   @玩家
+    ---玩家数组
+    ---@type table<seatID,gamePlayer>
     self._arrPlayer = {nil}
-    ---@type table<senum,any>           @数据
+    ---数据映射
+    ---@type table<senum,any>  
     self._mapDriver = {nil}
-    ---@type historID                   @大局ID
+    ---战局标识
+    ---@type historID 
     self._historID  = gameCustom.historID
-    ---@type combatID                   @小局战绩
+    ---小局标识
+    ---@type combatID                  
     self._combatID  = 0
-    ---@type senum                      @游戏状态
+    ---游戏状态
+    ---@type senum                     
     self._gmstatus  = nil
 end
 
