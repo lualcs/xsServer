@@ -14,6 +14,12 @@ local dz_enum = class(pokerEnum)
 function dz_enum:ctor()
 end
 
+---发牌
+---@return senum
+function dz_enum.dz_fp()
+    return "dz_fp"
+end
+
 ---跟注
 ---@return senum
 function dz_enum.dz_gz()
@@ -44,95 +50,58 @@ function dz_enum.dz_qp()
     return "dz_qp"
 end
 
----拼牌
+---同花顺
 ---@return senum
-function dz_enum.dz_pp()
-    return "dz_pp"
+function dz_enum.dz_ths()
+    return "dz_ths"
 end
 
-
----丁皇
+---炸弹
 ---@return senum
-function dz_enum.dz_dh()
-    return "dz_dh"
+function dz_enum.dt_zd()
+    return "dt_zd"
+end
+
+---葫芦
+---@return senum
+function dz_enum.dt_hl()
+    return "dt_hl"
+end 
+
+---同花
+---@return senum
+function dz_enum.dt_th()
+    return "dz_th"
+end
+
+---顺子
+---@return senum
+function dz_enum.dt_sz()
+    return "dt_sz"
+end
+
+---三条
+---@return senum
+function dz_enum.dt_st()
+    return "dt_st"
+end
+
+---两对
+---@return senum
+function dz_enum.dt_ld()
+    return "dt_ld"
 end
 
 ---对子
 ---@return senum
-function dz_enum.dz_dz()
-    return "dz_dz"
+function dz_enum.dt_dz()
+    return "dt_dz"
 end
 
----奶狗
+---高牌
 ---@return senum
-function dz_enum.dz_ng()
-    return "dz_ng"
-end
-
----天杠
----@return senum
-function dz_enum.dz_tg()
-    return "dz_tg"
-end
-
----地杠
----@return senum
-function dz_enum.dz_dg()
-    return "dz_dg"
-end
-
----天关九
----@return senum
-function dz_enum.dz_tg9()
-    return "dz_tg9"
-end
-
----地关九
----@return senum
-function dz_enum.dz_dg9()
-    return "dz_dgj"
-end
-
----人牌九
----@return senum
-function dz_enum.dz_rp9()
-    return "dz_rp9"
-end
-
----和五九
----@return senum
-function dz_enum.dz_hw9()
-    return "dz_hwj"
-end
-
----长二九
----@return senum
-function dz_enum.dz_ce9()
-    return "dz_ce9"
-end
-
----虎头九
----@return senum
-function dz_enum.dz_ht9()
-    return "dz_ht9"
-end
-
----普通牌
----@return senum
-function dz_enum.dz_ptp()
-    return "dz_ptp"
-end
-
----三花六
----@return senum
-function dz_enum.dz_sh6()
-    return "dz_sh6"
-end
-
----三花十
----@return senum
-function dz_enum.dz_sh10()
-    return "dz_sh10"
+function dz_enum.dt_gp()
+    return "dt_gp"
 end
 
 return dz_enum
