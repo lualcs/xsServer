@@ -278,14 +278,21 @@ function gameTable:playerEnter(playerInfo)
     local lis = self:getArrPlayer()
     lis[playerInfo.seatID] = newobj
 
+    ---检查开始
+    self:checkStart()
+
 end
 
 ---玩家退出
 function gameTable:playerQuit()
+    ---检查开始
+    self:checkStart()
 end
 
 ---剔除玩家
 function gameTable:playerKickout()
+    ---检查开始
+    self:checkStart()
 end
 
 ---清空玩家
@@ -313,13 +320,19 @@ function gameTable:checkStart()
         if mcnt < self._ocp.count() then
             return
         end
+        local timer = self._tim
+        timer:append(5*1000,1,function()
+            self:gameStart()
+        end)
     end
     --定时
     if opt == senum.timer() then
         local timer = self._tim
         local tname = "timerStart"
         if timer:remainingBy(tname) > 0 then
-            timer:appendBy(tname,2*1000)
+            timer:appendBy(tname,5*1000,1,function()
+                self:gameStart()
+            end)
         end
     end
     --准备
@@ -331,7 +344,18 @@ function gameTable:checkStart()
                 return
             end
         end
+        local timer = self._tim
+        timer:append(5*1000,1,function()
+            self:gameStart()
+        end)
     end
+
+    --扩展开始检查
+    self:extendCheckStart()
+end
+
+---检查开始
+function gameTable:extendCheckStart()
 end
 
 ---游戏开始
@@ -348,6 +372,8 @@ end
 
 ---游戏结束
 function gameTable:gameClose()
+    ---检查开始
+    self:checkStart()
     ---扩展结束
     self:extendClose()
 end
@@ -374,8 +400,8 @@ function gameTable:cacheStart()
     end
 
     self._cac:dataPush({
-        historID    = self:getHistorID(),   --唯一凭证
-        combatID    = self:getCombatID(),   --战绩凭证
+        historID    = self:getHistorID(),   --战局凭证
+        combatID    = self:getCombatID(),   --小局序号
         players     = players,              --玩家信息
     })
 end
