@@ -91,6 +91,7 @@ function timer:appendEverBy(name,elapse,call,...)
     return self:appendBy(name,elapse,nil,call,...)
 end
 
+
 ---删除定时
 ---@param timeID    timeID      @定时器ID
 function timer:remove(timeID)
@@ -117,6 +118,14 @@ function timer:remaining(timeID)
         end
     end
     return 0
+end
+
+---剩余时间
+---@param name name @定时名字
+function timer:remainingBy(name)
+    local list = self._list
+    local iden = list[name]
+   return self:remaining(iden)
 end
 
 ---暂停定时

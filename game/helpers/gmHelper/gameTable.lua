@@ -298,16 +298,38 @@ end
 
 ---检查开始
 function gameTable:checkStart()
+
+    --检查状态
+    local status = self:getGameStatus()
+    if senum.idle() ~= status then
+        return
+    end
+
     local inf = self:getGameInfo()
     local opt = inf.open
     --人数
     if opt == senum.people() then
+        local mcnt = inf.minPlayer
+        if mcnt < self._ocp.count() then
+            return
+        end
     end
     --定时
     if opt == senum.timer() then
+        local timer = self._tim
+        if timer:remainingBy("timerStart") > 0 then
+            timer:appendBy("timerStart",2*1000)
+        end
     end
     --准备
     if opt == senum.ready() then
+        local lis = self._arrPlayer
+        local sts = senum.ready()
+        for _,player in pairs(lis) do
+            if not player:getStatusBy(sts) then
+                return
+            end
+        end
     end
 end
 
