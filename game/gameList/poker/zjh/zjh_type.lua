@@ -58,7 +58,7 @@ end
 function zjh_type:isDuiZi(hands)
     ---@type zjh_helper
     local h = self._hlp
-    local a,b,c = h.getValue(hands[1]),h.getValue(hands[2]),h.getValue(hands[3]
+    local a,b,c = h.getValue(hands[1]),h.getValue(hands[2]),h.getValue(hands[3])
     return a == b or a == c or b == c
 end
 
