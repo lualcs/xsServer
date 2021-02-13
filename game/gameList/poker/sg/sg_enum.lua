@@ -52,8 +52,8 @@ end
 
 ---小三公
 ---@return senum
-function sg_enum.sg_dsg()
-    return "sg_dsg"
+function sg_enum.sg_xsg()
+    return "sg_xsg"
 end
 
 ---九点
