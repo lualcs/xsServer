@@ -296,6 +296,21 @@ end
 function gameTable:gameDelete()
 end
 
+---检查开始
+function gameTable:checkStart()
+    local inf = self:getGameInfo()
+    local opt = inf.open
+    --人数
+    if opt == senum.people() then
+    end
+    --定时
+    if opt == senum.timer() then
+    end
+    --准备
+    if opt == senum.ready() then
+    end
+end
+
 ---游戏开始
 function gameTable:gameStart()
     ---数据重置
@@ -308,8 +323,18 @@ function gameTable:gameStart()
     self:extendStart() 
 end
 
+---游戏结束
+function gameTable:gameClose()
+    ---扩展结束
+    self:extendClose()
+end
+
 ---扩展开始
 function gameTable:extendStart()
+end
+
+---扩展结束
+function gameTable:extendClose()
 end
 
 ---缓存开始
@@ -336,10 +361,6 @@ end
 ---启动定时
 function gameTable:startTimer()
     self._tim:poling()
-end
-
----游戏结束
-function gameTable:gameClose()
 end
 
 ---请求

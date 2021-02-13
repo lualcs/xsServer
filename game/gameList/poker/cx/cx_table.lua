@@ -106,6 +106,7 @@ function cx_table:gameWithBet(player)
 
 end
 
+
 ---开始通知
 ---@param data cx_game_start_ntc @数据
 function cx_table:ntfMsgToStart(data)
@@ -155,17 +156,6 @@ end
 ---梭哈通知
 ---@param data cx_bet_all_ntc @数据
 function cx_table:ntfMsgToBetAll(data)
-    self:ntfMsgToTable(data)
-end
-
----@type message_see_info   @隐私
-local see_info = {
-    fields = {"originSP","targetSP","originPX","targetPX"}
-}
----比牌通知
----@param data cx_cmp_card_ntc @数据
-function cx_table:ntfMsgToCompare(data)
-    see_info.chairs = {data.originID,data.targetID}
     self:ntfMsgToTable(data)
 end
 

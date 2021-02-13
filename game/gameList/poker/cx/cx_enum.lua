@@ -44,10 +44,10 @@ function cx_enum.cx_qp()
     return "cx_qp"
 end
 
----看牌
+---拼牌
 ---@return senum
-function cx_enum.cx_kp()
-    return "cx_kp"
+function cx_enum.cx_pp()
+    return "cx_pp"
 end
 
 
