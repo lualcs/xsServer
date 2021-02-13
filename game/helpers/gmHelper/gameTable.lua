@@ -317,8 +317,9 @@ function gameTable:checkStart()
     --定时
     if opt == senum.timer() then
         local timer = self._tim
-        if timer:remainingBy("timerStart") > 0 then
-            timer:appendBy("timerStart",2*1000)
+        local tname = "timerStart"
+        if timer:remainingBy(tname) > 0 then
+            timer:appendBy(tname,2*1000)
         end
     end
     --准备
