@@ -59,8 +59,8 @@ end
 
 ---握手
 ---@param fd socket @套接字
----@param header 
----@param url
+---@param header string @握手信息 
+---@param url	 string @链接地址
 function ws_handle.handshake(fd, header, url)
 	debug.error("handshake:",{fd=fd,header=header,url=url})
 end

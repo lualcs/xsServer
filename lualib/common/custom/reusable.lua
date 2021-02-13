@@ -15,7 +15,6 @@ local this = reusable
 
 
 ---构造
----@param def
 function reusable:ctor()
     self.list = {nil}
 end

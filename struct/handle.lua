@@ -15,8 +15,8 @@ end
 
 ---握手
 ---@param fd socket @套接字
----@param header 
----@param url
+---@param header string @握手数据 
+---@param url    url    @链接信息
 function ws_handle.handshake(fd, header, url)
 end
 

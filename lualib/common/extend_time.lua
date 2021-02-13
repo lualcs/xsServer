@@ -71,7 +71,7 @@ function time.todayMidnight()
 end
 
 ---返回今日时间戳
----@param sfm		  时分秒日期
+---@param sfm date 时分秒日期
 function time.todayMoment(sfm)
     local date = os.date()
     date.hour = sfm.hour
