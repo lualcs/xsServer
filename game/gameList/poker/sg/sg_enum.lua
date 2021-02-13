@@ -44,95 +44,76 @@ function sg_enum.sg_qp()
     return "sg_qp"
 end
 
----拼牌
+---大三公
 ---@return senum
-function sg_enum.sg_pp()
-    return "sg_pp"
+function sg_enum.sg_dsg()
+    return "sg_dsg"
 end
 
-
----丁皇
+---小三公
 ---@return senum
-function sg_enum.sg_dh()
-    return "sg_dh"
+function sg_enum.sg_dsg()
+    return "sg_dsg"
 end
 
----对子
+---九点
 ---@return senum
-function sg_enum.sg_dz()
-    return "sg_dz"
+function sg_enum.sg_9d()
+    return "sg_9d"
 end
 
----奶狗
+---八点
 ---@return senum
-function sg_enum.sg_ng()
-    return "sg_ng"
+function sg_enum.sg_8d()
+    return "sg_8d"
 end
 
----天杠
+---七点
 ---@return senum
-function sg_enum.sg_tg()
-    return "sg_tg"
+function sg_enum.sg_7d()
+    return "sg_7d"
 end
 
----地杠
+---六点
 ---@return senum
-function sg_enum.sg_dg()
-    return "sg_dg"
+function sg_enum.sg_6d()
+    return "sg_6d"
 end
 
----天关九
+---五点
 ---@return senum
-function sg_enum.sg_tg9()
-    return "sg_tg9"
+function sg_enum.sg_5d()
+    return "sg_5d"
 end
 
----地关九
+---4点
 ---@return senum
-function sg_enum.sg_dg9()
-    return "sg_dgj"
+function sg_enum.sg_4d()
+    return "sg_4d"
 end
 
----人牌九
+---3点
 ---@return senum
-function sg_enum.sg_rp9()
-    return "sg_rp9"
+function sg_enum.sg_3d()
+    return "sg_3d"
 end
 
----和五九
+---2点
 ---@return senum
-function sg_enum.sg_hw9()
-    return "sg_hwj"
+function sg_enum.sg_2d()
+    return "sg_2d"
 end
 
----长二九
+---1点
 ---@return senum
-function sg_enum.sg_ce9()
-    return "sg_ce9"
+function sg_enum.sg_1d()
+    return "sg_1d"
 end
 
----虎头九
+---0点
 ---@return senum
-function sg_enum.sg_ht9()
-    return "sg_ht9"
-end
-
----普通牌
----@return senum
-function sg_enum.sg_ptp()
-    return "sg_ptp"
-end
-
----三花六
----@return senum
-function sg_enum.sg_sh6()
-    return "sg_sh6"
-end
-
----三花十
----@return senum
-function sg_enum.sg_sh10()
-    return "sg_sh10"
+function sg_enum.sg_0d()
+    return "sg_1d"
 end
 
 return sg_enum
