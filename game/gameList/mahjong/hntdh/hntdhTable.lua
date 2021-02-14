@@ -15,7 +15,7 @@ local this = hntdhTable
 
 ---构造函数
 function hntdhTable:ctor()
-    ---动作优先级
+    ---行为优先
     self._prioritys = {
         [senum.xiapao()]    = 1,
         [senum.chuPai()]    = 2,
@@ -27,21 +27,23 @@ function hntdhTable:ctor()
         [senum.qiangGang()] = 8,
         [senum.ziMo()]      = 9,
     }
-    ---动作检查项
-    self._ablecheck = {
+
+    local lgc = self._lgc
+    ---行为数据
+    self._behaviors = {
         [senum.xiapao()] = {--下跑阶段
-            [senum.xiapao()]  = self._lgc.xiapaoCheck;
+            [senum.xiapao()]  = lgc.ableXiapao;
         },
         [senum.game()] = {--摸打阶段
-            [senum.chuPai()]    = self._lgc.chupaiCheck;      --出牌
-            [senum.moPai()]     = self._lgc.mopaiCheck;       --摸牌
-            [senum.pengPai()]   = self._lgc.pengPaiCheck;     --碰牌
-            [senum.zhiGang()]   = self._lgc.zhiGangCheck;     --直杠
-            [senum.raoGang()]   = self._lgc.raoGangCheck;     --饶杠
-            [senum.anGang()]    = self._lgc.anGangCheck;      --暗杠
-            [senum.dianPao()]   = self._lgc.dianPaoCheck;     --点炮
-            [senum.qiangGang()] = self._lgc.qiangGangCheck;   --抢杠
-            [senum.ziMo()]      = self._lgc.ziMoCheck;        --自摸
+            [senum.chuPai()]    = lgc.ableChuPai;      --出牌
+            [senum.moPai()]     = lgc.ableMoPai;       --摸牌
+            [senum.pengPai()]   = lgc.ablePengPai;     --碰牌
+            [senum.zhiGang()]   = lgc.ableZhiGang;     --直杠
+            [senum.raoGang()]   = lgc.ableRaoGang;     --饶杠
+            [senum.anGang()]    = lgc.ableAnGang;      --暗杠
+            [senum.dianPao()]   = lgc.ableDianPao;     --点炮
+            [senum.qiangGang()] = lgc.ableQiangGang;   --抢杠
+            [senum.ziMo()]      = lgc.ableZiMo;        --自摸
         },
     }
 end
