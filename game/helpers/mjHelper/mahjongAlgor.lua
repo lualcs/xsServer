@@ -541,9 +541,9 @@ function mahjongAlogor:nolaiziJiangHuCard(ufy)
                 --不能成顺
                 for jv,jc in pairs(jvs) do
                     local md = jc % 3
-                    --刻子|含将
-                    if 2 ~= md and 0 ~= md then
-                        return false
+                    --不成朴
+                    if 1 == md then
+                       return false
                     end
                 end
             end
