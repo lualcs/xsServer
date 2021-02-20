@@ -46,6 +46,8 @@ function mahjongType:isQiDui(mjUnify)
                 if laizi < 0 then
                     return false
                 end
+            else
+                return false
             end
         end
     end
