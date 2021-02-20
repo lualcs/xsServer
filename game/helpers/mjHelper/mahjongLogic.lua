@@ -266,6 +266,27 @@ function mahjongLogic:ableAnGang(player)
     return ok,list
 end
 
+---点炮
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableDianPao(player)
+   
+end
+
+---抢杠
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableQiangGang(player)
+   
+end
+
+---自摸
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableZiMo(player)
+   
+end
+
 ---出牌操作
 ---@param player mahjongPlayer @玩家
 ---@param card mjCard @出牌
