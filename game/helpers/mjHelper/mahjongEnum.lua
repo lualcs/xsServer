@@ -15,6 +15,42 @@ local this = mahjongEnum
 function mahjongEnum:ctor()
 end
 
+---庄家
+---@return senum
+function mahjongEnum.zhuang()
+    return "zhuang"
+end
+
+---庄家
+---@return senum
+function mahjongEnum.zhuangs()
+    return "zhuangs"
+end
+
+---慌庄
+---@return senum
+function mahjongEnum.huangs()
+    return "huangs"
+end
+
+---定庄
+---@return senum
+function mahjongEnum.dingZhuang()
+    return "dingZhuang"
+end
+
+---牌库
+---@return senum
+function mahjongEnum.paiKu()
+    return "paiKu"
+end
+
+---映射
+---@return senum
+function mahjongEnum.baoHan()
+    return "baoHan"
+end
+
 ---发牌
 ---@return senum
 function mahjongEnum.faPai()

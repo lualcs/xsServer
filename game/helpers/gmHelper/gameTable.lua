@@ -85,9 +85,9 @@ function gameTable:ctor(service,gameInfo,gameCustom)
     ---玩家数组
     ---@type table<seatID,gamePlayer>
     self._arrPlayer = {nil}
-    ---数据映射
-    ---@type table<senum,any>  
-    self._mapDriver = {nil}
+    ---保持数据
+    ---@type table<senum,any>
+    self._mapData   = {nil}
     ---战局标识
     ---@type historID 
     self._historID  = gameCustom.historID
@@ -118,6 +118,10 @@ function gameTable:dataReboot()
         ---参与状态
         player:setStatusBy(senum,true)
     end
+
+    ---数据映射
+    ---@type table<senum,any>  
+    self._mapDriver = {nil}
 
     ---@type gamePlayer       @当前玩家
     self._player    = nil
@@ -250,6 +254,19 @@ end
 ---@return any
 function gameTable:getDriver(senum)
     return self._mapDriver[senum]
+end
+
+---保存数据
+---@param senum senum @映射值
+---@param data  any   @数据值
+function gameTable:setData(senum,data)
+    self._mapData[senum] = data
+end
+
+---获取数据
+---@return any
+function gameTable:getData(senum)
+    return self._mapData[senum]
 end
 
 

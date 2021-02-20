@@ -630,7 +630,7 @@ end
 ---@param count count @倒数第几
 ---@return any
 function table.last(t,count)
-	return t[#t+1-count]
+	return t[#t+1-(count or 1)]
 end
 
 ---gc获取空表

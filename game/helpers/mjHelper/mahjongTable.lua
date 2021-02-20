@@ -17,7 +17,7 @@ function mahjongTable:ctor()
     ---@type table<senum,number>                    @动作优先级
     self._prioritys = nil;
     ---@type table<status,table<senum,function>>    @动作检查表
-    self._ablecheck = nil;
+    self._behaviors = nil;
 end
 
 ---重制数据
