@@ -28,6 +28,8 @@ function hntdhTable:ctor()
         [senum.ziMo()]      = 9,
     }
 
+    ---扑克逻辑
+    ---@type mahjongLogic
     local lgc = self._lgc
     ---行为数据
     self._behaviors = {
@@ -36,7 +38,6 @@ function hntdhTable:ctor()
         },
         [senum.game()] = {--摸打阶段
             [senum.chuPai()]    = lgc.ableChuPai;      --出牌
-            [senum.moPai()]     = lgc.ableMoPai;       --摸牌
             [senum.pengPai()]   = lgc.ablePengPai;     --碰牌
             [senum.zhiGang()]   = lgc.ableZhiGang;     --直杠
             [senum.raoGang()]   = lgc.ableRaoGang;     --饶杠
