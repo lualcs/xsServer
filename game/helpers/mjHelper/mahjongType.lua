@@ -35,12 +35,17 @@ function mahjongType:isQiDui(mjUnify)
     ---@type mahjongAlogor
     local algor = self._gor
     local laizi = mjUnify.lzcount
+    local support = algor._support_7laizi
     for _,count in pairs(mjUnify.mjMpasw) do
         --成对
-        if 0 ~= count then
-            --赖子
-            if algor.support_7laizi then
-                
+        local md = count % 2
+        if 0 ~= md then
+            --赖子七对
+            if support then
+                laizi = laizi - md
+                if laizi < 0 then
+                    return false
+                end
             end
         end
     end
