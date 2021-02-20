@@ -51,7 +51,7 @@
 
 ---@class   mjUnify                         @统一
 ---@field   lzcount mjCount                 @癞子
----@field   spcount mjCount                 @手牌
+---@field   spcount mjCount                 @手牌-数量
 ---@field   mjhands mjCard[]                @手牌-排序
 ---@field   mjMpasw mjMapkc                 @牌表-映射
 ---@field   mjMpacw mjMapkc                 @花表-花色

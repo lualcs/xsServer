@@ -21,102 +21,102 @@ local this = mahjongAlogor
 function mahjongAlogor:ctor()
     ---七对-默认支持
     ---@type boolean                    
-    self.support_7pairs         = true
+    self._support_7pairs         = true
     ---四混-默认关闭
     ---@type boolean                    
-    self.support_4laizi         = false
+    self._support_4laizi         = false
     ---七对癞子参与-默认关闭
     ---@type boolean                    
-    self.support_7laizi         = false
+    self._support_7laizi         = false
     ---癞子牌-默认关闭
     ---@type mjCard|nil                 
-    self.support_dinglz         = nil
+    self._support_dinglz         = nil
     ---癞子表-默认空表
     ---@type table<mjCard,boolean>      
     ---固定将对-默认空表
-    self.support_laizis         = {nil}
+    self._support_laizis         = {nil}
     ---@type table<mjCard,boolean>      
-    self.support_jiangs         = {nil}
+    self._support_jiangs         = {nil}
     ---顺子分组-默认空表
     ---@type table<mjCard,mjUnit>       
-    self.support_classs         = {nil}
+    self._support_classs         = {nil}
     ---@type table<index,mjUnit>       
-    self.support_mclass         = {nil}
+    self._support_mclass         = {nil}
     ---调用信息-默认空表
     ---@type mjUsag
-    self.current_usages         =  {nil}
+    self._current_usages         =  {nil}
 end
 
 ---七对开关
 ---@param sport boolean @true:开启 false:关闭
 function mahjongAlogor:setSupport7pairs(sport)
-    self.support_7pairs = sport
+    self._support_7pairs = sport
 end
 
 ---四混开关
 ---@param sport boolean @true:开启 false:关闭
 function mahjongAlogor:setSupport4laizi(sport)
-    self.support_4laizi = sport
+    self._support_4laizi = sport
 end
 
 ---七癞开关
 ---@param sport boolean @true:开启 false:关闭
 function mahjongAlogor:setSupport7laizi(sport)
-    self.support_7laizi = sport
+    self._support_7laizi = sport
 end
 
 ---清空癞子
 function mahjongAlogor:clrSupportLaizis()
-    local maps = self.support_laizis
+    local maps = self._support_laizis
     table.clear(maps)
 end
 
 ---添加癞子
 ---@param mj mjCard  @癞子牌
 function mahjongAlogor:addSupportLaizis(mj)
-    local maps = self.support_laizis
+    local maps = self._support_laizis
     maps[mj] = true
 end
 
 ---删除癞子
 ---@param mj mjCard  @癞子牌
 function mahjongAlogor:delSupportLaizis(mj)
-    local maps = self.support_laizis
+    local maps = self._support_laizis
     maps[mj] = nil
 end
 
 ---获取癞子
 ---@return table<mjCard,boolean>
 function mahjongAlogor:getSupportLaizis()
-    return self.support_laizis
+    return self._support_laizis
 end
 
 ---获取癞子
 ---@return mjCard
 function mahjongAlogor:getSupportLaizi()
-    return self.support_dinglz
+    return self._support_dinglz
 end
 
 
 ---清空将对
 function mahjongAlogor:clrSupportJiangs()
-    local maps = self.support_jiangs
+    local maps = self._support_jiangs
     table.clear(maps)
 end
 
 ---添加将对
 ---@param mj mjCard  @癞子牌
 function mahjongAlogor:addSupportJiangs(mj)
-    local maps = self.support_jiangs
-    self.support_dinglz = mj
+    local maps = self._support_jiangs
+    self._support_dinglz = mj
     maps[mj] = true
 end
 
 ---删除将对
 ---@param mj mjCard  @癞子牌
 function mahjongAlogor:delSupportJiangs(mj)
-    local maps = self.support_jiangs
-    self.support_dinglz = next(maps)
+    local maps = self._support_jiangs
+    self._support_dinglz = next(maps)
     maps[mj] = nil
 end
 
@@ -125,8 +125,8 @@ end
 function mahjongAlogor:setSupportClasss(ts)
     ---@type mahjongHelper  @麻将辅助
     local hlp = self._hlp
-    local maps = self.support_classs
-    local mmas = self.support_mclass
+    local maps = self._support_classs
+    local mmas = self._support_mclass
     for idx,unit in ipairs(ts) do
         for value = unit.start,unit.close do
             local mj = hlp.getCard(unit.color,value)
@@ -141,7 +141,7 @@ end
 ---@param  mj   mjCard      @麻将
 ---@return index
 function mahjongAlogor:getSupportClassID(mj)
-    local maps = self.support_classs
+    local maps = self._support_classs
     return maps[mj].class
 end
 
@@ -149,7 +149,7 @@ end
 ---@param  mj   mjCard      @麻将
 ---@return index
 function mahjongAlogor:getSupportClassInfo(mj)
-    local maps = self.support_classs
+    local maps = self._support_classs
     return maps[mj]
 end
 
@@ -157,7 +157,7 @@ end
 ---@param jid   index      @麻将
 ---@return      boolean
 function mahjongAlogor:isJoint(jid)
-    local map = self.support_mclass
+    local map = self._support_mclass
     return map[jid].joint
 end
 
@@ -166,7 +166,7 @@ end
 ---@param mj    mjCard      @麻将
 ---@return      boolean
 function mahjongAlogor:isLaizi(mj)
-    local map = self.support_laizis
+    local map = self._support_laizis
     if map[mj] then
         return true
     end
@@ -434,14 +434,14 @@ function mahjongAlogor:isHuCards(ufy)
     end
 
     --支持四混
-    if self.support_4laizi then
+    if self._support_4laizi then
         if ufy.lzcount >= 4 then
             return true
         end
     end
 
     --支持七对
-    if self.support_7pairs then
+    if self._support_7pairs then
         if self:isHu7Pairs(ufy) then
             return true
         end
@@ -464,7 +464,7 @@ function mahjongAlogor:isHu7Pairs(ufy)
         return false
     end
     
-    if self.support_7laizi then
+    if self._support_7laizi then
         --癞子允许参与
         local lzcnt = ufy.lzcount
         for mj,ct in ipairs(ufy.mjMpasr) do
