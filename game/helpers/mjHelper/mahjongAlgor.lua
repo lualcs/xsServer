@@ -525,6 +525,7 @@ function mahjongAlogor:nolaiziJiangHuCard(ufy)
             elseif 2 == m then
                 n2 = n2 + 1
             end
+            --只能有一个将对
             if n2 > 1 then
                 return false
             end
