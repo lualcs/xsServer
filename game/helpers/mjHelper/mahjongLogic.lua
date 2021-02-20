@@ -143,18 +143,62 @@ function mahjongLogic:gameSystemFapai()
     self:gameSystemMoPai(player)
 end
 
----出牌
----@param player mahjongPlayer @麻将玩家
----@return boolean
-function mahjongLogic:ableChuPai(player)
-end
-
 ---摸牌操作
 ---@param player mahjongPlayer
 function mahjongLogic:gameSystemMoPai(player)
     local hands = player:getHands()
     local card = table.remove(self:paiKu())
     table.insert(hands,card)
+end
+
+---出牌
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableChuPai(player)
+    local hands = player:getHands()
+    --检查数量
+    local count = #hands
+    if 2 ~= count % 3 then
+        return false
+    end
+    return true
+end
+
+---碰牌
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ablePengPai(player)
+    local hands = player:getHands()
+    --检查玩家
+    if player == self._last_chupai_play then
+        return false
+    end
+
+    --检查数量
+    local count = #hands
+    if 1 ~= count % 3 then
+        return false
+    end
+
+    --检查出牌
+    local card = self._last_chupai_card
+    if not table.existCount(hands,card,2) then
+        return false
+    end
+
+    return true
+end
+
+---出牌操作
+---@param player mahjongPlayer @玩家
+---@param card mjCard @出牌
+function mahjongLogic:gamePlayingChuPai(player,card)
+    ---最后出牌
+    ---@type mjCard
+    self._last_chupai_card = card
+    ---出牌玩家
+    ---@type mahjongPlayer
+    self._last_chupai_play = player
 end
 
 return mahjongLogic
