@@ -563,7 +563,3 @@ end
 
 return mahjongAlogor
 
-
---[[
-    1:将牌
-]]
