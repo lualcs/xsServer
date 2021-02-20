@@ -53,12 +53,12 @@
 ---@field   lzcount mjCount                 @癞子
 ---@field   spcount mjCount                 @手牌
 ---@field   mjhands mjCard[]                @手牌-排序
----@field   mjMpasw mjMapkc                 @牌表
----@field   mjMpacw mjMapkc                 @花表
----@field   casCard mjCard                  @出牌
----@field   getCard mjCard                  @拿牌
----@field   mjClass mjClass                 @分类
----@field   mjGapls mjGapls                 @分类
+---@field   mjMpasw mjMapkc                 @牌表-映射
+---@field   mjMpacw mjMapkc                 @花表-花色
+---@field   casCard mjCard                  @出牌-失去
+---@field   getCard mjCard                  @拿牌-获取
+---@field   mjClass mjClass                 @分类-分类
+---@field   mjGapls mjGapls                 @分类-最小-最大
 
 
 ---@class   mjCards                         @麻将
