@@ -521,8 +521,10 @@ function mahjongAlogor:nolaiziJiangHuCard(ufy)
             local gap = ufy.mjGapls[ji]
             local m = gap.num % 3
             if 1 == m then
+                --非3n+2
                 return false
             elseif 2 == m then
+                --可能有将对
                 n2 = n2 + 1
             end
             --只能有一个将对
