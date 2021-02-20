@@ -19,16 +19,39 @@ end
 ---重启
 function mahjongPlayer:dataReboot()
     self:super(this,"dataReboot")
-    ---@type mjBehavior[] @操作记录-完整 摸-补花-打-吃-碰-杠-胡
+    ---操作记录-完整 摸-补花-打-吃-碰-杠-胡
+    ---@type mjBehavior[] 
     self._behavior_finish = {}
-    ---@type mjBehavior[] @操作记录-普通 摸-打-吃-碰-杠-胡
+    ---操作记录-普通 摸-打-吃-碰-杠-胡
+    ---@type mjBehavior[] 
     self._behavior_normal = {}
-    ---@type mjCard[]     @玩家手牌
+    ---玩家手牌
+    ---@type mjCard[]     
     self._hands = {}
-    ---@type mjCard[]     @玩家出牌
+    ---玩家出牌
+    ---@type mjCard[]     
     self._appears = {}
-    ---@type mjShow[]     @展示数据
+    ---展示数据
+    ---@type mjShow[]     
     self._shows = {}
+    ---碰牌数据
+    ---@type mjCard[]
+    self._pengs = {}
+    ---直杠数据
+    ---@type mjCard[]
+    self._zhigangs = {}
+    ---绕杠数据
+    ---@type mjCard[]
+    self._raogangs = {}
+    ---暗杠数据
+    ---@type mjCard[]
+    self._angangs = {}
+    ---点炮数据
+    ---@type mjCard[]
+    self._dianpaos = {}
+    ---自摸数据
+    ---@type mjCard[]
+    self._zimos = {}
 end
 
 ---插入普通操作
@@ -49,6 +72,7 @@ end
 
 ---完整倒数操作
 ---@param serial count @序号
+---@return mjBehavior|nil
 function mahjongPlayer:backBehaviorFinishBy(serial)
     local list = self._behavior_finish
     local size = #list
@@ -57,6 +81,7 @@ end
 
 ---普通倒数操作
 ---@param serial count @序号
+---@return mjBehavior|nil
 function mahjongPlayer:backBehaviorNormalBy(serial)
     local list = self._behavior_normal
     local size = #list
@@ -64,18 +89,57 @@ function mahjongPlayer:backBehaviorNormalBy(serial)
 end
 
 ---手牌数据
+---@return mjcard[]
 function mahjongPlayer:getHands()
     return self._hands
 end
 
 ---出牌数据
+---@return mjcard[]
 function mahjongPlayer:getAppears()
     return self._appears
 end
 
 ---展示数据
+---@return mjShow[]
 function mahjongPlayer:getShows()
     return self._shows
+end
+
+---碰牌数据
+---@return mjcard[]
+function mahjongPlayer:getPengs()
+    return self._pengs
+end
+
+---直杠数据
+---@return mjCard[]
+function mahjongPlayer:getZhiGangs()
+    return self._zhigangs
+end
+
+---绕杠数据
+---@return mjCard[]
+function mahjongPlayer:getRaoGangs()
+    return self._raogangs
+end
+
+---暗杠数据
+---@return mjCard[]
+function mahjongPlayer:getAnGangs()
+    return self._angangs
+end
+
+---点炮数据
+---@return mjCard[]
+function mahjongPlayer:getDianPaos()
+    return self._dianpaos
+end
+
+---自摸数据
+---@return mjCard[]
+function mahjongPlayer:getZiMos()
+    return self._zimos
 end
 
 return mahjongPlayer

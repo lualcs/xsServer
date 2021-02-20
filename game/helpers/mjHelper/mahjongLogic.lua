@@ -189,6 +189,83 @@ function mahjongLogic:ablePengPai(player)
     return true
 end
 
+---直杠
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableZhiGang(player)
+    local hands = player:getHands()
+    --检查玩家
+    if player == self._last_chupai_play then
+        return false
+    end
+
+    --检查数量
+    local count = #hands
+    if 1 ~= count % 3 then
+        return false
+    end
+
+    --检查出牌
+    local card = self._last_chupai_card
+    if not table.existCount(hands,card,3) then
+        return false
+    end
+
+    return true
+end
+
+local copy1 = {nil}
+---绕杠
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableRaoGang(player)
+    local hands = player:getHands()
+    --检查数量
+    local count = #hands
+    if 2 ~= count % 3 then
+        return false
+    end
+
+    --检查绕杠
+    local list = table.clear(copy1)
+    local pengs = player:getPengs()
+    for _,card in ipairs(pengs) do
+        if table.exist(hands,card) then
+            table.insert(list,card)
+        end
+    end
+
+    local ok = not table.empty(list)
+    return ok,list
+end
+
+
+local copy1 = {nil}
+local copy2 = {nil}
+---暗杠
+---@param player mahjongPlayer @麻将玩家
+---@return boolean
+function mahjongLogic:ableAnGang(player)
+    local hands = player:getHands()
+    --检查数量
+    local count = #hands
+    if 2 ~= count % 3 then
+        return false
+    end
+
+    --检查暗杠
+    local list = table.clear(copy1)
+    local maps = table.arrToHas(hands,copy2)
+    for card,count in ipairs(maps) do
+        if count >= 4 then
+            table.insert(list,card)
+        end
+    end
+
+    local ok = not table.empty(list)
+    return ok,list
+end
+
 ---出牌操作
 ---@param player mahjongPlayer @玩家
 ---@param card mjCard @出牌
