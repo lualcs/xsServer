@@ -27,7 +27,17 @@ function ranking:ctor(max)
     ---映射数据
     ---@type table<any,rank>
     self._map = {}
+    ---最低积分
+    ---@type score
+    self._min = 0
 end
+
+---设置最低限制
+---@param score score @最低积分 
+function ranking:setMinScore(score)
+    self._min = score
+end
+
 
 ---比较函数
 ---@param a rank
@@ -37,9 +47,13 @@ local function bcmp(a,b)
 end
 
 ---更新数据
----@param iden  any     @唯一表示
+---@param iden  any     @唯一标识
 ---@param score score   @积分
 function ranking:update(iden,score)
+    if score < self._min then
+        return
+    end
+
     local lis = self._lis
     local map = self._map
     local inf = map[iden]
