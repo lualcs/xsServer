@@ -14,6 +14,7 @@ root.."lualib/common/?.lua;"..
 root.."lualib/common/type/?.lua;"..
 root.."lualib/common/system/?.lua;"..
 root.."lualib/common/custom/?.lua;"..
+root.."lualib/common/extend/?.lua;"..
 root.."game/lualib/?.lua;"..
 root.."game/deploy/?.lua;"..
 root.."game/manager/?.lua;"..
