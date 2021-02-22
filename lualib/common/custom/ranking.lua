@@ -42,7 +42,7 @@ end
 ---比较函数
 ---@param a rank
 ---@param b rank
-local function bcmp(a,b)
+local function comp(a,b)
     return a.score < b.score
 end
 
@@ -63,7 +63,7 @@ function ranking:update(iden,score)
             score = score,
         }
         map[iden] = inf
-        tsort.insert(lis,bcmp,inf)
+        tsort.insert(lis,comp,inf)
     else
         inf.score = score
         local index = search.traverse(lis,inf)
