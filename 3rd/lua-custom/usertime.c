@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <time.h>
-#include "lua.h"
-#include "lauxlib.h"
+#include "../lua/lua.h"
+#include "../lua/lauxlib.h"
  
 //微秒
 static int getmicrosecond(lua_State *L) {
