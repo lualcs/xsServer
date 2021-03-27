@@ -10,9 +10,9 @@ local class = require("class")
 local table = require("extend_table")
 local mapColors = require("poker.games.cx")
 local mapNames  = require("poker.mapNames")
-
----@class pokerHelper @扑克辅助
-local pokerHelper = class()
+local gameHelper = require("gameHelper")
+---@class pokerHelper:gameHelper @扑克辅助
+local pokerHelper = class(gameHelper)
 local this = pokerHelper
 
 ---构造函数

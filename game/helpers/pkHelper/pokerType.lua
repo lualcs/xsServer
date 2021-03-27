@@ -13,6 +13,10 @@ local pokerType = class(gameType)
 function pokerType:ctor()
 end
 
-
+---获取牌型
+---@param hands pkCard[] @手牌 
+---@return senum
+function pokerType:getCardType()
+end
 
 return pokerType

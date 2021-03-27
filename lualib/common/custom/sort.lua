@@ -80,11 +80,11 @@ end
 ---@param comp function @比较函数
 ---@param left number @开始位置
 ---@param right number @结束位置
-function sort.quick(arr,comp,left,right)
+function sort.quick(arr,comp,left,right,...)
 	if left < right then
 		local help = left
 		for i = left + 1,right do
-			if not comp(arr[i],arr[left]) then
+			if not comp(arr[i],arr[left],...) then
 				help = help + 1
 				if help ~= i then
 					table.exchange(arr,help,i)

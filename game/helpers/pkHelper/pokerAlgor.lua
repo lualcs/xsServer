@@ -9,7 +9,7 @@ local ipairs = ipairs
 local table = require("extend_table")
 local class = require("class")
 local gameAlgor = require("gameAlgor")
----@class pokerAlgor
+---@class pokerAlgor:gameAlgor
 local pokerAlgor = class(gameAlgor)
 
 ---构造 
@@ -20,7 +20,7 @@ end
 ---@param hand pkCard[]         @手牌
 ---@param repe boolean|nil      @true:重复 false:唯一
 ---@return pkMethod
-function pokerAlgor:getMethod(hand,repe)
+function pokerAlgor:getMethod(hands,repe)
     local as = {nil}
     local bs = {nil}
     local cs = {nil}
@@ -31,18 +31,12 @@ function pokerAlgor:getMethod(hand,repe)
         triples = cs,
         fourles = ds,
     }
-    local maps = table.arrToHas(hand)
+    local maps = table.arrToHas(hands)
     for v,c in ipairs(maps) do
         local ist = false
-        if c >= 1 then
+        if c >= 4 then
             if not ist or repe then
-                table.insert(as,v)
-            end
-            ist = true
-        end
-        if c >= 2 then
-            if not ist or repe then
-                table.insert(bs,v)
+                table.insert(ds,v)
             end
             ist = true
         end
@@ -52,9 +46,15 @@ function pokerAlgor:getMethod(hand,repe)
             end
             ist = true
         end
-        if c >= 4 then
+        if c >= 2 then
             if not ist or repe then
-                table.insert(ds,v)
+                table.insert(bs,v)
+            end
+            ist = true
+        end
+        if c >= 1 then
+            if not ist or repe then
+                table.insert(as,v)
             end
             ist = true
         end

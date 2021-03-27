@@ -51,6 +51,36 @@ skynet.start(function()
     -- local slotsCbat = require("slotsCbat")
     -- slotsCbat.test()
 
-
+    local start = os.clock()
+    local pc = 0
+    local zc = 0
+    local wc = 0
+    --459,165,024 387091224 3162510
+    for a=1,54 do
+    for b=1,54 do
+    for c=1,54 do
+    for d=1,54 do
+    for e=1,54 do
+        if 
+            (a ~= b and a ~= c and a ~= d and a ~= e) and
+            (b ~= c and b ~= d and b ~= e) and
+            (c ~= d and b ~= e) and
+            (d ~= e)
+        then
+            zc=zc+1
+            if a > b and b > c and c > d and d > e then
+                wc=wc+1
+            end
+        end
+        pc=pc+1
+    end
+    end
+    end
+    end
+    end
+    local close = os.clock()
+    local pass = close - start
+    print("耗时:%d,%d",pass//1000,pass%1000)
+    print("次方：",pc,"无序:",zc,"唯一：",wc)
 end)
 
