@@ -10,7 +10,7 @@ local table = require("extend_table")
 local gameEnum = require("gameEnum")
 local assignSuper = require("assignSuper")
 
----@class assignSingle @单机分配
+---@class assignSingle:assignSuper @单机分配
 local assignSingle = class(assignSuper)
 local this = assignSingle
 

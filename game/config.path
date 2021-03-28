@@ -18,8 +18,8 @@ root.."lualib/common/extend/?.lua;"..
 root.."game/lualib/?.lua;"..
 root.."game/deploy/?.lua;"..
 root.."game/manager/?.lua;"..
-root.."game/gmHelper/?.lua;"..
 root.."game/gmAssign/?.lua;"..
+root.."game/helpers/gmHelper/?.lua;"..
 root.."game/helpers/mjHelper/?.lua;"..
 root.."game/helpers/pkHelper/?.lua;"..
 root.."game/helpers/slotsHelper/?.lua;"..

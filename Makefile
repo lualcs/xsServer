@@ -53,7 +53,7 @@ update3rd :
 CSERVICE = snlua logger gate harbor
 LUA_CLIB = skynet \
   client \
-  bson md5 sproto lpeg $(TLS_MODULE)
+  bson md5 sproto lpeg protobuf $(TLS_MODULE)
 
 LUA_CLIB_SKYNET = \
   lua-skynet.c lua-seri.c \
@@ -119,6 +119,9 @@ $(LUA_CLIB_PATH)/ltls.so : lualib-src/ltls.c | $(LUA_CLIB_PATH)
 $(LUA_CLIB_PATH)/lpeg.so : 3rd/lpeg/lpcap.c 3rd/lpeg/lpcode.c 3rd/lpeg/lpprint.c 3rd/lpeg/lptree.c 3rd/lpeg/lpvm.c | $(LUA_CLIB_PATH)
 	$(CC) $(CFLAGS) $(SHARED) -I3rd/lpeg $^ -o $@ 
 
+$(LUA_CLIB_PATH)/protobuf.so : 3rd/pbc/src/alloc.c 3rd/pbc/src/array.c 3rd/pbc/src/bootstrap.c 3rd/pbc/src/context.c 3rd/pbc/src/decode.c 3rd/pbc/src/map.c 3rd/pbc/src/pattern.c 3rd/pbc/src/proto.c 3rd/pbc/src/register.c 3rd/pbc/src/rmessage.c 3rd/pbc/src/stringpool.c 3rd/pbc/src/varint.c 3rd/pbc/src/wmessage.c | $(LUA_CLIB_PATH)
+	$(CC) $(CFLAGS) $(SHARED) -I3rd/pbc/src $^ -o $@ 
+
 clean :
 	rm -f $(SKYNET_BUILD_PATH)/skynet $(CSERVICE_PATH)/*.so $(LUA_CLIB_PATH)/*.so
 
@@ -127,5 +130,6 @@ ifneq (,$(wildcard 3rd/jemalloc/Makefile))
 	cd 3rd/jemalloc && $(MAKE) clean && rm Makefile
 endif
 	cd 3rd/lua && $(MAKE) clean
+  
 	rm -f $(LUA_STATICLIB)
 
