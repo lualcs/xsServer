@@ -26,10 +26,17 @@ function bullType:getCardType(hands)
     local algor = self._gor
     ---@type bullMethod
     local analy = algor:getMethod(hands,true)
+     --双王牛
+    if self:asBullDoubleKing(hands,analy) then
+        return bullEnum.bullDoubleKing()
     --五炸牛
-    if self:asBullFiveBomb(hands,analy) then
+    elseif self:asBullFiveBomb(hands,analy) then
         algor:cardSort(hands,true)
         return bullEnum.bullFiveBomb()
+    --同花顺
+    elseif self:asBullStraightFlush(hands,analy) then
+        algor:cardSort(hands,true)
+        return bullEnum.bullStraightFlush()
     --炸弹牛
     elseif self:asBullBomb(hands,analy) then
         algor:cardSort(hands,true)
@@ -52,17 +59,10 @@ function bullType:getCardType(hands)
     --小王牛
     elseif self:asBullKinglet(hands,analy) then
         return bullEnum.bullKinglet()
-    --双王牛
-    elseif self:asBullDoubleKing(hands,analy) then
-        return bullEnum.bullDoubleKing()
     --同花牛
     elseif self:asBullFlush(hands,analy) then
         algor:cardSort(hands,true)
         return bullEnum.bullFlush()
-    --同花顺
-    elseif self:asBullStraightFlush(hands,analy) then
-        algor:cardSort(hands,true)
-        return bullEnum.bullStraightFlush()
     else
         local point = algor:getBullCount(hands)
         if point == 10 then
@@ -167,6 +167,7 @@ function bullType:asBullFiveSmall(hands,analy)
             return false
         end
     end
+    return true
 end
 
 
@@ -184,7 +185,7 @@ function bullType:asA2345(hands,analy)
     local hp = self._hlp
     for _,card in ipairs(analy.sps) do
         if hp:getValue(card) > 5 then
-            return true
+            return false
         end
     end
     return true
@@ -278,15 +279,16 @@ end
 ---@return boolean 
 function bullType:asBullDoubleKing(hands,analy)
     
-    if not table.exitst(hands,0x4e) then
-        return false
-    end
-
-    if not table.exist(hands,0x4f) then
-        return false
-    end
-
     local lzs = analy.lzs
+    if not table.exitst(lzs,0x4e) then
+        return false
+    end
+
+    if not table.exist(lzs,0x4f) then
+        return false
+    end
+
+   
     if #lzs >= 3 then
         return false
     end
@@ -359,19 +361,23 @@ end
 ---@return boolean 
 function bullType:asBullCalabash(hands,analy)
 
+    --3个癞子
     local lzCount = #(analy.lzs)
     if lzCount >= 3 then
         return true
     end
 
+    --三条+对子
     if #analy.doubles == 1 and #analy.triples == 1 then
         return true
     end
 
+    --两对+癞子*1
     if #analy.doubles == 2 and lzCount == 1 then
         return true
     end
 
+    --三条+癞子*2
     if #analy.triples == 1 and lzCount == 2 then
         return true
     end

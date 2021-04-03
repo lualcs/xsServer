@@ -5,7 +5,7 @@
 ]]
 
 local class = require("class")
-local pokerEnum = require("pokerEnum")
+local pokerEnum = require("pkHelper.pokerEnum")
 ---@class bullEnum:pokerEnum
 local bullEnum = class(pokerEnum)
 local this = bullEnum

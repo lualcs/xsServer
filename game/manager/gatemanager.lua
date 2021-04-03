@@ -45,6 +45,12 @@ function gatemanager:message(fd,msg)
     elseif senum.assignSingle() == cmd then
         --单机游戏
         skynet.send(svs.single,"lua","message",fd,msg)
+    elseif senum.assignHundred() == cmd then
+        --百人游戏
+        skynet.send(svs.single,"lua","message",fd,msg)
+    elseif senum.assignKilling() == cmd then
+        --竞技游戏游戏
+        skynet.send(svs.single,"lua","message",fd,msg)
     elseif senum.table() == cmd then
         --桌子消息
         local svc = client.tablesvc

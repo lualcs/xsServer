@@ -8,7 +8,7 @@ local pairs = pairs
 local ipairs = ipairs
 local table = require("extend_table")
 local class = require("class")
-local pokerAlgor = require("pokerAlgor")
+local pokerAlgor = require("pkHelper.pokerAlgor")
 ---@class bullAlgor:pokerAlgor
 local bullAlgor = class(pokerAlgor)
 local this = bullAlgor
@@ -107,7 +107,11 @@ function bullAlgor:getBullCount(hands)
                             local ad = hp:getPoint(aCard)
                             local bd = hp:getPoint(bCard)
                             local cd = hp:getPoint(cCard)
+                            ---有牛
+                            ---@type boolean
                             local yd = false
+                            ---点数
+                            ---@type number
                             local pd = 0
 
                             if 0 == (ad + bd + cd) % 10 then

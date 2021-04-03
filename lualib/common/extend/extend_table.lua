@@ -451,11 +451,7 @@ end
 ---@param t any[] @数组a
 ---@return count 
 function table.arrElementtCount(t)
-	local count = 0
-	for _,_ in ipairs(t) do
-		count = count + 1
-	end
-	return count
+	return #t
 end
 
 ---哈希元素个数

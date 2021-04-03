@@ -5,8 +5,9 @@
 ]]
 
 local class = require("class")
-local gameLogic = require("gameLogic")
-local bullLogic = class(gameLogic)
+local pokerLogic = require("pkHelper.pokerLogic")
+---@class bullLogic:pokerLogic
+local bullLogic = class(pokerLogic)
 
 ---构造 
 function bullLogic:ctor()

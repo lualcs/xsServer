@@ -16,25 +16,25 @@ local this = time
 
 
 ---时间戳转日期字符串
----@param time 		时间戳
+---@param time 	time	@时间戳
 function time.tosdate(time)
 	return os.date("%Y-%m-%d-%H:%M:%S",time)
 end
 
 ---日期转时间戳
----@param date 		日期表
+---@param date 	date	@日期表
 function time.totime(date)
 	return os.time(date)
 end
 
 ---时间戳转日期表
----@param time 		时间戳
+---@param time 	time	@时间戳
 function time.todate(time)
 	return os.date('*t',time)
 end 
 
 ---日期表转秒间隔
----@param date 		日期表
+---@param date 	date	@日期表
 function time.toSecond(date)
 	local second = 0
 	if is_number(date.day) then
@@ -55,6 +55,7 @@ end
 
 
 ---日期表时分秒置零
+---@param date 	date	@日期表
 function time.clear_sfm(date)
 	date.hour = 0
 	date.min = 0
@@ -82,6 +83,8 @@ end
 
 
 ---间隔年数
+---@param time1 	time	@日期表
+---@param time2 	time	@日期表
 function time.diffYear(time1,time2)
 	local date1 = this.todate(time1)
 	local date2 = this.todate(time2)
@@ -89,6 +92,8 @@ function time.diffYear(time1,time2)
 end
 
 ---间隔月数
+---@param time1 	time	@日期表
+---@param time2 	time	@日期表
 function time.diffMonth(time1,time2)
 	local date1 = this.todate(time1)
 	local date2 = this.todate(time2)
@@ -115,6 +120,7 @@ function time.diffDay(time1,time2)
 end
 
 ---星期几
+---@param time 	time	@时间戳
 function time.weekID(time)
 	local date = this.todate(time)
 	local wday = date.wday
@@ -125,6 +131,7 @@ function time.weekID(time)
 end
 
 ---今天是星期几
+---@return number
 function time.todayWeekID()
 	local now = os.time()
 	return this.weekID(now)

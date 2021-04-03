@@ -8,9 +8,9 @@ local ipairs = ipairs
 local table = require("extend_table")
 local class = require("class")
 local bullEnum = require("bullEnum")
-local gameTable = require("gameTable")
----@class bullTable:gameTable
-local bullTable = class(gameTable)
+local pokerTable = require("pokerHelper.pokerTable")
+---@class bullTable:pokerTable
+local bullTable = class(pokerTable)
 local this = bullTable
 
 

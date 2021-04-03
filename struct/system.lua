@@ -32,6 +32,8 @@
 ---@field debug         service  @调试服务
 ---@field soles         service  @唯一服务
 ---@field single        service  @单人游戏
+---@field hundre        service  @百人游戏
+---@field killing       service  @竞技游戏
 ---@field gates         service  @入口服务
 ---@field login         service  @登陆服务
 

@@ -9,7 +9,7 @@ local pairs = pairs
 local class = require("class")
 local table = require("extend_table")
 local math = require("extend_math")
-local pokerHelper = require("pokerHelper")
+local pokerHelper = require("pkHelper.pokerHelper")
 
 ---@class bullHelper:pokerHelper @扑克辅助
 local bullHelper = class(pokerHelper)
