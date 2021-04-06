@@ -5,9 +5,9 @@
 ]]
 
 local class = require("class")
-local gamePlayer = require("gamePlayer")
----@class bullPlayer:gamePlayer
-local bullPlayer = class(gamePlayer)
+local pokerPlayer = require("pokerPlayer")
+---@class bullPlayer:pokerPlayer
+local bullPlayer = class(pokerPlayer)
 
 ---构造
 function bullPlayer:ctor()
@@ -15,10 +15,5 @@ function bullPlayer:ctor()
     self._hands = {nil}
 end
 
----手牌
----@return pkCard[]
-function bullPlayer:getHandCards()
-    return self._hands
-end
 
 return bullPlayer

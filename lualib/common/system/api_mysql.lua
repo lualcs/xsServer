@@ -4,6 +4,7 @@
     auth:Caorl Luo
 ]]
 
+local debug = require("extend_debug")
 local format = string.format
 local class = require("class")
 local mysql = require("skynet.db.mysql")
@@ -34,7 +35,7 @@ end
 ---执行语句
 ---@param cmd mysql_cmd @命令
 function api_mysql:query(cmd)
-    self._db:query(cmd)
+    return self._db:query(cmd)
 end
 
 

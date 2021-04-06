@@ -5,8 +5,8 @@
 ]]
 
 local ipairs = ipairs
-local table = require("extend_table")
 local class = require("class")
+local table = require("extend_table")
 local gameTable = require("gameTable")
 local slotsEnum = require("slotsEnum")
 

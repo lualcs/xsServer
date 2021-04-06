@@ -31,28 +31,17 @@ end
 ---扑克比较
 ---@param aCard number
 ---@param bCard number
----@param fall  boolean  @是降序
-function gameAlgor.cardCompart(aCard,bCard,fall)
-    local aValue = (aCard & 0xf0) >> 4
-    local bValue = (bCard & 0xf0) >> 4
-
-    local bFlag
-    if aValue ~= bValue then
-        bFlag = aValue > bValue
-    else
-        bFlag = aCard > bCard
-    end
-    if not fall then
-        return bFlag
-    else
-        return not bFlag
-    end
+---@param fall  boolean     @是否降序
+---@param self  gameAlgor   @对象引用
+function gameAlgor.cardCompart(aCard,bCard,fall,self)
+    local hlp = self._hlp
+    return hlp:getLogicValue(aCard) > hlp:getLogicValue(bCard)
 end
 ---排序
 ---@param hands number[] @牌列表
 ---@param fall  boolean  @是降序
 function gameAlgor:cardSort(hands,fall)
-    sort.sort(hands,self.cardCompart,1,#hands,fall)
+    sort.quick(hands,self.cardCompart,1,#hands,fall,self)
 end
 
 return gameAlgor

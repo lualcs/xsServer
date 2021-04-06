@@ -78,4 +78,15 @@ end
 function assignSuper:deleteTable()
 end
 
+---请求
+---@param fd  socket      @套接字
+---@param msg messabeBody @数据
+function assignSuper:message(fd,msg)
+    debug.logAssignhSuper({
+        fd = fd,
+        msg = msg,
+    })
+    skynet.retpack(false)
+end
+
 return assignSuper

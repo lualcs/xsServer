@@ -36,6 +36,7 @@
 ---@field killing       service  @竞技游戏
 ---@field gates         service  @入口服务
 ---@field login         service  @登陆服务
+---@field mysql         service  @数据服务
 
 
 ---@class mapServers @监听信息

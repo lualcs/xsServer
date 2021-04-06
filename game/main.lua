@@ -31,21 +31,28 @@ skynet.start(function()
     skynet.call(service,"lua","start",managerEnum.assignSingle())
     services.single = service
 
-    --启动gate服务
-    local service = skynet.newservice("service_gate")
-    skynet.call(service,"lua","start")
-    services.gates = service
-
     --启动login服务
     local service = skynet.newservice("service_login")
     skynet.call(service,"lua","start")
     services.login = service
+
+    --启动mysql服务
+    local service = skynet.newservice("service_mysql")
+    skynet.call(service,"lua","start")
+    services.mysql = service
+
+     --启动gate服务
+     local service = skynet.newservice("service_gate")
+     skynet.call(service,"lua","start")
+     services.gates = service
 
     --服务信息共享
     skynet.call(services.share,"lua","setShare","gservices",services)
     --服务信息广播
     skynet.call(services.share,"lua","broadcast","gservices")
 
+
+    skynet.call(services.mysql,"lua","dbstructure")
     -- local mahjongCbat = require("mahjongCbat")
     -- mahjongCbat.test()
     -- local slotsCbat = require("slotsCbat")

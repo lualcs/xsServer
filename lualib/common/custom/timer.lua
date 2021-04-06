@@ -153,7 +153,7 @@ end
 
 ---定时轮询
 function timer:poling()
-    if not self._pauset then
+    if self._pauset then
         return
     end
     skynet.timeout(10,self._poling)

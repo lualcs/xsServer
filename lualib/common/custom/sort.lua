@@ -1,7 +1,7 @@
 --[[
+	file:sort.lua
 	desc:排序方法
-	有的时候希望对排序会有特殊需求
-	比如在排行排序的时候 按照比较函数 返回false 交换原则
+	auth:Carol Luo
 ]]
 
 local ipairs = ipairs

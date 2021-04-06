@@ -61,6 +61,17 @@ function pokerHelper.getCardPoker(color,value)
     return (color<<4) + value
 end
 
+---比较牌值
+---@param card cardPoker @花色
+---@return number
+function pokerHelper.getLogicValue(card)
+    local value = this.getValue(card)
+    if 1 == value then
+        return 13
+    end
+    return value - 1
+end
+
 ---是否方块
 ---@param card cardPoker @牌值
 ---@return boolean
@@ -103,6 +114,27 @@ end
 function pokerHelper.is_red(card)
     local color = this.getColor(card)
     return 0 == color or 2 == color
+end
+
+---是否王牌
+---@param card cardPoker @牌值
+---@return boolean
+function pokerHelper.is_king(card)
+    return 0x4e == card or 0x4f == card
+end
+
+---是否小王
+---@param card cardPoker @牌值
+---@return boolean
+function pokerHelper.is_kingMin(card)
+    return 0x4e == card
+end
+
+---是否大王
+---@param card cardPoker @牌值
+---@return boolean
+function pokerHelper.is_kingMax(card)
+    return 0x4f == card
 end
 
 return pokerHelper

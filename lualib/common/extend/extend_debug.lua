@@ -60,14 +60,25 @@ function debug.protobuff(...)
     debug.print(...)
 end
 
-function debug.service_gate(...)
+---网关服务
+function debug.logAssignGate(...)
     debug.print(...)
 end
 
-function debug.service_login(...)
+---登录服务
+function debug.logAssignLogin(...)
     debug.print(...)
 end
 
+---分配基类
+function debug.logAssignhSuper(...)
+    debug.print(...)
+end
+
+---单机服务
+function debug.logAssignhSingle(...)
+    debug.print(...)
+end
 
 return debug
 

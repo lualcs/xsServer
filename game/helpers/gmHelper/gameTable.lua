@@ -440,32 +440,57 @@ end
 
 ---通知客户端-服务-私有的
 ---@param fd      number        @服务地址
----@param name    string        @服务地址
+---@param name    string        @结构名字
 ---@param cmd     senum         @消息命令
 ---@param data    messabeBody   @游戏数据
 local function ntfMsgToClient(fd,name,cmd,data)
     local cmds = {senum.table(),cmd}
-    wsnet.sendpbc(fd,name or "msgBody",cmds,data)
+    wsnet.sendpbc(fd,name,cmds,data)
 end
 
 ---通知客户端-玩家
----@param player gamePlayer     @游戏玩家
----@param name    string        @服务地址
----@param cmd     senum         @消息命令
----@param data   messabeBody    @游戏数据
+---@param player  gamePlayer     @游戏玩家
+---@param name    string         @结构名字
+---@param cmd     senum          @消息命令
+---@param data    messabeBody    @游戏数据
 function gameTable:ntfMsgToPlayer(player,name,cmd,data)
     ntfMsgToClient(player:fd(),name,cmd,data)
-    --缓存消息
-    self._cac:dataPush(data)
+end
+
+---通知客户端-玩家-缓存
+---@param player    gamePlayer     @游戏玩家
+---@param name      string         @结构名字
+---@param cmd       senum          @消息命令
+---@param data      messabeBody    @游戏数据
+function gameTable:ntfCacheMsgToPlayer(player,name,cmd,data)
+    self:ntfMsgToPlayer(player,name,cmd,data)
+    self._cac:dataPush({
+        msgName = name,
+        msgInfo = data,
+    })
+end
+
+---通知客户端-玩家-缓存
+---@param name      string              @结构名字
+---@param cmd       senum               @消息命令
+---@param data      messabeBody         @游戏数据
+---@param sees      message_see_info    @可见信息
+function gameTable:ntfCacheMsgToTable(name,cmd,data,sees)
+    self:ntfMsgToTable(name,cmd,data,sees)
+    self._cac:dataPush({
+        msgName = name,
+        msgInfo = table.copy_deep(data),
+        msgRoot = table.copy_deep(sees),
+    })
 end
 
 
 local copy1 = {nil}
 ---通知客户端-广播
----@param name    string        @服务地址
----@param cmd     senum         @消息命令
----@param data   messabeBody             @游戏数据
----@param sees   message_see_info        @可见信息
+---@param name    string            @服务地址
+---@param cmd     senum             @消息命令
+---@param data   messabeBody        @游戏数据
+---@param sees   message_see_info   @可见信息
 function gameTable:ntfMsgToTable(name,cmd,data,sees)
     ---@type table<any,any>    @备份数据
     local back = table.clear(copy1)
@@ -498,8 +523,6 @@ function gameTable:ntfMsgToTable(name,cmd,data,sees)
             ntfMsgToClient(player:fd(),name,cmd,data)
         end
     end
-    --缓存消息
-    self._cac:dataPush(data)
 end
 
 return gameTable

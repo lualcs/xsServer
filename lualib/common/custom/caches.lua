@@ -20,8 +20,6 @@ local class = require("class")
 local caches = class()
 
 ---构造
----@param min number @最少数
----@param max number @最大数
 function caches:ctor(min,max)
     ---@type cacheUnit[]
     self._caches = {}

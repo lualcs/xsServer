@@ -30,8 +30,7 @@ return function(base)
         obj.__base  = class_type
         obj.__type  = 'object'
         do
-            local create
-            create = function(c, ...)
+            local function create(c, ...)
                 if c.__base then
                     create(c.__base, ...)
                 end

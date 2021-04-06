@@ -13,6 +13,8 @@ local pokerPlayer = class(gamePlayer)
 function pokerPlayer:ctor()
     ---@type pkCard[]       @玩家手牌
     self._hands = {nil}
+    ---@type pkCard[]       @显示手牌
+    self._shows = {nil}
 end
 
 ---手牌

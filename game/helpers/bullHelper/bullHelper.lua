@@ -19,6 +19,13 @@ local this = bullHelper
 function bullHelper:ctor()
 end
 
+---比较牌值
+---@param card cardPoker @花色
+---@return number
+function pokerHelper.getLogicValue(card)
+    return this.getValue(card)
+end
+
 ---单牌点数
 ---@param card pkCard @扑克 
 ---@return bullNumber
