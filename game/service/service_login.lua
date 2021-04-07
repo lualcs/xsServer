@@ -23,6 +23,8 @@ local this = service
 
 ---服务启动
 function service.start()
+    ---登陆管理
+    ---@type loginmanager
     this._manger = loginmanager.new(this)
     skynet.retpack(false)
 end

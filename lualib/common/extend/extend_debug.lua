@@ -61,12 +61,12 @@ function debug.protobuff(...)
 end
 
 ---网关服务
-function debug.logAssignGate(...)
+function debug.logServiceGate(...)
     debug.print(...)
 end
 
 ---登录服务
-function debug.logAssignLogin(...)
+function debug.logServiceLogin(...)
     debug.print(...)
 end
 

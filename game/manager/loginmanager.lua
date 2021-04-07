@@ -17,8 +17,13 @@ local this = loginmanager
 
 ---构造
 ---@param login service_login         @gate服务
-function loginmanager:ctor(login)
-    self._login = login
+function loginmanager:ctor(service)
+    ---服务
+    ---@type service_login
+    self._login = service
+    ---@type table<fd,client>
+    ---连接
+    self._cliens = {nil}
 end
 
 ---服务
@@ -33,7 +38,9 @@ end
 function loginmanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
     local svs = self:getServices()
-    if senum.phone() == cmd then
+    if senum.tourists()  == cmd then
+        self:touristsLogin()
+    elseif senum.phone() == cmd then
         --手机登陆
     elseif senum.example() == cmd then
         --测试登陆
@@ -48,6 +55,13 @@ function loginmanager:message(fd,msg)
 
     skynet.retpack(false)
     --skynet.send(svc,"lua","message",fd,msg)
+end
+
+
+---游客登陆
+function loginmanager:touristsLogin(fd,msg)
+    local services = self._login.services
+    debug.logAssignLogin({fd = fd,msg = msg})
 end
 
 return loginmanager

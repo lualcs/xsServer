@@ -51,8 +51,6 @@ skynet.start(function()
     --服务信息广播
     skynet.call(services.share,"lua","broadcast","gservices")
 
-
-    skynet.call(services.mysql,"lua","dbstructure")
     -- local mahjongCbat = require("mahjongCbat")
     -- mahjongCbat.test()
     -- local slotsCbat = require("slotsCbat")

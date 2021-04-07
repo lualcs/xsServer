@@ -30,6 +30,9 @@ function service.start()
 
   this._manger = mysqlmanager.new(this)
   
+  ---构造数据库
+  --this._manger:dbstructure()
+
   skynet.retpack(false)
   skynet.register(".mysql")
 end

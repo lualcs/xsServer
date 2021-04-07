@@ -118,6 +118,12 @@ function managerEnum.join()
     return "join"
 end
 
+---游客
+---@return senum
+function managerEnum.tourists()
+    return "tourists"
+end
+
 ---手机
 ---@return senum
 function managerEnum.phone()
