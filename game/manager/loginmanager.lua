@@ -38,8 +38,8 @@ end
 function loginmanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
     local svs = self:getServices()
-    if senum.tourists()  == cmd then
-        self:touristsLogin()
+    if senum.tourists() == cmd then
+        self:touristsLogin(fd,msg)
     elseif senum.phone() == cmd then
         --手机登陆
     elseif senum.example() == cmd then
@@ -60,8 +60,20 @@ end
 
 ---游客登陆
 function loginmanager:touristsLogin(fd,msg)
+    ---服务信息
+    ---@type serviceInf
     local services = self._login.services
-    debug.logAssignLogin({fd = fd,msg = msg})
+    ---游客凭证
+    ---@type string 
+    local accredit = msg.accredit;
+    ---登陆结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","touristsLogin",accredit)
+    login.loginMod = senum.tourists()
+    login.loginBid = msg.accredit
+
+    ---返回结果
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login()},login)
 end
 
 return loginmanager

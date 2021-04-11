@@ -1,6 +1,6 @@
 
 --[[
-    file:struct.lua 
+    file:dbaccounts.lua 
     desc:数据库结构
     auth:Caorl Luo
 ]]

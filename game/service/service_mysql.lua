@@ -57,7 +57,9 @@ skynet.start(function()
             if f then
               cs(f, ...)
             else
-              cs(this._manger[cmd], this._manger, ...)
+              local mgr = this._manger
+              local f = mgr[cmd]
+              cs(f,mgr,...)
             end
     end)
 end)

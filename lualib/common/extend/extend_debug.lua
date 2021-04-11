@@ -65,6 +65,11 @@ function debug.logServiceGate(...)
     debug.print(...)
 end
 
+---sql服务
+function debug.logServiceMySQL(...)
+    debug.print(...)
+end
+
 ---登录服务
 function debug.logServiceLogin(...)
     debug.print(...)

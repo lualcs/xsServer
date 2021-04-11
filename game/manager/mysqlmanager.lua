@@ -5,6 +5,8 @@
 ]]
 
 local ipairs = ipairs
+local format = string.format
+local string = require("extend_string")
 local table = require("extend_table")
 local debug = require("extend_debug")
 local skynet = require("skynet")
@@ -39,6 +41,12 @@ function mysqlmanager:ctor(service)
     ---启动定时器
     self._timer = timer.new()
     self._timer:poling()
+
+    -- self._timer:appendBy("dbstructure",0,1,function(_)
+    --     ---构造结构
+    --     self:dbstructure()
+    -- end)
+
 end
 
 ---服务
@@ -51,19 +59,45 @@ end
 
 ---构造数据库
 function mysqlmanager:dbstructure()
-    self:dbAccounts()
-    skynet.retpack(false)
+    ---构造dbaccounts
+    self:dbaccounts()
+    ---构造dbPlatform
+    self:dbplatform()
 end
 
 
 ---dbaccounts 结构
-function mysqlmanager:dbAccounts()
+function mysqlmanager:dbaccounts()
     local cmds = require("mysql.dbaccounts")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
         debug.normal(mysql:query(cmd))
     end
+end
+
+---dbaccounts 结构
+function mysqlmanager:dbplatform()
+    local cmds = require("mysql.dbplatform")
+    ---执行语句
+    local mysql = self._mysql
+    for index,cmd in ipairs(cmds) do
+        debug.normal(mysql:query(cmd))
+    end
+end
+
+---游客登陆
+function mysqlmanager:touristsLogin(accredit)
+    ---拼接语句
+    local sqlex = format([[
+        CALL dbaccounts.procLoginTourists("%s");
+    ]],accredit)
+
+    ---执行语句
+    local mysql = self._mysql
+    local repak = mysql:query(sqlex)
+    --返回结果
+    skynet.retpack(repak[1][1])
 end
 
 
