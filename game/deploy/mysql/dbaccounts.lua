@@ -23,13 +23,49 @@ return {
         `rid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色id',
         `accounts` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账号',
         `nickname` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '昵称',
-        `logo` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '头像',
+        `logo` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '头像',
         `coin` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏硬币',
         `silver` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏银币',
         `gold` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏金币',
         `masonry` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏砖石',
         PRIMARY KEY (`rid`,`accounts`) USING BTREE
       ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT '角色信息' ROW_FORMAT = Dynamic;
+
+      SET FOREIGN_KEY_CHECKS = 1;
+    ]],
+    --创建头像库存
+    [[
+      SET NAMES utf8mb4;
+      SET FOREIGN_KEY_CHECKS = 0;
+
+      -- ----------------------------
+      -- Table structure for accounts
+      -- ----------------------------
+      USE `dbaccounts`;
+      CREATE TABLE `library_logo`  (
+        `index` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '序号',
+        `logo` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '头像',
+        `use` bit(1) NOT NULL DEFAULT 0 COMMENT '是否使用',
+        PRIMARY KEY (`index`) USING BTREE
+      ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT '头像库存' ROW_FORMAT = Dynamic;
+
+      SET FOREIGN_KEY_CHECKS = 1;
+    ]],
+    --创建昵称库存
+    [[
+      SET NAMES utf8mb4;
+      SET FOREIGN_KEY_CHECKS = 0;
+
+      -- ----------------------------
+      -- Table structure for accounts
+      -- ----------------------------
+      USE `dbaccounts`;
+      CREATE TABLE `library_name`  (
+        `index` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '序号',
+        `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '昵称',
+        `use` bit(1) NOT NULL DEFAULT 0 COMMENT '是否使用',
+        PRIMARY KEY (`index`) USING BTREE
+      ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT '头像库存' ROW_FORMAT = Dynamic;
 
       SET FOREIGN_KEY_CHECKS = 1;
     ]],
@@ -112,8 +148,10 @@ return {
         IF 0 = @bindrid THEN
             #注册账号
             SET @maxRid = 0;
+            SET @logolnk = "";
             SELECT COUNT(1) INTO @maxRid FROM `accounts`;
-            CALL procRegisteredAccounts(CONCAT("yk",@maxRid + 1),CONCAT("游客",@maxRid + 1),NULL,@bindrid);
+            SELECT `logo` INTO @logolnk FROM `library_logo` WHERE `use` = 0 LIMIT 1;
+            CALL procRegisteredAccounts(CONCAT("yk",@maxRid + 1),CONCAT("游客",@maxRid + 1),@logolnk,@bindrid);
             #绑定游客
             INSERT INTO `bindtourists`(`rid`,`key`) VALUES (@bindrid, `@openid`); 
         END IF;

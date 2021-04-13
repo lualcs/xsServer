@@ -87,14 +87,14 @@ function api_pbc.encode_message(name,cmds,data)
     local head = {name = name,cmds=cmds}
     local ok,msghead = pcall(this.encode,"msgHead",head)
     if not ok then
-        debug.protobuff("encode_message msgHead:",{head,msghead})
+        debug.protobuff("encode_message msgHead:",{head = head,error = msghead})
         return
     end
 
     --消息包
     local ok,msgbody = pcall(this.encode,name,data)
     if not ok then
-        debug.protobuff("encode_message msgbody:",{[name]=data,msgbody})
+        debug.protobuff("encode_message msgbody:",{[name]=data,error = msgbody})
         return
     end
 
@@ -121,7 +121,7 @@ function api_pbc.decode_message(msgbuf,msgsize)
     --数据解析
     local ok,msgbody,error = pcall(this.decode,msghead.name,body,string.len(body))
     if not ok or false == msgbody then
-        debug.protobuff("decode_message msgBody:",error)
+        debug.protobuff("decode_message msgBody:",error,msghead.name)
         --return
     end
     

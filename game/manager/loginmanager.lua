@@ -73,7 +73,7 @@ function loginmanager:touristsLogin(fd,msg)
     login.loginBid = msg.accredit
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login()},login)
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
 end
 
 return loginmanager

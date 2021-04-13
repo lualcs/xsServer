@@ -42,10 +42,10 @@ function mysqlmanager:ctor(service)
     self._timer = timer.new()
     self._timer:poling()
 
-    -- self._timer:appendBy("dbstructure",0,1,function(_)
-    --     ---构造结构
-    --     self:dbstructure()
-    -- end)
+    self._timer:appendBy("dbstructure",0,1,function(_)
+        ---构造结构
+        self:dbstructure()
+    end)
 
 end
 
@@ -63,6 +63,8 @@ function mysqlmanager:dbstructure()
     self:dbaccounts()
     ---构造dbPlatform
     self:dbplatform()
+    ---构造头像库存表
+    self:dblibarays()
 end
 
 
@@ -83,6 +85,17 @@ function mysqlmanager:dbplatform()
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
         debug.normal(mysql:query(cmd))
+    end
+end
+
+---dblibarays 库存
+function mysqlmanager:dblibarays()
+    ---执行语句
+    local mysql = self._mysql
+
+    local logos = require("mysql.library_logo")
+    for index,cmd in ipairs(logos) do
+        mysql:query(cmd)
     end
 end
 
