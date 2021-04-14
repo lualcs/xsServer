@@ -97,6 +97,11 @@ function mysqlmanager:dblibarays()
     for index,cmd in ipairs(logos) do
         mysql:query(cmd)
     end
+
+    local names = require("mysql.library_name")
+    for index,cmd in ipairs(names) do
+        mysql:query(cmd)
+    end
 end
 
 ---游客登陆
