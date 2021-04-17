@@ -42,6 +42,7 @@ function loginmanager:message(fd,msg)
         self:touristsLogin(fd,msg)
     elseif senum.phone() == cmd then
         --手机登陆
+        self:phoneLogin(fd,msg)
     elseif senum.example() == cmd then
         --测试登陆
         websocket.sendpbc(fd,"loginInf",{senum.login(),senum.succeed()},{wechat="example"})
@@ -59,6 +60,8 @@ end
 
 
 ---游客登陆
+---@param fd    socket              @套接字
+---@param msg   c2s_loginTourists   @消息
 function loginmanager:touristsLogin(fd,msg)
     ---服务信息
     ---@type serviceInf
@@ -69,6 +72,26 @@ function loginmanager:touristsLogin(fd,msg)
     ---登陆结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","touristsLogin",accredit)
+    login.loginMod = senum.tourists()
+    login.loginBid = msg.accredit
+
+    ---返回结果
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+end
+
+---手机登陆
+---@param fd    socket              @套接字
+---@param msg   c2s_loginPhone      @消息
+function loginmanager:phoneLogin(fd,msg)
+    ---服务信息
+    ---@type serviceInf
+    local services = self._login.services
+    ---游客凭证
+    ---@type string 
+    local accredit = msg.accredit;
+    ---登陆结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","phoneLogin",accredit)
     login.loginMod = senum.tourists()
     login.loginBid = msg.accredit
 
