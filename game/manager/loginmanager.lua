@@ -115,7 +115,7 @@ function loginmanager:wechatLogin(fd,msg)
     ---登陆结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","wechatLogin",accredit)
-    login.loginMod = senum.tourists()
+    login.loginMod = senum.phone()
     login.loginBid = msg.phonenum
 
     ---返回结果
@@ -136,8 +136,48 @@ function loginmanager:wechatLogin(fd,msg)
     ---登陆结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","wechatLogin",accredit)
-    login.loginMod = senum.tourists()
+    login.loginMod = senum.wechat()
     login.loginBid = msg.phonenum
+
+    ---返回结果
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+end
+
+---更新昵称
+---@param fd    socket              @套接字
+---@param msg   c2s_changeNickname  @消息
+function loginmanager:changeNickname(fd,msg)
+    ---服务信息
+    ---@type serviceInf
+    local services = self._login.services
+    ---账号标识
+    local rid = 1;
+    ---更新昵称
+    ---@type string 
+    local nickname = msg.nickname;
+    ---更新结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","changeNickname",rid,nickname)
+
+    ---返回结果
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+end
+
+---更新头像
+---@param fd    socket              @套接字
+---@param msg   c2s_changeLogolink  @消息
+function loginmanager:changeLogolink(fd,msg)
+    ---服务信息
+    ---@type serviceInf
+    local services = self._login.services
+    ---账号标识
+    local rid = 1;
+    ---更新头像
+    ---@type string 
+    local logolink = msg.logolink;
+    ---更新结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","changeLogolink",rid,logolink)
 
     ---返回结果
     websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)

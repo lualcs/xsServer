@@ -130,6 +130,12 @@ function managerEnum.phone()
     return "phone"
 end
 
+---微信
+---@return senum
+function managerEnum.wechat()
+    return "wechat"
+end
+
 ---创建
 ---@return senum
 function managerEnum.create()

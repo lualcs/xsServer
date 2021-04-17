@@ -6,6 +6,7 @@
 
 local pcall = pcall
 local string = string
+local table = table
 local debug = require("extend_debug")
 local parser
 local protobuf
@@ -126,6 +127,7 @@ function api_pbc.decode_message(msgbuf,msgsize)
     end
     
     msgbody.cmds = msghead.cmds
+    table.insert(msgbody.cmds,msghead.name)
     return msgbody
 end
 
