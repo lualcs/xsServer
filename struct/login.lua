@@ -19,9 +19,12 @@
 
 ---@class c2s_loginWeChat @微信登陆
 ---@field accredit string @微信授权
----@field accounts string @微信账号
----@field logolink string @微信头像
----@field nickname string @微信昵称
+
+---@class  c2s_changeNickname @更改昵称
+---@field nickname string @新的昵称
+
+---@class  c2s_changeLogolink @更改昵称
+---@field logolink string @新的昵称
 
 ---@class s2c_loginResult   @登录结果
 ---@field loginMod   string   @登录方式

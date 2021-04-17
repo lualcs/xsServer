@@ -86,17 +86,62 @@ function loginmanager:phoneLogin(fd,msg)
     ---服务信息
     ---@type serviceInf
     local services = self._login.services
-    ---游客凭证
+    ---手机号码
     ---@type string 
-    local accredit = msg.accredit;
+    local phonenum = msg.phonenum;
+    ---登录密码
+    ---@type string 
+    local password = msg.password;
     ---登陆结果
     ---@type s2c_loginResult
-    local login = skynet.call(services.mysql,"lua","phoneLogin",accredit)
+    local login = skynet.call(services.mysql,"lua","phoneLogin",phonenum,password)
     login.loginMod = senum.tourists()
-    login.loginBid = msg.accredit
+    login.loginBid = msg.phonenum
 
     ---返回结果
     websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
 end
+
+---微信登陆
+---@param fd    socket              @套接字
+---@param msg   c2s_loginWeChat      @消息
+function loginmanager:wechatLogin(fd,msg)
+    ---服务信息
+    ---@type serviceInf
+    local services = self._login.services
+    ---微信授权
+    ---@type string 
+    local accredit = msg.accredit;
+    ---登陆结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","wechatLogin",accredit)
+    login.loginMod = senum.tourists()
+    login.loginBid = msg.phonenum
+
+    ---返回结果
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+end
+
+
+---微信登陆
+---@param fd    socket              @套接字
+---@param msg   c2s_loginWeChat      @消息
+function loginmanager:wechatLogin(fd,msg)
+    ---服务信息
+    ---@type serviceInf
+    local services = self._login.services
+    ---微信授权
+    ---@type string 
+    local accredit = msg.accredit;
+    ---登陆结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","wechatLogin",accredit)
+    login.loginMod = senum.tourists()
+    login.loginBid = msg.phonenum
+
+    ---返回结果
+    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+end
+  
 
 return loginmanager

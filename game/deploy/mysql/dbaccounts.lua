@@ -141,10 +141,10 @@ return {
     --创建游客登陆存储过程
     [[
       USE `dbaccounts`;
-      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginTourists`(IN `@openid` VARCHAR(256))
+      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginTourists`(IN `@accredit` VARCHAR(256))
       BEGIN
       	SET @bindrid = 0; 
-      	SELECT `rid` INTO @bindrid FROM `bindtourists` WHERE `key` = `@openid`;
+      	SELECT `rid` INTO @bindrid FROM `bindtourists` WHERE `key` = `@accredit`;
         IF 0 = @bindrid THEN
             #注册账号
             SET @maxRid = 0;
@@ -153,7 +153,7 @@ return {
             SELECT `logo` INTO @logolnk FROM `library_logo` WHERE `use` = 0 LIMIT 1;
             CALL procRegisteredAccounts(CONCAT("yk",@maxRid + 1),CONCAT("游客",@maxRid + 1),@logolnk,@bindrid);
             #绑定游客
-            INSERT INTO `bindtourists`(`rid`,`key`) VALUES (@bindrid, `@openid`); 
+            INSERT INTO `bindtourists`(`rid`,`key`) VALUES (@bindrid, `@accredit`); 
         END IF;
       	SELECT * FROM `accounts` WHERE rid = @bindrid;
       END
@@ -171,10 +171,10 @@ return {
     --创建微信登陆存储过程
     [[
       USE `dbaccounts`;
-      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginWechat`(IN `@openid` VARCHAR(256))
+      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginWechat`(IN `@accredit` VARCHAR(256))
       BEGIN
         SET @bindrid = 0; 
-        SELECT `rid` INTO @bindrid FROM `bindwechat` WHERE `key` = `@openid`;
+        SELECT `rid` INTO @bindrid FROM `bindwechat` WHERE `key` = `@accredit`;
         SELECT * FROM `accounts` WHERE rid = @bindrid;
       END
     ]],
@@ -204,7 +204,7 @@ return {
       USE `dbaccounts`;
       CREATE DEFINER=`root`@`%` PROCEDURE `procBindWechat`(
         IN `@rid` int(10),
-        IN `@openid` VARCHAR(16)
+        IN `@accredit` VARCHAR(16)
       )
       BEGIN
         IF EXISTS(SELECT 1 FROM `bindwechat` WHERE `rid` = `@rid`) THEN
@@ -214,7 +214,7 @@ return {
         ELSEIF NOT EXISTS(SELECT 1 FROM `accounts` WHERE `rid` = `@rid`) THEN
           SELECT "该用户数据不存在！" as failure;
         ELSE
-          INSERT INTO `bindwechat`(`rid`, `key`) VALUES (`@rid`, `@openid`); 
+          INSERT INTO `bindwechat`(`rid`, `key`) VALUES (`@rid`, `@accredit`); 
           SELECT "您微信号绑定成功！" as successful;
         END IF;
       END
