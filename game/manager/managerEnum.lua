@@ -148,4 +148,47 @@ function managerEnum.delete()
     return "delete"
 end
 
+
+---游客登录
+---@return senum
+function managerEnum.c2s_loginTourists()
+    return "c2s_loginTourists"
+end
+
+---账号登录
+---@return senum
+function managerEnum.c2s_loginAccount()
+    return "c2s_loginAccount"
+end
+
+---手机登录
+---@return senum
+function managerEnum.c2s_loginPhone()
+    return "c2s_loginPhone"
+end
+
+---微信登陆
+---@return senum
+function managerEnum.c2s_loginWeChat()
+    return "c2s_loginWeChat"
+end
+
+---登陆结果
+---@return senum
+function managerEnum.s2c_loginResult()
+    return "s2c_loginResult"
+end
+
+---更改昵称
+---@return senum
+function managerEnum.c2s_changeNickname()
+    return "c2s_changeNickname"
+end
+
+---更新头像
+---@return senum
+function managerEnum.c2s_changeLogolink()
+    return "c2s_changeLogolink"
+end
+
 return managerEnum
