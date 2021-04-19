@@ -38,14 +38,15 @@ end
 function loginmanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
     local svs = self:getServices()
-    if senum.tourists() == cmd then
+    if senum.c2s_loginTourists() == cmd then
+        --游客登录
         self:touristsLogin(fd,msg)
-    elseif senum.phone() == cmd then
+    elseif senum.c2s_loginPhone() == cmd then
         --手机登陆
         self:phoneLogin(fd,msg)
-    elseif senum.example() == cmd then
-        --测试登陆
-        websocket.sendpbc(fd,"loginInf",{senum.login(),senum.succeed()},{wechat="example"})
+    elseif senum.c2s_loginWeChat() == cmd then
+       --微信登陆
+       self:phoneLogin(fd,msg)
     elseif senum.gamelis() == cmd then
         --游戏列表
         websocket.sendpbc(fd,"gameoff",{senum.gamelis(),senum.succeed()},
@@ -76,7 +77,7 @@ function loginmanager:touristsLogin(fd,msg)
     login.loginBid = msg.accredit
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
 end
 
 ---手机登陆
@@ -99,7 +100,7 @@ function loginmanager:phoneLogin(fd,msg)
     login.loginBid = msg.phonenum
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
 end
 
 ---微信登陆
@@ -119,7 +120,7 @@ function loginmanager:wechatLogin(fd,msg)
     login.loginBid = msg.phonenum
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
 end
 
 
@@ -140,7 +141,7 @@ function loginmanager:wechatLogin(fd,msg)
     login.loginBid = msg.phonenum
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
 end
 
 ---更新昵称
@@ -160,7 +161,7 @@ function loginmanager:changeNickname(fd,msg)
     local login = skynet.call(services.mysql,"lua","changeNickname",rid,nickname)
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
 end
 
 ---更新头像
@@ -180,7 +181,7 @@ function loginmanager:changeLogolink(fd,msg)
     local login = skynet.call(services.mysql,"lua","changeLogolink",rid,logolink)
 
     ---返回结果
-    websocket.sendpbc(fd,"s2c_loginResult",{senum.login(),senum.succeed()},login)
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
 end
   
 

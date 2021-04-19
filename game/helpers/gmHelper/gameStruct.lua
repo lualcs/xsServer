@@ -26,7 +26,7 @@
 ---@field value   office   @规则数据
 
 ---@class playerInfo      @游戏玩家
----@field address   number   @服务地址
+---@field fd        socket   @套接字
 ---@field userID    userID   @玩家ID
 ---@field seatID    seatID   @座位ID
 ---@field coin      score    @玩家分数

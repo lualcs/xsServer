@@ -37,3 +37,8 @@
 ---@field silver     score    @银币分数
 ---@field gold       score    @金币分数
 ---@field masonry    score    @砖石分数
+
+
+---@class role:s2c_loginResult @角色数据
+---@field fd         socket   @套接字
+---@field online     boolean  @在线吗
