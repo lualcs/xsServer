@@ -53,6 +53,5 @@
 
 
 ---@class client @前端信息
----@field address       host        @地址
----@field tablesvc      service     @所在桌子
----@field baseinf       playerInfo  @玩家信息    
+---@field fd            socket           @套接字
+---@field role          role             @角色数据    

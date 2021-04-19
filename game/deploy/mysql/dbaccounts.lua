@@ -69,6 +69,22 @@ return {
 
       SET FOREIGN_KEY_CHECKS = 1;
     ]],
+    --创建机器账号数据表
+    [[
+      SET NAMES utf8mb4;
+      SET FOREIGN_KEY_CHECKS = 0;
+
+      -- ----------------------------
+      -- Table structure for accounts
+      -- ----------------------------
+      USE `dbaccounts`;
+      CREATE TABLE `bind_robots`  (
+        `rid` int(10) UNSIGNED NOT NULL COMMENT '[代表这个账号是机器人]',
+        PRIMARY KEY (`key`) USING BTREE
+      ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT '机器人账号表' ROW_FORMAT = Dynamic;
+
+      SET FOREIGN_KEY_CHECKS = 1;
+    ]],
     --创建微信绑定数据表
     [[
       SET NAMES utf8mb4;
@@ -78,7 +94,7 @@ return {
       -- Table structure for accounts
       -- ----------------------------
       USE `dbaccounts`;
-      CREATE TABLE `bindwechat`  (
+      CREATE TABLE `bind_wechat`  (
         `rid` int(10) UNSIGNED NOT NULL COMMENT '角色id',
         `key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登陆凭证',
         PRIMARY KEY (`key`) USING BTREE
@@ -95,7 +111,7 @@ return {
       -- Table structure for accounts
       -- ----------------------------
       USE `dbaccounts`;
-      CREATE TABLE `bindphone`  (
+      CREATE TABLE `bind_phone`  (
         `rid` int(10) UNSIGNED NOT NULL COMMENT '角色id',
         `num` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号码',
         `pwd` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登陆凭证',
@@ -113,7 +129,7 @@ return {
       -- Table structure for accounts
       -- ----------------------------
       USE `dbaccounts`;
-      CREATE TABLE `bindtourists`  (
+      CREATE TABLE `bind_tourists`  (
         `rid` int(10) UNSIGNED NOT NULL COMMENT '角色id',
         `key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登陆凭证',
         PRIMARY KEY (`key`) USING BTREE
@@ -141,19 +157,19 @@ return {
     --创建游客登陆存储过程
     [[
       USE `dbaccounts`;
-      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginTourists`(IN `@openid` VARCHAR(256))
+      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginTourists`(IN `@accredit` VARCHAR(256))
       BEGIN
       	SET @bindrid = 0; 
-      	SELECT `rid` INTO @bindrid FROM `bindtourists` WHERE `key` = `@openid`;
+      	SELECT `rid` INTO @bindrid FROM `bind_tourists` WHERE `key` = `@accredit`;
         IF 0 = @bindrid THEN
             #注册账号
             SET @maxRid = 0;
             SET @logolnk = "";
             SELECT COUNT(1) INTO @maxRid FROM `accounts`;
             SELECT `logo` INTO @logolnk FROM `library_logo` WHERE `use` = 0 LIMIT 1;
-            CALL procRegisteredAccounts(CONCAT("yk",@maxRid + 1),CONCAT("游客",@maxRid + 1),@logolnk,@bindrid);
+            CALL procRegisteredAccounts(CONCAT("tourists:",@maxRid + 1),CONCAT("游客:",@maxRid + 1),@logolnk,@bindrid);
             #绑定游客
-            INSERT INTO `bindtourists`(`rid`,`key`) VALUES (@bindrid, `@openid`); 
+            INSERT INTO `bind_tourists`(`rid`,`key`) VALUES (@bindrid, `@accredit`); 
         END IF;
       	SELECT * FROM `accounts` WHERE rid = @bindrid;
       END
@@ -164,17 +180,51 @@ return {
       CREATE DEFINER=`root`@`%` PROCEDURE `procLoginPhone`(IN `@number` VARCHAR(16),IN `@password` VARCHAR(32))
       BEGIN
         SET @bindrid = 0; 
-        SELECT `rid` INTO @bindrid FROM `bindphone` WHERE `num` = `@number` and `pwd` = `@password`;
+        SELECT `rid` INTO @bindrid FROM `bind_phone` WHERE `num` = `@number` and `pwd` = `@password`;
+        SELECT * FROM `accounts` WHERE rid = @bindrid;
+      END
+    ]],
+    --创建手机注册存储过程
+    [[
+      USE `dbaccounts`;
+      CREATE DEFINER=`root`@`%` PROCEDURE `procRegisterPhone`(
+        IN `@nickname` VARCHAR(32),   #昵称
+        IN `@logolnk`  VARCHAR(256),  #头像
+        IN `@number` VARCHAR(16),     #号码
+        IN `@password` VARCHAR(32))   #密码
+      BEGIN
+        SET @bindrid = 0; 
+        SELECT `rid` INTO @bindrid FROM `bind_phone` WHERE `num` = `@number` and `pwd` = `@password`;
+        IF 0 = @bindrid THEN
+          #注册账号
+          SET @maxRid = 0;
+          SELECT COUNT(1) INTO @maxRid FROM `accounts`;
+          CALL procRegisteredAccounts(CONCAT("phone:",@maxRid + 1),@nickname,@logolnk,@bindrid);
+          #绑定手机
+          INSERT INTO `bind_phone`(`rid`,`num`,`pwd`) VALUES (@bindrid, `@number`,`@password`); 
+        END IF;
         SELECT * FROM `accounts` WHERE rid = @bindrid;
       END
     ]],
     --创建微信登陆存储过程
     [[
       USE `dbaccounts`;
-      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginWechat`(IN `@openid` VARCHAR(256))
+      CREATE DEFINER=`root`@`%` PROCEDURE `procLoginWechat`(
+        IN `@nickname` VARCHAR(32),   #微信昵称
+        IN `@logolnk`  VARCHAR(256),  #微信头像
+        IN `@accredit` VARCHAR(256)   #登录凭证
+      )
       BEGIN
         SET @bindrid = 0; 
-        SELECT `rid` INTO @bindrid FROM `bindwechat` WHERE `key` = `@openid`;
+        SELECT `rid` INTO @bindrid FROM `bind_wechat` WHERE `key` = `@accredit`;
+        IF 0 = @bindrid THEN
+          #注册账号
+          SET @maxRid = 0;
+          SELECT COUNT(1) INTO @maxRid FROM `accounts`;
+          CALL procRegisteredAccounts(CONCAT("wechat:",@maxRid + 1),@nickname,@logolnk,@bindrid);
+          #绑定微信
+          INSERT INTO `bind_phone`(`rid`,`key`) VALUES (@bindrid, `@accredit`); 
+        END IF;
         SELECT * FROM `accounts` WHERE rid = @bindrid;
       END
     ]],
@@ -187,14 +237,14 @@ return {
         IN `@password` VARCHAR(32)
       )
       BEGIN
-        IF EXISTS(SELECT 1 FROM `bindphone` WHERE `rid` = `@rid`) THEN
+        IF EXISTS(SELECT 1 FROM `bind_phone` WHERE `rid` = `@rid`) THEN
           SELECT "该用户已绑定手机！" as failure;
-        ELSEIF EXISTS(SELECT 1 FROM `bindphone` WHERE `num` = `@number`) THEN
+        ELSEIF EXISTS(SELECT 1 FROM `bind_phone` WHERE `num` = `@number`) THEN
           SELECT "该手机已绑定用户！" as failure;
         ELSEIF NOT EXISTS(SELECT 1 FROM `accounts` WHERE `rid` = `@rid`) THEN
           SELECT "该用户数据不存在！" as failure;
         ELSE
-          INSERT INTO `bindphone`(`rid`, `num`, `pwd`) VALUES (`@rid`, `@number`, `@password`); 
+          INSERT INTO `bind_phone`(`rid`, `num`, `pwd`) VALUES (`@rid`, `@number`, `@password`); 
           SELECT "您手机号绑定成功！" as successful;
         END IF;
       END
@@ -204,17 +254,17 @@ return {
       USE `dbaccounts`;
       CREATE DEFINER=`root`@`%` PROCEDURE `procBindWechat`(
         IN `@rid` int(10),
-        IN `@openid` VARCHAR(16)
+        IN `@accredit` VARCHAR(16)
       )
       BEGIN
-        IF EXISTS(SELECT 1 FROM `bindwechat` WHERE `rid` = `@rid`) THEN
+        IF EXISTS(SELECT 1 FROM `bind_wechat` WHERE `rid` = `@rid`) THEN
           SELECT "该用户已绑定微信！" as failure;
-        ELSEIF EXISTS(SELECT 1 FROM `bindwechat` WHERE `num` = `@number`) THEN
+        ELSEIF EXISTS(SELECT 1 FROM `bind_wechat` WHERE `num` = `@number`) THEN
           SELECT "该微信已绑定用户！" as failure;
         ELSEIF NOT EXISTS(SELECT 1 FROM `accounts` WHERE `rid` = `@rid`) THEN
           SELECT "该用户数据不存在！" as failure;
         ELSE
-          INSERT INTO `bindwechat`(`rid`, `key`) VALUES (`@rid`, `@openid`); 
+          INSERT INTO `bind_wechat`(`rid`, `key`) VALUES (`@rid`, `@accredit`); 
           SELECT "您微信号绑定成功！" as successful;
         END IF;
       END

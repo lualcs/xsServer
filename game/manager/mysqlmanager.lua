@@ -105,6 +105,7 @@ function mysqlmanager:dblibarays()
 end
 
 ---游客登陆
+---@param accredit string @登录凭证
 function mysqlmanager:touristsLogin(accredit)
     ---拼接语句
     local sqlex = format([[
@@ -118,5 +119,73 @@ function mysqlmanager:touristsLogin(accredit)
     skynet.retpack(repak[1][1])
 end
 
+---手机登陆
+---@param phonenum string @手机号码
+---@param password string @登录密码
+function mysqlmanager:phoneLogin(phonenum,password)
+    ---拼接语句
+    local sqlex = format([[
+        CALL dbaccounts.procLoginPhone("%s","%s");
+    ]],phonenum,password)
+
+    ---执行语句
+    local mysql = self._mysql
+    local repak = mysql:query(sqlex)
+    --返回结果
+    skynet.retpack(repak[1][1])
+end
+
+---微信登陆
+---@param accredit string @登录凭证
+function mysqlmanager:wechatLogin(accredit)
+    ---拼接语句
+    local sqlex = format([[
+        CALL dbaccounts.procLoginWechat("%s");
+    ]],accredit)
+
+    ---执行语句
+    local mysql = self._mysql
+    local repak = mysql:query(sqlex)
+    --返回结果
+    skynet.retpack(repak[1][1])
+end
+
+---更新昵称
+---@param rid       number  @角色ID
+---@param nickname  string  @更新昵称
+function mysqlmanager:changeNickname(rid,nickname)
+    ---拼接语句
+    local sqlex = format([[
+        UPDATE `dbaccounts`.`accounts` SET `nickname` = "%s"WHERE `rid` = %d;
+    ]],nickname,rid)
+
+    ---执行语句
+    local mysql = self._mysql
+    local repak = mysql:query(sqlex)
+    --返回结果
+    skynet.retpack({
+        rid = rid,
+        nickname = nickname
+    })
+end
+
+---更新头像
+---@param rid       number  @角色ID
+---@param logolink  string  @更新昵称
+function mysqlmanager:changeLogolink(rid,logolink)
+    ---拼接语句
+    local sqlex = format([[
+        UPDATE `dbaccounts`.`accounts` SET `logo` = "%s"WHERE `rid` = %d;
+    ]],logolink,rid)
+
+    ---执行语句
+    local mysql = self._mysql
+    local repak = mysql:query(sqlex)
+     --返回结果
+     skynet.retpack({
+        rid = rid,
+        logolink = logolink
+    })
+end
 
 return mysqlmanager
