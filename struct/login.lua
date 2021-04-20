@@ -42,3 +42,8 @@
 ---@class role:s2c_loginResult @角色数据
 ---@field fd         socket   @套接字
 ---@field online     boolean  @在线吗
+
+
+---@class client @前端信息
+---@field fd            socket           @套接字
+---@field role          role             @角色数据    
