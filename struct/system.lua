@@ -45,13 +45,3 @@
 ---@field gate  address     @入口
 
 
----@class playerInfo @玩家信息
----@field userID    userID   @玩家ID
----@field coin      score    @玩家分数
----@field name      name     @玩家名子
----@field logo      url      @玩家头像
-
-
----@class client @前端信息
----@field fd            socket           @套接字
----@field role          role             @角色数据    
