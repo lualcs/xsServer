@@ -4,6 +4,7 @@
     auth:Caorl Luo
 ]]
 
+local skynet = require("skynet")
 local tsort = require("sort")
 local class = require("class")
 local table = require("extend_table")
