@@ -8,6 +8,7 @@ local skynet = require("skynet")
 local tsort = require("sort")
 local class = require("class")
 local table = require("extend_table")
+local debug = require("extend_debug")
 local gameEnum = require("gameEnum")
 local assignSuper = require("assignSuper")
 
@@ -42,7 +43,7 @@ function assignSingle:message(fd,msg)
             skynet.send(svc,"lua","message",fd,msg)
         end
     else
-        debug.error("Unknown command")
+        debug.logAssignhSingle("Unknown command")
     end
 end
 
