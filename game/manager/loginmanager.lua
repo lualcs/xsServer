@@ -56,7 +56,7 @@ function loginmanager:message(fd,msg)
     --skynet.send(svc,"lua","message",fd,msg)
 end
 
----登录检查
+---重复登录
 ---@param fd scoket   @套接字
 function loginmanager:socketLogin(fd)
     local clent = self._sockets[fd]
