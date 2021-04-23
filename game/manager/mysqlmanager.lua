@@ -74,7 +74,13 @@ function mysqlmanager:dbaccounts()
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
-        debug.normal(mysql:query(cmd))
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
     end
 end
 
@@ -84,7 +90,13 @@ function mysqlmanager:dbplatform()
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
-        debug.normal(mysql:query(cmd))
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
     end
 end
 
@@ -95,12 +107,24 @@ function mysqlmanager:dblibarays()
 
     local logos = require("mysql.library_logo")
     for index,cmd in ipairs(logos) do
-        mysql:query(cmd)
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
     end
 
     local names = require("mysql.library_name")
     for index,cmd in ipairs(names) do
-        mysql:query(cmd)
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
     end
 end
 
