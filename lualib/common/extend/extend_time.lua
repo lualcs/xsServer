@@ -1,6 +1,6 @@
 --[[
 	file:time.lua
-	desc:Ê±¼äº¯Êı Ğ´Ò»Ğ©³£ÓÃµÄÍ¨ÓÃº¯Êı
+	desc:æ—¶é—´å‡½æ•° å†™ä¸€äº›å¸¸ç”¨çš„é€šç”¨å‡½æ•°
 ]]
 
 local os = os
@@ -10,31 +10,31 @@ local MIN_SEC = 60
 local HOUR_SEC = MIN_SEC * 60
 local DAY_SEC = HOUR_SEC * 24
 
----@class time Ê±¼ä´¦Àí¶ÔÏó
+---@class time æ—¶é—´å¤„ç†å¯¹è±¡
 local time = {}
 local this = time
 
 
----Ê±¼ä´Á×ªÈÕÆÚ×Ö·û´®
----@param time 	time	@Ê±¼ä´Á
+---æ—¶é—´æˆ³è½¬æ—¥æœŸå­—ç¬¦ä¸²
+---@param time 	time	@æ—¶é—´æˆ³
 function time.tosdate(time)
 	return os.date("%Y-%m-%d-%H:%M:%S",time)
 end
 
----ÈÕÆÚ×ªÊ±¼ä´Á
----@param date 	date	@ÈÕÆÚ±í
+---æ—¥æœŸè½¬æ—¶é—´æˆ³
+---@param date 	date	@æ—¥æœŸè¡¨
 function time.totime(date)
 	return os.time(date)
 end
 
----Ê±¼ä´Á×ªÈÕÆÚ±í
----@param time 	time	@Ê±¼ä´Á
+---æ—¶é—´æˆ³è½¬æ—¥æœŸè¡¨
+---@param time 	time	@æ—¶é—´æˆ³
 function time.todate(time)
 	return os.date('*t',time)
 end 
 
----ÈÕÆÚ±í×ªÃë¼ä¸ô
----@param date 	date	@ÈÕÆÚ±í
+---æ—¥æœŸè¡¨è½¬ç§’é—´éš”
+---@param date 	date	@æ—¥æœŸè¡¨
 function time.toSecond(date)
 	local second = 0
 	if is_number(date.day) then
@@ -54,8 +54,8 @@ function time.toSecond(date)
 end
 
 
----ÈÕÆÚ±íÊ±·ÖÃëÖÃÁã
----@param date 	date	@ÈÕÆÚ±í
+---æ—¥æœŸè¡¨æ—¶åˆ†ç§’ç½®é›¶
+---@param date 	date	@æ—¥æœŸè¡¨
 function time.clear_sfm(date)
 	date.hour = 0
 	date.min = 0
@@ -63,7 +63,7 @@ function time.clear_sfm(date)
     return os.time(date)
 end
 
----½ñÈÕÁãµãÊ±¼ä´Á
+---ä»Šæ—¥é›¶ç‚¹æ—¶é—´æˆ³
 ---@return number
 function time.todayMidnight()
     local date = os.date()
@@ -71,8 +71,8 @@ function time.todayMidnight()
     return this.totime(date)
 end
 
----·µ»Ø½ñÈÕÊ±¼ä´Á
----@param sfm date Ê±·ÖÃëÈÕÆÚ
+---è¿”å›ä»Šæ—¥æ—¶é—´æˆ³
+---@param sfm date æ—¶åˆ†ç§’æ—¥æœŸ
 function time.todayMoment(sfm)
     local date = os.date()
     date.hour = sfm.hour
@@ -82,18 +82,18 @@ function time.todayMoment(sfm)
 end
 
 
----¼ä¸ôÄêÊı
----@param time1 	time	@ÈÕÆÚ±í
----@param time2 	time	@ÈÕÆÚ±í
+---é—´éš”å¹´æ•°
+---@param time1 	time	@æ—¥æœŸè¡¨
+---@param time2 	time	@æ—¥æœŸè¡¨
 function time.diffYear(time1,time2)
 	local date1 = this.todate(time1)
 	local date2 = this.todate(time2)
 	return date2.year - date1.year
 end
 
----¼ä¸ôÔÂÊı
----@param time1 	time	@ÈÕÆÚ±í
----@param time2 	time	@ÈÕÆÚ±í
+---é—´éš”æœˆæ•°
+---@param time1 	time	@æ—¥æœŸè¡¨
+---@param time2 	time	@æ—¥æœŸè¡¨
 function time.diffMonth(time1,time2)
 	local date1 = this.todate(time1)
 	local date2 = this.todate(time2)
@@ -110,17 +110,17 @@ function time.diffMonth(time1,time2)
 	return diff
 end
 
----¼ä¸ôÌìÊı
----@param time1   Ê±¼ä´Á1
----@param time2   Ê±¼ä´Á2
+---é—´éš”å¤©æ•°
+---@param time1   æ—¶é—´æˆ³1
+---@param time2   æ—¶é—´æˆ³2
 function time.diffDay(time1,time2)
 	time1 = time1 - (time1 % DAY_SEC)
 	time2 = time2 - (time2 % DAY_SEC)
 	return (time2 - time1)//DAY_SEC
 end
 
----ĞÇÆÚ¼¸
----@param time 	time	@Ê±¼ä´Á
+---æ˜ŸæœŸå‡ 
+---@param time 	time	@æ—¶é—´æˆ³
 function time.weekID(time)
 	local date = this.todate(time)
 	local wday = date.wday
@@ -130,7 +130,7 @@ function time.weekID(time)
 	return wday
 end
 
----½ñÌìÊÇĞÇÆÚ¼¸
+---ä»Šå¤©æ˜¯æ˜ŸæœŸå‡ 
 ---@return number
 function time.todayWeekID()
 	local now = os.time()

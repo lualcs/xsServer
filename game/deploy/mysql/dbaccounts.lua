@@ -80,7 +80,7 @@ return {
       USE `dbaccounts`;
       CREATE TABLE `bind_robots`  (
         `rid` int(10) UNSIGNED NOT NULL COMMENT '[代表这个账号是机器人]',
-        PRIMARY KEY (`key`) USING BTREE
+        PRIMARY KEY (`rid`) USING BTREE
       ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT '机器人账号表' ROW_FORMAT = Dynamic;
 
       SET FOREIGN_KEY_CHECKS = 1;
