@@ -66,6 +66,21 @@ function loginmanager:socketLogin(fd)
     return true
 end
 
+---保存登录
+---@param fd    scoket             @套接字
+---@param role  s2c_loginResult    @登录结果
+function loginmanager:cacheLogin(fd,role)
+    local clent = {
+        fd = fd,
+        role = role,
+        online = true,
+    }
+    self._sockets[fd] = role
+    self._clients[role.rid] = role
+    ---通知skyneg
+    return true
+end
+
 ---游客登陆
 ---@param fd    socket              @套接字
 ---@param msg   c2s_loginTourists   @消息
@@ -88,6 +103,8 @@ function loginmanager:touristsLogin(fd,msg)
     login.loginBid = msg.accredit
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+    ---保存结果
+    self:cacheLogin(fd,login)
 end
 
 ---手机登陆
@@ -116,6 +133,8 @@ function loginmanager:phoneLogin(fd,msg)
 
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+    ---保存结果
+    self:cacheLogin(fd,login)
 end
 
 ---微信登陆
@@ -136,6 +155,8 @@ function loginmanager:wechatLogin(fd,msg)
 
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+    ---保存结果
+    self:cacheLogin(fd,login)
 end
 
 ---更新昵称
@@ -156,6 +177,8 @@ function loginmanager:changeNickname(fd,msg)
 
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+    ---保存结果
+    self:cacheLogin(fd,login)
 end
 
 ---更新头像
@@ -176,6 +199,8 @@ function loginmanager:changeLogolink(fd,msg)
 
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+    ---保存结果
+    self:cacheLogin(fd,login)
 end
   
 
