@@ -50,6 +50,8 @@ end
 ---@param iden  any     @唯一标识
 ---@param score score   @积分
 function ranking:update(iden,score)
+
+    --上榜限制
     if score < self._min then
         return
     end
@@ -57,6 +59,7 @@ function ranking:update(iden,score)
     local lis = self._lis
     local map = self._map
     local inf = map[iden]
+    --插入数据
     if not inf then
         inf = {
             iden = iden,
@@ -64,10 +67,12 @@ function ranking:update(iden,score)
         }
         map[iden] = inf
         tsort.insert(lis,comp,inf)
+    --更新数据
     else
         inf.score = score
         local index = search.traverse(lis,inf)
-        table.remove(lis);
+        table.remove(lis,index);
+        tsort.insert(lis,comp,inf)
     end
     --移除多余
     local limit = self._max
