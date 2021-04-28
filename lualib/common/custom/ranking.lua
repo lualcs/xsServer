@@ -93,7 +93,7 @@ function ranking:remove(iden)
     end
     map[iden] = nil
     local index = search.traverse(lis,inf)
-    table.remove(lis);
+    table.remove(lis,index);
 end
 
 return ranking
