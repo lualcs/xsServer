@@ -56,7 +56,7 @@ function mysqlmanager:getServices()
 end
 
 
-
+local cjson = require("api_json")
 ---构造数据库
 function mysqlmanager:dbstructure()
     ---构造dbaccounts
