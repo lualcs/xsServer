@@ -41,6 +41,11 @@ skynet.start(function()
     skynet.call(service,"lua","start")
     services.mysql = service
 
+     --启动mongo服务
+     local service = skynet.newservice("service_mongo")
+     skynet.call(service,"lua","start")
+     services.mysql = service
+
      --启动gate服务
      local service = skynet.newservice("service_gate")
      skynet.call(service,"lua","start")

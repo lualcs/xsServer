@@ -8,6 +8,7 @@ local table = table
 local class = require("class")
 local mongo = require("skynet.db.mongo")
 
+---@class api_mongo
 local api_mongo = class()
 local this = api_mongo
 
@@ -137,6 +138,8 @@ function api_mongo:runCommand(args)
     local db = self._db:getDB(args.dbname)
     return db:runCommand(args)
 end
+
+return api_mongo
 
 ---@class mongo_connect_item @mongo 连接信息
 ---@field host              host       @目标地址

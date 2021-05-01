@@ -37,6 +37,7 @@
 ---@field gates         service  @入口服务
 ---@field login         service  @登陆服务
 ---@field mysql         service  @数据服务
+---@field mongo         service  @芒果数据
 
 
 ---@class mapServers @监听信息

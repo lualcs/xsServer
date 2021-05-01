@@ -83,7 +83,7 @@ end
 
 
 ---删除数据
----@param iden  any     @唯一表示
+---@param iden  any     @唯一标识
 function ranking:remove(iden)
     local lis = self._lis
     local map = self._map
