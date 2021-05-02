@@ -32,13 +32,7 @@ end
 ---@param fd  socket      @套接字
 ---@param msg messageInfo @数据
 function assignSingle:message(fd,msg)
-    local cmd = table.remove(msg.cmds)
-    local inf = msg.info
-    ---进桌
-    if cmd == senum.enter() then
-    ---离卓
-    elseif cmd == senum.leave() then
-    end
+    
 end
 
 return assignSingle

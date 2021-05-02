@@ -11,9 +11,10 @@ local table = require("extend_table")
 local debug = require("extend_debug")
 local skynet = require("skynet")
 local class = require("class")
-local senum = require("managerEnum")
-local api_mysql = require("api_mysql")
+
 local timer = require("timer")
+local api_mysql = require("api_mysql")
+local websocket = require("api_websocket")
 
 ---@class mysqlmanager @gate管理
 local mysqlmanager = class()
@@ -42,11 +43,6 @@ function mysqlmanager:ctor(service)
     self._timer = timer.new()
     self._timer:poling()
 
-    self._timer:appendBy("dbstructure",0,1,function(_)
-        ---构造结构
-        self:dbstructure()
-    end)
-
 end
 
 ---服务
@@ -55,8 +51,6 @@ function mysqlmanager:getServices()
     return self._service.services
 end
 
-
-local cjson = require("api_json")
 ---构造数据库
 function mysqlmanager:dbstructure()
     ---构造dbaccounts
@@ -155,8 +149,15 @@ function mysqlmanager:phoneLogin(phonenum,password)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
-    --返回结果
-    skynet.retpack(repak[1][1])
+    if repak and repak[1] and repak[1][1] then
+        --返回结果
+        skynet.retpack(repak[1][1])
+    else
+        --登录失败
+        skynet.retpack({
+            failure = "账号不存在,或者密码错误！",
+        })
+    end
 end
 
 ---微信登陆
@@ -170,8 +171,15 @@ function mysqlmanager:wechatLogin(accredit)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
-    --返回结果
-    skynet.retpack(repak[1][1])
+    if repak and repak[1] and repak[1][1] then
+        --返回结果
+        skynet.retpack(repak[1][1])
+    else
+        --登录失败
+        skynet.retpack({
+            failure = "账号不存在,或者密码错误！",
+        })
+    end
 end
 
 ---更新昵称

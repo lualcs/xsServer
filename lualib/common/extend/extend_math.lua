@@ -3,6 +3,10 @@
     desc:扩展算术
     auth:Carol Luo
 ]]
+
+local string = string
+local fromat = string.format
+local tostring = tostring
 local math = math
 
 ---10进制设置
@@ -27,6 +31,13 @@ function math.getSecimal(sum,bit)
     local c = sum % (p // 10)
     local b = sum - a - c
     return b / ( p / 10)
+end
+
+---转显示
+---@param num number @整数
+---@return string
+function math.itext(num)
+    return fromat("%.f万",num / 10000)
 end
 
 return math

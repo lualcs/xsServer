@@ -45,4 +45,9 @@
 ---@class client @前端信息
 ---@field fd            socket           @套接字
 ---@field role          role             @角色数据
----@field online        boolean          @是否在线    
+---@field online        boolean          @是否在线
+
+
+---@class gateClient:client @网关用户信息
+---@field assign        service         @所在分配
+---@field table         service         @所在桌子

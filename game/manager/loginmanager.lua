@@ -44,23 +44,23 @@ function loginmanager:message(fd,msg)
     if senum.c2s_loginTourists() == cmd then
         --游客登录
         self:touristsLogin(fd,msg)
+        skynet.retpack(self._sockets[fd])
     elseif senum.c2s_loginPhone() == cmd then
         --手机登陆
         self:phoneLogin(fd,msg)
+        skynet.retpack(self._sockets[fd])
     elseif senum.c2s_loginWeChat() == cmd then
-       --微信登陆
-       self:phoneLogin(fd,msg)
+        --微信登陆
+        self:phoneLogin(fd,msg)
+        skynet.retpack(self._sockets[fd])
     end
-
-    skynet.retpack(false)
-    --skynet.send(svc,"lua","message",fd,msg)
 end
 
 ---重复登录
 ---@param fd scoket   @套接字
 function loginmanager:socketLogin(fd)
-    local clent = self._sockets[fd]
-    if clent then
+    local client = self._sockets[fd]
+    if client then
         return false
     end
     return true
@@ -70,7 +70,7 @@ end
 ---@param fd    scoket             @套接字
 ---@param role  s2c_loginResult    @登录结果
 function loginmanager:cacheLogin(fd,role)
-    local clent = {
+    local client = {
         fd = fd,
         role = role,
         online = true,
@@ -99,12 +99,16 @@ function loginmanager:touristsLogin(fd,msg)
     ---登陆结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","touristsLogin",accredit)
-    login.loginMod = senum.tourists()
-    login.loginBid = msg.accredit
-    ---返回结果
-    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
-    ---保存结果
-    self:cacheLogin(fd,login)
+    if not login.failure then
+        ---登录模式
+        login.loginMod = senum.tourists()
+        login.loginBid = msg.accredit
+        ---返回结果
+        websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+        ---保存结果
+        self:cacheLogin(fd,login)
+    end
+    skynet.retpack(login)
 end
 
 ---手机登陆
@@ -128,19 +132,27 @@ function loginmanager:phoneLogin(fd,msg)
     ---登陆结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","phoneLogin",phonenum,password)
-    login.loginMod = senum.tourists()
-    login.loginBid = msg.phonenum
-
-    ---返回结果
-    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
-    ---保存结果
-    self:cacheLogin(fd,login)
+    if not login.failure then
+        ---登录模式
+        login.loginMod = senum.tourists()
+        login.loginBid = msg.phonenum
+        ---返回结果
+        websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+        ---保存结果
+        self:cacheLogin(fd,login)
+    end
+    skynet.retpack(login)
 end
 
 ---微信登陆
 ---@param fd    socket              @套接字
 ---@param msg   c2s_loginWeChat      @消息
 function loginmanager:wechatLogin(fd,msg)
+    ---重复登录
+    if self:socketLogin(fd) then
+        return
+    end
+
     ---服务信息
     ---@type serviceInf
     local services = self._login.services
@@ -150,57 +162,65 @@ function loginmanager:wechatLogin(fd,msg)
     ---登陆结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","wechatLogin",accredit)
-    login.loginMod = senum.wechat()
-    login.loginBid = msg.phonenum
-
-    ---返回结果
-    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
-    ---保存结果
-    self:cacheLogin(fd,login)
+    if not login.failure then
+        ---登录模式
+        login.loginMod = senum.wechat()
+        login.loginBid = msg.phonenum
+        ---返回结果
+        websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+        ---保存结果
+        self:cacheLogin(fd,login)
+    end
+    skynet.retpack(login)
 end
 
 ---更新昵称
 ---@param fd    socket              @套接字
 ---@param msg   c2s_changeNickname  @消息
 function loginmanager:changeNickname(fd,msg)
+    ---用户数据
+    local client = self._sockets[fd]
+    if not client then
+        return
+    end
+
     ---服务信息
     ---@type serviceInf
     local services = self._login.services
     ---账号标识
-    local rid = 1;
+    local rid = client.role.rid;
     ---更新昵称
     ---@type string 
     local nickname = msg.nickname;
     ---更新结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","changeNickname",rid,nickname)
-
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
-    ---保存结果
-    self:cacheLogin(fd,login)
 end
 
 ---更新头像
 ---@param fd    socket              @套接字
 ---@param msg   c2s_changeLogolink  @消息
 function loginmanager:changeLogolink(fd,msg)
+     ---用户数据
+     local client = self._sockets[fd]
+     if not client then
+         return
+     end
     ---服务信息
     ---@type serviceInf
     local services = self._login.services
     ---账号标识
-    local rid = 1;
+    local rid = client.role.rid;
     ---更新头像
     ---@type string 
     local logolink = msg.logolink;
     ---更新结果
     ---@type s2c_loginResult
     local login = skynet.call(services.mysql,"lua","changeLogolink",rid,logolink)
-
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
-    ---保存结果
-    self:cacheLogin(fd,login)
 end
   
 

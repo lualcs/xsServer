@@ -5,13 +5,13 @@
 ]]
 
 local skynet = require("skynet")
-
+local table = require("extend_table")
 local tostring = tostring
 local format = string.format
 local class = require("class")
 local debug = require("extend_debug")
 local timer = require("timer")
-local gameEnum = require("gameEnum")
+local senum = require("gameEnum")
 local gameInfos = require("games.gameInfos")
 
 ---@class assignSuper @游戏调配基类
@@ -96,10 +96,13 @@ end
 ---@param fd  socket      @套接字
 ---@param msg messabeBody @数据
 function assignSuper:message(fd,msg)
-    debug.logAssignhSuper({
-        fd = fd,
-        msg = msg,
-    })
+    local cmd = table.remove(msg.cmds)
+    local inf = msg.info
+    ---进桌
+    if cmd == senum.enter() then
+    ---离卓
+    elseif cmd == senum.leave() then
+    end
 end
 
 return assignSuper
