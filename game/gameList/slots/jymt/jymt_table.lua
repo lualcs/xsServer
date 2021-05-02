@@ -6,9 +6,9 @@
 
 local table = table
 local class = require("class")
-local jymt_enum = require("slots_jymt.jymt_enum")
+local jymt_enum = require("slots.jymt.jymt_enum")
 local slotsTable = require("slotsTable")
----@class jymt_table:slotsTable
+---@class jymt_table:slotsTable @金玉满堂
 local jymt_table = class(slotsTable)
 local this = jymt_table
 

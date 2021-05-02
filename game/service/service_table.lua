@@ -22,6 +22,7 @@ local this = service
 ---@param gameID     gameID @游戏ID
 ---@param gameCustom gameCustom @定制
 function service.start(gameID,gameCustom)
+    ---游戏信息
     ---@type gameInfo
     local gameInfo = this.infos[gameID]
     --共享内存

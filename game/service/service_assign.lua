@@ -28,7 +28,6 @@ function service.start(simport)
   local import = require(simport)
   this.assign = import.new(this)
   
-  skynet.retpack(false)
   skynet.register("." .. simport)
 end
 
@@ -37,13 +36,11 @@ function service.gservices(name)
   local services = sharedata.query(name)
   ---@type serviceInf @服务地址信息
   this.services = services
-  skynet.retpack(false)
 end
 
 ---退出
 function service.exit()
   skynet.exit()
-  skynet.retpack(false)
 end
 
 skynet.start(function()
@@ -54,5 +51,6 @@ skynet.start(function()
             else
               cs(this.assign[cmd], this.assign, ...)
             end
+            skynet.retpack(false)
     end)
 end)

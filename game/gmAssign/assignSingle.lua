@@ -9,7 +9,7 @@ local tsort = require("sort")
 local class = require("class")
 local table = require("extend_table")
 local debug = require("extend_debug")
-local gameEnum = require("gameEnum")
+local senum = require("gameEnum")
 local assignSuper = require("assignSuper")
 
 ---@class assignSingle:assignSuper @单机分配
@@ -19,31 +19,25 @@ local this = assignSingle
 ---构造函数
 function assignSingle:ctor()
     ---@type name @类名
-    self._assignClass = gameEnum.assignSingle()
+    self._assignClass = senum.assignSingle()
+end
+
+---重置
+function assignSingle:dataReboot()
+    ---金玉满堂
+    self:createTable(10001,{})
 end
 
 ---请求
 ---@param fd  socket      @套接字
----@param msg messabeBody @数据
+---@param msg messageInfo @数据
 function assignSingle:message(fd,msg)
-    tsort.reverse(msg.cmds)
     local cmd = table.remove(msg.cmds)
-    local svs = self:getServices()
-    local client = self._cens[fd]
-    if gameEnum.login() == cmd then
-        --登陆请求
-        skynet.send(svs.login,"lua","message",fd,msg)
-    elseif gameEnum.assignSingle() == cmd then
-        --单机游戏
-        skynet.send(svs.single,"lua","message",fd,msg)
-    elseif gameEnum.table() == cmd then
-        --桌子消息
-        local svc = client.tablesvc
-        if svc then
-            skynet.send(svc,"lua","message",fd,msg)
-        end
-    else
-        debug.logAssignhSingle("Unknown command")
+    local inf = msg.info
+    ---进桌
+    if cmd == senum.enter() then
+    ---离卓
+    elseif cmd == senum.leave() then
     end
 end
 

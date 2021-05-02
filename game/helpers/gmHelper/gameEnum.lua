@@ -87,6 +87,13 @@ function gameEnum.standup()
     return "standup"
 end
 
+---进入
+---@return senum
+function gameEnum.enter()
+    return "enter"
+end
+
+
 ---离开
 ---@return senum
 function gameEnum.leave()
