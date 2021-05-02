@@ -137,6 +137,8 @@
 ---@alias service number
 ---服务地址
 ---
+---@alias channel number 
+---频道
 ---
 ---@alias mjSnap table<mjValue,count>
 ---麻将1~9成扑(顺子 刻子)

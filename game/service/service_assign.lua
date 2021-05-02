@@ -5,6 +5,7 @@
 ]]
 
 local ipairs = ipairs
+local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
@@ -32,10 +33,22 @@ function service.start(simport)
 end
 
 ---服务表
-function service.gservices(name)
+function service.mapServices(name)
   local services = sharedata.query(name)
   ---@type serviceInf @服务地址信息
-  this.services = services
+  this._services = services
+end
+
+---组播
+function service.multicast()
+	---服务
+	local services = this._services
+	---组播
+	---@type api_multicast
+	this._multicast = multicast.new()
+	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
+	    this._manger:multicastMsg(cmd,...)
+	end)
 end
 
 ---退出
@@ -46,11 +59,12 @@ end
 skynet.start(function()
     skynet.dispatch("lua",function(_, _, cmd, ...)
             local f = this[cmd]
+            local pack
             if f then
-              cs(f, ...)
+              pack = cs(f, ...)
             else
-              cs(this.assign[cmd], this.assign, ...)
+              pack = cs(this.assign[cmd], this.assign, ...)
             end
-            skynet.retpack(false)
+            skynet.retpack(pack or false)
     end)
 end)

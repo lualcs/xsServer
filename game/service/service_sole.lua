@@ -6,6 +6,7 @@
 
 local next = next
 local table = require("extend_table")
+local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
@@ -21,16 +22,30 @@ local autoID  = 1
 function service.start(start)
     ---@type historID @历史战绩
     this.historID = start.historID
-    skynet.retpack(false)
 end
 
 ---服务表
-function service.gservices(name)
+function service.mapServices(name)
     local services = sharedata.query(name)
     ---@type serviceInf @服务地址信息
-    this.services = services
-    skynet.retpack(false)
+    this._services = services
   end
+
+  ---组播
+function service.multicast()
+	---服务
+	local services = this._services
+	---组播
+	---@type api_multicast
+	this._multicast = multicast.new()
+	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
+		this._manger:multicastMsg(cmd,...)
+	end)
+end
+
+---重置
+function service.dataReboot()
+end
 
 ---退出
 function service.exit()
@@ -41,7 +56,7 @@ end
 function service.getHistorID()
     local historID = this.historID
     this.historID = historID + 1
-    skynet.retpack(this.historID)
+    return this.historID
 end
 
 
@@ -51,23 +66,23 @@ function service.getTableID()
         --没有空闲
         local soleID = autoID
         autoID = soleID + 1
-        skynet.retpack(soleID)
+        return soleID
     else
         --还有空闲
         local idleID = next(idlels)
         idlels[idleID] = nil
-        skynet.retpack(idleID)
+        return idleID
     end
 end
 
 ---回收
 function service.setTableID(ID)
     idlels[ID] = true
-    skynet.retpack(false)
 end
 
 skynet.start(function()
     skynet.dispatch("lua",function(_, _, cmd, ...)
-        cs(this[cmd], ...)
+        local pack = cs(this[cmd], ...)
+        skynet.retpack(pack or false)
     end)
 end)

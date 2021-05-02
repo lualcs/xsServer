@@ -31,6 +31,11 @@ function gatemanager:ctor(gate,cens)
     self._timer:poling()
 end
 
+---重置
+function gatemanager:dataReboot()
+  
+end
+
 ---服务
 ---@return serviceInf @服务信息
 function gatemanager:getServices()

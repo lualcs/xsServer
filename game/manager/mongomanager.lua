@@ -52,6 +52,11 @@ function mongomanager:ctor(service)
 
 end
 
+---重置
+function mongomanager:dataReboot()
+  
+end
+
 ---服务
 ---@return serviceInf @服务信息
 function mongomanager:getServices()

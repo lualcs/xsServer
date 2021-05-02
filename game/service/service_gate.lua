@@ -8,6 +8,7 @@ local format = string.format
 local reusable = require("reusable")
 local debug = require("extend_debug")
 local json = require("api_json")
+local multicast = require("api_multicast")
 local websocket = require("api_websocket")
 local socketdriver = require("api_socketdriver")
 local protobuff = require("api_pbc")
@@ -100,19 +101,29 @@ function service.start()
 	
 	---@type gatemanager
 	this._manger = gatemanager.new(this,mapclients)
-	skynet.retpack(false)
 end
 
 ---服务表
-function service.gservices(name)
+function service.mapServices(name)
 	local services = sharedata.query(name)
 	---@type serviceInf @服务地址信息
-	this.services = services
+	this._services = services
 
 	---@type userdata @共享protobuff
 	local env = protobuff.get_protobuf_env()
     skynet.send(services.login,"lua","protobuff",env)
-	skynet.retpack(false)
+end
+
+---组播
+function service.multicast()
+	---服务
+	local services = this._services
+	---组播
+	---@type api_multicast
+	this._multicast = multicast.new()
+	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
+		this._manger:multicastMsg(cmd,...)
+	end)
 end
 
 ---初始
@@ -132,6 +143,7 @@ skynet.start(function()
             local f = mgr[cmd]
             cs(f,mgr,...)
         end
+		skynet.retpack(false)
     end)
 end)
 

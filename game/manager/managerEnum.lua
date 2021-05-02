@@ -31,6 +31,12 @@ function managerEnum.refuse()
     return "refuse"
 end
 
+---服务
+---@return senum
+function managerEnum.mapServices()
+    return "mapServices"
+end
+
 
 ---单人
 ---@return senum

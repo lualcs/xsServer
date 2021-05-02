@@ -29,6 +29,11 @@ function loginmanager:ctor(service)
     self._clients = {nil}
 end
 
+---重置
+function loginmanager:dataReboot()
+  
+end
+
 ---服务
 ---@return serviceInf @服务信息
 function loginmanager:getServices()

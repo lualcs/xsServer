@@ -32,10 +32,6 @@ function assignSuper:ctor(service)
     self._timer = timer.new()
     self._timer:dataReboot()
     self._timer:poling()
-    ---数据重置
-    self._timer:appendBy("dataReboot",0,1,function()
-        self:dataReboot()
-    end)
 end
 
 ---重置

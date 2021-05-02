@@ -45,6 +45,11 @@ function mysqlmanager:ctor(service)
 
 end
 
+---重置
+function mysqlmanager:dataReboot()
+  
+end
+
 ---服务
 ---@return serviceInf @服务信息
 function mysqlmanager:getServices()

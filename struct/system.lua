@@ -38,6 +38,7 @@
 ---@field login         service  @登陆服务
 ---@field mysql         service  @数据服务
 ---@field mongo         service  @芒果数据
+---@field mainChannel   channel  @组播服务
 
 
 ---@class mapServers @监听信息
@@ -45,4 +46,8 @@
 ---@field login address     @登陆
 ---@field gate  address     @入口
 
-
+---@class channelObj @组播频道
+---@field channel       channel   @频道 
+---@field __pack        any       @
+---@field __unpack      any       @
+---@field __dispatch    any       @

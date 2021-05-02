@@ -7,10 +7,12 @@
 local _G = _G
 local format = string.format
 local ipairs = ipairs
-local table = require("extend_table")
 local skynet = require("skynet")
+local table = require("extend_table")
+local multicast = require("api_multicast")
 local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
+local senum = require("gameEnum")
 local cs = queue()
 
 
@@ -22,6 +24,9 @@ local this = service
 ---@param gameID     gameID @游戏ID
 ---@param gameCustom gameCustom @定制
 function service.start(gameID,gameCustom)
+    ---服务信息
+    ---@type serviceInf
+    this._services = sharedata.query(senum.mapServices())
     ---游戏信息
     ---@type gameInfo
     local gameInfo = this.infos[gameID]
@@ -30,17 +35,29 @@ function service.start(gameID,gameCustom)
         local deploy = sharedata.query(name)
         _G.package.loaded[name] = deploy
     end
-    --创建桌子
+    ---创建桌子
     local import = require(gameInfo.importTable)
     ---@type gameTable @游戏桌子
     this._table = import.new(this,gameInfo,gameCustom)
     this._table:gameStart()
-    skynet.retpack(false)
+    ---组播对象
+    this.multicast()
+end
+
+---组播
+function service.multicast()
+	---服务
+	local services = this._services
+	---组播
+	---@type api_multicast
+	this._multicast = multicast.new()
+	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
+		this._manger:multicastMsg(cmd,...)
+	end)
 end
 
 ---服务退出
 function service.exit()
-    skynet.retpack(true)
     skynet.exit()
 end
 
@@ -62,5 +79,7 @@ skynet.start(function()
             local f = table[cmd]
             cs(f,table,...)
         end
+
+        skynet.retpack(false)
     end)
 end)

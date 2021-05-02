@@ -8,8 +8,9 @@
 local pairs = pairs
 local format = string.format
 local skynet = require("skynet")
+local queue = require ("skynet.queue")
 local sharedata = require("skynet.sharedata")
-local queue = require "skynet.queue"
+local senum = require("managerEnum")
 local cs = queue()
 
 ---@class service_assign @共享服务
@@ -60,54 +61,66 @@ function service.start()
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
 
-    skynet.retpack(false)
 end
 
 ---服务表
-function service.gservices(name)
+function service.mapServices(name)
     local services = sharedata.query(name)
     ---@type serviceInf @服务地址信息
-    this.services = services
-    skynet.retpack(false)
+    this._services = services
   end
 
 ---服务加载
 function service.loading()
-    skynet.retpack({
+    return {
         "games.gameInfos",
-    })
+    }
 end
 
 ---设置共享
 function service.setShare(name,infos)
     sharedata.new(name,infos)
-    skynet.retpack(false)
 end
 
 
 ---广播服务
 function service.broadcast(name)
     ---@type serviceInf
-    local gservices = sharedata.query(name)
-    for key,service in pairs(gservices) do
-        if service == gservices.debug then
-        elseif service == gservices.share then
+    local mapServices = sharedata.query(name)
+    for key,service in pairs(mapServices) do
+        if service == mapServices.debug then
+        elseif service == mapServices.share then
+        elseif service == mapServices.mainChannel then
         else
             skynet.call(service,"lua",name,name)
         end
     end
-    skynet.retpack(false)
+end
+
+---广播服务
+function service.distributed(name,...)
+    ---@type serviceInf
+    local mapServices = sharedata.query(senum.mapServices())
+    for key,service in pairs(mapServices) do
+        if service == mapServices.debug then
+        elseif service == mapServices.share then
+        elseif service == mapServices.mainChannel then
+        else
+            skynet.call(service,"lua",name,...)
+        end
+    end
 end
 
 skynet.start(function()
     skynet.dispatch("lua",function(_,_,cmd,...)
         local f = service[cmd]
+        local pack
         if f then
-            cs(f,...)
+            pack = cs(f,...)
         else
             skynet.error(format("unknown:%s",cmd))
-            skynet.retpack(false)
         end
+        skynet.retpack(pack or false)
     end)
     
 end)
