@@ -72,14 +72,15 @@ skynet.start(function()
     end)
     skynet.dispatch("lua",function(_,_,cmd,...)
         local f = this[cmd]
+        local pack
         if f then
-            cs(f,...)
+            pack = cs(f,...)
         else
             local table = this._table
             local f = table[cmd]
-            cs(f,table,...)
+            pack = cs(f,table,...)
         end
 
-        skynet.retpack(false)
+        skynet.retpack(pack or false)
     end)
 end)

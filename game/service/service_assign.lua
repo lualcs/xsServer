@@ -1,5 +1,4 @@
 --[[
-    file:service_assign.lua 
     desc:游戏桌子调配
     auth:Carol Luo
 ]]

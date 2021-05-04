@@ -38,6 +38,7 @@
 ---@field login         service  @登陆服务
 ---@field mysql         service  @数据服务
 ---@field mongo         service  @芒果数据
+---@field robot         service  @机器服务
 ---@field mainChannel   channel  @组播服务
 
 

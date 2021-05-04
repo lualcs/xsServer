@@ -52,6 +52,11 @@ skynet.start(function()
     skynet.call(service,"lua","start")
     services.gates = service
 
+    ---robot服务
+    local service = skynet.newservice("service_robot")
+    skynet.call(service,"lua","start")
+    services.robot = service
+
     ---组播服务
     ---@type api_multicast
     local channel = multicast.new()
