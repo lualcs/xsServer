@@ -20,6 +20,9 @@ function hundredTable:ctor()
     ---庄家列表数据
     ---@type seatID[]
     self._arrBanker = {nil}
+    ---请求上庄列表
+    ---@type seatID[]
+    self._arrUpBanker = {nil}
 end
 
 ---最少庄家

@@ -106,23 +106,13 @@ function gameEnum.kickout()
     return "kickout"
 end
 
----测试
----@return senum
-function gameEnum.example()
-    return "example"
-end
-
----游戏 
----@return senum
-function gameEnum.gamelis()
-    return "gamelis"
-end
 
 ---空闲
 ---@return senum
 function gameEnum.idle()
     return "idle"
 end
+
 
 ---游戏
 ---@return senum
@@ -153,6 +143,38 @@ end
 ---@return senum
 function gameEnum.player()
     return "player"
+end
+
+
+---空闲状态
+---@return senum 
+function gameEnum.statusIdle()
+    return "statusIdle"
+end
+
+---开局状态
+---@return senum 
+function gameEnum.statusStart()
+    return "statusStart"
+end
+
+---展示状态
+---@return senum 
+function gameEnum.statusShow()
+    return "statusShow"
+end
+
+
+---结算状态
+---@return senum 
+function gameEnum.statusSettle()
+    return "statusSettle"
+end
+
+---结束状态
+---@return senum
+function gameEnum.statusClose()
+    return "statusClose"
 end
 
 return gameEnum

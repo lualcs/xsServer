@@ -220,10 +220,10 @@ end
 
 ---玩家
 ---@param msg messabeBody @数据
-function gamePlayer:request(msg)
+function gamePlayer:message(msg)
     self._request = msg
     --转到游戏
-    local ok,error = self._table:request(self,msg)
+    local ok,error = self._table:message(self,msg)
     local cmd = table.last(msg.cmds)
     if ok then
         self._mapues[cmd] = true

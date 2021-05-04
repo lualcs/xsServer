@@ -108,8 +108,8 @@ end
 ---请求
 ---@param player    slotsPlayer     @玩家
 ---@param msg       messabeBody     @消息
-function slotsTable:request(player,msg)
-    local ok,result = self:super(this,"request",player,msg)
+function slotsTable:message(player,msg)
+    local ok,result = self:super(this,"message",player,msg)
     if ok then
         return ok,result
     end

@@ -20,8 +20,8 @@ end
 ---@param player        cx_player  @玩家
 ---@param msg           messabeBody @消息
 ---@return boolean,string|any
-function cx_table:request(player,msg)
-    local ok,error = self:super(this,"request",player,msg)
+function cx_table:message(player,msg)
+    local ok,error = self:super(this,"message",player,msg)
     if ok then
         return ok,error
     end

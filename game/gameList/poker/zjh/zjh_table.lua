@@ -20,8 +20,8 @@ end
 ---@param player        zjh_player  @玩家
 ---@param msg           msgBody @消息
 ---@return boolean,string|any
-function zjh_table:request(player,msg)
-    local ok,error = self:super(this,"request",player,msg)
+function zjh_table:message(player,msg)
+    local ok,error = self:super(this,"message",player,msg)
     if ok then
         return ok,error
     end

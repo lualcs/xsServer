@@ -96,7 +96,7 @@ function gameTable:ctor(service,gameInfo,gameCustom)
     self._combatID  = 0
     ---游戏状态
     ---@type senum                     
-    self._gmstatus  = nil
+    self._gmstatus  = senum.idle()
 end
 
 ---重启
@@ -236,6 +236,12 @@ function gameTable:getMinPlayer()
     return info.minPlayer
 end
 
+---玩家人数
+---@return count
+function gameTable:getNumPlayer()
+    return self._ocp.count()
+end
+
 ---玩家导入
 ---@return path
 function gameTable:getImportPlayer()
@@ -335,42 +341,50 @@ function gameTable:checkStart()
         return
     end
 
+    ---玩家人数
+    local playerNum = self:getNumPlayer()
+    if playerNum <= 0 then
+        return
+    end
+
     local inf = self:getGameInfo()
     local opt = inf.open
-    --人数
+
+    ---人数
     if opt == senum.people() then
+        ---检查人数
         local mcnt = inf.minPlayer
-        if mcnt < self._ocp.count() then
+        if mcnt <= playerNum then
             return
         end
+
+        ---游戏开始
         local timer = self._tim
-        timer:append(5*1000,1,function()
+        timer:append(0,1,function()
             self:gameStart()
         end)
-    end
-    --定时
-    if opt == senum.timer() then
-        local timer = self._tim
-        local tname = "timerStart"
-        if timer:remainingBy(tname) > 0 then
-            timer:appendBy(tname,5*1000,1,function()
-                self:gameStart()
-            end)
-        end
-    end
-    --准备
-    if opt == senum.ready() then
+
+    ---准备
+    elseif opt == senum.ready() then
+
+        ---检查状态
         local lis = self._arrPlayer
         local sts = senum.ready()
+        
+        ---准备人数
+        local cnt = 0
         for _,player in pairs(lis) do
             if not player:getStatusBy(sts) then
                 return
             end
         end
+
+        ---游戏开始
         local timer = self._tim
-        timer:append(5*1000,1,function()
+        timer:append(0,1,function()
             self:gameStart()
         end)
+
     end
 
     --扩展开始检查
@@ -439,9 +453,9 @@ end
 ---@param player        gamePlayer      @玩家
 ---@param msg           messabeBody     @消息
 ---@return boolean,string|any
-function gameTable:request(player,msg)
+function gameTable:message(rid,msg)
+    local player = self._mapPlayer[rid]
     self:setCurPlayer(player)
-    local cmd = table.last(msg.cmds)
 end
 
 ---通知客户端-服务-私有的
