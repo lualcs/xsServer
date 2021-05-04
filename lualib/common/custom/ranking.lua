@@ -74,11 +74,6 @@ function ranking:update(iden,score)
         table.remove(lis,index);
         tsort.insert(lis,comp,inf)
     end
-    --移除多余
-    local limit = self._max
-    while #lis > limit do
-        table.remove(lis)
-    end
 end
 
 
