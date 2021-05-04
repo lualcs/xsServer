@@ -214,6 +214,9 @@ local gameInfos = {
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 100,
+        minBanker = 1,
+        curBanker = 0,
+        maxBanker = 1,
         sharedList = { --共享模块
 
         }

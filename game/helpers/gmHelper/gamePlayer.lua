@@ -10,7 +10,7 @@ local debug = require("extend_debug")
 local table = require("extend_table")
 local class = require("class")
 ---@type gameEnum
-local gameEnum = require("gameEnum")
+local senum = require("gameEnum")
 
 ---@class gamePlayer
 local gamePlayer = class()
@@ -38,6 +38,8 @@ function gamePlayer:ctor(table,playerInfo)
     ---数据映射
     ---@type table<senum,any>  
     self._mapDriver = {nil}
+    ---闲家身份
+    self._camp = senum.player()
 end
 
 ---重启
@@ -89,6 +91,19 @@ function gamePlayer:getUserID()
     return self._player.userID
 end
 
+---获取阵营
+---@return senum
+function gamePlayer:getCamp()
+    return self._camp
+end
+
+---设置阵营
+---@param  camp senum @阵营 
+---@return senum
+function gamePlayer:setCamp(camp)
+    self._camp = camp
+end
+
 ---位置
 ---@return seatID
 function gamePlayer:getSeatID()
@@ -132,23 +147,31 @@ function gamePlayer:getRequest()
 end
 
 ---机器
+---@return boolean
 function gamePlayer:isRobot()
     return self._player.robot
 end
 
 ---真人
-function gamePlayer:isRobot()
-    return not self._player.robot
+---@return boolean
+function gamePlayer:isPlayer()
+    return not self:isRobot()
+end
+
+---庄家
+---@return boolean
+function gamePlayer:isBanker()
+    return self._camp == senum.banker()
 end
 
 ---在线
 function gamePlayer:isOnline()
-    return gameEnum.online() == self._player.line
+    return senum.online() == self._player.line
 end
 
 ---离线
 function gamePlayer:isOffline()
-    return gameEnum.offline() == self._player.line
+    return senum.offline() == self._player.line
 end
 
 ---命令
@@ -160,12 +183,12 @@ end
 
 ---离线
 function gamePlayer:offline()
-    self._player.line = gameEnum.offline()
+    self._player.line = senum.offline()
 end
 
 ---上线
 function gamePlayer:online()
-    self._player.line = gameEnum.online()
+    self._player.line = senum.online()
 end
 
 ---获取标记

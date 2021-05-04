@@ -137,11 +137,22 @@ function gameEnum.scene()
 end
 
 
-
 ---扣分
 ---@return senum
 function gameEnum.deduct()
     return "deduct"
+end
+
+---庄
+---@return senum
+function gameEnum.banker()
+    return "banker"
+end
+
+---闲
+---@return senum
+function gameEnum.player()
+    return "player"
 end
 
 return gameEnum

@@ -17,6 +17,24 @@ function hundredTable:ctor()
     ---大富豪排行榜
     ---@type ranking
     self._dfh_rank = ranking.new(10)
+    ---庄家列表数据
+    ---@type seatID[]
+    self._arrBanker = {nil}
 end
+
+---最少庄家
+---@return count
+function hundredTable:minBanker()
+    local cfg = self:getGameConf()
+    return cfg.minBanker
+end
+
+---最多庄家
+---@return count
+function hundredTable:maxBanker()
+    local cfg = self:getGameConf()
+    return cfg.maxBanker
+end
+
 
 return hundredTable
