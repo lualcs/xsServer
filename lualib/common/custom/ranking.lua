@@ -43,7 +43,7 @@ end
 ---@param a rank
 ---@param b rank
 local function comp(a,b)
-    return a.score < b.score
+    return a.score > b.score
 end
 
 ---更新数据

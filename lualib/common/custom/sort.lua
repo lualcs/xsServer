@@ -25,7 +25,7 @@ function sort.bubble(arr,comp,num)
 	end
     for i = 1,num do
         for j = i + 1,len do  
-            if not comp(arr[i],arr[j]) then  
+            if comp(arr[j],arr[i]) then  
                 table.exchange(arr,i,j)
             end  
         end  
@@ -48,7 +48,7 @@ function sort.select(arr,comp,num)
     for i = 1,num do
 		sk = i
         for j = i + 1,len do  
-            if not comp(arr[sk],arr[j]) then  
+            if comp(arr[j],arr[sk]) then  
                 sk = j
             end  
         end
@@ -65,7 +65,7 @@ end
 function sort.insert(arr,comp,new)  
 	local len = #arr
     for k,val in ipairs(arr) do
-       if not comp(val,new) then  
+       if comp(new,val) then  
 		   table.insert(arr,k,new)
 		   return
        end  
@@ -84,7 +84,7 @@ function sort.quick(arr,comp,left,right,...)
 	if left < right then
 		local help = left
 		for i = left + 1,right do
-			if not comp(arr[i],arr[left],...) then
+			if comp(arr[left],arr[i],...) then
 				help = help + 1
 				if help ~= i then
 					table.exchange(arr,help,i)
@@ -114,7 +114,7 @@ function sort.merge(arr,comp,left,right,help)
 		
 		local i1,i2,i3 = left,half + 1,left;
 		while i1 <= half and i2 <= right do
-			if not comp(arr[i1],arr[i2]) then
+			if comp(arr[i2],arr[i1]) then
 				help[i3] = arr[i1]
 				i1 = i1 + 1
 			else

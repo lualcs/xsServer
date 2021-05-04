@@ -1,5 +1,4 @@
 --[[
-    file:hundredEnum.lua  
     desc:枚举
     auth:Carol Luo
 ]]
