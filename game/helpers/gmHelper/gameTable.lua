@@ -269,6 +269,12 @@ function gameTable:getData(senum)
     return self._mapData[senum]
 end
 
+---断线
+---@param rid userID @套接字
+function gameTable:offline(rid)
+    local player = self._mapPlayer[rid]
+    player:online()
+end
 
 ---玩家进入
 ---@param playerInfo playerInfo @玩家信息

@@ -35,8 +35,13 @@ function assignSuper:ctor(service)
 end
 
 ---重置
-function timer:dataReboot()
+function assignSuper:dataReboot()
   
+end
+
+---断线
+---@param rid userID @套接字
+function assignSuper:offline(rid)
 end
 
 ---服务

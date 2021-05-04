@@ -41,6 +41,8 @@
 
 ---@class role:s2c_loginResult @角色数据
 
+---@class gateClient @连接信息
+---@field address ip  @地址
 
 ---@class client @前端信息
 ---@field fd            socket           @套接字
@@ -48,6 +50,6 @@
 ---@field online        boolean          @是否在线
 
 
----@class gateClient:client @网关用户信息
+---@class loginClient:client @网关用户信息
 ---@field assign        service         @所在分配
 ---@field table         service         @所在桌子

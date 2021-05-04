@@ -34,6 +34,13 @@ function loginmanager:dataReboot()
   
 end
 
+---断线
+---@param fd scoket @套接字
+function loginmanager:offline(fd)
+    local client = self._sockets[fd]
+    client.online = false
+end
+
 ---服务
 ---@return serviceInf @服务信息
 function loginmanager:getServices()

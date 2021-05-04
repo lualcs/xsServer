@@ -64,6 +64,20 @@ function heap:append(ticks,data)
     return self:insert(node)
 end
 
+---添加节点
+---@param   ticks     number      @标记
+---@param   data      table       @数据
+---@return  number                @自动
+function heap:appendBy(ticks,atuo,data)
+    local store = self.store
+    local list  = self.list
+    local node  = store:get()
+    node.ticks  = ticks
+    node.data   = data
+    node.auto   = atuo
+    return self:insert(node)
+end
+
 ---插入节点
 ---@param node heapNode  @节点
 ---@return number   @标示
@@ -82,10 +96,21 @@ function heap:adjust(node,pos)
     self:downward(pos)
 end
 
+---调整节点
+---@param auto  number   @标识
+---@param tick  number   @调整
+function heap:adjustBy(auto,tick)
+    local index,node = self:search(auto)
+    if node then
+        node.ticks = tick
+        self:adjust(node,index)
+    end
+end
+
 ---查找节点
 ---@param   auto    number      @唯一标识
 ---@return  index,heapNode      @节点
-function heap:find(auto)
+function heap:search(auto)
     local list = self.list
     for index,node in ipairs(list) do
         if auto == node.auto then
@@ -124,6 +149,15 @@ function heap:delete(pos)
     end
     local store = self.store
     store:set(node)
+    return node
+end
+
+---删除堆节点
+---@param auto any @标识
+---@return heapNode @堆节点
+function heap:deleteBy(auto)
+    local index,node = self:search(auto)
+    self:delete(index)
     return node
 end
 

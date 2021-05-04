@@ -6,6 +6,7 @@
 
 local format = string.format
 local reusable = require("reusable")
+local os = require("extend_os")
 local debug = require("extend_debug")
 local json = require("api_json")
 local multicast = require("api_multicast")
@@ -28,7 +29,7 @@ local this = service
 
 ---@type websocket_handle 			@消息回调
 local ws_handle = {nil}
----@type table<socket,client>	@连线信息
+---@type table<fd,gateClient>	@连线信息
 local mapclients = {nil}
 local fdreusable = reusable.new()
 local connect_count = 0
@@ -41,11 +42,14 @@ function ws_handle.connect(fd)
 	end
 	socketdriver.nodelay(fd)
 	connect_count = connect_count + 1
-	---@type client
+	---@type gateClient
 	local item = fdreusable:get()
 	item.address = websocket.addrinfo(fd)
-	item.atTable = nil
 	mapclients[fd] = item
+
+	---添加堆数据
+    this._manger._hearbeats:appendBy(os.getmillisecond(),fd,fd)
+
 	debug.error("connect:",item)
 end
 
@@ -55,7 +59,7 @@ function ws_handle.close(fd,code,reason)
 	local item = mapclients[fd]
 	fdreusable:set(item)
 	mapclients[fd] = nil
-	debug.error("close:",{fd=fd,code=code,reason=reason})
+	this._manger:offline(fd)
 end
 
 ---握手
@@ -79,6 +83,7 @@ function ws_handle.pong(fd)
 end
 
 
+
 ---消息
 ---@param fd        socket  @套接字
 ---@param message   string	@数据 
@@ -100,7 +105,15 @@ function service.start()
 	protobuff.parser_register(list,"game_protobuff")
 	
 	---@type gatemanager
-	this._manger = gatemanager.new(this,mapclients)
+	this._manger = gatemanager.new(this)
+end
+
+---主动关闭
+---@param fd socket @套接字
+function service.shutdown(fd)
+	if mapclients[fd] then
+		websocket.close(fd, 0 ,"heartbeat")
+	end
 end
 
 ---服务表
