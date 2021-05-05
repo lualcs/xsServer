@@ -66,10 +66,35 @@ end
 ---@param msg           messageInfo     @消息
 ---@return boolean,string|any
 function gameTable:messageBy(player,msg)
-    local cmd = table.last(msg.cmds)
+    local cmd  = table.last(msg.cmds)
+    local info = msg.info
     ---闲家下注
     if cmd == senum.betting() then
+        self:tryBetting(player,info.area,info.score)
     end
+end
+
+---下注
+---@param player    hundredPlayer      @玩家
+---@param score     score              @下注
+function gameTable:tryBetting(player,area,score)
+    ---游戏状态
+    if self:getGameStatus() ~= senum.statusBet() then
+        return
+    end
+
+    ---玩家身份
+    if player:isBanker() then
+        return
+    end
+
+
+    ---下注金额
+    if not self:areaBet(area,score) then
+        return
+    end
+
+
 end
 
 return hundredTable
