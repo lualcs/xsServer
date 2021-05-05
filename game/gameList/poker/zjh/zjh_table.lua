@@ -111,13 +111,13 @@ end
 ---开始通知
 ---@param data zjh_game_start_ntc @数据
 function zjh_table:ntfMsgToStart(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_game_start_ntc",data)
 end
 
 ---发牌通知
 ---@param data zjh_deal_ntc @数据
 function zjh_table:ntfMsgToDealCard(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_deal_ntc",data)
 end
 
 ---@type message_see_info   @隐私
@@ -128,7 +128,7 @@ local see_info = {
 ---@param data zjh_see_ntc @数据
 function zjh_table:ntfMsgToSeeCard(data)
     see_info.chairs = {data.seatID}
-    self:ntfMsgToTable(data,see_info)
+    self:ntfMsgToTable("zjh_see_ntc",data,see_info)
 end
 
 ---@type message_see_info   @隐私
@@ -139,25 +139,25 @@ local see_info = {
 ---@param data zjh_giveup_ntc @数据
 function zjh_table:ntfMsgToGiveup(data)
     see_info.chairs = {data.seatID}
-    self:ntfMsgToTable(data,see_info)
+    self:ntfMsgToTable("zjh_giveup_ntc",data,see_info)
 end
 
 ---加注通知
 ---@param data zjh_bet_refuel_ntc @数据
 function zjh_table:ntfMsgToRefuel(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_bet_refuel_ntc",data)
 end
 
 ---跟注通知
 ---@param data zjh_bet_with_ntc @数据
 function zjh_table:ntfMsgToBetWith(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_bet_with_ntc",data)
 end
 
 ---梭哈通知
 ---@param data zjh_bet_all_ntc @数据
 function zjh_table:ntfMsgToBetAll(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_bet_all_ntc",data)
 end
 
 ---@type message_see_info   @隐私
@@ -168,13 +168,13 @@ local see_info = {
 ---@param data zjh_cmp_card_ntc @数据
 function zjh_table:ntfMsgToCompare(data)
     see_info.chairs = {data.originID,data.targetID}
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_cmp_card_ntc",data)
 end
 
 ---结果通知
 ---@param data zjh_game_result_ntc @数据
 function zjh_table:ntfMsgToGameResult(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("zjh_game_result_ntc",data)
 end
 
 return zjh_table

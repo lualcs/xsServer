@@ -148,36 +148,36 @@ end
 
 ---机器
 ---@return boolean
-function gamePlayer:isRobot()
+function gamePlayer:ifRobot()
     return self._player.robot
 end
 
 ---真人
 ---@return boolean
-function gamePlayer:isPlayer()
-    return not self:isRobot()
+function gamePlayer:ifPlayer()
+    return not self:ifRobot()
 end
 
 ---庄家
 ---@return boolean
-function gamePlayer:isBanker()
+function gamePlayer:ifBanker()
     return self._camp == senum.banker()
 end
 
 ---在线
-function gamePlayer:isOnline()
+function gamePlayer:ifOnline()
     return senum.online() == self._player.line
 end
 
 ---离线
-function gamePlayer:isOffline()
+function gamePlayer:ifOffline()
     return senum.offline() == self._player.line
 end
 
 ---命令
 ---@param cmd senum
 ---@return boolean
-function gamePlayer:isExistBy(cmd)
+function gamePlayer:ifExistBy(cmd)
     return self._mapues[cmd]
 end
 

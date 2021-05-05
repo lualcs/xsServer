@@ -275,6 +275,12 @@ function gameTable:getData(senum)
     return self._mapData[senum]
 end
 
+---游戏单元
+---@return score
+function gameTable:getUnit()
+    return self._def[senum.unit()]
+end
+
 ---断线
 ---@param rid userID @套接字
 function gameTable:offline(rid)
@@ -470,10 +476,9 @@ end
 ---通知客户端-服务-私有的
 ---@param fd      number        @服务地址
 ---@param name    string        @结构名字
----@param cmd     senum         @消息命令
 ---@param data    msgBody       @游戏数据
-local function ntfMsgToClient(fd,name,cmd,data)
-    local cmds = {senum.table(),cmd}
+local function ntfMsgToClient(fd,name,data)
+    local cmds = {senum.table()}
     wsnet.sendpbc(fd,name,cmds,data)
 end
 
@@ -504,8 +509,8 @@ end
 ---@param cmd       senum               @消息命令
 ---@param data      msgBody         @游戏数据
 ---@param sees      message_see_info    @可见信息
-function gameTable:ntfCacheMsgToTable(name,cmd,data,sees)
-    self:ntfMsgToTable(name,cmd,data,sees)
+function gameTable:ntfCacheMsgToTable(name,data,sees)
+    self:ntfMsgToTable(name,data,sees)
     self._cac:dataPush({
         msgName = name,
         msgInfo = table.copy_deep(data),
@@ -517,10 +522,9 @@ end
 local copy1 = {nil}
 ---通知客户端-广播
 ---@param name    string            @服务地址
----@param cmd     senum             @消息命令
 ---@param data   msgBody            @游戏数据
 ---@param sees   message_see_info   @可见信息
-function gameTable:ntfMsgToTable(name,cmd,data,sees)
+function gameTable:ntfMsgToTable(name,data,sees)
     ---@type table<any,any>    @备份数据
     local back = table.clear(copy1)
     if sees then
@@ -532,11 +536,11 @@ function gameTable:ntfMsgToTable(name,cmd,data,sees)
     --通知旁观玩家
     for _,player in ipairs(self._mapPlayer) do
         if not sees then
-            ntfMsgToClient(player:fd(),name,cmd,data)
+            ntfMsgToClient(player:fd(),name,data)
         else
             local seat = player:getSeatID()
             if not table.exist(sees.chairs,seat) then
-                ntfMsgToClient(player:fd(),name,cmd,data)
+                ntfMsgToClient(player:fd(),name,data)
             end
         end
     end

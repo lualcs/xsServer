@@ -110,13 +110,13 @@ end
 ---开始通知
 ---@param data sg_game_start_ntc @数据
 function sg_table:ntfMsgToStart(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("sg_game_start_ntc",data)
 end
 
 ---发牌通知
 ---@param data sg_deal_ntc @数据
 function sg_table:ntfMsgToDealCard(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("sg_deal_ntc",data)
 end
 
 ---@type message_see_info   @隐私
@@ -127,7 +127,7 @@ local see_info = {
 ---@param data sg_see_ntc @数据
 function sg_table:ntfMsgToSeeCard(data)
     see_info.chairs = {data.seatID}
-    self:ntfMsgToTable(data,see_info)
+    self:ntfMsgToTable("sg_see_ntc",data,see_info)
 end
 
 ---@type message_see_info   @隐私
@@ -138,31 +138,31 @@ local see_info = {
 ---@param data sg_giveup_ntc @数据
 function sg_table:ntfMsgToGiveup(data)
     see_info.chairs = {data.seatID}
-    self:ntfMsgToTable(data,see_info)
+    self:ntfMsgToTable("sg_giveup_ntc",data,see_info)
 end
 
 ---加注通知
 ---@param data sg_bet_refuel_ntc @数据
 function sg_table:ntfMsgToRefuel(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("sg_bet_refuel_ntc",data)
 end
 
 ---跟注通知
 ---@param data sg_bet_with_ntc @数据
 function sg_table:ntfMsgToBetWith(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("sg_bet_with_ntc",data)
 end
 
 ---梭哈通知
 ---@param data sg_bet_all_ntc @数据
 function sg_table:ntfMsgToBetAll(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("sg_bet_all_ntc",data)
 end
 
 ---结果通知
 ---@param data sg_game_result_ntc @数据
 function sg_table:ntfMsgToGameResult(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("sg_game_result_ntc",data)
 end
 
 return sg_table

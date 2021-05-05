@@ -30,7 +30,7 @@ end
 ---游戏开始
 ---@param data s2cMahjongStart @数据
 function mahjongTable:s2cMahjongStart(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongStart",data);
 end
 
 ---@class s2cMahjongClose @游戏结束
@@ -38,7 +38,7 @@ end
 ---游戏结束
 ---@param data s2cMahjongClose @数据
 function mahjongTable:s2cMahjongClose(data)
-    self:ntfMsgToTable(data);
+    self:ntfMsgToTable("s2cMahjongClose",data);
 end
 
 ---@class s2cMahjongDealCard @游戏发牌

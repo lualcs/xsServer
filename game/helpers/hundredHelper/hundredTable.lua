@@ -26,8 +26,11 @@ function hundredTable:ctor()
     ---@type seatID[]
     self._arrUpBanker = {nil}
     ---闲家下注信息
-    ---@type table<seatID,hundredBetInf>
-    self._mapBetInfo = {}
+    ---@type table<seatID,hundredBetInf[]>
+    self._mapBetInfo = {nil}
+    ---区域下注信息
+    ---@type table<senum,score>
+    self._mapAreaBet = {nil}
 end
 
 ---最少庄家
@@ -65,7 +68,7 @@ end
 ---@param player        gamePlayer      @玩家
 ---@param msg           messageInfo     @消息
 ---@return boolean,string|any
-function gameTable:messageBy(player,msg)
+function hundredTable:messageBy(player,msg)
     local cmd  = table.last(msg.cmds)
     local info = msg.info
     ---闲家下注
@@ -77,24 +80,87 @@ end
 ---下注
 ---@param player    hundredPlayer      @玩家
 ---@param score     score              @下注
-function gameTable:tryBetting(player,area,score)
+function hundredTable:tryBetting(player,area,score)
     ---游戏状态
     if self:getGameStatus() ~= senum.statusBet() then
         return
     end
 
-    ---玩家身份
-    if player:isBanker() then
-        return
+    ---携带分数
+    if player:getCoin() < score then
+        return 
     end
 
+    ---玩家身份
+    if player:ifBanker() then
+        return
+    end
 
     ---下注金额
-    if not self:areaBet(area,score) then
+    if not self:ifAreaBet(area,score) then
         return
     end
 
+    ---赔付检查
+    if not self:ifRepayment(area,score) then
+        return
+    end
 
+    ---区域赔付
+    local areaBet = self._mapAreaBet[area] or 0
+    self._mapAreaBet[area] = areaBet + score
+
+    ---玩家下注
+    local seat = player:getSeatID()
+    ---@type hundredBetInf
+    local infos = self._mapBetInfo[seat] or {nil}
+    local betting = {
+        area = area,
+        bets = score,
+    }
+
+    ---信息保存
+    table.insert(infos,betting)
+    self._mapBetInfo[seat] = infos
+
+    ---广播下注
+    self:ntfBroadcastBet(betting)
+end
+
+---区域下注
+---@param area      senum               @区域
+---@param score     score               @下注
+function hundredTable:ifAreaBet(area,score)
+    ---游戏配置
+    ---@type hundredDeploy
+    local cfg = self:getGameConf()
+    ---下注区域
+    ---@type hundredAreaInf
+    local areaInfo = cfg.areas[area]
+    if not areaInfo then
+        return false
+    end
+
+    ---下注分数
+    local jettons = cfg.jettons
+    local unit = self:getUnit()
+    if not table.exist(jettons,score / unit) then
+        return false
+    end
+
+    return true
+end
+
+---区域下注
+---@param area      senum               @区域
+---@param score     score               @下注
+function hundredTable:ifRepayment(area,score)
+end
+
+---广播下注
+---@param data xx 下注
+function hundredTable:ntfBroadcastBet(data)
+    self:ntfMsgToTable("s2cHundredBetting",data)
 end
 
 return hundredTable

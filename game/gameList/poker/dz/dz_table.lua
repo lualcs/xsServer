@@ -110,13 +110,13 @@ end
 ---开始通知
 ---@param data dz_game_start_ntc @数据
 function dz_table:ntfMsgToStart(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("dz_game_start_ntc",data)
 end
 
 ---发牌通知
 ---@param data dz_deal_ntc @数据
 function dz_table:ntfMsgToDealCard(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("dz_deal_ntc",data)
 end
 
 ---@type message_see_info   @隐私
@@ -127,7 +127,7 @@ local see_info = {
 ---@param data dz_see_ntc @数据
 function dz_table:ntfMsgToSeeCard(data)
     see_info.chairs = {data.seatID}
-    self:ntfMsgToTable(data,see_info)
+    self:ntfMsgToTable("dz_see_ntc",data,see_info)
 end
 
 ---@type message_see_info   @隐私
@@ -138,31 +138,31 @@ local see_info = {
 ---@param data dz_giveup_ntc @数据
 function dz_table:ntfMsgToGiveup(data)
     see_info.chairs = {data.seatID}
-    self:ntfMsgToTable(data,see_info)
+    self:ntfMsgToTable("dz_giveup_ntc",data,see_info)
 end
 
 ---加注通知
 ---@param data dz_bet_refuel_ntc @数据
 function dz_table:ntfMsgToRefuel(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("dz_bet_refuel_ntc",data)
 end
 
 ---跟注通知
 ---@param data dz_bet_with_ntc @数据
 function dz_table:ntfMsgToBetWith(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("dz_bet_with_ntc",data)
 end
 
 ---梭哈通知
 ---@param data dz_bet_all_ntc @数据
 function dz_table:ntfMsgToBetAll(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("dz_bet_all_ntc",data)
 end
 
 ---结果通知
 ---@param data dz_game_result_ntc @数据
 function dz_table:ntfMsgToGameResult(data)
-    self:ntfMsgToTable(data)
+    self:ntfMsgToTable("dz_game_result_ntc",data)
 end
 
 return dz_table

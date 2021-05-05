@@ -15,6 +15,12 @@ local this = gameEnum
 function gameEnum:ctor()
 end
 
+---游戏单元
+---@return senum
+function gameEnum.unit()
+    return "unit"
+end
+
 ---人数
 ---@return senum
 function gameEnum.people()
