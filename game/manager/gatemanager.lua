@@ -92,7 +92,7 @@ end
 
 ---请求
 ---@param fd  socket      @套接字
----@param msg messabeBody @数据
+---@param msg msgBody     @数据
 function gatemanager:message(fd,msg)
     self._hearbeats:adjustBy(fd,os.getmillisecond())
     tsort.reverse(msg.cmds)
@@ -133,7 +133,7 @@ end
 
 ---回应
 ---@param fd  socket       @套接字
----@param msg messabeBody  @数据
+---@param msg msgBody      @数据
 function gatemanager:respond(fd,name,msg)
     websocket.send(fd,protobuff.encode_message(name,msg))
 end

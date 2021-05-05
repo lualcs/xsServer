@@ -107,7 +107,7 @@ end
 
 ---请求
 ---@param player    slotsPlayer     @玩家
----@param msg       messabeBody     @消息
+---@param msg       msgBody         @消息
 function slotsTable:message(player,msg)
     local ok,result = self:super(this,"message",player,msg)
     if ok then
@@ -189,7 +189,7 @@ end
 
 ---重转摇将
 ---@param player        slotsPlayer              @玩家
----@param msg           messabeBody              @消息
+---@param msg           msgBody              @消息
 function slotsTable:onRotateRoller(player,msg)
     --设置权重
     local wgts = self:getCurrIconWeights()

@@ -337,7 +337,7 @@ function gameTable:checkStart()
 
     --检查状态
     local status = self:getGameStatus()
-    if senum.idle() ~= status then
+    if senum.statusIdle() ~= status then
         return
     end
 
@@ -370,7 +370,7 @@ function gameTable:checkStart()
         ---检查状态
         local lis = self._arrPlayer
         local sts = senum.ready()
-        
+
         ---准备人数
         local cnt = 0
         for _,player in pairs(lis) do
@@ -450,19 +450,28 @@ function gameTable:startTimer()
 end
 
 ---请求
----@param player        gamePlayer      @玩家
----@param msg           messabeBody     @消息
+---@param rid           userID          @玩家
+---@param msg           messageInfo     @消息
 ---@return boolean,string|any
 function gameTable:message(rid,msg)
     local player = self._mapPlayer[rid]
     self:setCurPlayer(player)
+    self:messageBy(player,msg)
+end
+
+---请求
+---@param player        gamePlayer      @玩家
+---@param msg           messageInfo     @消息
+---@return boolean,string|any
+function gameTable:messageBy(player,msg)
+   
 end
 
 ---通知客户端-服务-私有的
 ---@param fd      number        @服务地址
 ---@param name    string        @结构名字
 ---@param cmd     senum         @消息命令
----@param data    messabeBody   @游戏数据
+---@param data    msgBody       @游戏数据
 local function ntfMsgToClient(fd,name,cmd,data)
     local cmds = {senum.table(),cmd}
     wsnet.sendpbc(fd,name,cmds,data)
@@ -472,7 +481,7 @@ end
 ---@param player  gamePlayer     @游戏玩家
 ---@param name    string         @结构名字
 ---@param cmd     senum          @消息命令
----@param data    messabeBody    @游戏数据
+---@param data    msgBody    @游戏数据
 function gameTable:ntfMsgToPlayer(player,name,cmd,data)
     ntfMsgToClient(player:fd(),name,cmd,data)
 end
@@ -481,7 +490,7 @@ end
 ---@param player    gamePlayer     @游戏玩家
 ---@param name      string         @结构名字
 ---@param cmd       senum          @消息命令
----@param data      messabeBody    @游戏数据
+---@param data      msgBody    @游戏数据
 function gameTable:ntfCacheMsgToPlayer(player,name,cmd,data)
     self:ntfMsgToPlayer(player,name,cmd,data)
     self._cac:dataPush({
@@ -493,7 +502,7 @@ end
 ---通知客户端-玩家-缓存
 ---@param name      string              @结构名字
 ---@param cmd       senum               @消息命令
----@param data      messabeBody         @游戏数据
+---@param data      msgBody         @游戏数据
 ---@param sees      message_see_info    @可见信息
 function gameTable:ntfCacheMsgToTable(name,cmd,data,sees)
     self:ntfMsgToTable(name,cmd,data,sees)
@@ -509,7 +518,7 @@ local copy1 = {nil}
 ---通知客户端-广播
 ---@param name    string            @服务地址
 ---@param cmd     senum             @消息命令
----@param data   messabeBody        @游戏数据
+---@param data   msgBody            @游戏数据
 ---@param sees   message_see_info   @可见信息
 function gameTable:ntfMsgToTable(name,cmd,data,sees)
     ---@type table<any,any>    @备份数据

@@ -38,7 +38,7 @@ end
 
 ---请求
 ---@param fd  socket      @套接字
----@param msg messabeBody @数据
+---@param msg msgBody @数据
 function robotmanager:message(fd,msg)
   
 end

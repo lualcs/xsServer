@@ -6,7 +6,7 @@
 local table = table
 local class = require("class")
 local senum = require("dragonTiger.dragonTigerEnum")
-local HundredTable = require("HundredTable")
+local HundredTable = require("hundredTable")
 ---@class dragonTigerTable:HundredTable
 local dragonTigerTable = class(HundredTable)
 local this = dragonTigerTable

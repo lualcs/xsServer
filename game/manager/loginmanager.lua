@@ -49,7 +49,7 @@ end
 
 ---请求
 ---@param fd  socket      @套接字
----@param msg messabeBody @数据
+---@param msg msgBody     @数据
 function loginmanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
     local svs = self:getServices()

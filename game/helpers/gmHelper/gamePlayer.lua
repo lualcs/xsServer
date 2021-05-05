@@ -141,7 +141,7 @@ function gamePlayer:usageCoin(change)
 end
 
 ---获取请求
----@return messabeBody
+---@return messageInfo
 function gamePlayer:getRequest()
     return self._request
 end
@@ -219,7 +219,7 @@ function gamePlayer:getDriver(senum)
 end
 
 ---玩家
----@param msg messabeBody @数据
+---@param msg messageInfo @数据
 function gamePlayer:message(msg)
     self._request = msg
     --转到游戏
