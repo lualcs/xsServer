@@ -1,5 +1,4 @@
 --[[
-    file:slots_jymt_cfg.lua 
     desc:金玉满堂
     auth:Caorl Luo
 ]]

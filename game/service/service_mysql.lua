@@ -23,7 +23,9 @@ local this = service
 function service.start() 
   --共享数据
   local adrres = skynet.queryservice("service_share")
-  local shares = skynet.call(adrres, "lua", "loading")
+  local shares = {
+    
+  }
   for _,name in ipairs(shares) do
     local deploy = sharedata.query(name)
     _G.package.loaded[name] = deploy

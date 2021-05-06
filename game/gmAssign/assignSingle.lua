@@ -4,6 +4,7 @@
     auth:Caorl Luo
 ]]
 
+local pcall = pcall
 local skynet = require("skynet")
 local tsort = require("sort")
 local class = require("class")
@@ -24,8 +25,7 @@ end
 
 ---重置
 function assignSingle:dataReboot()
-    ---金玉满堂
-    self:createTable(10001,{})
+    self:super(this,"dataReboot")
 end
 
 ---请求

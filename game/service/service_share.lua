@@ -70,11 +70,23 @@ function service.start()
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
 
+    --百人龙虎配置
+    local name = "hundred.games.dragonTiger"
+    local deploy = require(name)
+    sharedata.new(name,deploy)
+    _G.package.loaded[name] = nil
+
     --金玉满堂配置
     local name = "slots.games.slots_jymt_cfg"
     local deploy = require(name)
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
+
+     --金鸡报喜配置
+     local name = "slots.games.slots_jjbx_cfg"
+     local deploy = require(name)
+     sharedata.new(name,deploy)
+     _G.package.loaded[name] = nil
 
 end
 
@@ -83,14 +95,8 @@ function service.mapServices(name)
     local services = sharedata.query(name)
     ---@type serviceInf @服务地址信息
     this._services = services
-  end
-
----服务加载
-function service.loading()
-    return {
-        "games.gameInfos",
-    }
 end
+
 
 ---设置共享
 function service.setShare(name,infos)

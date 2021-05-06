@@ -12,7 +12,7 @@ local random = require("random")
 local class = require("class")
 local is_number = require("is_number")
 local slotsLogic = require("slotsLogic")
-local jjbx_enum = require("slots_jjbx.jjbx_enum")
+local jjbx_enum = require("jjbx.jjbx_enum")
 ---@class jjbx_logic:slotsLogic
 local jjbx_logic = class(slotsLogic)
 local this = jjbx_logic

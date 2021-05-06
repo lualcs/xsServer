@@ -19,11 +19,20 @@ root.."game/lualib/?.lua;"..
 root.."game/deploy/?.lua;"..
 root.."game/manager/?.lua;"..
 root.."game/gmAssign/?.lua;"..
+root.."game/helpers/bullHelper/?.lua;"..
+root.."game/helpers/fishHelper/?.lua;"..
 root.."game/helpers/gmHelper/?.lua;"..
+root.."game/helpers/hundredHelper/?.lua;"..
 root.."game/helpers/mjHelper/?.lua;"..
 root.."game/helpers/pkHelper/?.lua;"..
 root.."game/helpers/slotsHelper/?.lua;"..
+root.."game/helpers/tigerHelper/?.lua;"..
 root.."game/gameList/?.lua;"..
+root.."game/gameList/hundred/?.lua;"..
+root.."game/gameList/mahjong/?.lua;"..
+root.."game/gameList/poker/?.lua;"..
+root.."game/gameList/single/?.lua;"..
+root.."game/gameList/slots/?.lua;"..
 root.."3rd/rmq/?.lua;"..
 root.."3rd/pbc/binding/lua53/?.lua;"
 

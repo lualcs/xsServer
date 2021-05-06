@@ -10,7 +10,7 @@ local senum = require("gameEnum")
 local gameInfos = {
     [1] = {
         name = "炸金花",
-        assignClass  = senum.assignKilling(),
+        assignClass  = false,--senum.assignKilling(),
         importDeploy = "poker.poker_zjh_cfg",
         importTable  = "poker_zjh.zjh_table",
         importPlayer = "poker_zjh.zjh_Player",
@@ -29,7 +29,7 @@ local gameInfos = {
     },
     [2] = {
         name = "牛牛",
-        open = senum.people(),
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -39,7 +39,7 @@ local gameInfos = {
     },
     [3] = {
         name = "三公",
-        open = senum.people(),
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -49,7 +49,7 @@ local gameInfos = {
     },
     [4] = {
         name = "牌九",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -59,7 +59,7 @@ local gameInfos = {
     },
     [5] = {
         name = "扯旋",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 8,
@@ -70,7 +70,7 @@ local gameInfos = {
     
     [6] = {
         name = "德州扑克",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -80,7 +80,7 @@ local gameInfos = {
     },
     [7] = {
         name = "斗地主",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 3,
         curPlayer = 0,
         maxPlayer = 3,
@@ -90,7 +90,7 @@ local gameInfos = {
     },
     [8] = {
         name = "跑得快",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 4,
         curPlayer = 0,
         maxPlayer = 4,
@@ -100,7 +100,7 @@ local gameInfos = {
     },
     [9] = {
         name = "拱猪",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 4,
         curPlayer = 0,
         maxPlayer = 4,
@@ -110,7 +110,7 @@ local gameInfos = {
     },
     [10] = {
         name = "牌九",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -120,7 +120,7 @@ local gameInfos = {
     },
     [11] = {
         name = "十三水",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 2,
         curPlayer = 0,
         maxPlayer = 10,
@@ -130,6 +130,7 @@ local gameInfos = {
     },
     [10001] = {
         name = "金玉满堂",
+        open = true,
         assignClass  = senum.assignSingle(),
         importDeploy = "slots.games.slots_jymt_cfg",
         importTable  = "slots.jymt.jymt_table",
@@ -139,7 +140,6 @@ local gameInfos = {
         importSystem = "slots.jymt.jymt_system",
         importLogic  = "slots.jymt.jymt_algor",
         importType   = "slots.jymt.jymt_type",
-        open = true,
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 1000,
@@ -164,18 +164,18 @@ local gameInfos = {
         ---@type boolean @是否满线
         fulllin = true,
     },
-    [20001] = {
+    [10002] = {
         name = "金鸡报喜",
-        assignClass  = "assignSingle",
-        importDeploy = "slots.games.slots_jjbx_cfg",
-        importTable  = "slots_jjbx.jjbx_table",
-        importPlayer = "slots_jjbx.jjbx_Player",
-        importAlgor  = "slots_jjbx.jjbx_algor",
-        importHelper = "slots_jjbx.jjbx_helper",
-        importSystem = "slots_jjbx.jjbx_system",
-        importLogic  = "slots_jjbx.jjbx_algor",
-        importType   = "slots_jjbx.jjbx_type",
         open = true,
+        assignClass  = senum.assignSingle(),
+        importDeploy = "slots.games.slots_jjbx_cfg",
+        importTable  = "jjbx.jjbx_table",
+        importPlayer = "jjbx.jjbx_Player",
+        importAlgor  = "jjbx.jjbx_algor",
+        importHelper = "jjbx.jjbx_helper",
+        importSystem = "jjbx.jjbx_system",
+        importLogic  = "jjbx.jjbx_algor",
+        importType   = "jjbx.jjbx_type",
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 1000,
@@ -203,6 +203,7 @@ local gameInfos = {
     [20001] = {
         name = "龙虎斗",
         open = senum.timer(),
+        assignClass  = senum.assignSingle(),
         importDeploy = "hundred.games.dragonTiger",
         importTable  = "dragonTiger.dragonTigerTable",
         importPlayer = "dragonTiger.dragonTigerPlayer",
@@ -218,12 +219,12 @@ local gameInfos = {
         curBanker = 0,
         maxBanker = 1,
         sharedList = { --共享模块
-
+            "hundred.games.dragonTiger"
         }
     },
     [30001] = {
         name = "血战麻将",
-        open = true,
+        open = false,--senum.people(),
         minPlayer = 4,
         curPlayer = 0,
         maxPlayer = 4,

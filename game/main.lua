@@ -32,6 +32,16 @@ skynet.start(function()
     skynet.call(service,"lua","start",senum.assignSingle())
     services.single = service
 
+    ---百人游戏
+    local service = skynet.newservice("service_assign")
+    skynet.call(service,"lua","start",senum.assignHundred())
+    services.hundre = service
+
+    ---竞技游戏
+    local service = skynet.newservice("service_assign")
+    skynet.call(service,"lua","start",senum.assignKilling())
+    services.killing = service
+
     ---login服务
     local service = skynet.newservice("service_login")
     skynet.call(service,"lua","start")
