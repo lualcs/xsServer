@@ -16,12 +16,12 @@ return {
             maxi = 100000,
             odds = 1,
         },
-        [senum.dragon()] = {--和
+        [senum.dragon()] = {--虎
             area = senum.dragon(),
             maxi = 100000,
             odds = 1,
         },
-        [senum.peace()] = {--虎
+        [senum.peace()] = {--和
             area = senum.peace(),
             maxi = 100000,
             odds = 16,

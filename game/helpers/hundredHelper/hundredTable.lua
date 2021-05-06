@@ -151,9 +151,10 @@ function hundredTable:ifAreaBet(area,score)
     return true
 end
 
----区域下注
+---下注赔额
 ---@param area      senum               @区域
 ---@param score     score               @下注
+---@return boolean
 function hundredTable:ifRepayment(area,score)
 end
 
