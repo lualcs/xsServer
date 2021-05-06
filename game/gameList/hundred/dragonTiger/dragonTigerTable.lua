@@ -23,35 +23,40 @@ end
 ---@param score     score               @下注
 ---@return boolean
 function dragonTigerTable:ifRepayment(area,score)
+    ---@type dragonTigerDeploy
+    local cfg = self:getGameConf()
+
     local betting = 0
     local dragonBet = self._mapAreaBet[senum.dragon()]
     local tigerBet = self._mapAreaBet[senum.tiger()]
     local peaceBet = self._mapAreaBet[senum.peace()]
+
+    ---区域最大下注
+    local maxiBetting = cfg.areas[area].maxi
     if senum.dragon() == area then
         ---龙
         dragonBet = dragonBet + score
         betting = dragonBet / self:getUnit()
-        if betting > 10000 then
+        if betting > maxiBetting then
             return false
         end
     elseif senum.tiger() == area then
         ---虎
         tigerBet = tigerBet + score
         betting = tigerBet / self:getUnit()
-        if betting > 10000 then
+        if betting > maxiBetting then
             return false
         end
     elseif senum.peace() == area then
         ---和
         peaceBet = peaceBet + score
         betting = peaceBet / self:getUnit()
-        if betting > 10000 then
+        if betting > maxiBetting then
             return false
         end
     end
 
-    ---@type dragonTigerDeploy
-    local cfg = self:getGameConf()
+    
     ---庄家是否够赔
     local dragonAndPeace = dragonBet + peaceBet
     local tigerAndPeace = tigerBet + peaceBet
