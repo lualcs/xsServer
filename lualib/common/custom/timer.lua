@@ -75,7 +75,7 @@ end
 function timer:appendBy(name,elapse,count,call,...)
     local list = self._list
     local iden = list[name]
-    local indx,node = self._heap:find(iden)
+    local indx,node = self._heap:search(iden)
     if node then
         self._heap:delete(indx)
     end

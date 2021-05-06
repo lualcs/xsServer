@@ -116,14 +116,14 @@ function api_pbc.decode_message(msgbuf,msgsize)
     local ok,msghead,error = pcall(this.decode,"msgHead",head, string.len(head))
     if not ok or false == msghead then
         debug.protobuff("decode_message msghead:",error)
-        --return
+        return
     end
 
     --数据解析
     local ok,msgbody,error = pcall(this.decode,msghead.name,body,string.len(body))
     if not ok or false == msgbody then
         debug.protobuff("decode_message msgBody:",error,msghead.name)
-        --return
+        return
     end
     
     msgbody.cmds = msghead.cmds

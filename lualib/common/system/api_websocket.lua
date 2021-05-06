@@ -4,6 +4,8 @@
     auth:Carol Luo
 ]]
 
+local pairs = pairs
+local ipairs = ipairs
 local tsort = require("sort")
 local api_socket = require("api_socket")
 local protbuff = require("api_pbc")
@@ -58,6 +60,17 @@ function api_websocket.write(fd,data,fmt,masking_key)
     websocket.write(fd,data,fmt,masking_key)
 end
 
+---批量发送
+---@param fds            socket  @套接字
+---@param data          string  @数据
+---@param fmt           string  @类型 "text" or "binary"
+---@param masking_key   number  @掩码
+function api_websocket.writes(fds,data,fmt,masking_key)
+    for _,fd in ipairs(fds) do
+        websocket.write(fd,data,fmt,masking_key)
+    end
+end
+
 
 ---发送
 ---@param fd            socket  @套接字
@@ -66,6 +79,15 @@ function api_websocket.sendpbc(fd,name,cmds,info)
     tsort.reverse(cmds)
     local data = protbuff.encode_message(name,cmds,info)
     websocket.write(fd,data,"binary")
+end
+
+---批量发送
+---@param fd            socket[]  @套接字
+---@param data          string    @数据
+function api_websocket.sendpbcs(fds,name,cmds,info)
+    tsort.reverse(cmds)
+    local data = protbuff.encode_message(name,cmds,info)
+    websocket.writes(fds,data,"binary")
 end
 
 

@@ -473,13 +473,26 @@ function gameTable:messageBy(player,msg)
    
 end
 
+local copy1 = {nil}
 ---通知客户端-服务-私有的
----@param fd      number        @服务地址
+---@param fd      socket        @服务地址
 ---@param name    string        @结构名字
 ---@param data    msgBody       @游戏数据
 local function ntfMsgToClient(fd,name,data)
-    local cmds = {senum.table()}
+    local cmds = table.clear(copy1)
+    table.insert(cmds,senum.table())
     wsnet.sendpbc(fd,name,cmds,data)
+end
+
+local copy1 = {nil}
+---通知客户端-服务-私有的
+---@param fds     socket[]      @服务地址
+---@param name    string        @结构名字
+---@param data    msgBody       @游戏数据
+local function ntfMsgToClients(fds,name,data)
+    local cmds = table.clear(copy1)
+    table.insert(cmds,senum.table())
+    wsnet.sendpbcs(fds,name,cmds,data)
 end
 
 ---通知客户端-玩家
@@ -520,6 +533,7 @@ end
 
 
 local copy1 = {nil}
+local copy2 = {nil}
 ---通知客户端-广播
 ---@param name    string            @服务地址
 ---@param data   msgBody            @游戏数据
@@ -527,6 +541,7 @@ local copy1 = {nil}
 function gameTable:ntfMsgToTable(name,data,sees)
     ---@type table<any,any>    @备份数据
     local back = table.clear(copy1)
+    ---去除私有数据
     if sees then
         for _,field in ipairs(sees.fields) do
             back[field] = table.delete(data,field)
@@ -534,27 +549,37 @@ function gameTable:ntfMsgToTable(name,data,sees)
     end
 
     --通知旁观玩家
+    local socs = table.clear(copy2)
     for _,player in ipairs(self._mapPlayer) do
         if not sees then
-            ntfMsgToClient(player:fd(),name,data)
+            table.insert(socs,player:fd())
         else
             local seat = player:getSeatID()
             if not table.exist(sees.chairs,seat) then
-                ntfMsgToClient(player:fd(),name,data)
+                table.insert(socs,player:fd())
             end
         end
     end
+    ---通知旁观玩家
+    ntfMsgToClients(socs,name,data)
 
-    --通知知权玩家
+    ---隐私数据
     if sees then
+        ---还原私有数据
+        socs = table.clear(copy2)
         for _,field in ipairs(sees.fields) do
             data[field] = back[field]
         end
+
+        ---通知知情玩家
         for seat,_ in ipairs(sees.chairs) do
             --通知数据
             local player = self._arrPlayer[seat]
-            ntfMsgToClient(player:fd(),name,cmd,data)
+            table.insert(socs,player:fd())
         end
+
+        ---通知知情玩家
+        ntfMsgToClients(socs,name,data)
     end
 end
 

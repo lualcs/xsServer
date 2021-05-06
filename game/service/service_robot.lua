@@ -34,7 +34,7 @@ function service.multicast()
 	---@type api_multicast
 	this._multicast = multicast.new()
 	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
-		this._manger:multicastMsg(cmd,...)
+		this._manager:multicastMsg(cmd,...)
 	end)
 end
 
@@ -51,7 +51,7 @@ skynet.start(function()
         if f then
             pack = cs(f,...)
         else
-            local mgr = this._manger
+            local mgr = this._manager
             local f = mgr[cmd]
             pack = cs(f,mgr,...)
         end

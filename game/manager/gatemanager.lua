@@ -56,7 +56,8 @@ end
 function gatemanager:heartbeatOff()
     local list = self._hearbeats
     local leaveTimer = os.getmillisecond() - 60 * 1000
-    while list:reder().ticks < leaveTimer do
+    local reder = list:reder()
+    while reder and reder.ticks < leaveTimer do
         local info = list:fetch()
         self._gate.shutdown(info.auto)
     end
