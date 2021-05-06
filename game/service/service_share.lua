@@ -54,6 +54,21 @@ function service.start()
     local deploy = require(name)
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
+    --管理桌子数据
+    local name = "sundry.table"
+    local deploy = require(name)
+    sharedata.new(name,deploy)
+    _G.package.loaded[name] = nil
+    --管理机器数据
+    local name = "sundry.robot"
+    local deploy = require(name)
+    sharedata.new(name,deploy)
+    _G.package.loaded[name] = nil
+    --平台比例数据
+    local name = "sundry.ratio"
+    local deploy = require(name)
+    sharedata.new(name,deploy)
+    _G.package.loaded[name] = nil
 
     --金玉满堂配置
     local name = "slots.games.slots_jymt_cfg"
