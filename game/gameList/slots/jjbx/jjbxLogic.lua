@@ -1,5 +1,4 @@
 --[[
-    file:jjbx_logic.lua 
     desc:金鸡报喜
     auth:Carol Luo
 ]]
@@ -12,18 +11,18 @@ local random = require("random")
 local class = require("class")
 local is_number = require("is_number")
 local slotsLogic = require("slotsLogic")
-local jjbx_enum = require("jjbx.jjbx_enum")
----@class jjbx_logic:slotsLogic
-local jjbx_logic = class(slotsLogic)
-local this = jjbx_logic
+local senum = require("jjbx.jjbxEnum")
+---@class jjbxLogic:slotsLogic
+local jjbxLogic = class(slotsLogic)
+local this = jjbxLogic
 
 ---构造 
-function jjbx_logic:ctor()
+function jjbxLogic:ctor()
 end
 
 ---正常摇奖
 ---@return jjbx_result_normal
-function jjbx_logic:rotateNormal()
+function jjbxLogic:rotateNormal()
     ---@type jjbx_result_normal     @普通转结果
     local result = {}
     result.widDouble = self:randomDouble(result)
@@ -35,7 +34,7 @@ end
 
 ---正常摇奖
 ---@return jjbx_result_normal
-function jjbx_logic:rotateFree()
+function jjbxLogic:rotateFree()
     ---@type jjbx_result_normal     @普通转结果
     local result = self:super(this,"rotateFree")
     result.widDouble = self:randomDouble(result)
@@ -45,7 +44,7 @@ end
 
 ---重转摇将
 ---@return jjbx_result_normal
-function jjbx_logic:rotateRoller()
+function jjbxLogic:rotateRoller()
      ---@type jjbx_result_normal     @普通转结果
      local result = self:super(this,"rotateFree")
      result.widDouble = self:randomDouble(result)
@@ -57,7 +56,7 @@ end
 ---@param icon      slots_icon      @图标
 ---@param wdbles    slots_double[]  @图标
 ---@return number
-function jjbx_logic:getJoinWildDouble(axles,icon,wdbles)
+function jjbxLogic:getJoinWildDouble(axles,icon,wdbles)
     ---@type slots_icon     @wild图标
     local w = self:getWildID()
     ---@type slots_double   @统计数量
@@ -82,7 +81,7 @@ end
 ---连线结果
 ---@param result jjbx_result_normal
 ---@return slots_full_path[]
-function jjbx_logic:getLineList(result)
+function jjbxLogic:getLineList(result)
     local icnlis = result.icon_list
     local wdbles = result.widDouble
     ---@type slots_axlels                            @轴图标统计
@@ -181,12 +180,12 @@ end
 
 ---随机翻倍
 ---@param result jjbx_result_normal
-function jjbx_logic:randomDouble(result)
+function jjbxLogic:randomDouble(result)
     ---@type slots_jymt_cfg @配置
     local cfg = self:getGameConf()
     local typ = result.game_type
     local wgcfg
-    if jjbx_enum.rotateFree() == typ then
+    if senum.rotateFree() == typ then
         wgcfg = cfg.fwdouble_weights
     else
         wgcfg = cfg.nwdouble_weights
@@ -209,9 +208,9 @@ end
 ---计算轴期望
 ---@param result jjbx_result_normal
 ---@return double
-function jjbx_logic:getAxleBudgeExpect(result)
+function jjbxLogic:getAxleBudgeExpect(result)
     local icon_list = result.icon_list
-    ---@type jjbx_algor             @金鸡报喜
+    ---@type jjbxAlgor             @金鸡报喜
     local algor = self._table._gor
     ---@type postx                  @重转转轴x
     local axle_xpost  = self:getCurAxle()
@@ -394,11 +393,11 @@ end
 local expect1
 local expect2
 ---转一次免费期望
-function jjbx_logic:getFreeBudgeExpect()
+function jjbxLogic:getFreeBudgeExpect()
     if not expect1 then
-        ---@type jymt_table             @桌子
+        ---@type jymtTable             @桌子
         local game = self._table
-        ---@type jymt_algor             @算法
+        ---@type jymtAlgor             @算法
         local agor = self._table._gor
         ---@type slots_wight_info[]     @免费概率表
         local fwgt = game:getFreeIconWeights()
@@ -487,7 +486,7 @@ function jjbx_logic:getFreeBudgeExpect()
 end
 
 ---免费进入免费期望
-function jjbx_logic:getFreeBudgeEnter()
+function jjbxLogic:getFreeBudgeEnter()
     if not expect2 then
         self:getFreeBudgeExpect()
     end
@@ -498,8 +497,8 @@ end
 ---计算轴期望
 ---@param result jymt_result_normal
 ---@return double
-function jjbx_logic:getAxleBudgeExpect(result)
-    ---@type jymt_algor             @金玉满堂
+function jjbxLogic:getAxleBudgeExpect(result)
+    ---@type jymtAlgor             @金玉满堂
     local algor = self._table._gor
     ---@type postx                  @重转转轴x
     local axle_xpost  = self:getCurAxle()
@@ -625,4 +624,4 @@ function jjbx_logic:getAxleBudgeExpect(result)
     return axle_expect
 end
 
-return jjbx_logic
+return jjbxLogic

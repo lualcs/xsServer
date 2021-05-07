@@ -132,14 +132,14 @@ local gameInfos = {
         name = "金玉满堂",
         open = true,
         assignClass  = senum.assignSingle(),
-        importDeploy = "slots.games.slots_jymt_cfg",
-        importTable  = "slots.jymt.jymt_table",
-        importPlayer = "slots.jymt.jymt_Player",
-        importAlgor  = "slots.jymt.jymt_algor",
-        importHelper = "slots.jymt.jymt_helper",
-        importSystem = "slots.jymt.jymt_system",
-        importLogic  = "slots.jymt.jymt_algor",
-        importType   = "slots.jymt.jymt_type",
+        importDeploy = "slots.games.jymtCfg",
+        importTable  = "slots.jymt.jymtTable",
+        importPlayer = "slots.jymt.jymtPlayer",
+        importAlgor  = "slots.jymt.jymtAlgor",
+        importHelper = "slots.jymt.jymtHelper",
+        importSystem = "slots.jymt.jymtSystem",
+        importLogic  = "slots.jymt.jymtAlgor",
+        importType   = "slots.jymt.jymtType",
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 1000,
@@ -156,7 +156,7 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "slots.games.slots_jymt_cfg",
+            "slots.games.jymtCfg",
         },
 
         ---@type boolean @是否双向
@@ -168,14 +168,14 @@ local gameInfos = {
         name = "金鸡报喜",
         open = true,
         assignClass  = senum.assignSingle(),
-        importDeploy = "slots.games.slots_jjbx_cfg",
-        importTable  = "jjbx.jjbx_table",
-        importPlayer = "jjbx.jjbx_Player",
-        importAlgor  = "jjbx.jjbx_algor",
-        importHelper = "jjbx.jjbx_helper",
-        importSystem = "jjbx.jjbx_system",
-        importLogic  = "jjbx.jjbx_algor",
-        importType   = "jjbx.jjbx_type",
+        importDeploy = "slots.games.jjbxCfg",
+        importTable  = "jjbx.jjbxTable",
+        importPlayer = "jjbx.jjbxPlayer",
+        importAlgor  = "jjbx.jjbxAlgor",
+        importHelper = "jjbx.jjbxHelper",
+        importSystem = "jjbx.jjbxSystem",
+        importLogic  = "jjbx.jjbxAlgor",
+        importType   = "jjbx.jjbxType",
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 1000,
@@ -192,7 +192,7 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "slots.games.slots_jjbx_cfg",
+            "slots.games.jjbxCfg",
         },
 
         ---@type boolean @是否双向

@@ -1,5 +1,4 @@
 --[[
-    file:jjbx_enum.lua 
     desc:金鸡报喜 
     auth:Caorl Luo
 ]]
@@ -8,11 +7,11 @@
 local class = require("class")
 local slotsEnum = require("slotsEnum")
 
----@class jjbx_enum:slotsEnum
-local jjbx_enum = class(slotsEnum)
+---@class jjbxEnum:slotsEnum
+local jjbxEnum = class(slotsEnum)
 
 ---构造
-function jjbx_enum:ctor()
+function jjbxEnum:ctor()
 end
 
-return jjbx_enum
+return jjbxEnum

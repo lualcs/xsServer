@@ -1,5 +1,4 @@
 --[[
-    file:jymt_logic.lua 
     desc:金玉满堂
     auth:Carol Luo
 ]]
@@ -12,17 +11,17 @@ local is_number = require("is_number")
 local is_number = require("is_number")
 local class = require("class")
 local slotsLogic = require("slotsLogic")
----@class jymt_logic:slotsLogic
-local jymt_logic = class(slotsLogic)
-local this = jymt_logic
+---@class jymtLogic:slotsLogic
+local jymtLogic = class(slotsLogic)
+local this = jymtLogic
 
 ---构造 
-function jymt_logic:ctor()
+function jymtLogic:ctor()
 end
 
 ---正常摇奖
 ---@return slots_result_normal
-function jymt_logic:rotateNormal()
+function jymtLogic:rotateNormal()
     ---@type jymt_result_normal     @普通转结果
     local result = self:super(this,"rotateNormal")
     ---@type slots_score[]          @重转成本
@@ -34,7 +33,7 @@ end
 ---连线结果
 ---@param result slots_result_normal
 ---@return slots_full_path[]
-function jymt_logic:getLineList(result)
+function jymtLogic:getLineList(result)
     local icons = result.icon_list
     ---@type slots_axlels                            @轴图标统计
     local axles,icons = self:getAxlesIons(icons)
@@ -133,11 +132,11 @@ end
 local expect1
 local expect2
 ---转一次免费期望
-function jymt_logic:getFreeBudgeExpect()
+function jymtLogic:getFreeBudgeExpect()
     if not expect1 then
-        ---@type jymt_table             @桌子
+        ---@type jymtTable             @桌子
         local game = self._table
-        ---@type jymt_algor             @算法
+        ---@type jymtAlgor             @算法
         local agor = self._table._gor
         ---@type slots_wight_info[]     @免费概率表
         local fwgt = game:getFreeIconWeights()
@@ -226,7 +225,7 @@ function jymt_logic:getFreeBudgeExpect()
 end
 
 ---免费进入免费期望
-function jymt_logic:getFreeBudgeEnter()
+function jymtLogic:getFreeBudgeEnter()
     if not expect2 then
         self:getFreeBudgeExpect()
     end
@@ -237,8 +236,8 @@ end
 ---计算轴期望
 ---@param result jymt_result_normal
 ---@return double
-function jymt_logic:getAxleBudgeExpect(result)
-    ---@type jymt_algor             @金玉满堂
+function jymtLogic:getAxleBudgeExpect(result)
+    ---@type jymtAlgor             @金玉满堂
     local algor = self._table._gor
     ---@type postx                  @重转转轴x
     local axle_xpost  = self:getCurAxle()
@@ -364,4 +363,4 @@ function jymt_logic:getAxleBudgeExpect(result)
     return axle_expect
 end
 
-return jymt_logic
+return jymtLogic

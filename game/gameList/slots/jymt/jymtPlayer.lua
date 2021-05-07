@@ -1,5 +1,4 @@
 --[[
-    file:jymt_player.lua 
     desc:金玉满堂
     auth:Carol Luo
 ]]
@@ -8,11 +7,11 @@
 local class = require("class")
 local slotsPlayer = require("slotsPlayer")
 
----@class jymt_player:slotsPlayer
-local jymt_player = class(slotsPlayer)
+---@class jymtPlayer:slotsPlayer
+local jymtPlayer = class(slotsPlayer)
 
 ---构造函数
-function jymt_player:ctor()
+function jymtPlayer:ctor()
 end
 
-return jymt_player
+return jymtPlayer

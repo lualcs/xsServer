@@ -1,5 +1,4 @@
 --[[
-    file:jymt_struct.lua 
     desc:金玉满堂
     auth:Carol Luo
 ]]

@@ -77,13 +77,13 @@ function service.start()
     _G.package.loaded[name] = nil
 
     --金玉满堂配置
-    local name = "slots.games.slots_jymt_cfg"
+    local name = "slots.games.jymtCfg"
     local deploy = require(name)
     sharedata.new(name,deploy)
     _G.package.loaded[name] = nil
 
      --金鸡报喜配置
-     local name = "slots.games.slots_jjbx_cfg"
+     local name = "slots.games.jjbxCfg"
      local deploy = require(name)
      sharedata.new(name,deploy)
      _G.package.loaded[name] = nil

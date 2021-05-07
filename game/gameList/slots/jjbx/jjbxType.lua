@@ -6,11 +6,11 @@
 
 local class = require("class")
 local slotsType = require("slotsType")
----@class jjbx_type
-local jjbx_type = class(slotsType)
+---@class jjbxType
+local jjbxType = class(slotsType)
 
 ---构造 
-function jjbx_type:ctor()
+function jjbxType:ctor()
 end
 
-return jjbx_type
+return jjbxType

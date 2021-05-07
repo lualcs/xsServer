@@ -6,12 +6,12 @@
 
 local class = require("class")
 local slotsSystem = require("slotsSystem")
----@class jjbx_system
-local jjbx_system = class(slotsSystem)
-local this = jjbx_system
+---@class jjbxSystem:slotsSystem @策略
+local jjbxSystem = class(slotsSystem)
+local this = jjbxSystem
 
 ---构造函数
-function jjbx_system:ctor()
+function jjbxSystem:ctor()
 end
 
-return jjbx_system
+return jjbxSystem

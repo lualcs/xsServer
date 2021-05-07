@@ -1,16 +1,15 @@
 --[[
-    file:jymt_type.lua 
     desc:类型判断 
     auth:Carol Luo
 ]]
 
 local class = require("class")
 local slotsType = require("slotsType")
----@class jymt_type
-local jymt_type = class(slotsType)
+---@class jymtType
+local jymtType = class(slotsType)
 
 ---构造 
-function jymt_type:ctor()
+function jymtType:ctor()
 end
 
-return jymt_type
+return jymtType
