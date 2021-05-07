@@ -12,8 +12,9 @@ local debug = require("extend_debug")
 local skynet = require("skynet")
 local class = require("class")
 local senum = require("managerEnum")
-local api_mongo = require("api_mongo")
+local mongo = require("api_mongo")
 local timer = require("timer")
+local listen = require("listener.mapServers")
 
 ---@class mongomanager @gate管理
 local mongomanager = class()
@@ -27,16 +28,8 @@ function mongomanager:ctor(service)
     self._service = service
 
     ---@type api_mongo
-    self._mongo = api_mongo.new({
-       rs = {
-                {
-                    host = "127.0.0.1",
-                    port = 27017,
-                    username = "lcs",
-                    password = "123456",
-                    autodb = "admin",
-                }
-        },
+    self._mongo = mongo.new({
+       rs = listen.mongo
     })
 
     ---启动连接

@@ -13,8 +13,9 @@ local skynet = require("skynet")
 local class = require("class")
 
 local timer = require("timer")
-local api_mysql = require("api_mysql")
+local mysql = require("api_mysql")
 local websocket = require("api_websocket")
+local listen = require("listener.mapServers")
 
 ---@class mysqlmanager @gate管理
 local mysqlmanager = class()
@@ -28,13 +29,7 @@ function mysqlmanager:ctor(service)
     self._service = service
 
     ---mysql
-    self._mysql = api_mysql.new({
-        host        = "127.0.0.1",  --主机
-        port        = 3306,         --端口
-        database    = "";           --库名
-        user        = "root";       --用户
-        password    = "123456";     --密码
-    })
+    self._mysql = mysql.new(listen.mysql)
 
     ---启动连接
     self._mysql:connect()

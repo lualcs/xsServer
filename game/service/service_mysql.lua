@@ -24,7 +24,7 @@ function service.start()
   --共享数据
   local adrres = skynet.queryservice("service_share")
   local shares = {
-    
+    "listener.mapServers",
   }
   for _,name in ipairs(shares) do
     local deploy = sharedata.query(name)
