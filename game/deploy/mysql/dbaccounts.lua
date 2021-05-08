@@ -44,10 +44,11 @@ return {
     DROP TABLE IF EXISTS `alliances`;
     CREATE TABLE `alliances`  (
       `allianceID` int(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
+      `name` varchar(32) NOT NULL COMMENT '联盟名字',
       `rid` int(11) NOT NULL COMMENT '对应角色',
       `birthday` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
-      `assignRule` json NULL COMMENT '分配规则',
-      `gameInfos` json NULL COMMENT '游戏信息',
+      `assignRule` json NOT NULL COMMENT '分配规则',
+      `gameInfos` json NOT NULL COMMENT '游戏信息',
       PRIMARY KEY (`allianceID`) USING BTREE
     ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟信息' ROW_FORMAT = Dynamic;
     
@@ -66,6 +67,7 @@ return {
       CREATE TABLE `members`  (
         `rid` int(11) NOT NULL COMMENT '联盟成员',
         `identity` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
+        `superiorID` int(11) NOT NULL COMMENT '上级代理',
         PRIMARY KEY (`rid`) USING BTREE
       ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟成员' ROW_FORMAT = Dynamic;
 
