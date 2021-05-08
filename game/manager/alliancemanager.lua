@@ -1,5 +1,5 @@
 --[[
-    desc:机器人管理
+    desc:联盟管理
     auth:Caorl Luo
 ]]
 
@@ -10,13 +10,13 @@ local table = require("extend_table")
 local debug = require("extend_debug")
 local senum = require("managerEnum")
 
----@class robotmanager @gate管理
-local robotmanager = class()
-local this = robotmanager
+---@class alliancemanager @gate管理
+local alliancemanager = class()
+local this = alliancemanager
 
 ---构造
 ---@param service service_robot         @gate服务
-function robotmanager:ctor(service)
+function alliancemanager:ctor(service)
     ---机器人服务
     self._service = service
     ---创建定时器
@@ -25,22 +25,22 @@ function robotmanager:ctor(service)
 end
 
 ---重置
-function robotmanager:dataReboot()
+function alliancemanager:dataReboot()
     ---启动定时器
     self._timer:poling()
 end
 
 ---服务
 ---@return serviceInf @服务信息
-function robotmanager:getServices()
+function alliancemanager:getServices()
     return self._service.services
 end
 
 ---请求
 ---@param fd  socket      @套接字
 ---@param msg msgBody @数据
-function robotmanager:message(fd,msg)
+function alliancemanager:message(fd,msg)
   
 end
 
-return robotmanager
+return alliancemanager
