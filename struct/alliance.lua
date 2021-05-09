@@ -39,6 +39,7 @@
 ---@field birthday      string      @创建日期
 
 ---@alias memberInfos memberInfo[]
+---@field online    boolean     @是否在线
 
 
 ---@class allianceData:allianceInfo                     @联盟数据
@@ -50,11 +51,13 @@
 ---@field assignSingles     service[]                   @单机分配
 ---@field assignHundreds    service[]                   @百人分配
 ---@field assignKillings    service[]                   @竞争分配
+---@field onlineMember      count                       @在线成员
 
 
 ---@class agencyData:agencyInfo @代理数据
----@field memberHash table<memberID,memberData>  @成员信息
----@field memberList memberData[]                @成员列表
+---@field memberHash        table<memberID,memberData>  @成员信息
+---@field memberList        memberData[]                @成员列表
+---@field onlineMember      count                       @在线成员
 
 ---@class memberData:memberInfo @代理数据
 
@@ -66,6 +69,8 @@
 ---@alias agencyHash table<agentID,agencyData>
 ---代理映射
 ---@alias memberHash table<memberID,memberData>
----成员映
+---成员映射
+---@alias memberHashByUserID table<userID,memberData>
+---成员映射
 
 

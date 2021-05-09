@@ -57,6 +57,8 @@ function mysqlmanager:dbstructure()
     self:dbaccounts()
     ---构造dbPlatform
     self:dbplatform()
+     ---构造dbsundrys
+     self:dbsundrys()
     ---构造默认库存表
     self:dblibarays()
 end
@@ -81,6 +83,23 @@ end
 ---dbaccounts 结构
 function mysqlmanager:dbplatform()
     local cmds = require("mysql.dbplatform")
+    ---执行语句
+    local mysql = self._mysql
+    for index,cmd in ipairs(cmds) do
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
+    end
+end
+
+
+---dbsundrys 结构
+function mysqlmanager:dbsundrys()
+    local cmds = require("mysql.dbsundrys")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do

@@ -111,7 +111,6 @@ end
 function assignSuper:createTable(gameID,gameCustom)
     
     local gameInfo = gameInfos[gameID]
-    debug.logAssignhSuper(gameInfo.name)
     --检查数据
     if not gameInfo then
         debug.error(format("[%s] [gameID:%s] 1",self:assignClass(),tostring(gameID)))

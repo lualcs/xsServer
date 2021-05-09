@@ -81,6 +81,8 @@ function gatemanager:offline(fd)
     self._hearbeats:deleteBy(fd)
     ---通知断线
     skynet.call(services.login,"lua","offline",fd)
+    ---通知联盟
+    skynet.call(services.alliance,"lua","offline",client.role.rid)
     ---分配服务
     if client.assign then
         skynet.call(client.assign,"lua","offline",client.role.rid)

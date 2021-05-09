@@ -7,6 +7,7 @@
 local table = table
 local class = require("class")
 local mongo = require("skynet.db.mongo")
+local bson = require("bson")
 
 ---@class api_mongo
 local api_mongo = class()
@@ -137,6 +138,21 @@ end
 function api_mongo:runCommand(args)
     local db = self._db:getDB(args.dbname)
     return db:runCommand(args)
+end
+
+---bson解码
+function api_mongo:bson_decode(arg)
+    return bson.decode(arg)
+end
+
+---bson编码
+function api_mongo:bson_encode_order(arg)
+    return bson.encode_order(arg)
+end
+
+---bson编码
+function api_mongo:bson_encode(arg)
+    return bson.encode(arg)
 end
 
 return api_mongo

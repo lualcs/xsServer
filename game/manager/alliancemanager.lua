@@ -42,6 +42,8 @@ function alliancemanager:ctor(service)
     self._members = {nil}
     ---@type memberHash
     self._memberHash = {nil}
+    ---@type memberHashByUserID
+    self._memberUser = {nil}
 end
 
 ---重置
@@ -56,6 +58,43 @@ end
 ---@return serviceInf @服务信息
 function alliancemanager:getServices()
     return self._service._services
+end
+
+
+---上线
+---@param rid userID @用户ID
+function alliancemanager:online(rid)
+    local member = self._memberUser[rid]
+    if not member then
+        return
+    end
+
+    ---联盟在线人数
+    local alliance = self._allianceHash[member.allianceID]
+    alliance.onlineMember = alliance.onlineMember + 1
+    ---代理在线人数
+    local agency = self._agencyHash[member.superiorID]
+    agency.onlineMember = agency.onlineMember + 1
+    ---成员在线标志
+    member.online = true
+end
+
+---断线
+---@param rid userID @用户ID
+function alliancemanager:offline(rid)
+    local member = self._memberUser[rid]
+    if not member then
+        return
+    end
+
+    ---联盟在线人数
+    local alliance = self._allianceHash[member.allianceID]
+    alliance.onlineMember = alliance.onlineMember - 1
+    ---代理在线人数
+    local agency = self._agencyHash[member.superiorID]
+    agency.onlineMember = agency.onlineMember - 1
+    ---成员在线标志
+    member.online = false
 end
 
 ---请求
@@ -94,6 +133,7 @@ function alliancemanager:allianceInfo(ret)
         data.assignSingles  = {nil}
         data.assignHundreds = {nil}
         data.assignKillings = {nil}
+        data.onlineMember = 0
     end
 end
 
@@ -118,7 +158,7 @@ function alliancemanager:agencysInfo(ret)
         local targe = self._allianceHash[data.allianceID]
         table.insert(targe.agencyList,data)
         targe.agencyHash[data.agentID] = data
-
+        data.onlineMember = 0
     end
 end
 
@@ -131,6 +171,7 @@ function alliancemanager:membersInfo(ret)
         ---保存数据
         table.insert(list,info)
         hash[info.memberID] = info
+        self._memberUser[info.rid] = info
 
          ---组织数据
         ---@type memberData
@@ -151,19 +192,10 @@ function alliancemanager:overAlliance()
     local services = self:getServices()
     ---分配管理
     local assigns = {senum.assignSingle(),senum.assignHundred(),senum.assignKilling()}
-    local assignKyes = {"assignSingles","assignHundreds","assignKillings"}
+    
     for allianceID,info in pairs(self._allianceHash) do
         for index,assignClass in ipairs(assigns) do
-            local service = skynet.newservice("service_assign")
-            skynet.call(service,"lua","start",assignClass,allianceID)
-            skynet.call(service,"lua","mapServices",senum.mapServices())
-            skynet.call(service,"lua","multicast")
-            skynet.call(service,"lua","dataReboot")
-            ---所有分配服务
-            table.insert(info.assignList,service)
-            ---单机分配
-            local key = assignKyes[index]
-            table.insert(info[key],service)
+           self:assignCtor(assignClass,allianceID)
         end
     end
 
@@ -171,18 +203,24 @@ function alliancemanager:overAlliance()
     skynet.call(services.gates,"lua","listen")
 end
 
-function alliancemanager:assignCtor()
-     ---单机游戏
-     local service = skynet.newservice("service_assign")
-     skynet.call(service,"lua","start",senum.assignSingle())
- 
-     ---百人游戏
-     local service = skynet.newservice("service_assign")
-     skynet.call(service,"lua","start",senum.assignHundred())
- 
-     ---竞技游戏
-     local service = skynet.newservice("service_assign")
-     skynet.call(service,"lua","start",senum.assignKilling())
+local assignKyes = {
+    [senum.assignSingle()] = "assignSingles",
+    [senum.assignHundred()] = "assignHundreds",
+    [senum.assignKilling()] = "assignKillings",
+}
+---构建分配服务
+function alliancemanager:assignCtor(assignClass,allianceID)
+    local service = skynet.newservice("service_assign")
+    skynet.call(service,"lua","start",assignClass,allianceID)
+    skynet.call(service,"lua","mapServices",senum.mapServices())
+    skynet.call(service,"lua","multicast")
+    skynet.call(service,"lua","dataReboot")
+    ---所有分配服务
+    local info = self._allianceHash[allianceID]
+    table.insert(info.assignList,service)
+    ---单机分配
+    local key = assignKyes[assignClass]
+    table.insert(info[key],service)
 end
 
 return alliancemanager
