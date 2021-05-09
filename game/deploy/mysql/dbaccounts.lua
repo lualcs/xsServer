@@ -10,6 +10,8 @@ return {
       DROP DATABASE IF EXISTS `dbaccounts`;
       CREATE DATABASE `dbaccounts` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
+    ---切换数据库使用
+    [[ USE `dbaccounts`;]],
     --创建账号信息数据表
     [[
       SET NAMES utf8mb4;
@@ -18,7 +20,6 @@ return {
       -- ----------------------------
       -- Table structure for accounts
       -- ----------------------------
-      USE `dbaccounts`;
       CREATE TABLE `accounts`  (
         `rid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色id',
         `accounts` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '账号',
@@ -36,23 +37,23 @@ return {
     ---创建联盟信息表
     [[
       SET NAMES utf8mb4;
-    SET FOREIGN_KEY_CHECKS = 0;
-    
-    -- ----------------------------
-    -- Table structure for alliances
-    -- ----------------------------
-    DROP TABLE IF EXISTS `alliances`;
-    CREATE TABLE `alliances`  (
-      `allianceID` int(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
-      `name` varchar(32) NOT NULL COMMENT '联盟名字',
-      `rid` int(11) NOT NULL COMMENT '归属角色',
-      `assignRule` json NOT NULL COMMENT '分配规则',
-      `gameInfos` json NOT NULL COMMENT '游戏信息',
-      `birthday` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
-      PRIMARY KEY (`allianceID`) USING BTREE
-    ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟信息' ROW_FORMAT = Dynamic;
-    
-    SET FOREIGN_KEY_CHECKS = 1;
+      SET FOREIGN_KEY_CHECKS = 0;
+      
+      -- ----------------------------
+      -- Table structure for alliances
+      -- ----------------------------
+      DROP TABLE IF EXISTS `alliances`;
+      CREATE TABLE `alliances`  (
+        `allianceID` int(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
+        `name` varchar(32) NOT NULL COMMENT '联盟名字',
+        `rid` int(11) NOT NULL COMMENT '归属角色',
+        `assignRule` json NOT NULL COMMENT '分配规则',
+        `gameInfos` json NOT NULL COMMENT '游戏信息',
+        `birthday` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
+        PRIMARY KEY (`allianceID`) USING BTREE
+      ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟信息' ROW_FORMAT = Dynamic;
+
+      SET FOREIGN_KEY_CHECKS = 1;
     ]],
 
     ---创建代理信息表

@@ -20,5 +20,6 @@
 ---@field read      boolean @是否读取
 
 ---@class mongoEmail @mongo邮件
----@field email     email   @邮件数据
----@field rid       userID  @邮件主人
+---@field email     email    @邮件数据
+---@field rid       userID   @邮件主人
+---@field _id       ObjectId @mongo主键

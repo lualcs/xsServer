@@ -11,4 +11,6 @@ return {
         DROP DATABASE IF EXISTS `dbsundrys`;
         CREATE DATABASE `dbsundrys` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
+    ---切换数据库使用
+    [[  USE `dbsundrys`;]],
 }
