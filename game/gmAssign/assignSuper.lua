@@ -22,11 +22,14 @@ local assignSuper = class()
 local this = assignSuper
 
 ---构造函数
----@param service service_assign
-function assignSuper:ctor(service)
+---@param service service_assign    @分配服务
+---@param allianceID  allianceID    @联盟标识
+function assignSuper:ctor(service,allianceID)
     ---分配服务
     ---@type service_assign @分配服务
     self._service = service
+    ---联盟标识
+    self._allianceID = allianceID
     ---桌子列表
     ---@type mapping_tables @桌子隐射
     self._tables = {nil}
@@ -51,7 +54,7 @@ end
 ---服务
 ---@return serviceInf @服务信息
 function assignSuper:getServices()
-    return self._service.services
+    return self._service._services
 end
 
 ---分配类型

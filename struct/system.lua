@@ -31,15 +31,18 @@
 ---@field share         service  @共享服务
 ---@field debug         service  @调试服务
 ---@field soles         service  @唯一服务
----@field single        service  @单人游戏
----@field hundre        service  @百人游戏
----@field killing       service  @竞技游戏
+---@field alliance      service  @联盟服务
 ---@field gates         service  @入口服务
 ---@field login         service  @登陆服务
 ---@field mysql         service  @数据服务
 ---@field mongo         service  @芒果数据
 ---@field robot         service  @机器服务
 ---@field mainChannel   channel  @组播服务
+
+---@class allianceAssign @联盟分配
+---@field single        service  @单人游戏
+---@field hundre        service  @百人游戏
+---@field killing       service  @竞技游戏
 
 
 ---@class mapServers @监听信息

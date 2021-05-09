@@ -1,14 +1,15 @@
 --[[
-    desc:机器人
+    desc:联盟服务
     auth:Carol Luo
 ]]
 
+local debug = require("extend_debug")
 local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
 local cs = queue()
-local robotmanager = require("robotmanager")
+local alliancemanager = require("alliancemanager")
 
 ---@class service_alliance @联盟服务
 local service = {}
@@ -16,7 +17,7 @@ local this = service
 
 ---启动
 function service.start()
-    this._manager = robotmanager.new(this)
+    this._manager = alliancemanager.new(this)
 end
 
 ---服务表
@@ -24,7 +25,7 @@ function service.mapServices(name)
     local services = sharedata.query(name)
     ---@type serviceInf @服务地址信息
     this._services = services
-  end
+end
 
   ---组播
 function service.multicast()

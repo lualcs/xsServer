@@ -15,8 +15,9 @@ local service = {}
 local this = service
 
 ---启动
----@param simport string @相对路径
-function service.start(simport) 
+---@param simport     string      @分配类型
+---@param allianceID  allianceID  @联盟标识
+function service.start(simport,allianceID) 
   --共享数据
   local adrres = skynet.queryservice("service_share")
   local shares = { 
@@ -29,7 +30,9 @@ function service.start(simport)
   end
 
   local import = require(simport)
-  this.assign = import.new(this)
+  ---分配类型
+  ---@type assignSuper
+  this.assign = import.new(this,allianceID)
   
   skynet.register("." .. simport)
 end

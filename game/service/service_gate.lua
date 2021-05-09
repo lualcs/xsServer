@@ -94,12 +94,15 @@ function ws_handle.message(fd, message, msgtype)
 	skynet.trash(message,#message)
 end
 
-
----启动
-function service.start()
+---监听
+function service.listen()
 	--监听
 	local gate = mapServers.gate
 	local fd = websocket.listen(gate.host,gate.port,ws_handle)
+end
+
+---启动
+function service.start()
 	--协议
 	local list = require("protocol.protobuff")
 	protobuff.parser_register(list,"game_protobuff")

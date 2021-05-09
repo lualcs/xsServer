@@ -27,26 +27,6 @@ skynet.start(function()
     skynet.call(service,"lua","start",{historID=1})
     services.soles = service
 
-    ---单机游戏
-    local service = skynet.newservice("service_assign")
-    skynet.call(service,"lua","start",senum.assignSingle())
-    services.single = service
-
-    ---百人游戏
-    local service = skynet.newservice("service_assign")
-    skynet.call(service,"lua","start",senum.assignHundred())
-    services.hundre = service
-
-    ---竞技游戏
-    local service = skynet.newservice("service_assign")
-    skynet.call(service,"lua","start",senum.assignKilling())
-    services.killing = service
-
-    ---login服务
-    local service = skynet.newservice("service_login")
-    skynet.call(service,"lua","start")
-    services.login = service
-
     ---mysql服务
     local service = skynet.newservice("service_mysql")
     skynet.call(service,"lua","start")
@@ -55,7 +35,17 @@ skynet.start(function()
     ---mongo服务
     local service = skynet.newservice("service_mongo")
     skynet.call(service,"lua","start")
-    services.mysql = service
+    services.mongo = service
+
+    ---alliance服务
+    local service = skynet.newservice("service_alliance")
+    skynet.call(service,"lua","start")
+    services.alliance = service
+
+    ---login服务
+    local service = skynet.newservice("service_login")
+    skynet.call(service,"lua","start")
+    services.login = service
 
     ---gate服务
     local service = skynet.newservice("service_gate")
@@ -81,6 +71,6 @@ skynet.start(function()
     skynet.call(services.share,"lua","distributed","multicast")
     ---服务全部完成
     skynet.call(services.share,"lua","distributed","dataReboot")
-    
+
 end)
 

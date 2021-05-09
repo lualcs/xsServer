@@ -44,7 +44,7 @@ end
 ---服务
 ---@return serviceInf @服务信息
 function loginmanager:getServices()
-    return self._service.services
+    return self._service._services
 end
 
 ---请求
@@ -104,7 +104,7 @@ function loginmanager:touristsLogin(fd,msg)
 
     ---服务信息
     ---@type serviceInf
-    local services = self._service.services
+    local services = self:getServices()
     ---游客凭证
     ---@type string 
     local accredit = msg.accredit;
@@ -134,7 +134,7 @@ function loginmanager:phoneLogin(fd,msg)
 
     ---服务信息
     ---@type serviceInf
-    local services = self._service.services
+    local services = self:getServices()
     ---手机号码
     ---@type string 
     local phonenum = msg.phonenum;
@@ -167,7 +167,7 @@ function loginmanager:wechatLogin(fd,msg)
 
     ---服务信息
     ---@type serviceInf
-    local services = self._service.services
+    local services = self:getServices()
     ---微信授权
     ---@type string 
     local accredit = msg.accredit;
@@ -198,7 +198,7 @@ function loginmanager:changeNickname(fd,msg)
 
     ---服务信息
     ---@type serviceInf
-    local services = self._service.services
+    local services = self:getServices()
     ---账号标识
     local rid = client.role.rid;
     ---更新昵称
@@ -222,7 +222,7 @@ function loginmanager:changeLogolink(fd,msg)
      end
     ---服务信息
     ---@type serviceInf
-    local services = self._service.services
+    local services = self:getServices()
     ---账号标识
     local rid = client.role.rid;
     ---更新头像

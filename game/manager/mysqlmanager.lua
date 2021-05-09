@@ -48,7 +48,7 @@ end
 ---服务
 ---@return serviceInf @服务信息
 function mysqlmanager:getServices()
-    return self._service.services
+    return self._service._services
 end
 
 ---构造数据库
@@ -57,7 +57,7 @@ function mysqlmanager:dbstructure()
     self:dbaccounts()
     ---构造dbPlatform
     self:dbplatform()
-    ---构造头像库存表
+    ---构造默认库存表
     self:dblibarays()
 end
 
@@ -99,6 +99,7 @@ function mysqlmanager:dblibarays()
     ---执行语句
     local mysql = self._mysql
 
+    ---库存头像
     local logos = require("mysql.library_logo")
     for index,cmd in ipairs(logos) do
         local result = mysql:query(cmd)
@@ -110,8 +111,21 @@ function mysqlmanager:dblibarays()
         end
     end
 
+    ---库存昵称
     local names = require("mysql.library_name")
     for index,cmd in ipairs(names) do
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
+    end
+
+    ---联盟数据
+    local alliances = require("mysql.library_alliances")
+    for index,cmd in ipairs(alliances) do
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
@@ -218,6 +232,79 @@ function mysqlmanager:changeLogolink(rid,logolink)
         rid = rid,
         logolink = logolink
     })
+end
+
+---加载联盟信息
+function mysqlmanager:loadingAlliance()
+    local services = self:getServices()
+    local mysql = self._mysql
+    ---辅助变量
+    local count = 100
+    ---加载联盟
+    local start = 1
+    while true do
+        local cmd = format("SELECT * FROM `dbaccounts`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;",start,start+count)
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+            break
+        end
+        skynet.call(services.alliance,"lua","allianceInfo",result)
+        start = start + count
+
+        ---数据加载完成
+        if #result < count then
+            break
+        end
+    end
+
+    ---加载代理
+    local start = 1
+    while true do
+        local cmd = format("SELECT * FROM `dbaccounts`.`agencys` WHERE `agentID` BETWEEN %d AND %d;",start,start+count)
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+            break
+        end
+        skynet.call(services.alliance,"lua","agencysInfo",result)
+        start = start + count
+
+        ---数据加载完成
+        if #result < count then
+            break
+        end
+    end
+
+    ---加载成员
+    local start = 1
+    while true do
+        local cmd = format("SELECT * FROM `dbaccounts`.`members` WHERE `memberID` BETWEEN %d AND %d;",start,start+count)
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+            break
+        end
+        skynet.call(services.alliance,"lua","membersInfo",result)
+        start = start + count
+
+        ---数据加载完成
+        if #result < count then
+            break
+        end
+    end
+
+    ---加载完成
+    skynet.call(services.alliance,"lua","overAlliance")
 end
 
 return mysqlmanager

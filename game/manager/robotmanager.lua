@@ -33,7 +33,7 @@ end
 ---服务
 ---@return serviceInf @服务信息
 function robotmanager:getServices()
-    return self._service.services
+    return self._service._services
 end
 
 ---请求
