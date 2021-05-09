@@ -155,6 +155,21 @@ function api_mongo:bson_encode(arg)
     return bson.encode(arg)
 end
 
+---objectid to string
+---@param objectId blob @二进制
+---@return string
+function api_mongo:objectidToString(objectId)
+    local _,objectId = bson.type(objectId)
+    return objectId
+end
+
+---objectid to string
+---@param objectId string @二进制
+---@return blob
+function api_mongo:objectidToBlob(objectId)
+    return bson.objectid(objectId)
+end
+
 return api_mongo
 
 ---@class mongo_connect_item @mongo 连接信息

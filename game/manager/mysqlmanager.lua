@@ -42,7 +42,8 @@ end
 
 ---重置
 function mysqlmanager:dataReboot()
-  
+    ---构造数据库
+    --self:dbstructure()
 end
 
 ---服务

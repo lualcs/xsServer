@@ -43,7 +43,7 @@ end
 function mongomanager:dataReboot()
     ---构造结构
     self:dbstructure()
-    debug.error(self:loadingEmail(nil,1,100))
+    self:loadingEmail(nil,1,100)
 end
 
 ---服务
@@ -87,7 +87,6 @@ function mongomanager:writeEmails(rids,emails)
         self:writeEmail(rid,emails[index])
     end
 end
-
 ---加载玩家邮件数据
 ---@field rid   userID  @角色
 ---@field page  count   @页号
@@ -99,9 +98,10 @@ function mongomanager:loadingEmail(rid,page,limit)
     local list = {nil}
     while quer:hasNext() do
         ---@type mongoEmail
-        local mongoEmail = quer:next()
-        mongoEmail._id = mongo:bson_decode(mongoEmail._id)
-        table.insert(list,mongoEmail)
+        local mgEmail = quer:next()
+        
+        mgEmail._id = mongo:objectidToString(mgEmail._id)
+        table.insert(list,mgEmail)
     end
     return list
 end
@@ -113,7 +113,7 @@ local copy1 = {nil}
 function mongomanager:loadingEmailBy(objectId)
     local coll = self._emaliVisibles
     local find = table.clear(copy1)
-    find._id = objectId
+    find._id = mongo.objectidToBlob(objectId)
     local quer = coll:find(find)
     return quer:next()
 end
@@ -152,7 +152,6 @@ function mongomanager:earseEmail(objectId)
     coll:safe_delete(dele)
     ---回收邮站
     local coll = self._emaliRubbish
-    mongoEmail._id = nil
     coll:safe_insert(mongoEmail)
 end
 
