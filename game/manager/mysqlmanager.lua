@@ -58,8 +58,8 @@ function mysqlmanager:dbstructure()
     self:dbaccounts()
     ---构造dbPlatform
     self:dbplatform()
-     ---构造dbsundrys
-     self:dbsundrys()
+    ---构造dbsundrys
+    self:dbsundrys()
     ---构造默认库存表
     self:dblibarays()
 end
