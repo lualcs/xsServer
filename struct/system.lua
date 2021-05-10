@@ -38,6 +38,8 @@
 ---@field mongo         service  @芒果数据
 ---@field robot         service  @机器服务
 ---@field mainChannel   channel  @组播服务
+---@field http_client   service  @http服务
+---@field http_server   service  @http服务
 
 ---@class allianceAssign @联盟分配
 ---@field single        service  @单人游戏

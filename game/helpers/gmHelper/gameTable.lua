@@ -64,6 +64,10 @@ function gameTable:ctor(service,gameInfo,gameCustom)
     ---类型判断
     ---@type gameType                    
     self._tye = import.new(self)
+    local import = require(gameInfo.importStatus)
+     ---游戏状态
+    ---@type gameStatus                 
+    self._stu = import.new(self)
     ---游戏占位
     ---@type occupy                    
     self._ocp = occupy.new(1,gameInfo.maxPlayer)

@@ -37,7 +37,17 @@ skynet.start(function()
     skynet.call(service,"lua","start")
     services.mongo = service
 
-    ---alliance服务
+    ---http_client服务
+    local service = skynet.newservice("service_chttp")
+    skynet.call(service,"lua","start")
+    services.http_client = service
+
+     ---http_client服务
+     local service = skynet.newservice("service_shttp")
+     skynet.call(service,"lua","start")
+     services.http_server = service
+
+      ---alliance服务
     local service = skynet.newservice("service_alliance")
     skynet.call(service,"lua","start")
     services.alliance = service
@@ -71,6 +81,7 @@ skynet.start(function()
     skynet.call(services.share,"lua","distributed","multicast")
     ---服务全部完成
     skynet.call(services.share,"lua","distributed","dataReboot")
+
 
 end)
 

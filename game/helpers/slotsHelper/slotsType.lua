@@ -6,7 +6,7 @@
 
 local class = require("class")
 local gameType = require("gameType")
----@class slotsType
+---@class slotsType:gameType
 local slotsType = class(gameType)
 
 ---构造 
