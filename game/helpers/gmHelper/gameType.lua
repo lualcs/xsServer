@@ -17,16 +17,12 @@ end
 ---重启
 function gameType:dataReboot()
     ---游戏算法
-    ---@type gameAlgor
     self._gor = self._table._gor
     ---游戏辅助
-    ---@type gameHelper
     self._hlp = self._table._hlp
     ---游戏策略
-    ---@type gameSystem
     self._sys = self._table._sys
     ---游戏逻辑
-    ---@type gameLogic
     self._lgc = self._table._lgc
 end
 
