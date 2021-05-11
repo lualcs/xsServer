@@ -43,7 +43,7 @@ end
 ---重置
 function mysqlmanager:dataReboot()
     ---构造数据库
-    --self:dbstructure()
+    self:dbstructure()
 end
 
 ---服务
@@ -58,6 +58,8 @@ function mysqlmanager:dbstructure()
     self:dbaccounts()
     ---构造dbPlatform
     self:dbplatform()
+    ---构造dbgameinfo
+    self:dbgameinfo()
     ---构造dbsundrys
     self:dbsundrys()
     ---构造默认库存表
@@ -83,6 +85,22 @@ end
 ---dbaccounts 结构
 function mysqlmanager:dbplatform()
     local cmds = require("mysql.dbplatform")
+    ---执行语句
+    local mysql = self._mysql
+    for index,cmd in ipairs(cmds) do
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
+    end
+end
+
+---构造dbgameinfo 结构
+function mysqlmanager:dbgameinfo()
+    local cmds = require("mysql.dbgameinfo")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
