@@ -11,6 +11,7 @@ return {
     ]],
     ---切换数据库使用
     [[ USE `dbgameinfo`;]],
+
     --创建金玉满堂玩家对局统计数据
     [[
         SET NAMES utf8mb4;
