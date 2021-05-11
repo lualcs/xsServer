@@ -111,6 +111,7 @@ function gameTable:dataReboot()
     self._ocp:dataReboot()   --占位
     self._cac:dataReboot()   --缓存
     self._tye:dataReboot()   --类型
+    self._stu:dataReboot()   --状态
     ---清空玩家
     for _,player in ipairs(self._mapPlayer) do
         player:dataReboot()
@@ -152,6 +153,7 @@ end
 ---@param status number @状态
 function gameTable:setGameStatus(status)
     self._gmstatus = status
+    self._stu:jumpGameStatus()
 end
 
 ---定制规则

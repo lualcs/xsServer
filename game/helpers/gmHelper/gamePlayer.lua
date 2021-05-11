@@ -56,6 +56,8 @@ function gamePlayer:dataReboot()
     self._lgc = self._table._lgc
     ---游戏状态
     self._stu = self._table._stu
+    ---游戏定时
+    self._tim = self._table._tim
     ---游戏请求
     ---@type msgBody
     self._request = nil

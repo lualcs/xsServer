@@ -28,6 +28,8 @@ function gameLogic:dataReboot()
     self._hlp = self._table._hlp
     ---游戏状态
     self._stu = self._table._stu
+    ---游戏定时
+    self._tim = self._table._tim
 end
 
 ---桌子

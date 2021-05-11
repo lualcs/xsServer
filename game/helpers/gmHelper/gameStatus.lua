@@ -28,6 +28,14 @@ function gameStatus:dataReboot()
     self._lgc = self._table._lgc
     ---游戏辅助
     self._hlp = self._table._hlp
+    ---游戏定时
+    self._tim = self._table._tim
+end
+
+---游戏状态跳转
+function gameStatus:jumpGameStatus()
+    local status = self._table:getGameStatus()
+    local timer = self._t
 end
 
 return gameStatus

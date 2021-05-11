@@ -32,6 +32,8 @@ function gameAlgor:dataReboot()
     self._lgc = self._table._lgc
     ---游戏状态
     self._stu = self._table._stu
+    ---游戏定时
+    self._tim = self._table._tim
 end
 
 ---扑克比较
