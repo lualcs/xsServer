@@ -64,7 +64,6 @@ function mysqlmanager:dbstructure()
     self:dblibarays()
 end
 
-
 ---dbaccounts 结构
 function mysqlmanager:dbaccounts()
     local cmds = require("mysql.dbaccounts")

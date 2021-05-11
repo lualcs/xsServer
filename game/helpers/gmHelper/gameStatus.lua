@@ -35,7 +35,15 @@ end
 ---游戏状态跳转
 function gameStatus:jumpGameStatus()
     local status = self._table:getGameStatus()
-    local timer = self._t
+    self._tim:append(0,1,function()
+        self:switchGameProcess(status)
+    end)
 end
+
+---游戏流程切换
+function gameStatus:switchGameProcess(status)
+    assert(false,"gameStatus:switchGameProcess Is not overloaded")
+end
+
 
 return gameStatus
