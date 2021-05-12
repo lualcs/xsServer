@@ -62,15 +62,15 @@ end
 
 skynet.start(function()
     skynet.dispatch("lua",function(_, _, cmd, ...)
-            local f = this[cmd]
-            local pack
-            if f then
-              pack = cs(f, ...)
-            else
-              local mgr = this._manger
-              local f = mgr[cmd]
-              pack = cs(f,mgr,...)
-            end
+        local f = this[cmd]
+        local pack
+        if f then
+          pack = cs(f, ...)
+        else
+          local mgr = this._manger
+          local f = mgr[cmd]
+          pack = cs(f,mgr,...)
+        end
         skynet.retpack(pack or false)
     end)
 end)

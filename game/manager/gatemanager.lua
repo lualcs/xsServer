@@ -49,7 +49,7 @@ end
 ---服务
 ---@return serviceInf @服务信息
 function gatemanager:getServices()
-    return self._gate.services
+    return self._gate._services
 end
 
 ---心跳断线
@@ -60,6 +60,7 @@ function gatemanager:heartbeatOff()
     while reder and reder.ticks < leaveTimer do
         local info = list:fetch()
         self._gate.shutdown(info.auto)
+        reder = list:reder()
     end
 end
 
@@ -100,29 +101,20 @@ function gatemanager:message(fd,msg)
     self._hearbeats:adjustBy(fd,os.getmillisecond())
     tsort.reverse(msg.cmds)
     local cmd = table.remove(msg.cmds)
-    local svs = self:getServices()
+    local services = self:getServices()
     local client = self._clients[fd]
     if senum.login() == cmd then
         --登陆请求
-        ---@type client 
-        local client = skynet.call(svs.login,"lua","message",fd,msg)
-        if not client.failure then
-            self._clients[fd] = client
-        else
-            debug.logServiceGate({
-                msg = msg,
-                ret = client,
-            })
-        end
+         skynet.send(services.login,"lua","message",fd,msg)
     elseif senum.assignSingle() == cmd then
         --单机游戏
-        skynet.send(svs.single,"lua","message",fd,msg)
+        skynet.send(services.single,"lua","message",fd,msg)
     elseif senum.assignHundred() == cmd then
         --百人游戏
-        skynet.send(svs.single,"lua","message",fd,msg)
+        skynet.send(services.single,"lua","message",fd,msg)
     elseif senum.assignKilling() == cmd then
         --竞技游戏游戏
-        skynet.send(svs.single,"lua","message",fd,msg)
+        skynet.send(services.single,"lua","message",fd,msg)
     elseif senum.table() == cmd then
         --桌子消息
         local svc = client.tablesvc
@@ -134,11 +126,10 @@ function gatemanager:message(fd,msg)
     end
 end
 
----回应
----@param fd  socket       @套接字
----@param msg msgBody      @数据
-function gatemanager:respond(fd,name,msg)
-    websocket.send(fd,protobuff.encode_message(name,msg))
+---登陆成功
+---@param client client @登陆成功
+function gatemanager:loginSuccessfully(client)
+    self._clients[client.fd] = client
 end
 
 return gatemanager

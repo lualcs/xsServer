@@ -51,46 +51,46 @@ end
 ---@param fd  socket      @套接字
 ---@param msg msgBody     @数据
 function loginmanager:message(fd,msg)
+    
     local cmd = table.remove(msg.cmds)
     local svs = self:getServices()
     if senum.c2s_loginTourists() == cmd then
         --游客登录
         self:touristsLogin(fd,msg)
-        skynet.retpack(self._sockets[fd])
     elseif senum.c2s_loginPhone() == cmd then
         --手机登陆
         self:phoneLogin(fd,msg)
-        skynet.retpack(self._sockets[fd])
     elseif senum.c2s_loginWeChat() == cmd then
         --微信登陆
         self:phoneLogin(fd,msg)
-        skynet.retpack(self._sockets[fd])
     end
 end
 
 ---重复登录
 ---@param fd scoket   @套接字
-function loginmanager:socketLogin(fd)
-    local client = self._sockets[fd]
-    if client then
-        return false
-    end
-    return true
+function loginmanager:repeatLogin(fd)
+    return self._sockets[fd]
 end
 
 ---保存登录
----@param fd    scoket             @套接字
----@param role  s2c_loginResult    @登录结果
-function loginmanager:cacheLogin(fd,role)
+---@param fd        scoket             @套接字
+---@param ret       s2c_loginResult    @登录结果
+function loginmanager:loginSuccessfully(fd,ret)
     local client = {
         fd = fd,
-        role = role,
+        role = ret,
         online = true,
     }
-    self._sockets[fd] = role
-    self._clients[role.rid] = role
-    ---通知skyneg
-    return true
+    self._sockets[fd] = ret
+    self._clients[ret.rid] = ret
+
+    ---通知gate服务
+    local services = self:getServices()
+    skynet.send(services.gates,"lua","loginSuccessfully",client)
+    ---通知client
+    ---返回结果
+    websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login()},ret)
+
 end
 
 ---游客登陆
@@ -98,9 +98,10 @@ end
 ---@param msg   c2s_loginTourists   @消息
 function loginmanager:touristsLogin(fd,msg)
     ---重复登录
-    if self:socketLogin(fd) then
+    if self:repeatLogin(fd) then
         return
     end
+
 
     ---服务信息
     ---@type serviceInf
@@ -115,12 +116,10 @@ function loginmanager:touristsLogin(fd,msg)
         ---登录模式
         login.loginMod = senum.tourists()
         login.loginBid = msg.accredit
-        ---返回结果
-        websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
+        
         ---保存结果
-        self:cacheLogin(fd,login)
+        self:loginSuccessfully(fd,login)
     end
-    skynet.retpack(login)
 end
 
 ---手机登陆
@@ -128,7 +127,7 @@ end
 ---@param msg   c2s_loginPhone      @消息
 function loginmanager:phoneLogin(fd,msg)
     ---重复登录
-    if self:socketLogin(fd) then
+    if self:repeatLogin(fd) then
         return
     end
 
@@ -151,9 +150,8 @@ function loginmanager:phoneLogin(fd,msg)
         ---返回结果
         websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
         ---保存结果
-        self:cacheLogin(fd,login)
+        self:loginSuccessfully(fd,login)
     end
-    skynet.retpack(login)
 end
 
 ---微信登陆
@@ -161,7 +159,7 @@ end
 ---@param msg   c2s_loginWeChat      @消息
 function loginmanager:wechatLogin(fd,msg)
     ---重复登录
-    if self:socketLogin(fd) then
+    if self:repeatLogin(fd) then
         return
     end
 
@@ -181,9 +179,8 @@ function loginmanager:wechatLogin(fd,msg)
         ---返回结果
         websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login(),senum.succeed()},login)
         ---保存结果
-        self:cacheLogin(fd,login)
+        self:loginSuccessfully(fd,login)
     end
-    skynet.retpack(login)
 end
 
 ---更新昵称

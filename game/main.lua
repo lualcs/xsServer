@@ -47,7 +47,7 @@ skynet.start(function()
      skynet.call(service,"lua","start")
      services.http_server = service
 
-      ---alliance服务
+    ---alliance服务
     local service = skynet.newservice("service_alliance")
     skynet.call(service,"lua","start")
     services.alliance = service

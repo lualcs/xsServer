@@ -185,7 +185,7 @@ function mysqlmanager:touristsLogin(accredit)
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     --返回结果
-    skynet.retpack(repak[1][1])
+    return repak[1][1]
 end
 
 ---手机登陆
@@ -200,15 +200,7 @@ function mysqlmanager:phoneLogin(phonenum,password)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
-    if repak and repak[1] and repak[1][1] then
-        --返回结果
-        skynet.retpack(repak[1][1])
-    else
-        --登录失败
-        skynet.retpack({
-            failure = "账号不存在,或者密码错误！",
-        })
-    end
+    return repak[1][1]
 end
 
 ---微信登陆
@@ -222,15 +214,7 @@ function mysqlmanager:wechatLogin(accredit)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
-    if repak and repak[1] and repak[1][1] then
-        --返回结果
-        skynet.retpack(repak[1][1])
-    else
-        --登录失败
-        skynet.retpack({
-            failure = "账号不存在,或者密码错误！",
-        })
-    end
+    return repak[1][1]
 end
 
 ---更新昵称
@@ -246,10 +230,10 @@ function mysqlmanager:changeNickname(rid,nickname)
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     --返回结果
-    skynet.retpack({
+    return {
         rid = rid,
         nickname = nickname
-    })
+    }
 end
 
 ---更新头像
@@ -264,11 +248,11 @@ function mysqlmanager:changeLogolink(rid,logolink)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
-     --返回结果
-     skynet.retpack({
+    --返回结果
+    return {
         rid = rid,
         logolink = logolink
-    })
+    }
 end
 
 ---加载联盟信息

@@ -50,7 +50,6 @@ function ws_handle.connect(fd)
 	---添加堆数据
     this._manger._hearbeats:appendBy(os.getmillisecond(),fd,fd)
 
-	debug.error("connect:",item)
 end
 
 ---关闭
@@ -67,19 +66,16 @@ end
 ---@param header string @握手信息 
 ---@param url	 string @链接地址
 function ws_handle.handshake(fd, header, url)
-	debug.error("handshake:",{fd=fd,header=header,url=url})
 end
 
 ---ping
 ---@param fd socket @套接字
 function ws_handle.ping(fd)
-	debug.error("ping:",{fd=fd})
 end
 
 ---pong
 ---@param fd socket @套接字
 function ws_handle.pong(fd)
-	debug.error("pong:",{fd=fd})
 end
 
 
@@ -89,9 +85,11 @@ end
 ---@param message   string	@数据 
 ---@param msgtype   string	@类型 "text" or "binary"
 function ws_handle.message(fd, message, msgtype)
-	local data = protobuff.decode_message(message,#message)
-	this._manger:message(fd,data)
-	skynet.trash(message,#message)
+	skynet.timeout(0,function()
+		local data = protobuff.decode_message(message,#message)
+		this._manger:message(fd,data)
+		skynet.trash(message,#message)
+    end)
 end
 
 ---监听
@@ -116,6 +114,7 @@ end
 function service.shutdown(fd)
 	if mapclients[fd] then
 		websocket.close(fd, 0 ,"heartbeat")
+		debug.logServiceGate("heartbeat shutdown",fd)
 	end
 end
 
