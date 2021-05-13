@@ -12,22 +12,22 @@ local hundredEnum = class(gameEnum)
 function hundredEnum:ctor()
 end
 
----下注动作
----@return senum
-function gameEnum.betting()
-    return "betting"
-end
-
----上庄状态
----@return senum
-function gameEnum.statusUpBanker()
-    return "statusUpBanker"
-end
-
----下注状态
+---游戏开始
 ---@return senum 
-function gameEnum.statusBet()
-    return "statusBet"
+function hundredEnum.gameStart()
+    return "gameStart"
+end
+
+---游戏下注
+---@return senum 
+function hundredEnum.gameBetting()
+    return "gameBetting"
+end
+
+---游戏结算
+---@return senum 
+function hundredEnum.gameSettle()
+    return "gameBetting"
 end
 
 return hundredEnum

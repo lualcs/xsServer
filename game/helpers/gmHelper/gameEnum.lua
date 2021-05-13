@@ -151,36 +151,4 @@ function gameEnum.player()
     return "player"
 end
 
-
----空闲状态
----@return senum 
-function gameEnum.statusIdle()
-    return "statusIdle"
-end
-
----开局状态
----@return senum 
-function gameEnum.statusStart()
-    return "statusStart"
-end
-
----展示状态
----@return senum 
-function gameEnum.statusShow()
-    return "statusShow"
-end
-
-
----结算状态
----@return senum 
-function gameEnum.statusSettle()
-    return "statusSettle"
-end
-
----结束状态
----@return senum
-function gameEnum.statusClose()
-    return "statusClose"
-end
-
 return gameEnum

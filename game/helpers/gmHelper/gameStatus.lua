@@ -3,6 +3,7 @@
     auth:Carol Luo
 ]]
 
+local os = require("extend_os")
 local class = require("class")
 local senum = require("gameEnum")
 ---@class gameStatus @游戏状态机
@@ -14,6 +15,10 @@ function gameStatus:ctor(table)
     ---游戏桌子
     ---@type gameTable
     self._table = table
+    ---切换时间
+    self._switchTimer = os.getmillisecond()
+    ---总共时间
+    self._statusTimer = nil
 end
 
 ---重启
@@ -38,12 +43,47 @@ function gameStatus:jumpGameStatus()
     self._tim:append(0,1,function()
         self:switchGameProcess(status)
     end)
+    ---记录时间
+    self._statusTimer = os.getmillisecond()
+    ---设置回调
+    self._table._tim:append(self:leftMilliscond())
+end
+
+---获取剩余时间
+---@return number @毫秒
+function gameStatus:leftMilliscond()
+    ---获取总共时间
+    local statusTimer = self:totalMilliscond()
+    ---获取当前时间
+    local currentTimer = os.getmillisecond()
+    ---获取切换时间
+    local switchTimer = self._switchTimer
+
+    return statusTimer - (currentTimer - switchTimer)
+end
+
+---获取总共时间
+---@return number @毫秒
+function gameStatus:totalMilliscond()
+    local milliscond = self._statusTimer;
+    if self._statusTimer then
+        return milliscond
+    end
 end
 
 ---游戏流程切换
+---@param status senum @游戏状态 
 function gameStatus:switchGameProcess(status)
-    assert(false,"gameStatus:switchGameProcess Is not overloaded")
 end
+
+
+---
+
+
+
+
+
+
 
 
 return gameStatus

@@ -5,11 +5,13 @@
 
 local class = require("class")
 local gameStatus = require("gameStatus")
----@class hundredStatus:gameStatus
+local senum = require("hundredHelper.hundredEnum")
+---@class hundredStatus:gameStatus @状态机
 local hundredStatus = class(gameStatus)
 
 ---构造 
 function hundredStatus:ctor()
 end
+
 
 return hundredStatus
