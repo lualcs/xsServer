@@ -5,7 +5,7 @@
 
 local class = require("class")
 local gameStatus = require("gameStatus")
-local senum = require("hundredHelper.hundredEnum")
+local senum = require("hundredEnum")
 ---@class hundredStatus:gameStatus @状态机
 local hundredStatus = class(gameStatus)
 
