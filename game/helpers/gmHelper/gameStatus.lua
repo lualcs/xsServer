@@ -46,7 +46,9 @@ function gameStatus:jumpGameStatus()
     ---记录时间
     self._statusTimer = os.getmillisecond()
     ---设置回调
-    self._table._tim:append(self:leftMilliscond())
+    self._table._tim:append(self:leftMilliscond(),1,function()
+        self:clostGameStatus(status)
+    end)
 end
 
 ---获取剩余时间
@@ -77,7 +79,10 @@ function gameStatus:switchGameProcess(status)
 end
 
 
----
+---游戏状态结束
+---@param status senum @游戏状态 
+function gameStatus:clostGameStatus(status)
+end
 
 
 

@@ -4,6 +4,7 @@
     auth:Carol Luo
 ]]
 
+local select = select
 local ipairs = ipairs
 local table = table
 local os = require("extend_os")
@@ -51,7 +52,7 @@ function timer:append(elapse,count,call,...)
     item.elapse = elapse
     item.count  = count
     item.call   = call
-    item.args   = {...}
+    item.args   = select("#",...) > 0 and {...} or nil
     local ulti = os.getmillisecond() + elapse
     local head = self._heap
     return head:append(ulti,item)
@@ -202,7 +203,7 @@ function timer:execute()
 
     ---每次只调用一个定时
     local args = item.args
-    item.call(table.unpack(args))
+    item.call(args and table.unpack(args) or nil)
     return true
 end
 
