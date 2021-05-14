@@ -178,7 +178,7 @@ end
 function mysqlmanager:touristsLogin(accredit)
     ---拼接语句
     local sqlex = format([[
-        CALL dbaccounts.procLoginTourists("%s");
+        CALL dbaccounts.procedureLoginTourists("%s");
     ]],accredit)
 
     ---执行语句
@@ -194,7 +194,7 @@ end
 function mysqlmanager:phoneLogin(phonenum,password)
     ---拼接语句
     local sqlex = format([[
-        CALL dbaccounts.procLoginPhone("%s","%s");
+        CALL dbaccounts.procedureLoginPhone("%s","%s");
     ]],phonenum,password)
 
     ---执行语句
@@ -208,7 +208,7 @@ end
 function mysqlmanager:wechatLogin(accredit)
     ---拼接语句
     local sqlex = format([[
-        CALL dbaccounts.procLoginWechat("%s");
+        CALL dbaccounts.procedureLoginWechat("%s");
     ]],accredit)
 
     ---执行语句
