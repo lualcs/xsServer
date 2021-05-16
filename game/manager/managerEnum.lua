@@ -37,6 +37,11 @@ function managerEnum.mapServices()
     return "mapServices"
 end
 
+---联盟
+---@return senum
+function managerEnum.alliance()
+    return "alliance"
+end
 
 ---单人
 ---@return senum
@@ -69,6 +74,13 @@ end
 function managerEnum.succeed()
     return "succeed"
 end
+
+---心跳
+---@return senum
+function managerEnum.heartbeat()
+    return "heartbeat"
+end
+
 
 ---登陆消息
 ---@return senum

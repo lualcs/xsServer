@@ -103,9 +103,14 @@ function gatemanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
     local services = self:getServices()
     local client = self._clients[fd]
-    if senum.login() == cmd then
+    if senum.heartbeat() == cmd then
+        debug.normal(fd,cmd)
+    elseif senum.login() == cmd then
         --登陆请求
          skynet.send(services.login,"lua","message",fd,msg)
+    elseif senum.alliance() == cmd then
+        --联盟模块
+        skynet.send(services.alliance)
     elseif senum.assignSingle() == cmd then
         --单机游戏
         skynet.send(services.single,"lua","message",fd,msg)

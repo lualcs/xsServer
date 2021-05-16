@@ -176,9 +176,9 @@ function heap:upward(pos)
         local uos = pos // 2
         ---@type boolean    @±È×ó±ß
         if 1 == pos % 2 then
-            local los 
+            local los = pos - 1 
             if -1 == comp(node,list[los]) then
-                uos = pos - 1
+                uos = los
             end
         end
         ---@type boolean    @±ÈÉÏ²ã

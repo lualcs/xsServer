@@ -11,6 +11,7 @@ local services = {nil}
 
 ---启动
 skynet.start(function()
+
     ---共享启动
     local service = skynet.uniqueservice("service_share")
     skynet.call(service, "lua", "start")
