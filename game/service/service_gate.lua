@@ -124,9 +124,11 @@ function service.mapServices(name)
 	---@type serviceInf @服务地址信息
 	this._services = services
 
-	---@type userdata @共享protobuff
 	local env = protobuff.get_protobuf_env()
+	---@type userdata @共享protobuff
     skynet.send(services.login,"lua","protobuff",env)
+	---@type userdata @共享protobuff
+    skynet.send(services.alliance,"lua","protobuff",env)
 end
 
 ---组播

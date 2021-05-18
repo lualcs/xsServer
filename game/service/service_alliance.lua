@@ -7,9 +7,10 @@ local debug = require("extend_debug")
 local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
+local protobuff = require("api_pbc")
+local alliancemanager = require("alliancemanager")
 local queue = require("skynet.queue")
 local cs = queue()
-local alliancemanager = require("alliancemanager")
 
 ---@class service_alliance @联盟服务
 local service = {}
@@ -25,6 +26,11 @@ function service.mapServices(name)
     local services = sharedata.query(name)
     ---@type serviceInf @服务地址信息
     this._services = services
+end
+
+---注册协议
+function service.protobuff(env)
+    protobuff.set_protobuf_env(env)
 end
 
   ---组播

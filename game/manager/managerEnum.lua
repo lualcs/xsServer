@@ -197,6 +197,24 @@ function managerEnum.s2c_loginResult()
     return "s2c_loginResult"
 end
 
+---联盟信息
+---@return senum
+function managerEnum.s2c_allianceInfo()
+    return "s2c_allianceInfo"
+end
+
+---代理信息
+---@return senum
+function managerEnum.s2c_agencyInfo()
+    return "s2c_agencyInfo"
+end
+
+---联盟成员
+---@return senum
+function managerEnum.s2c_memberInfo()
+    return "s2c_memberInfo"
+end
+
 ---更改昵称
 ---@return senum
 function managerEnum.c2s_changeNickname()

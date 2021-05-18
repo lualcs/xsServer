@@ -12,6 +12,7 @@ local timer = require("timer")
 local table = require("extend_table")
 local debug = require("extend_debug")
 local senum = require("managerEnum")
+local websocket = require("api_websocket")
 
 ---@class alliancemanager @gate管理
 local alliancemanager = class()
@@ -77,6 +78,9 @@ function alliancemanager:online(rid)
     agency.onlineMember = agency.onlineMember + 1
     ---成员在线标志
     member.online = true
+
+    ---发送成员信息
+
 end
 
 ---断线
@@ -101,7 +105,7 @@ end
 ---@param fd  socket      @套接字
 ---@param msg msgBody @数据
 function alliancemanager:message(fd,msg)
-  
+    local cmd = table.remove(msg.cmds)
 end
 
 ---加载联盟
