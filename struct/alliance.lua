@@ -39,7 +39,7 @@
 ---@field birthday      string      @创建日期
 
 ---@alias memberInfos memberInfo[]
----@field online    boolean     @是否在线
+
 
 
 ---@class allianceData:allianceInfo                     @联盟数据
@@ -59,7 +59,8 @@
 ---@field memberList        memberData[]                @成员列表
 ---@field onlineMember      count                       @在线成员
 
----@class memberData:memberInfo @代理数据
+---@class memberData:memberInfo @成员数据
+---@field online    boolean     @是否在线
 
 
 
@@ -70,7 +71,7 @@
 ---代理映射
 ---@alias memberHash table<memberID,memberData>
 ---成员映射
----@alias memberHashByUserID table<userID,memberData>
+---@alias memberHashByUserID table<userID,memberData[]>
 ---成员映射
 
 
