@@ -64,8 +64,35 @@ function gatemanager:heartbeatOff()
     end
 end
 
+---上线
+---@param fd scoket @上线用户
+function gatemanager:online(fd)
+
+    local client = self._clients[fd]
+    if not client then
+        return
+    end
+
+    client.online = true
+
+    ---服务信息
+    local services = self:getServices()
+    ---通知断线
+    skynet.call(services.login,"lua","online",client.role.rid)
+    ---通知联盟
+    skynet.call(services.alliance,"lua","online",client.role.rid)
+    ---分配服务
+    if client.assign then
+        skynet.call(client.assign,"lua","online",client.role.rid)
+    end
+    ---桌子服务
+    if client.table then
+        skynet.call(client.table,"lua","online",client.role.rid)
+    end
+end
+
 ---断线
----@param fd scoket @套接字
+---@param rid userID @套接字
 function gatemanager:offline(fd)
     local clients = self._clients
     local client = clients[fd]
@@ -81,7 +108,7 @@ function gatemanager:offline(fd)
     ---删除定时
     self._hearbeats:deleteBy(fd)
     ---通知断线
-    skynet.call(services.login,"lua","offline",fd)
+    skynet.call(services.login,"lua","offline",client.role.rid)
     ---通知联盟
     skynet.call(services.alliance,"lua","offline",client.role.rid)
     ---分配服务
@@ -135,6 +162,7 @@ end
 ---@param client client @登陆成功
 function gatemanager:loginSuccessfully(client)
     self._clients[client.fd] = client
+    self:online(client.fd)
 end
 
 return gatemanager

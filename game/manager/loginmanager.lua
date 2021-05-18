@@ -36,8 +36,8 @@ end
 
 ---断线
 ---@param fd scoket @套接字
-function loginmanager:offline(fd)
-    local client = self._sockets[fd]
+function loginmanager:offline(rid)
+    local client = self._clients[rid]
     client.online = false
 end
 
