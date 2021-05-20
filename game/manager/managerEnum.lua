@@ -227,4 +227,28 @@ function managerEnum.c2s_changeLogolink()
     return "c2s_changeLogolink"
 end
 
+---联盟信息
+---@return senum
+function managerEnum.c2s_allianceBase()
+    return "c2s_allianceBase"
+end
+
+---联盟信息
+---@return senum
+function managerEnum.s2c_allianceBase()
+    return "s2c_allianceBase"
+end
+
+---联盟数据
+---@return senum
+function managerEnum.c2s_allianceData()
+    return "c2s_allianceData"
+end
+
+---联盟数据
+---@return senum
+function managerEnum.s2c_allianceData()
+    return "s2c_allianceData"
+end
+
 return managerEnum

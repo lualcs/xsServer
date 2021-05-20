@@ -102,11 +102,15 @@ function alliancemanager:offline(rid)
 end
 
 ---请求
----@param fd  socket      @套接字
----@param msg msgBody @数据
+---@param fd  socket         @套接字
+---@param msg msgBody        @数据
 function alliancemanager:message(fd,msg)
     local cmd = table.remove(msg.cmds)
+    if senum.c2s_allianceBase() == cmd then
+        self:c2s_allianceBase(fd,msg)
+    end
 end
+
 
 ---加载联盟
 function alliancemanager:loadingAlliance()
@@ -227,6 +231,19 @@ function alliancemanager:assignCtor(assignClass,allianceID)
     ---单机分配
     local key = assignKyes[assignClass]
     table.insert(info[key],service)
+end
+
+
+---请求
+---@param fd  socket        @套接字
+---@param msg msgBody       @数据
+function alliancemanager:c2s_allianceBase(fd,msg)
+    ---联盟列表
+    local alliances = {nil}
+    ---填充数据
+    websocket.sendpbc(fd,senum.c2s_allianceData(),{senum.lobby()},{
+        alliances = alliances
+    })
 end
 
 return alliancemanager
