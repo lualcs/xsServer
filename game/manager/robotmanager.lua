@@ -22,6 +22,10 @@ function robotmanager:ctor(service)
     ---创建定时器
     ---@type timer
     self._timer = timer.new()
+    ---空闲机器人
+    self._idles = {nil}
+    ---工作机器人
+    self._works = {nil}
 end
 
 ---重置

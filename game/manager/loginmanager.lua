@@ -36,6 +36,13 @@ end
 
 ---断线
 ---@param fd scoket @套接字
+function loginmanager:online(rid)
+    local client = self._clients[rid]
+    client.online = true
+end
+
+---断线
+---@param fd scoket @套接字
 function loginmanager:offline(rid)
     local client = self._clients[rid]
     client.online = false
