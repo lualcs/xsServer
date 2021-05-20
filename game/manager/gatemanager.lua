@@ -77,7 +77,7 @@ function gatemanager:online(fd)
 
     ---服务信息
     local services = self:getServices()
-    ---通知断线
+    ---通知上线
     skynet.call(services.login,"lua","online",client.role.rid)
     ---通知联盟
     skynet.call(services.alliance,"lua","online",client.role.rid)
