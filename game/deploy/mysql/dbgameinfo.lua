@@ -216,6 +216,7 @@ return {
           `winnerCount` int(11) NOT NULL COMMENT '游戏胜利次数',
           `loserCount` int(11) NOT NULL COMMENT '游戏失败次数',
           `drawCount` int(11) NOT NULL COMMENT '游戏和局次数',
+          `waiveCount` int(11) NOT NULL COMMENT '弃牌次数',
           PRIMARY KEY (`rid`, `baseScore`) USING BTREE
         ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '扯旋玩家对局统计数据' ROW_FORMAT = Dynamic;
 
@@ -238,8 +239,105 @@ return {
           `winnerCount` int(11) NOT NULL COMMENT '游戏胜利次数',
           `loserCount` int(11) NOT NULL COMMENT '游戏失败次数',
           `drawCount` int(11) NOT NULL COMMENT '游戏和局次数',
+          `bomBwaiveCount` int(11) NOT NULL COMMENT '炸弹弃牌次数',
+          `straightFlushwaiveCount` int(11) NOT NULL COMMENT '同花顺弃牌次数',
+          `flushWaiveCount` int(11) NOT NULL COMMENT '同花弃牌次数',
+          `straightWaiveCount` int(11) NOT NULL COMMENT '顺子弃牌次数',
+          `pairWaiveCount` int(11) NOT NULL COMMENT '对子弃牌次数',
+          `highWaiveCount` int(11) NOT NULL COMMENT '高牌弃牌次数',
           PRIMARY KEY (`rid`, `baseScore`) USING BTREE
         ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '炸金花玩家对局统计数据' ROW_FORMAT = Dynamic;
+
+        SET FOREIGN_KEY_CHECKS = 1;
+    ]],
+
+    --创建斗公牛玩家对局统计数据
+    [[
+        SET NAMES utf8mb4;
+        SET FOREIGN_KEY_CHECKS = 0;
+        -- ----------------------------
+        -- Table structure for playerCombatDGN
+        -- ----------------------------
+        DROP TABLE IF EXISTS `playerCombatDGN`;
+        CREATE TABLE `playerCombatDGN`  (
+          `rid` int(11) NOT NULL COMMENT '游戏角色',
+          `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
+          `winnerScore` bigint(20) NOT NULL COMMENT '游戏对局赢分',
+          `loserScore` bigint(20) NOT NULL COMMENT '游戏对局输分',
+          `winnerCount` int(11) NOT NULL COMMENT '游戏胜利次数',
+          `loserCount` int(11) NOT NULL COMMENT '游戏失败次数',
+          `drawCount` int(11) NOT NULL COMMENT '游戏和局次数',
+          `waiveCount` int(11) NOT NULL COMMENT '弃牌次数',
+          PRIMARY KEY (`rid`, `baseScore`) USING BTREE
+        ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '斗公玩家对局统计数据' ROW_FORMAT = Dynamic;
+
+        SET FOREIGN_KEY_CHECKS = 1;
+    ]],
+    --创建六癞牛玩家对局统计数据
+    [[
+        SET NAMES utf8mb4;
+        SET FOREIGN_KEY_CHECKS = 0;
+        -- ----------------------------
+        -- Table structure for playerCombatLLN
+        -- ----------------------------
+        DROP TABLE IF EXISTS `playerCombatLLN`;
+        CREATE TABLE `playerCombatLLN`  (
+          `rid` int(11) NOT NULL COMMENT '游戏角色',
+          `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
+          `winnerScore` bigint(20) NOT NULL COMMENT '游戏对局赢分',
+          `loserScore` bigint(20) NOT NULL COMMENT '游戏对局输分',
+          `winnerCount` int(11) NOT NULL COMMENT '游戏胜利次数',
+          `loserCount` int(11) NOT NULL COMMENT '游戏失败次数',
+          `drawCount` int(11) NOT NULL COMMENT '游戏和局次数',
+          `waiveCount` int(11) NOT NULL COMMENT '弃牌次数',
+          PRIMARY KEY (`rid`, `baseScore`) USING BTREE
+        ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '六癞牛玩家对局统计数据' ROW_FORMAT = Dynamic;
+
+        SET FOREIGN_KEY_CHECKS = 1;
+    ]],
+
+    --创建七癞牛玩家对局统计数据
+    [[
+        SET NAMES utf8mb4;
+        SET FOREIGN_KEY_CHECKS = 0;
+        -- ----------------------------
+        -- Table structure for playerCombatQLN
+        -- ----------------------------
+        DROP TABLE IF EXISTS `playerCombatQLN`;
+        CREATE TABLE `playerCombatQLN`  (
+          `rid` int(11) NOT NULL COMMENT '游戏角色',
+          `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
+          `winnerScore` bigint(20) NOT NULL COMMENT '游戏对局赢分',
+          `loserScore` bigint(20) NOT NULL COMMENT '游戏对局输分',
+          `winnerCount` int(11) NOT NULL COMMENT '游戏胜利次数',
+          `loserCount` int(11) NOT NULL COMMENT '游戏失败次数',
+          `drawCount` int(11) NOT NULL COMMENT '游戏和局次数',
+          `waiveCount` int(11) NOT NULL COMMENT '弃牌次数',
+          PRIMARY KEY (`rid`, `baseScore`) USING BTREE
+        ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '七癞牛玩家对局统计数据' ROW_FORMAT = Dynamic;
+
+        SET FOREIGN_KEY_CHECKS = 1;
+    ]],
+
+    --创建德州扑克玩家对局统计数据
+    [[
+        SET NAMES utf8mb4;
+        SET FOREIGN_KEY_CHECKS = 0;
+        -- ----------------------------
+        -- Table structure for playerCombatTexasPoker
+        -- ----------------------------
+        DROP TABLE IF EXISTS `playerCombatTexasPoker`;
+        CREATE TABLE `playerCombatTexasPoker`  (
+          `rid` int(11) NOT NULL COMMENT '游戏角色',
+          `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
+          `winnerScore` bigint(20) NOT NULL COMMENT '游戏对局赢分',
+          `loserScore` bigint(20) NOT NULL COMMENT '游戏对局输分',
+          `winnerCount` int(11) NOT NULL COMMENT '游戏胜利次数',
+          `loserCount` int(11) NOT NULL COMMENT '游戏失败次数',
+          `drawCount` int(11) NOT NULL COMMENT '游戏和局次数',
+          `waiveCount` int(11) NOT NULL COMMENT '弃牌次数',
+          PRIMARY KEY (`rid`, `baseScore`) USING BTREE
+        ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '德州扑克玩家对局统计数据' ROW_FORMAT = Dynamic;
 
         SET FOREIGN_KEY_CHECKS = 1;
     ]],
