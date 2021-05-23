@@ -68,57 +68,52 @@ end
 ---@param rid userID @用户ID
 ---@param loginCount count @登录次数
 function alliancemanager:online(rid)
-    local member = self._memberUser[rid]
-    if not member then
+    local members = self._memberUser[rid]
+    if not members then
         return
     end
 
-    ---联盟在线人数
-    local alliance = self._allianceHash[member.allianceID]
-    if not alliance then
-        debug.logServiceAlliance({
-            member = member,
-            alliance = alliance
-        })
-        return
+    for _,member in ipairs(members) do
+        ---联盟在线人数
+        local alliance = self._allianceHash[member.allianceID]
+        if not alliance then
+            return
+        end
+
+
+        alliance.onlineMember = alliance.onlineMember + 1
+        ---代理在线人数
+        local agency = self._agencyHash[member.superiorID]
+        agency.onlineMember = agency.onlineMember + 1
+        ---成员在线标志
+        member.online = true
+
+        ---发送成员信息
     end
-
-
-    alliance.onlineMember = alliance.onlineMember + 1
-    ---代理在线人数
-    local agency = self._agencyHash[member.superiorID]
-    agency.onlineMember = agency.onlineMember + 1
-    ---成员在线标志
-    member.online = true
-
-    ---发送成员信息
-
 end
 
 ---断线
 ---@param rid userID @用户ID
 function alliancemanager:offline(rid)
-    local member = self._memberUser[rid]
-    if not member then
+    local members = self._memberUser[rid]
+    if not members then
         return
     end
 
-    ---联盟在线人数
-    local alliance = self._allianceHash[member.allianceID]
-    if not alliance then
-        debug.logServiceAlliance({
-            member = member,
-            alliance = alliance
-        })
-        return
-    end
+    for _,member in ipairs(members) do
+        ---联盟在线人数
+        local alliance = self._allianceHash[member.allianceID]
+        if not alliance then
+            return
+        end
 
-    alliance.onlineMember = alliance.onlineMember - 1
-    ---代理在线人数
-    local agency = self._agencyHash[member.superiorID]
-    agency.onlineMember = agency.onlineMember - 1
-    ---成员在线标志
-    member.online = false
+        alliance.onlineMember = alliance.onlineMember - 1
+        ---代理在线人数
+        local agency = self._agencyHash[member.superiorID]
+        agency.onlineMember = agency.onlineMember - 1
+        ---成员在线标志
+        member.online = false
+    end
 end
 
 ---加载联盟
@@ -147,9 +142,9 @@ function alliancemanager:allianceInfo(ret)
         data.agencyList = {nil}
         data.memberList = {nil}
         data.assignList = {nil}
-        data.assignSingles  = {nil}
-        data.assignHundreds = {nil}
-        data.assignKillings = {nil}
+        data.assignSingle  = nil
+        data.assignHundred = nil
+        data.assignKilling = nil
         data.onlineMember = 0
     end
 end

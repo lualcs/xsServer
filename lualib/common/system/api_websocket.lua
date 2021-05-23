@@ -7,8 +7,9 @@
 local pairs = pairs
 local ipairs = ipairs
 local tsort = require("sort")
-local api_socket = require("api_socket")
+local debug = require("extend_debug")
 local protbuff = require("api_pbc")
+local api_socket = require("api_socket")
 local websocket = require("http.websocket")
 
 ---@class api_websocket
@@ -78,7 +79,7 @@ end
 function api_websocket.sendpbc(fd,name,cmds,info)
     tsort.reverse(cmds)
     local data = protbuff.encode_message(name,cmds,info)
-    websocket.write(fd,data,"binary")
+    this.write(fd,data,"binary")
 end
 
 ---批量发送
@@ -87,7 +88,7 @@ end
 function api_websocket.sendpbcs(fds,name,cmds,info)
     tsort.reverse(cmds)
     local data = protbuff.encode_message(name,cmds,info)
-    websocket.writes(fds,data,"binary")
+    this.writes(fds,data,"binary")
 end
 
 

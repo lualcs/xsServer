@@ -98,7 +98,6 @@ function loginmanager:loginSuccessfully(fd,ret)
     ---通知client
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login()},ret)
-
 end
 
 ---游客登陆

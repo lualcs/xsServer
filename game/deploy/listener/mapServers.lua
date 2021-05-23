@@ -26,9 +26,10 @@ return {
         database    = "";           --库名
         user        = "root";       --用户
         password    = "123456";     --密码
+        charset     = "utf8mb4",    --编码
     },
 
-    ---mongo
+    ---mongo 
     mongo = {
         {
             host = "127.0.0.1",

@@ -6,14 +6,13 @@
 
 local ipairs = ipairs
 local format = string.format
+local skynet = require("skynet")
+local class = require("class")
+local timer = require("timer")
+local mysql = require("api_mysql")
 local string = require("extend_string")
 local table = require("extend_table")
 local debug = require("extend_debug")
-local skynet = require("skynet")
-local class = require("class")
-
-local timer = require("timer")
-local mysql = require("api_mysql")
 local websocket = require("api_websocket")
 local listen = require("listener.mapServers")
 
