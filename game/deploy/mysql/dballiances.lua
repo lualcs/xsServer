@@ -10,7 +10,7 @@ return {
       CREATE DATABASE `dballiances` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
     ---切换数据库使用
-    [[ USE `dballiances`;]],
+    [[USE `dballiances`;]],
     ---创建联盟信息表
     [[
       SET NAMES utf8mb4;

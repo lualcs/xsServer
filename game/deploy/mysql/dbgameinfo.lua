@@ -10,7 +10,7 @@ return {
         CREATE DATABASE `dbgameinfo` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
     ---切换数据库使用
-    [[ USE `dbgameinfo`;]],
+    [[  USE `dbgameinfo`;]],
 
     --创建金玉满堂玩家对局统计数据
     [[

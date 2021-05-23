@@ -1,6 +1,6 @@
 return {
     ---切换数据库使用
-    [[  USE `dbaccounts`;]],
+    [[USE `dbaccounts`;]],
     ---插入用户头像表
     [[INSERT INTO `library_logo`(`logo`) VALUES ("https://img2.woyaogexing.com/2021/04/10/0fc791ade6db4d96afefa955452d2934!400x400.jpeg");]],
     [[INSERT INTO `library_logo`(`logo`) VALUES ("https://img2.woyaogexing.com/2021/04/05/2ea04177e26d4e12bc41c325a2e43b6b!400x400.png");]],
