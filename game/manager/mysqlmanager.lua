@@ -43,7 +43,7 @@ end
 ---重置
 function mysqlmanager:dataReboot()
     ---构造数据库
-    self:dbstructure()
+    --self:dbstructure()
 end
 
 ---服务
@@ -238,6 +238,9 @@ function mysqlmanager:touristsLogin(accredit)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
+    if repak.err then
+        debug.error(repak)
+    end
     --返回结果
     return repak[1][1]
 end
@@ -254,6 +257,9 @@ function mysqlmanager:phoneLogin(phonenum,password)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
+    if repak.err then
+        debug.error(repak)
+    end
     return repak[1][1]
 end
 
@@ -268,6 +274,9 @@ function mysqlmanager:wechatLogin(accredit)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
+    if repak.err then
+        debug.error(repak)
+    end
     return repak[1][1]
 end
 
@@ -283,6 +292,9 @@ function mysqlmanager:changeNickname(rid,nickname)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
+    if repak.err then
+        debug.error(repak)
+    end
     --返回结果
     return {
         rid = rid,
@@ -302,6 +314,9 @@ function mysqlmanager:changeLogolink(rid,logolink)
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
+    if repak.err then
+        debug.error(repak)
+    end
     --返回结果
     return {
         rid = rid,

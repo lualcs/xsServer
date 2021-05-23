@@ -19,13 +19,14 @@ return {
       	IF NOT EXISTS(SELECT 1 FROM `accounts` WHERE `accounts` = `@accounts`) THEN
             INSERT INTO `accounts`(`accounts`,`nickname`, `logo`) VALUES (`@accounts`,`@nickname`, `@logo`); 
             SET `@rid` = LAST_INSERT_ID();
+            CALL `dballiances`.`procedureApplyForInSystemAlliance`(`@rid`);
         END IF;
       END]],
     --创建游客登陆存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureLoginTourists`(IN `@accredit` VARCHAR(256))
       BEGIN
       	SET @bindrid = 0; 
-      	SELECT `rid` INTO @bindrid FROM `bind_tourists` WHERE `key` = @accredit;
+      	SELECT `rid` INTO @bindrid FROM `bind_tourists` WHERE `key` = `@accredit`;
         IF 0 = @bindrid THEN
             #注册账号
             SET @maxRid = 0;

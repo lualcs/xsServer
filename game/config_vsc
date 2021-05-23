@@ -17,4 +17,5 @@ standalone = "0.0.0.0:2013"
 cpath = root.."cservice/?.so"
 -- daemon = "./skynet.pid"
 
-
+vscdbg_open = "$vscdbg_open"
+vscdbg_bps = [=[$vscdbg_bps]=]

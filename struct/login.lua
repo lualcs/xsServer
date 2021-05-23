@@ -37,6 +37,7 @@
 ---@field silver     score    @银币分数
 ---@field gold       score    @金币分数
 ---@field masonry    score    @砖石分数
+---@field loginCount count    @登录次数
 
 
 ---@class role:s2c_loginResult @角色数据

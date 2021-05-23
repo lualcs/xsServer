@@ -66,6 +66,7 @@ end
 
 ---上线
 ---@param rid userID @用户ID
+---@param loginCount count @登录次数
 function alliancemanager:online(rid)
     local member = self._memberUser[rid]
     if not member then
@@ -74,6 +75,15 @@ function alliancemanager:online(rid)
 
     ---联盟在线人数
     local alliance = self._allianceHash[member.allianceID]
+    if not alliance then
+        debug.logServiceAlliance({
+            member = member,
+            alliance = alliance
+        })
+        return
+    end
+
+
     alliance.onlineMember = alliance.onlineMember + 1
     ---代理在线人数
     local agency = self._agencyHash[member.superiorID]
@@ -95,6 +105,14 @@ function alliancemanager:offline(rid)
 
     ---联盟在线人数
     local alliance = self._allianceHash[member.allianceID]
+    if not alliance then
+        debug.logServiceAlliance({
+            member = member,
+            alliance = alliance
+        })
+        return
+    end
+
     alliance.onlineMember = alliance.onlineMember - 1
     ---代理在线人数
     local agency = self._agencyHash[member.superiorID]
@@ -279,7 +297,7 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
         self._memberUser[rid] = list
     end
     ---发送数据
-    websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.lobby()},s2cPack)
+    websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.login()},s2cPack)
 end
 
 return alliancemanager

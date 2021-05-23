@@ -95,7 +95,7 @@ function api_pbc.encode_message(name,cmds,data)
     --消息包
     local ok,msgbody = pcall(this.encode,name,data)
     if not ok then
-        debug.protobuff("encode_message msgbody:",{[name]=data,error = msgbody})
+        debug.protobuff("encode_message msgbody:",{[name]=data,error = msgbody,trace = debug.traceback()})
         return
     end
 

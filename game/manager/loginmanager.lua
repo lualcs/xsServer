@@ -83,6 +83,7 @@ end
 ---@param fd        scoket             @套接字
 ---@param ret       s2c_loginResult    @登录结果
 function loginmanager:loginSuccessfully(fd,ret)
+    ---@type client 
     local client = {
         fd = fd,
         role = ret,
