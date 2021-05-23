@@ -205,9 +205,9 @@ function alliancemanager:overAlliance()
 end
 
 local assignKyes = {
-    [senum.assignSingle()] = "assignSingles",
-    [senum.assignHundred()] = "assignHundreds",
-    [senum.assignKilling()] = "assignKillings",
+    [senum.assignSingle()] = "assignSingle",
+    [senum.assignHundred()] = "assignHundred",
+    [senum.assignKilling()] = "assignKilling",
 }
 ---构建分配服务
 function alliancemanager:assignCtor(assignClass,allianceID)
@@ -221,7 +221,8 @@ function alliancemanager:assignCtor(assignClass,allianceID)
     table.insert(info.assignList,service)
     ---单机分配
     local key = assignKyes[assignClass]
-    table.insert(info[key],service)
+    assert(not info[key],"重复分配服务")
+    info[key] = service
 end
 
 
@@ -231,8 +232,8 @@ end
 ---@param msg  msgBody        @数据
 function alliancemanager:message(fd,rid,msg)
     local cmd = table.remove(msg.cmds)
-    if senum.s2c_allianceClubs() == cmd then
-        self:s2c_allianceClubs(fd,rid,msg)
+    if senum.c2s_allianceClubs() == cmd then
+        self:c2s_allianceClubs(fd,rid,msg)
     end
 end
 
@@ -241,7 +242,7 @@ end
 ---@param fd   socket         @套接字
 ---@param rid  userID         @用户ID
 ---@param msg  msgBody        @数据
-function alliancemanager:s2c_allianceClubs(fd,rid,msg)
+function alliancemanager:c2s_allianceClubs(fd,rid,msg)
 
     local s2cPack = self._memberPack[rid]
     if not s2cPack then
@@ -252,7 +253,7 @@ function alliancemanager:s2c_allianceClubs(fd,rid,msg)
         packs.clubs = clubs
         ---数据信息
         ---@type memberData[]
-        local list = self._memberUser[rid]
+        local list = self._memberUser[rid] or {nil}
         for _,member in ipairs(list) do
             local alliance = self._allianceHash[member.allianceID]
             local agency = self._agencyHash[member.superiorID]
@@ -275,6 +276,7 @@ function alliancemanager:s2c_allianceClubs(fd,rid,msg)
 
         s2cPack = packs
         self._memberPack[rid] = s2cPack
+        self._memberUser[rid] = list
     end
     ---发送数据
     websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.lobby()},s2cPack)

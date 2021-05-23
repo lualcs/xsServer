@@ -141,7 +141,7 @@ end
 
 local copy1 = {nil}
 ---删除玩家邮件数据
----@filed objectId  string  @唯一标识
+---@field objectId  string  @唯一标识
 function mongomanager:earseEmail(objectId)
     ---查询邮件
     local mongoEmail = self:loadingEmailBy(objectId)
@@ -156,9 +156,9 @@ function mongomanager:earseEmail(objectId)
 end
 
 ---删除玩家邮件数据
----@filed objectIds  string[]  @唯一标识
+---@field objectIds  string[]  @唯一标识
 function mongomanager:earseEmails(objectIds)
-    for _,ObjectId in ipairs(objectIds) do
+    for _,objectId in ipairs(objectIds) do
         self:earseEmail(objectId)
     end
 end

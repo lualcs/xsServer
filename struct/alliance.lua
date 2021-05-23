@@ -48,9 +48,9 @@
 ---@field agencyList        agencyData[]                @代理列表
 ---@field memberList        memberData[]                @成员列表
 ---@field assignList        service[]                   @分配服务
----@field assignSingles     service[]                   @单机分配
----@field assignHundreds    service[]                   @百人分配
----@field assignKillings    service[]                   @竞争分配
+---@field assignSingle      service[]                   @单机分配
+---@field assignHundred     service[]                   @百人分配
+---@field assignKilling     service[]                   @竞争分配
 ---@field onlineMember      count                       @在线成员
 
 
