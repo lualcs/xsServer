@@ -132,26 +132,34 @@ function gatemanager:message(fd,msg)
     local client = self._clients[fd]
     if senum.heartbeat() == cmd then
         debug.normal(fd,cmd)
-    elseif senum.login() == cmd then
+    end
+
+    if senum.login() == cmd then
         --登陆请求
          skynet.send(services.login,"lua","message",fd,msg)
-    elseif senum.alliance() == cmd then
+    end
+
+    if not client then
+        return
+    end
+
+    if senum.alliance() == cmd then
         --联盟模块
         skynet.send(services.alliance)
     elseif senum.assignSingle() == cmd then
         --单机游戏
-        skynet.send(services.single,"lua","message",fd,msg)
+        skynet.send(services.single,"lua","message",fd,client.role.rid,msg)
     elseif senum.assignHundred() == cmd then
         --百人游戏
-        skynet.send(services.single,"lua","message",fd,msg)
+        skynet.send(services.single,"lua","message",fd,client.role.rid,msg)
     elseif senum.assignKilling() == cmd then
         --竞技游戏游戏
-        skynet.send(services.single,"lua","message",fd,msg)
+        skynet.send(services.single,"lua","message",fd,client.role.rid,msg)
     elseif senum.table() == cmd then
         --桌子消息
         local svc = client.tablesvc
         if svc then
-            skynet.send(svc,"lua","message",fd,msg)
+            skynet.send(svc,"lua","message",fd,client.role.rid,msg)
         end
     else
         debug.error("Unknown command")

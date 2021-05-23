@@ -43,6 +43,18 @@ function managerEnum.alliance()
     return "alliance"
 end
 
+---代理
+---@return senum
+function managerEnum.agency()
+    return "agency"
+end
+
+---成员
+---@return senum
+function managerEnum.member()
+    return "member"
+end
+
 ---单人
 ---@return senum
 function managerEnum.assignSingle()
@@ -241,14 +253,14 @@ end
 
 ---联盟数据
 ---@return senum
-function managerEnum.c2s_allianceData()
-    return "c2s_allianceData"
+function managerEnum.c2s_allianceClubs()
+    return "c2s_allianceClubs"
 end
 
 ---联盟数据
 ---@return senum
-function managerEnum.s2c_allianceData()
-    return "s2c_allianceData"
+function managerEnum.s2c_allianceClubs()
+    return "s2c_allianceClubs"
 end
 
 return managerEnum

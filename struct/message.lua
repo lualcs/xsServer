@@ -20,3 +20,13 @@
 ---@class s2c_memberInfo @联盟成员
 ---@field memberID      mermberID   @成员ID
 ---@field identity      senum       @成员身份
+
+
+---@class s2c_allianceClub @俱乐部信息
+---@field alliance  s2c_allianceInfo @联盟信息 
+---@field agency    s2c_agencyInfo @联盟信息 
+---@field member    s2c_memberInfo @成员信息 
+
+---@class s2c_allianceClubs @俱乐部信息
+---@field clubs  s2c_allianceClub[] @联盟信息 
+

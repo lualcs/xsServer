@@ -56,6 +56,12 @@ end
 function mysqlmanager:dbstructure()
     ---构造dbaccounts
     self:dbaccounts()
+    ---构造dbaccountsProcedure
+    self:dbaccountsProcedure()
+    ---构造dballiances
+    self:dballiances()
+    ---构造dballiancesProcedure
+    self:dballiancesProcedure()
     ---构造dbPlatform
     self:dbplatform()
     ---构造dbgameinfo
@@ -69,6 +75,54 @@ end
 ---dbaccounts 结构
 function mysqlmanager:dbaccounts()
     local cmds = require("mysql.dbaccounts")
+    ---执行语句
+    local mysql = self._mysql
+    for index,cmd in ipairs(cmds) do
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
+    end
+end
+
+---dbaccountsProcedure 结构
+function mysqlmanager:dbaccountsProcedure()
+    local cmds = require("mysql.dbaccountsProcedure")
+    ---执行语句
+    local mysql = self._mysql
+    for index,cmd in ipairs(cmds) do
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
+    end
+end
+
+---dbaccounts 结构
+function mysqlmanager:dballiances()
+    local cmds = require("mysql.dballiances")
+    ---执行语句
+    local mysql = self._mysql
+    for index,cmd in ipairs(cmds) do
+        local result = mysql:query(cmd)
+        if result.err then
+            debug.normal({
+                ret = result,
+                sql = cmd,
+            })
+        end
+    end
+end
+
+---dballiancesProcedure 结构
+function mysqlmanager:dballiancesProcedure()
+    local cmds = require("mysql.dballiancesProcedure")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -264,7 +318,7 @@ function mysqlmanager:loadingAlliance()
     ---加载联盟
     local start = 1
     while true do
-        local cmd = format("SELECT * FROM `dbaccounts`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;",start,start+count)
+        local cmd = format("SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;",start,start+count)
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
@@ -285,7 +339,7 @@ function mysqlmanager:loadingAlliance()
     ---加载代理
     local start = 1
     while true do
-        local cmd = format("SELECT * FROM `dbaccounts`.`agencys` WHERE `agentID` BETWEEN %d AND %d;",start,start+count)
+        local cmd = format("SELECT * FROM `dballiances`.`agencys` WHERE `agentID` BETWEEN %d AND %d;",start,start+count)
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
@@ -306,7 +360,7 @@ function mysqlmanager:loadingAlliance()
     ---加载成员
     local start = 1
     while true do
-        local cmd = format("SELECT * FROM `dbaccounts`.`members` WHERE `memberID` BETWEEN %d AND %d;",start,start+count)
+        local cmd = format("SELECT * FROM `dballiances`.`members` WHERE `memberID` BETWEEN %d AND %d;",start,start+count)
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({

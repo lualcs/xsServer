@@ -45,6 +45,8 @@ function alliancemanager:ctor(service)
     self._memberHash = {nil}
     ---@type memberHashByUserID
     self._memberUser = {nil}
+    ---@type table<userID,s2c_allianceClubs>
+    self._memberPack = {nil}
 end
 
 ---重置
@@ -100,17 +102,6 @@ function alliancemanager:offline(rid)
     ---成员在线标志
     member.online = false
 end
-
----请求
----@param fd  socket         @套接字
----@param msg msgBody        @数据
-function alliancemanager:message(fd,msg)
-    local cmd = table.remove(msg.cmds)
-    if senum.c2s_allianceBase() == cmd then
-        self:c2s_allianceBase(fd,msg)
-    end
-end
-
 
 ---加载联盟
 function alliancemanager:loadingAlliance()
@@ -235,15 +226,58 @@ end
 
 
 ---请求
----@param fd  socket        @套接字
----@param msg msgBody       @数据
-function alliancemanager:c2s_allianceBase(fd,msg)
-    ---联盟列表
-    local alliances = {nil}
-    ---填充数据
-    websocket.sendpbc(fd,senum.c2s_allianceData(),{senum.lobby()},{
-        alliances = alliances
-    })
+---@param fd   socket         @套接字
+---@param rid  userID         @用户ID
+---@param msg  msgBody        @数据
+function alliancemanager:message(fd,rid,msg)
+    local cmd = table.remove(msg.cmds)
+    if senum.s2c_allianceClubs() == cmd then
+        self:s2c_allianceClubs(fd,rid,msg)
+    end
+end
+
+
+---请求
+---@param fd   socket         @套接字
+---@param rid  userID         @用户ID
+---@param msg  msgBody        @数据
+function alliancemanager:s2c_allianceClubs(fd,rid,msg)
+
+    local s2cPack = self._memberPack[rid]
+    if not s2cPack then
+        ---联盟列表
+        ---@type s2c_allianceClub[]
+        local clubs = {nil}
+        local packs = {nil}
+        packs.clubs = clubs
+        ---数据信息
+        ---@type memberData[]
+        local list = self._memberUser[rid]
+        for _,member in ipairs(list) do
+            local alliance = self._allianceHash[member.allianceID]
+            local agency = self._agencyHash[member.superiorID]
+            table.insert(clubs,{
+                alliance = {
+                    allianceID = alliance.allianceID,
+                    allianceName = alliance.name,
+                    memberNumber = #alliance.memberList
+                },
+                agency = {
+                    agentID = agency.agentID,
+                    memberNumber = #agency.memberList,
+                },
+                member = {
+                    memberID = member.memberID,
+                    identity = member.identity
+                },
+            })
+        end
+
+        s2cPack = packs
+        self._memberPack[rid] = s2cPack
+    end
+    ---发送数据
+    websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.lobby()},s2cPack)
 end
 
 return alliancemanager
