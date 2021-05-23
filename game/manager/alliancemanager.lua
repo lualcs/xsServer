@@ -179,9 +179,9 @@ function alliancemanager:membersInfo(ret)
         ---保存数据
         table.insert(list,info)
         hash[info.memberID] = info
-        local playerClub = self._memberUser[info.rid] or {nil}
-        self._memberUser[info.rid] = playerClub
-        table.insert(info)
+        local clubs = self._memberUser[info.rid] or {nil}
+        self._memberUser[info.rid] = clubs
+        table.insert(clubs,info)
 
          ---组织数据
         ---@type memberData
