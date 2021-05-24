@@ -26,8 +26,6 @@ end
 
 ---重置
 function chttpmanger:dataReboot()
-    ---启动定时器
-    self._timer:poling()
 end
 
 ---服务

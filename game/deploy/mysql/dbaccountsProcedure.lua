@@ -18,8 +18,7 @@ return {
         #注册账号
       	IF NOT EXISTS(SELECT 1 FROM `accounts` WHERE `accounts` = `@accounts`) THEN
             INSERT INTO `accounts`(`accounts`,`nickname`, `logo`) VALUES (`@accounts`,`@nickname`, `@logo`); 
-            SET `@rid` = LAST_INSERT_ID();
-            CALL `dballiances`.`procedureApplyForInSystemAlliance`(`@rid`);
+            SET @rid =  LAST_INSERT_ID();
         END IF;
       END]],
     --创建游客登陆存储过程
@@ -37,7 +36,7 @@ return {
             #绑定游客
             INSERT INTO `bind_tourists`(`rid`,`key`) VALUES (@bindrid, `@accredit`); 
         END IF;
-      	SELECT * FROM `accounts` WHERE rid = @bindrid;
+      	SELECT * FROM `accounts` WHERE `rid` = @bindrid;
       END]],
     --创建手机登陆存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureLoginPhone`(
@@ -46,7 +45,7 @@ return {
       BEGIN
         SET @bindrid = 0; 
         SELECT `rid` INTO @bindrid FROM `bind_phone` WHERE `num` = @number and `pwd` = @password;
-        SELECT * FROM `accounts` WHERE rid = @bindrid;
+        SELECT * FROM `accounts` WHERE `rid` = @bindrid;
       END]],
     --创建手机注册存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureRegisterPhone`(
@@ -63,9 +62,9 @@ return {
           SELECT COUNT(1) INTO @maxRid FROM `accounts`;
           CALL procedureRegisteredAccounts(CONCAT("phone:",@maxRid + 1),@nickname,@logolnk,@bindrid);
           #绑定手机
-          INSERT INTO `bind_phone`(`rid`,`num`,`pwd`) VALUES (@bindrid, `@number`,`@password`); 
+          INSERT INTO `bind_phone`(`rid`,`num`,`pwd`) VALUES (@bindrid, @number,@password); 
         END IF;
-        SELECT * FROM `accounts` WHERE rid = @bindrid;
+        SELECT * FROM `accounts` WHERE `rid` = @bindrid;
       END]],
     --创建微信登陆存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureLoginWechat`(

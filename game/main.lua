@@ -1,16 +1,22 @@
+local ipairs = ipairs
+local clock = require("clock")
 local skynet = require("skynet")
 local senum = require("managerEnum")
-local sharedata = require("skynet.sharedata")
-local ipairs = ipairs
 local table = require("extend_table")
 local debug = require("extend_debug")
 local multicast = require("api_multicast")
+local sharedata = require("skynet.sharedata")
 
 ---@type serviceInf @服务信息
 local services = {nil}
 
 ---启动
 skynet.start(function()
+    local timer = clock.new("Welecome client count down %d 🕛🕛🕛")
+    ---倒计时监听
+    timer:append(30,1,function()
+        skynet.call(services.gates,"lua","listen")
+    end)
 
     ---共享启动
     local service = skynet.uniqueservice("service_share")
@@ -58,11 +64,6 @@ skynet.start(function()
     skynet.call(service,"lua","start")
     services.login = service
 
-    ---gate服务
-    local service = skynet.newservice("service_gate")
-    skynet.call(service,"lua","start")
-    services.gates = service
-
     ---robot服务
     local service = skynet.newservice("service_robot")
     skynet.call(service,"lua","start")
@@ -74,6 +75,11 @@ skynet.start(function()
     channel:create()
     services.mainChannel = channel:channel()
 
+    ---gate服务
+    local service = skynet.newservice("service_gate")
+    skynet.call(service,"lua","start")
+    services.gates = service
+
     ---服务信息共享
     skynet.call(services.share,"lua","setShare",senum.mapServices(),services)
     ---服务信息广播
@@ -82,7 +88,5 @@ skynet.start(function()
     skynet.call(services.share,"lua","distributed","multicast")
     ---服务全部完成
     skynet.call(services.share,"lua","distributed","dataReboot")
-
-
 end)
 

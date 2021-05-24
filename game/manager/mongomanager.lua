@@ -36,7 +36,6 @@ function mongomanager:ctor(service)
     self._mongo:connect()
     ---启动定时器
     self._timer = timer.new()
-    self._timer:poling()
 end
 
 ---重置

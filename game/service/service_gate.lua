@@ -5,17 +5,17 @@
 ]]
 
 local format = string.format
-local reusable = require("reusable")
 local os = require("extend_os")
-local debug = require("extend_debug")
 local json = require("api_json")
+local skynet = require("skynet")
+local queue = require("skynet.queue")
+local protobuff = require("api_pbc")
+local reusable = require("reusable")
+local debug = require("extend_debug")
 local multicast = require("api_multicast")
 local websocket = require("api_websocket")
 local socketdriver = require("api_socketdriver")
-local protobuff = require("api_pbc")
-local skynet = require("skynet")
 local sharedata = require("skynet.sharedata")
-local queue = require("skynet.queue")
 local cs = queue()
 
 local gatemanager = require("gatemanager")
@@ -97,6 +97,25 @@ function service.listen()
 	--监听
 	local gate = mapServers.gate
 	local fd = websocket.listen(gate.host,gate.port,ws_handle)
+	debug.logServiceGate({
+		["💢"] = "Welecome client ！！！",
+		["💥"] = "Welecome client ！！！",
+		["💝"] = "Welecome client ！！！",
+		["💘"] = "Welecome client ！！！",
+		["😍"] = "Welecome client ！！！",
+		["🥰"] = "Welecome client ！！！",
+		["🎡"] = "Welecome client ！！！",
+		["🎀"] = "Welecome client ！！！",
+		["🥎"] = "Welecome client ！！！",
+		["🥎"] = "Welecome client ！！！",
+		["🏓"] = "Welecome client ！！！",
+		["💊"] = "Welecome client ！！！",
+		["🎵"] = "Welecome client ！！！",
+		["🎶"] = "Welecome client ！！！",
+		["💔"] = "Welecome client ！！！",
+		["💞"] = "Welecome client ！！！",
+		["💗"] = "Welecome client ！！！",
+	})
 end
 
 ---启动

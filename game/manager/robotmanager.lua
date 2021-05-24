@@ -30,8 +30,6 @@ end
 
 ---重置
 function robotmanager:dataReboot()
-    ---启动定时器
-    self._timer:poling()
 end
 
 ---服务

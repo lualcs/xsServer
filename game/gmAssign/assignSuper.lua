@@ -37,7 +37,6 @@ function assignSuper:ctor(service,allianceID)
     ---@type timer @定时器
     self._timer = timer.new()
     self._timer:dataReboot()
-    self._timer:poling()
 end
 
 ---重置

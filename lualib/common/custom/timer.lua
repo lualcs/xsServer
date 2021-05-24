@@ -15,6 +15,7 @@ local reusable = require("reusable")
 
 ---@class timer
 local timer = class()
+local this = timer
 ---构造 
 function timer:ctor()
     ---@type heap                   @最大堆
@@ -27,6 +28,8 @@ function timer:ctor()
     self._poling = function(_)
         self:poling()
     end
+    ---启动定时器
+    skynet.timeout(0,self._poling)
 end
 
 ---重置
@@ -37,6 +40,11 @@ function timer:dataReboot()
     self._heap:clear()
     ---@type table<string,timeID>   @定时器
     self._list   = {}
+end
+
+---获取时间
+function timer:time()
+    return os.getmillisecond()
 end
 
 ---定时回调
@@ -53,7 +61,7 @@ function timer:append(elapse,count,call,...)
     item.count  = count
     item.call   = call
     item.args   = select("#",...) > 0 and {...} or nil
-    local ulti = os.getmillisecond() + elapse
+    local ulti = self:time() + elapse
     local head = self._heap
     return head:append(ulti,item)
 end
@@ -112,7 +120,7 @@ end
 ---剩余时间
 ---@param timeID timeID
 function timer:remaining(timeID)
-    local now = self._pauset or os.getmillisecond()
+    local now = self._pauset or self:time()
     for _,item in ipairs(self._heap.list) do
         if item.auto == timeID then
             return now - item.ticks
@@ -132,7 +140,7 @@ end
 ---暂停定时
 function timer:pause()
     if not self._pauset then
-        self._pauset = os.getmillisecond()
+        self._pauset = self:time()
     end
 end
 
@@ -141,7 +149,7 @@ function timer:uPause()
     local pause = self._pauset
     if pause then
         self._pauset = nil
-        local now = os.getmillisecond()
+        local now = self:time()
         local dif = now - pause
         for _,item in ipairs(self._heap.list) do
             item.ticks = item.ticks + dif
@@ -154,12 +162,31 @@ end
 
 ---定时轮询
 function timer:poling()
+    ---暂停
     if self._pauset then
         return
     end
-    skynet.timeout(10,self._poling)
+    ---定时
+    self:timeout()
+
     --循环执行
-    while self:execute() do end
+    while self:execute() do 
+    end
+end
+
+---轮询器
+function timer:timeout()
+    skynet.timeout(10,self._poling)
+end
+
+---检测器
+---@param inow number @当前时间
+---@param iend number @结束时间
+function timer:ifExpire(inow,iend)
+    if inow < iend then
+        return false
+    end
+    return true
 end
 
 ---执行
@@ -173,9 +200,11 @@ function timer:execute()
         return false
     end
     ---@type MS         @时间
-    local alter = os.getmillisecond()
-    local ticks = rede.ticks
-    if ticks > alter then
+    local inow = self:time()
+    local iend = rede.ticks
+
+    ---到期检查
+    if not self:ifExpire(inow,iend) then
         return false
     end
 
@@ -188,17 +217,17 @@ function timer:execute()
         item.count = count - 1
     end
 
-     ---下次触发
-     rede.ticks = ticks + item.elapse
-     ---调整位置
-     heap:adjust(rede,1)
-
     if 0 == item.count then
         ---移除事件
         heap:fetch()
         ---回收数据
         local store = self._store
         store:set(item)
+    else
+        ---下次触发
+        rede.ticks = iend + item.elapse
+        ---调整位置
+        heap:adjustByFirst(rede)
     end
 
     ---每次只调用一个定时

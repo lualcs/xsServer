@@ -35,14 +35,13 @@ function mysqlmanager:ctor(service)
 
     ---启动定时器
     self._timer = timer.new()
-    self._timer:poling()
 
 end
 
 ---重置
 function mysqlmanager:dataReboot()
     ---构造数据库
-    --self:dbstructure()
+    self:dbstructure()
 end
 
 ---服务
@@ -230,15 +229,14 @@ end
 ---@param accredit string @登录凭证
 function mysqlmanager:touristsLogin(accredit)
     ---拼接语句
-    local sqlex = format([[
-        CALL dbaccounts.procedureLoginTourists("%s");
-    ]],accredit)
+    local sqlex = format([[CALL dbaccounts.procedureLoginTourists("%s");]],accredit)
 
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     if repak.err then
         debug.error(repak)
+        return
     end
     --返回结果
     return repak[1][1]
@@ -249,15 +247,14 @@ end
 ---@param password string @登录密码
 function mysqlmanager:phoneLogin(phonenum,password)
     ---拼接语句
-    local sqlex = format([[
-        CALL dbaccounts.procedureLoginPhone("%s","%s");
-    ]],phonenum,password)
+    local sqlex = format([[CALL dbaccounts.procedureLoginPhone("%s","%s");]],phonenum,password)
 
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     if repak.err then
         debug.error(repak)
+        return
     end
     return repak[1][1]
 end
@@ -266,15 +263,14 @@ end
 ---@param accredit string @登录凭证
 function mysqlmanager:wechatLogin(accredit)
     ---拼接语句
-    local sqlex = format([[
-        CALL dbaccounts.procedureLoginWechat("%s");
-    ]],accredit)
+    local sqlex = format([[CALL dbaccounts.procedureLoginWechat("%s");]],accredit)
 
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     if repak.err then
         debug.error(repak)
+        return
     end
     return repak[1][1]
 end
@@ -284,15 +280,14 @@ end
 ---@param nickname  string  @更新昵称
 function mysqlmanager:changeNickname(rid,nickname)
     ---拼接语句
-    local sqlex = format([[
-        UPDATE `dbaccounts`.`accounts` SET `nickname` = "%s"WHERE `rid` = %d;
-    ]],nickname,rid)
+    local sqlex = format([[UPDATE `dbaccounts`.`accounts` SET `nickname` = "%s"WHERE `rid` = %d;]],nickname,rid)
 
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     if repak.err then
         debug.error(repak)
+        return
     end
     --返回结果
     return {
@@ -306,15 +301,14 @@ end
 ---@param logolink  string  @更新昵称
 function mysqlmanager:changeLogolink(rid,logolink)
     ---拼接语句
-    local sqlex = format([[
-        UPDATE `dbaccounts`.`accounts` SET `logo` = "%s"WHERE `rid` = %d;
-    ]],logolink,rid)
+    local sqlex = format([[UPDATE `dbaccounts`.`accounts` SET `logo` = "%s"WHERE `rid` = %d;]],logolink,rid)
 
     ---执行语句
     local mysql = self._mysql
     local repak = mysql:query(sqlex)
     if repak.err then
         debug.error(repak)
+        return
     end
     --返回结果
     return {
@@ -332,7 +326,7 @@ function mysqlmanager:loadingAlliance()
     ---加载联盟
     local start = 1
     while true do
-        local cmd = format("SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;",start,start+count)
+        local cmd = format([[SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;]],start,start+count)
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
@@ -394,6 +388,26 @@ function mysqlmanager:loadingAlliance()
 
     ---加载完成
     skynet.call(services.alliance,"lua","overAlliance")
+end
+
+---请求
+---@param rid  userID         @用户ID
+function mysqlmanager:applyForInSystemAlliance(rid)
+    local services = self:getServices()
+    local mysql = self._mysql
+    local excmd = format([[
+        CALL `dballiances`.`procedureApplyForInSystemAlliance`(%d);
+        ]],rid)
+    print(excmd)
+    local result = mysql:query(excmd)
+    if result.err then
+        debug.normal({
+            ret = result,
+            sql = excmd,
+        })
+        return
+    end
+    skynet.call(services.alliance,"lua","membersInfo",result)
 end
 
 return mysqlmanager

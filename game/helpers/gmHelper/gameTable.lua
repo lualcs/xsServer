@@ -413,8 +413,6 @@ function gameTable:gameStart()
     self:dataReboot()
     ---初始缓存
     self:cacheStart()
-    ---启动定时
-    self:startTimer()
     ---扩展开始
     self:extendStart() 
 end
@@ -455,11 +453,6 @@ function gameTable:cacheStart()
     })
 end
 
-
----启动定时
-function gameTable:startTimer()
-    self._tim:poling()
-end
 
 ---请求
 ---@param rid           userID          @玩家

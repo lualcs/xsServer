@@ -38,8 +38,6 @@ end
 
 ---重置
 function gatemanager:dataReboot()
-    ---启动定时
-    self._timer:poling()
     ---断线检查
     self._timer:appendEver(1000,function()
         self:heartbeatOff()

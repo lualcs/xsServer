@@ -97,6 +97,12 @@ function heap:adjust(node,pos)
 end
 
 ---调整节点
+---@param node  heapNode @变化
+function heap:adjustByFirst(node)
+    self:adjust(node,1)
+end
+
+---调整节点
 ---@param auto  number   @标识
 ---@param tick  number   @调整
 function heap:adjustBy(auto,tick)

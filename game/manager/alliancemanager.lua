@@ -51,8 +51,6 @@ end
 
 ---重置
 function alliancemanager:dataReboot()
-    ---启动定时器
-    self._timer:poling()
     ---加载联盟信息
     self:loadingAlliance()
 end
@@ -212,9 +210,6 @@ function alliancemanager:overAlliance()
            self:assignCtor(assignClass,allianceID)
         end
     end
-
-    ---gate服务 开始监听
-    skynet.call(services.gates,"lua","listen")
 end
 
 local assignKyes = {
@@ -257,42 +252,45 @@ end
 ---@param msg  msgBody        @数据
 function alliancemanager:c2s_allianceClubs(fd,rid,msg)
 
-    local s2cPack = self._memberPack[rid]
-    if not s2cPack then
-        ---联盟列表
-        ---@type s2c_allianceClub[]
-        local clubs = {nil}
-        local packs = {nil}
-        packs.clubs = clubs
-        ---数据信息
-        ---@type memberData[]
-        local list = self._memberUser[rid] or {nil}
-        for _,member in ipairs(list) do
-            local alliance = self._allianceHash[member.allianceID]
-            local agency = self._agencyHash[member.superiorID]
-            table.insert(clubs,{
-                alliance = {
-                    allianceID = alliance.allianceID,
-                    allianceName = alliance.name,
-                    memberNumber = #alliance.memberList
-                },
-                agency = {
-                    agentID = agency.agentID,
-                    memberNumber = #agency.memberList,
-                },
-                member = {
-                    memberID = member.memberID,
-                    identity = member.identity
-                },
-            })
-        end
-
-        s2cPack = packs
-        self._memberPack[rid] = s2cPack
-        self._memberUser[rid] = list
+    local packs = self._memberPack[rid] or {nil}
+    ---系统联盟
+    if not packs then
+        local services = self:getServices()
+        skynet.call(services.mysql,"lua","applyForInSystemAlliance",rid)
+        self._memberPack[rid] = packs
+        return
     end
+
+    ---联盟列表
+    ---@type s2c_allianceClub[]
+    local clubs = {nil}
+    packs.clubs = clubs
+    ---数据信息
+    ---@type memberData[]
+    local list = self._memberUser[rid]
+    for _,member in ipairs(list) do
+        local alliance = self._allianceHash[member.allianceID]
+        local agency = self._agencyHash[member.superiorID]
+        table.insert(clubs,{
+            alliance = {
+                allianceID = alliance.allianceID,
+                allianceName = alliance.name,
+                memberNumber = #alliance.memberList
+            },
+            agency = {
+                agentID = agency.agentID,
+                memberNumber = #agency.memberList,
+            },
+            member = {
+                memberID = member.memberID,
+                identity = member.identity
+            },
+        })
+    end
+
+    self._memberPack[rid] = packs
     ---发送数据
-    websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.login()},s2cPack)
+    websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.login()},packs)
 end
 
 return alliancemanager
