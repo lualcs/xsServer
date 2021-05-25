@@ -45,14 +45,10 @@ function alliancemanager:ctor(service)
     self._memberHash = {nil}
     ---@type memberHashByUserID
     self._memberUser = {nil}
-    ---@type table<userID,s2c_allianceClubs>
-    self._memberPack = {nil}
 end
 
 ---重置
 function alliancemanager:dataReboot()
-    ---加载联盟信息
-    self:loadingAlliance()
 end
 
 ---服务
@@ -112,12 +108,6 @@ function alliancemanager:offline(rid)
         ---成员在线标志
         member.online = false
     end
-end
-
----加载联盟
-function alliancemanager:loadingAlliance()
-    local services = self:getServices()
-    skynet.send(services.mysql,"lua","loadingAlliance")
 end
 
 ---联盟数据
@@ -210,6 +200,8 @@ function alliancemanager:overAlliance()
            self:assignCtor(assignClass,allianceID)
         end
     end
+
+    skynet.error("alliancemanager finish")
 end
 
 local assignKyes = {
@@ -249,18 +241,16 @@ end
 ---请求
 ---@param fd   socket         @套接字
 ---@param rid  userID         @用户ID
----@param msg  msgBody        @数据
 function alliancemanager:c2s_allianceClubs(fd,rid,msg)
-
-    local packs = self._memberPack[rid] or {nil}
+    
     ---系统联盟
-    if not packs then
+    if  not self._memberUser[rid] then
         local services = self:getServices()
-        skynet.call(services.mysql,"lua","applyForInSystemAlliance",rid)
-        self._memberPack[rid] = packs
+        skynet.send(services.mysql,"lua","applyForInSystemAlliance",fd,rid,msg)
         return
     end
 
+    local packs = {nil}
     ---联盟列表
     ---@type s2c_allianceClub[]
     local clubs = {nil}
@@ -287,8 +277,6 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
             },
         })
     end
-
-    self._memberPack[rid] = packs
     ---发送数据
     websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.login()},packs)
 end

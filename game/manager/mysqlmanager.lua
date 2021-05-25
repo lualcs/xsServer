@@ -42,6 +42,10 @@ end
 function mysqlmanager:dataReboot()
     ---构造数据库
     self:dbstructure()
+    ---加载联盟
+    self:loadingAlliance()
+    
+    skynet.error("mysqlmanager finish")
 end
 
 ---服务
@@ -392,13 +396,10 @@ end
 
 ---请求
 ---@param rid  userID         @用户ID
-function mysqlmanager:applyForInSystemAlliance(rid)
+function mysqlmanager:applyForInSystemAlliance(fd,rid,msg)
     local services = self:getServices()
     local mysql = self._mysql
-    local excmd = format([[
-        CALL `dballiances`.`procedureApplyForInSystemAlliance`(%d);
-        ]],rid)
-    print(excmd)
+    local excmd = format([[CALL `dballiances`.`procedureApplyForInSystemAlliance`(%d);]],rid)
     local result = mysql:query(excmd)
     if result.err then
         debug.normal({
@@ -407,7 +408,14 @@ function mysqlmanager:applyForInSystemAlliance(rid)
         })
         return
     end
-    skynet.call(services.alliance,"lua","membersInfo",result)
+
+    local list = result[1]
+    if table.empty(list) then
+        debug.normal("empty list:",list)
+    end
+
+    skynet.call(services.alliance,"lua","membersInfo",list)
+    skynet.call(services.alliance,"lua","c2s_allianceClubs",fd,rid,msg)
 end
 
 return mysqlmanager

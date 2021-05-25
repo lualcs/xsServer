@@ -47,8 +47,8 @@ return {
             ELSE
                 INSERT INTO `members`(`rid`, `identity`, `superiorID`, `allianceID`) VALUES (`@rid`,'member', @agentID, @allianceID);
                 SET @memberID = LAST_INSERT_ID();
+                SELECT * FROM `members` WHERE `memberID` = @memberID;
             END IF;
-            SELECT * FROM `members` WHERE `rid` = @rid;
       END
     ]],
    

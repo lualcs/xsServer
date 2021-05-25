@@ -12,9 +12,9 @@ local services = {nil}
 
 ---启动
 skynet.start(function()
-    local timer = clock.new("Welecome client count down %d 🕛🕛🕛")
+    local timer = clock.new("Welecome client count down %05d 🕛🕛🕛")
     ---倒计时监听
-    timer:append(30,1,function()
+    timer:append(10,1,function()
         skynet.call(services.gates,"lua","listen")
     end)
 

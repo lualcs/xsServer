@@ -18,7 +18,7 @@ return {
         #注册账号
       	IF NOT EXISTS(SELECT 1 FROM `accounts` WHERE `accounts` = `@accounts`) THEN
             INSERT INTO `accounts`(`accounts`,`nickname`, `logo`) VALUES (`@accounts`,`@nickname`, `@logo`); 
-            SET @rid =  LAST_INSERT_ID();
+            SET `@rid` =  LAST_INSERT_ID();
         END IF;
       END]],
     --创建游客登陆存储过程
