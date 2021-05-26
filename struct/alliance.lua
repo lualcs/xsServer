@@ -51,13 +51,17 @@
 ---@field assignSingle      service[]                   @单机分配
 ---@field assignHundred     service[]                   @百人分配
 ---@field assignKilling     service[]                   @竞争分配
----@field onlineMember      count                       @在线成员
+---@field onlineMapping     table<rid,fd>               @在线映射
+---@field onlineNumber      count                       @在线成员
+---@field combatNumber      count                       @对局数量
 
 
 ---@class agencyData:agencyInfo @代理数据
 ---@field memberHash        table<memberID,memberData>  @成员信息
 ---@field memberList        memberData[]                @成员列表
----@field onlineMember      count                       @在线成员
+---@field onlineMapping     table<rid,fd>               @在线映射
+---@field onlineNumber      count                       @在线成员
+---@field combatNumber      count                       @对局数量
 
 ---@class memberData:memberInfo @成员数据
 ---@field online    boolean     @是否在线

@@ -23,6 +23,7 @@ return {
       CREATE TABLE `alliances`  (
         `allianceID` int(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
         `name` varchar(32) NOT NULL COMMENT '联盟名字',
+        `personality` varchar(16) NOT NULL COMMENT '个性签名',
         `rid` int(11) NOT NULL COMMENT '归属角色',
         `assignRule` json NOT NULL COMMENT '分配规则',
         `gameInfos` json NOT NULL COMMENT '游戏信息',

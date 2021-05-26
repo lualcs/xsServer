@@ -76,16 +76,16 @@ function gatemanager:online(fd)
     ---服务信息
     local services = self:getServices()
     ---通知上线
-    skynet.call(services.login,"lua","online",client.role.rid)
+    skynet.call(services.login,"lua","online",client.role.rid,fd)
     ---通知联盟
-    skynet.call(services.alliance,"lua","online",client.role.rid)
+    skynet.call(services.alliance,"lua","online",client.role.rid,fd)
     ---分配服务
     if client.assign then
-        skynet.call(client.assign,"lua","online",client.role.rid)
+        skynet.call(client.assign,"lua","online",client.role.rid,fd)
     end
     ---桌子服务
     if client.table then
-        skynet.call(client.table,"lua","online",client.role.rid)
+        skynet.call(client.table,"lua","online",client.role.rid,fd)
     end
 end
 

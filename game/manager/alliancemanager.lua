@@ -61,7 +61,7 @@ end
 ---上线
 ---@param rid userID @用户ID
 ---@param loginCount count @登录次数
-function alliancemanager:online(rid)
+function alliancemanager:online(rid,fd)
     local members = self._memberUser[rid]
     if not members then
         return
@@ -74,10 +74,11 @@ function alliancemanager:online(rid)
             return
         end
 
-
+        alliance.onlineMapping[rid] = fd
         alliance.onlineMember = alliance.onlineMember + 1
         ---代理在线人数
         local agency = self._agencyHash[member.superiorID]
+        agency.onlineMapping[rid] = fd
         agency.onlineMember = agency.onlineMember + 1
         ---成员在线标志
         member.online = true
@@ -101,9 +102,11 @@ function alliancemanager:offline(rid)
             return
         end
 
+        alliance.onlineMapping[rid] = nil
         alliance.onlineMember = alliance.onlineMember - 1
         ---代理在线人数
         local agency = self._agencyHash[member.superiorID]
+        agency.onlineMapping[rid] = nil
         agency.onlineMember = agency.onlineMember - 1
         ---成员在线标志
         member.online = false
@@ -125,15 +128,17 @@ function alliancemanager:allianceInfo(ret)
         ---组织数据
         ---@type allianceData
         local data = info
-        data.agencyHash = {nil}
-        data.memberHash = {nil}
-        data.agencyList = {nil}
-        data.memberList = {nil}
-        data.assignList = {nil}
-        data.assignSingle  = nil
-        data.assignHundred = nil
-        data.assignKilling = nil
-        data.onlineMember = 0
+        data.agencyHash     = {nil}
+        data.memberHash     = {nil}
+        data.agencyList     = {nil}
+        data.memberList     = {nil}
+        data.assignList     = {nil}
+        data.onlineMapping  = {nil}
+        data.assignSingle   = nil
+        data.assignHundred  = nil
+        data.assignKilling  = nil
+        data.onlineNumber   = 0
+        data.combatNumber   = 0
     end
 end
 
@@ -150,15 +155,15 @@ function alliancemanager:agencysInfo(ret)
         ---组织数据
         ---@type agencyData
         local data = info
-        data.memberHash = {nil}
-        data.memberList = {nil}
-
+        data.memberHash     = {nil}
+        data.memberList     = {nil}
+        data.onlineMapping  = {nil}
         ---填充代理
         ---@type allianceData
         local targe = self._allianceHash[data.allianceID]
         table.insert(targe.agencyList,data)
         targe.agencyHash[data.agentID] = data
-        data.onlineMember = 0
+        data.onlineNumber = 0
     end
 end
 
@@ -179,9 +184,12 @@ function alliancemanager:membersInfo(ret)
         ---@type memberData
         local data = info
 
-        ---填充代理
+        ---填充联盟
         ---@type allianceData
         local alliance = self._allianceHash[data.allianceID]
+        table.insert(alliance.memberList,data)
+
+        ---填充代理
         local targe = alliance.agencyHash[data.superiorID]
         table.insert(targe.memberList,data)
         targe.memberHash[data.memberID] = data
@@ -263,13 +271,18 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
         local agency = self._agencyHash[member.superiorID]
         table.insert(clubs,{
             alliance = {
-                allianceID = alliance.allianceID,
-                allianceName = alliance.name,
-                memberNumber = #alliance.memberList
+                allianceID      = alliance.allianceID,
+                allianceName    = alliance.name,
+                personality     = alliance.personality,
+                memberNumber    = #alliance.memberList,
+                onlineNumber    = #alliance.onlineNumber,
+                combatNumber    = #alliance.combatNumber,
             },
             agency = {
-                agentID = agency.agentID,
-                memberNumber = #agency.memberList,
+                agentID         = agency.agentID,
+                memberNumber    = #agency.memberList,
+                onlineNumber    = #alliance.onlineNumber,
+                combatNumber    = #alliance.combatNumber,
             },
             member = {
                 memberID = member.memberID,
