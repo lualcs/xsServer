@@ -18,13 +18,14 @@ return {
 
           #数据检查
           IF @allianceID <= 0 THEN
-              SELECT "该代理成员不存在!" AS failure;
+                SELECT "该代理成员不存在!" AS failure;
           #重复检查
       	  ELSEIF EXISTS(SELECT 1 FROM `members` WHERE `rid` = @rid AND `allianceID` = @allianceID) THEN
-              SELECT "已经是该联盟成员!" AS failure;
+                SELECT "已经是该联盟成员!" AS failure;
           ELSE
-              INSERT INTO `members`(`rid`, `identity`, `superiorID`, `allianceID`) VALUES (@rid,'member', @agentID, @allianceID);
-              SET @memberID = LAST_INSERT_ID();
+                INSERT INTO `members`(`rid`, `identity`, `superiorID`, `allianceID`) VALUES (@rid,'member', @agentID, @allianceID);
+                SET @memberID = LAST_INSERT_ID();
+                SELECT * FROM `members` WHERE `memberID` = @memberID;
           END IF;
       END
     ]],
@@ -51,5 +52,5 @@ return {
             END IF;
       END
     ]],
-   
+    --获取创建
 }
