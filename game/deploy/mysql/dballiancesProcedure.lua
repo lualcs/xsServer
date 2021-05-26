@@ -6,6 +6,31 @@
 return {
     ---切换数据库使用
     [[USE `dballiances`;]],
+    --创建联盟存储过程
+    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureApplyForInAlliance`(
+        IN  `@rid`          INT(10),        #申请角色
+        IN  `@name`         VARCHAR(32)     #联盟名字
+        IN  `@personality`  VARCHAR(16)     #联盟签名
+      )
+        BEGIN
+            IF EXISTS(SELECT 1 FROM `dbaccounts`.`accounts` WHERE `rid` = @rid) THEN
+                INSERT INTO `alliances`
+                (`name`,`personality`, `rid`, `assignRule`, `gameInfos`) 
+                VALUES 
+                (@name,@personality, @rid, '{}', '{}');
+                SET @allianceID = LAST_INSERT_ID();
+                INSERT INTO `agencys`(`rid`, `allianceID`) VALUES (@rid, @allianceID);
+                SET @agentID = LAST_INSERT_ID();
+                INSERT INTO `agencys`
+                (`rid`,`identity`,`superiorID`, `allianceID`,``) 
+                VALUES 
+                (@rid,"alliance",@agentID,@allianceID);
+                SELECT "联盟创建成功！" AS successful;
+            ELSE
+                SELECT "账号数据错误！" AS failure; 
+            END IF;
+        END
+    ]],
     --创建加入联盟存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureApplyForInAlliance`(
         IN  `@rid`          INT(10),   #申请角色
