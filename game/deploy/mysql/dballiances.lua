@@ -30,7 +30,7 @@ return {
         `profitAgencyRate` INT(11) NOT NULL DEFAULT 50 COMMENT '代理分润比例千分比',
         `assignRule` JSON NOT NULL COMMENT '分配规则',
         `gameInfos` JSON NOT NULL COMMENT '游戏信息',
-        `birthday` DATATIIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
+        `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`allianceID`) USING BTREE
       ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟信息' ROW_FORMAT = Dynamic;
 
@@ -50,7 +50,7 @@ return {
         `agentID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '代理ID',
         `rid` INT(11) NOT NULL COMMENT '所属角色',
         `allianceID` INT(11) NOT NULL COMMENT '所属联盟',
-        `birthday` DATATIIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
+        `birthday` DATeTIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`agentID`) USING BTREE
       ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '代理信息' ROW_FORMAT = Dynamic;
 
@@ -72,7 +72,7 @@ return {
         `identity` VARCHAR(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
         `superiorID` INT(11) NOT NULL COMMENT '上级代理',
         `allianceID` INT(11) NOT NULL COMMENT '所属联盟',
-        `birthday` DATATIIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
+        `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`memberID`) USING BTREE
       ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟成员' ROW_FORMAT = Dynamic;
 
@@ -89,12 +89,12 @@ return {
         -- ----------------------------
         DROP TABLE IF EXISTS `statisticsTaxes`;
         CREATE TABLE `statisticsTaxes`  (
-          `memberID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '联盟成员',
-          `taxScore` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '税收贡献',
-          `taxProfit` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '已分税收',
-          `taxProfitPlatformat` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '平台已分税收',
-          `taxProfitAlliance` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '盟主已分税收',
-          `taxProfitAgencys` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '代理已分税收',
+          `memberID` INT(11) NOT NULL COMMENT '联盟成员',
+          `taxScore` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '税收贡献',
+          `taxProfit` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '已分税收',
+          `taxProfitPlatformat` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '平台已分税收',
+          `taxProfitAlliance` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '盟主已分税收',
+          `taxProfitAgencys` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '代理已分税收',
           PRIMARY KEY (`memberID`) USING BTREE
         ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '税收统计' ROW_FORMAT = Dynamic;
 
@@ -111,9 +111,9 @@ return {
         -- ----------------------------
         DROP TABLE IF EXISTS `statisticsEarnings`;
         CREATE TABLE `statisticsEarnings`  (
-          `memberID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '联盟成员',
-          `earningsScore` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '收益分数',
-          `earningsWithdraw` BIGINT(20) NOT NULL DEFAULT 0 AUTO_INCREMENT COMMENT '已分税收',
+          `memberID` INT(11) NOT NULL COMMENT '联盟成员',
+          `earningsScore` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '收益分数',
+          `earningsWithdraw` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '已分税收',
           PRIMARY KEY (`memberID`) USING BTREE
         ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '收益统计' ROW_FORMAT = Dynamic;
 

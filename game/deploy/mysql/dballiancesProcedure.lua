@@ -77,5 +77,20 @@ return {
             END IF;
       END
     ]],
-    --获取创建
+    --创建升级代理身份
+    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureUpgradeAgencys`(
+        IN  `@memberID`          INT(10)   #申请成员
+      )
+      BEGIN
+            IF EXISTS(SELECT 1 FROM `dballiances`.`members` WHERE `memberID` = @memberID AND `identity` = 'member') THEN
+                SET @rid = 0;
+                SET @allianceID = 0;
+                SELECT `rid`,`allianceID` INTO @rid,@allianceID 
+                FROM `dballiances`.`members` WHERE `memberID` = @memberID;
+                INSERT INTO `agencys`(`rid`, `allianceID`) VALUES (@rid, @allianceID); 
+            ELSE
+                SELECT "申请成员数据错误!" AS failure;
+            END IF;
+      END
+    ]],
 }
