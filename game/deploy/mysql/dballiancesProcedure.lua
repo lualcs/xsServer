@@ -7,7 +7,7 @@ return {
     ---切换数据库使用
     [[USE `dballiances`;]],
     --创建联盟存储过程
-    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureApplyForInAlliance`(
+    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureCreateAlliance`(
         IN  `@rid`          INT(10),        #申请角色
         IN  `@name`         VARCHAR(32),    #联盟名字
         IN  `@personality`  VARCHAR(16)     #联盟签名
