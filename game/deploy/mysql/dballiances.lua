@@ -28,8 +28,8 @@ return {
         `profitPlatformRate` INT(11) NOT NULL DEFAULT 20 COMMENT '平台分润比例千分比',
         `profitAllianceRate` INT(11) NOT NULL DEFAULT 30 COMMENT '盟主分润比例千分比',
         `profitAgencyRate` INT(11) NOT NULL DEFAULT 50 COMMENT '代理分润比例千分比',
-        `assignRule` JSON NOT NULL DEFAULT '{}'COMMENT '分配规则',
-        `gameInfos` JSON NOT NULL DEFAULT '{}'COMMENT '游戏信息',
+        `assignRule` JSON NOT NULL COMMENT '分配规则',
+        `gameInfos` JSON NOT NULL COMMENT '游戏信息',
         `birthday` DATATIIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`allianceID`) USING BTREE
       ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟信息' ROW_FORMAT = Dynamic;

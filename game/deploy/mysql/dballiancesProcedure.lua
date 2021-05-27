@@ -9,7 +9,7 @@ return {
     --创建联盟存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureApplyForInAlliance`(
         IN  `@rid`          INT(10),        #申请角色
-        IN  `@name`         VARCHAR(32)     #联盟名字
+        IN  `@name`         VARCHAR(32),    #联盟名字
         IN  `@personality`  VARCHAR(16)     #联盟签名
       )
         BEGIN
