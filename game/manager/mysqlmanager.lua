@@ -76,7 +76,9 @@ end
 
 ---dbaccounts 结构
 function mysqlmanager:dbaccounts()
-    local cmds = require("mysql.dbaccounts.tables")
+    local name = "mysql.dbaccounts.tables"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -92,7 +94,9 @@ end
 
 ---dbaccountsProcedure 结构
 function mysqlmanager:dbaccountsProcedure()
-    local cmds = require("mysql.dbaccounts.procedures")
+    local name = "mysql.dbaccounts.procedures"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -108,7 +112,9 @@ end
 
 ---dbaccounts 结构
 function mysqlmanager:dballiances()
-    local cmds = require("mysql.dballiances.tables")
+    local name = "mysql.dballiances.tables"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -124,7 +130,9 @@ end
 
 ---dballiancesProcedure 结构
 function mysqlmanager:dballiancesProcedure()
-    local cmds = require("mysql.dballiances.procedures")
+    local name = "mysql.dballiances.procedures"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -140,7 +148,9 @@ end
 
 ---dbaccounts 结构
 function mysqlmanager:dbplatform()
-    local cmds = require("mysql.dbplatform.tables")
+    local name = "mysql.dbplatform.tables"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -156,7 +166,9 @@ end
 
 ---构造dbgameinfo 结构
 function mysqlmanager:dbgameinfo()
-    local cmds = require("mysql.dbgameinfo.tables")
+    local name = "mysql.dbgameinfo.tables"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -173,7 +185,9 @@ end
 
 ---dbsundrys 结构
 function mysqlmanager:dbsundrys()
-    local cmds = require("mysql.dbsundrys.tables")
+    local name = "mysql.dbsundrys.tables"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -193,8 +207,11 @@ function mysqlmanager:dblibarays()
     local mysql = self._mysql
 
     ---库存头像
-    local logos = require("mysql.dbaccounts.library_logo")
-    for index,cmd in ipairs(logos) do
+    local name = "mysql.dbaccounts.library_logo"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
+
+    for index,cmd in ipairs(cmds) do
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
@@ -204,9 +221,11 @@ function mysqlmanager:dblibarays()
         end
     end
 
-    ---库存昵称
-    local names = require("mysql.dbaccounts.library_name")
-    for index,cmd in ipairs(names) do
+    ---库存头像
+    local name = "mysql.dbaccounts.library_name"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
+    for index,cmd in ipairs(cmds) do
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
@@ -217,8 +236,10 @@ function mysqlmanager:dblibarays()
     end
 
     ---联盟数据
-    local alliances = require("mysql.dballiances.library_alliances")
-    for index,cmd in ipairs(alliances) do
+    local name = "mysql.dballiances.library_alliances"
+    local cmds = require(name)
+    _G.package.loaded[name] = nil
+    for index,cmd in ipairs(cmds) do
         local result = mysql:query(cmd)
         if result.err then
             debug.normal({
