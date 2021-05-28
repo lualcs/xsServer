@@ -103,7 +103,6 @@ local function _tablestring(strlist,val,level,key)
 		end
 	end
 	
-	table.remove( strlist)
 	table.insert( strlist,"\r\n")
 	table.insert( strlist,indent)
 

@@ -22,7 +22,7 @@ return {
                 INSERT INTO `agencys`(`rid`, `allianceID`) VALUES (@rid, @allianceID);
                 SET @agentID = LAST_INSERT_ID();
                 INSERT INTO `agencys`
-                (`rid`,`identity`,`superiorID`, `allianceID`,``) 
+                (`rid`,`office`,`agentID`, `allianceID`,``) 
                 VALUES 
                 (@rid,"alliance",@agentID,@allianceID);
                 SELECT "联盟创建成功！" AS successful;
@@ -48,7 +48,7 @@ return {
       	  ELSEIF EXISTS(SELECT 1 FROM `members` WHERE `rid` = @rid AND `allianceID` = @allianceID) THEN
                 SELECT "已经是该联盟成员!" AS failure;
           ELSE
-                INSERT INTO `members`(`rid`, `identity`, `superiorID`, `allianceID`) VALUES (@rid,'member', @agentID, @allianceID);
+                INSERT INTO `members`(`rid`, `office`, `agentID`, `allianceID`) VALUES (@rid,'member', @agentID, @allianceID);
                 SET @memberID = LAST_INSERT_ID();
                 SELECT * FROM `members` WHERE `memberID` = @memberID;
           END IF;
@@ -71,7 +71,7 @@ return {
       	    IF EXISTS(SELECT 1 FROM `members` WHERE `rid` = @rid AND `allianceID` = @allianceID) THEN
                 SELECT "已经是该联盟成员!" AS failure;
             ELSE
-                INSERT INTO `members`(`rid`, `identity`, `superiorID`, `allianceID`) VALUES (`@rid`,'member', @agentID, @allianceID);
+                INSERT INTO `members`(`rid`, `office`, `agentID`, `allianceID`) VALUES (`@rid`,'member', @agentID, @allianceID);
                 SET @memberID = LAST_INSERT_ID();
                 SELECT * FROM `members` WHERE `memberID` = @memberID;
             END IF;
@@ -82,7 +82,7 @@ return {
         IN  `@memberID`          INT(10)   #申请成员
       )
       BEGIN
-            IF EXISTS(SELECT 1 FROM `dballiances`.`members` WHERE `memberID` = @memberID AND `identity` = 'member') THEN
+            IF EXISTS(SELECT 1 FROM `dballiances`.`members` WHERE `memberID` = @memberID AND `office` = 'member') THEN
                 SET @rid = 0;
                 SET @allianceID = 0;
                 SELECT `rid`,`allianceID` INTO @rid,@allianceID 

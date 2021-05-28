@@ -75,10 +75,11 @@ function mysqlmanager:dbstructure()
                     ret = ret,
                     sql = cmd,
                 })
-                break
+                goto leave
             end
         end
     end
+    ::leave::
 end
 
 
@@ -178,70 +179,76 @@ end
 function mysqlmanager:loadingAlliance()
     local services = self:getServices()
     local mysql = self._mysql
-    ---辅助变量
-    local count = 100
-    ---加载联盟
-    local start = 1
-    while true do
-        local cmd = format([[SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;]],start,start+count)
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-            break
-        end
-        skynet.call(services.alliance,"lua","allianceInfo",result)
-        start = start + count
 
-        ---数据加载完成
-        if #result < count then
-            break
+    local loadings = {
+        {
+            serviceid = services.alliance,
+            methodnam = "allianceInfo",
+            cmdFormat = 
+            [[
+                SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;
+                SELECT MIN(`allianceID`) AS `start` FROM `dballiances`.`alliances` WHERE `allianceID` > %d;
+            ]],
+        },
+
+        {
+            serviceid = services.alliance,
+            methodnam = "agencysInfo",
+            cmdFormat = 
+            [[
+                SELECT * FROM `dballiances`.`agencys` WHERE `agentID` BETWEEN %d AND %d;
+                SELECT MIN(`agentID`) AS `start` FROM `dballiances`.`agencys` WHERE `agentID` > %d;
+            ]],
+        },
+
+        {
+            serviceid = services.alliance,
+            methodnam = "membersInfo",
+            cmdFormat = 
+            [[
+                SELECT * FROM `dballiances`.`members` WHERE `memberID` BETWEEN %d AND %d;
+                SELECT MIN(`memberID`) AS `start` FROM `dballiances`.`members` WHERE `memberID` > %d;
+            ]],
+        },
+    }
+
+    for _,info in ipairs(loadings) do
+        local start = 1
+        local close = 100
+        while true do
+            local cmd = format(info.cmdFormat,start,close,close)
+            local result = mysql:query(cmd)
+            --执行错误
+            if result.err then
+                debug.logServiceMySQL({
+                    ret = result,
+                    sql = cmd,
+                })
+                goto leave
+            end
+
+            debug.logServiceMySQL({
+                names = info.methodnam,
+                start = start,
+                close = close,
+                row = #result[1]
+            })
+
+            ---通知数据
+            skynet.call(services.alliance,"lua",info.methodnam,result[1])
+
+            --加载完成
+            if table.empty(result[2]) then
+                break
+            elseif table.empty(result[2][1]) then
+                break
+            end
+            start = result[2][1].start
+            close = start + 100 - 1
         end
     end
 
-    ---加载代理
-    local start = 1
-    while true do
-        local cmd = format("SELECT * FROM `dballiances`.`agencys` WHERE `agentID` BETWEEN %d AND %d;",start,start+count)
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-            break
-        end
-        skynet.call(services.alliance,"lua","agencysInfo",result)
-        start = start + count
-
-        ---数据加载完成
-        if #result < count then
-            break
-        end
-    end
-
-    ---加载成员
-    local start = 1
-    while true do
-        local cmd = format("SELECT * FROM `dballiances`.`members` WHERE `memberID` BETWEEN %d AND %d;",start,start+count)
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-            break
-        end
-        skynet.call(services.alliance,"lua","membersInfo",result)
-        start = start + count
-
-        ---数据加载完成
-        if #result < count then
-            break
-        end
-    end
+    ::leave::
 
     ---加载完成
     skynet.call(services.alliance,"lua","overAlliance")

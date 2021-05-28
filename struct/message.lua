@@ -23,7 +23,7 @@
 
 ---@class s2c_memberInfo @联盟成员
 ---@field memberID      mermberID   @成员ID
----@field identity      senum       @成员身份
+---@field office        senum       @成员身份
 
 
 ---@class s2c_allianceClub @俱乐部信息

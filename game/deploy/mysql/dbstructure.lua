@@ -9,9 +9,9 @@ return {
     "mysql.dbplatform.tables",
     "mysql.dbgameinfo.tables",
     "mysql.dbsundrys.tables",
-    "mysql.dbaccounts.library_logo",
-    "mysql.dbaccounts.library_name",
-    "mysql.dballiances.library_alliances",
     "mysql.dbaccounts.procedures",
     "mysql.dballiances.procedures",
+    "mysql.dbstucture.init_admin",
+    "mysql.dbstucture.init_robot",
+    "mysql.dbstucture.init_clubs",
 }

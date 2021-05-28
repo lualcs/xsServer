@@ -33,8 +33,8 @@
 ---@class memberInfo
 ---@field memberID      number      @成员标识
 ---@field rid           userID      @成员用户
----@field identity      senum       @成员身份
----@field superiorID    agentID     @上级代理
+---@field office        senum       @成员身份
+---@field agentID    agentID     @上级代理
 ---@field allianceID    allianceID  @所属联盟
 ---@field birthday      string      @创建日期
 

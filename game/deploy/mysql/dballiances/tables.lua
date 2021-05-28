@@ -69,8 +69,8 @@ return {
       CREATE TABLE `members`  (
         `memberID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '成员ID',
         `rid` INT(11) NOT NULL COMMENT '联盟成员',
-        `identity` VARCHAR(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
-        `superiorID` INT(11) NOT NULL COMMENT '上级代理',
+        `office` enum('member','agency','alliance') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
+        `agentID` INT(11) NOT NULL COMMENT '上级代理',
         `allianceID` INT(11) NOT NULL COMMENT '所属联盟',
         `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`memberID`) USING BTREE

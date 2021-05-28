@@ -77,7 +77,7 @@ function alliancemanager:online(rid,fd)
         alliance.onlineMapping[rid] = fd
         alliance.onlineMember = alliance.onlineMember + 1
         ---代理在线人数
-        local agency = self._agencyHash[member.superiorID]
+        local agency = self._agencyHash[member.agentID]
         agency.onlineMapping[rid] = fd
         agency.onlineMember = agency.onlineMember + 1
         ---成员在线标志
@@ -105,7 +105,7 @@ function alliancemanager:offline(rid)
         alliance.onlineMapping[rid] = nil
         alliance.onlineMember = alliance.onlineMember - 1
         ---代理在线人数
-        local agency = self._agencyHash[member.superiorID]
+        local agency = self._agencyHash[member.agentID]
         agency.onlineMapping[rid] = nil
         agency.onlineMember = agency.onlineMember - 1
         ---成员在线标志
@@ -190,7 +190,7 @@ function alliancemanager:membersInfo(ret)
         table.insert(alliance.memberList,data)
 
         ---填充代理
-        local targe = alliance.agencyHash[data.superiorID]
+        local targe = alliance.agencyHash[data.agentID]
         table.insert(targe.memberList,data)
         targe.memberHash[data.memberID] = data
     end
@@ -268,7 +268,7 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
     local list = self._memberUser[rid]
     for _,member in ipairs(list) do
         local alliance = self._allianceHash[member.allianceID]
-        local agency = self._agencyHash[member.superiorID]
+        local agency = self._agencyHash[member.agentID]
         table.insert(clubs,{
             alliance = {
                 allianceID      = alliance.allianceID,
@@ -286,7 +286,7 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
             },
             member = {
                 memberID = member.memberID,
-                identity = member.identity
+                office = member.office
             },
         })
     end
