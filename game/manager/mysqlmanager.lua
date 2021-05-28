@@ -76,7 +76,7 @@ end
 
 ---dbaccounts 结构
 function mysqlmanager:dbaccounts()
-    local cmds = require("mysql.dbaccounts")
+    local cmds = require("mysql.dbaccounts.tables")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -92,7 +92,7 @@ end
 
 ---dbaccountsProcedure 结构
 function mysqlmanager:dbaccountsProcedure()
-    local cmds = require("mysql.dbaccountsProcedure")
+    local cmds = require("mysql.dbaccounts.procedures")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -108,7 +108,7 @@ end
 
 ---dbaccounts 结构
 function mysqlmanager:dballiances()
-    local cmds = require("mysql.dballiances")
+    local cmds = require("mysql.dballiances.tables")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -124,7 +124,7 @@ end
 
 ---dballiancesProcedure 结构
 function mysqlmanager:dballiancesProcedure()
-    local cmds = require("mysql.dballiancesProcedure")
+    local cmds = require("mysql.dballiances.procedures")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -140,7 +140,7 @@ end
 
 ---dbaccounts 结构
 function mysqlmanager:dbplatform()
-    local cmds = require("mysql.dbplatform")
+    local cmds = require("mysql.dbplatform.tables")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -156,7 +156,7 @@ end
 
 ---构造dbgameinfo 结构
 function mysqlmanager:dbgameinfo()
-    local cmds = require("mysql.dbgameinfo")
+    local cmds = require("mysql.dbgameinfo.tables")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -173,7 +173,7 @@ end
 
 ---dbsundrys 结构
 function mysqlmanager:dbsundrys()
-    local cmds = require("mysql.dbsundrys")
+    local cmds = require("mysql.dbsundrys.tables")
     ---执行语句
     local mysql = self._mysql
     for index,cmd in ipairs(cmds) do
@@ -193,7 +193,7 @@ function mysqlmanager:dblibarays()
     local mysql = self._mysql
 
     ---库存头像
-    local logos = require("mysql.library_logo")
+    local logos = require("mysql.dbaccounts.library_logo")
     for index,cmd in ipairs(logos) do
         local result = mysql:query(cmd)
         if result.err then
@@ -205,7 +205,7 @@ function mysqlmanager:dblibarays()
     end
 
     ---库存昵称
-    local names = require("mysql.library_name")
+    local names = require("mysql.dbaccounts.library_name")
     for index,cmd in ipairs(names) do
         local result = mysql:query(cmd)
         if result.err then
@@ -217,7 +217,7 @@ function mysqlmanager:dblibarays()
     end
 
     ---联盟数据
-    local alliances = require("mysql.library_alliances")
+    local alliances = require("mysql.dballiances.library_alliances")
     for index,cmd in ipairs(alliances) do
         local result = mysql:query(cmd)
         if result.err then
