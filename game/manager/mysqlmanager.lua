@@ -56,199 +56,31 @@ end
 
 ---构造数据库
 function mysqlmanager:dbstructure()
-    ---构造dbaccounts
-    self:dbaccounts()
-    ---构造dbaccountsProcedure
-    self:dbaccountsProcedure()
-    ---构造dballiances
-    self:dballiances()
-    ---构造dballiancesProcedure
-    self:dballiancesProcedure()
-    ---构造dbPlatform
-    self:dbplatform()
-    ---构造dbgameinfo
-    self:dbgameinfo()
-    ---构造dbsundrys
-    self:dbsundrys()
-    ---构造默认库存表
-    self:dblibarays()
-end
-
----dbaccounts 结构
-function mysqlmanager:dbaccounts()
-    local name = "mysql.dbaccounts.tables"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
----dbaccountsProcedure 结构
-function mysqlmanager:dbaccountsProcedure()
-    local name = "mysql.dbaccounts.procedures"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
----dbaccounts 结构
-function mysqlmanager:dballiances()
-    local name = "mysql.dballiances.tables"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
----dballiancesProcedure 结构
-function mysqlmanager:dballiancesProcedure()
-    local name = "mysql.dballiances.procedures"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
----dbaccounts 结构
-function mysqlmanager:dbplatform()
-    local name = "mysql.dbplatform.tables"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
----构造dbgameinfo 结构
-function mysqlmanager:dbgameinfo()
-    local name = "mysql.dbgameinfo.tables"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
-
----dbsundrys 结构
-function mysqlmanager:dbsundrys()
-    local name = "mysql.dbsundrys.tables"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    ---执行语句
-    local mysql = self._mysql
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-end
-
----dblibarays 库存
-function mysqlmanager:dblibarays()
     ---执行语句
     local mysql = self._mysql
 
     ---库存头像
-    local name = "mysql.dbaccounts.library_logo"
-    local cmds = require(name)
+    local name = "mysql.dbstructure"
+    local dirs = require(name)
     _G.package.loaded[name] = nil
 
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-
-    ---库存头像
-    local name = "mysql.dbaccounts.library_name"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
-        end
-    end
-
-    ---联盟数据
-    local name = "mysql.dballiances.library_alliances"
-    local cmds = require(name)
-    _G.package.loaded[name] = nil
-    for index,cmd in ipairs(cmds) do
-        local result = mysql:query(cmd)
-        if result.err then
-            debug.normal({
-                ret = result,
-                sql = cmd,
-            })
+    ---执行命令
+    for _,name in ipairs(dirs) do
+        local list = require(name)
+        _G.package.loaded[name] = nil
+        for _,cmd in ipairs(list) do
+            local ret = mysql:query(cmd)
+            if ret.err then
+                debug.logServiceMySQL({
+                    ret = ret,
+                    sql = cmd,
+                })
+                break
+            end
         end
     end
 end
+
 
 ---游客登陆
 ---@param accredit string @登录凭证
