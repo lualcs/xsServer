@@ -16,10 +16,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for accounts
-      -- ----------------------------
       CREATE TABLE `accounts`  (
         `rid` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色id',
         `office` enum('robot','player','admin','root') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '身份',
@@ -41,10 +37,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for accounts
-      -- ----------------------------
       USE `dbaccounts`;
       CREATE TABLE `bind_robots`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '[代表这个账号是机器人]',
@@ -57,10 +49,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for accounts
-      -- ----------------------------
       USE `dbaccounts`;
       CREATE TABLE `bind_wechat`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '角色id',
@@ -74,10 +62,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for accounts
-      -- ----------------------------
       USE `dbaccounts`;
       CREATE TABLE `bind_phone`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '角色id',
@@ -92,10 +76,6 @@ return {
      [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for accounts
-      -- ----------------------------
       USE `dbaccounts`;
       CREATE TABLE `bind_tourists`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '角色id',

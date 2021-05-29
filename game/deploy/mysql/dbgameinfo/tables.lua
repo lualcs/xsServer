@@ -16,10 +16,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatJYMT
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatJYMT`;
         CREATE TABLE `playerCombatJYMT`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `betScore` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏下注分数',
@@ -48,11 +44,6 @@ return {
     --创建宝石神兽玩家对局统计数据
     [[
         SET NAMES utf8mb4;
-        SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatBSSS
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatBSSS`;
         CREATE TABLE `playerCombatBSSS`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `betScore` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏下注分数',
@@ -82,10 +73,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatLSZB
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatLSZB`;
         CREATE TABLE `playerCombatLSZB`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `betScore` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏下注分数',
@@ -115,10 +102,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatJJBX
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatJJBX`;
         CREATE TABLE `playerCombatJJBX`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `betScore` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏下注分数',
@@ -148,10 +131,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatMary
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMary`;
         CREATE TABLE `playerCombatMary`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `betScore` bigint(20) NOT NULL DEFAULT 0 COMMENT '游戏下注分数',
@@ -182,10 +161,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatDragonTiger
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatDragonTiger`;
         CREATE TABLE `playerCombatDragonTiger`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -204,10 +179,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatCX
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatCX`;
         CREATE TABLE `playerCombatCX`  (
           `rid` int(11) NOT NULL DEFAULT 0 COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -227,10 +198,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatZJH
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatZJH`;
         CREATE TABLE `playerCombatZJH`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -255,10 +222,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatDGN
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatDGN`;
         CREATE TABLE `playerCombatDGN`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -277,10 +240,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatLLN
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatLLN`;
         CREATE TABLE `playerCombatLLN`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -300,10 +259,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatQLN
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatQLN`;
         CREATE TABLE `playerCombatQLN`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -326,7 +281,6 @@ return {
         -- ----------------------------
         -- Table structure for playerCombatTexasPoker
         -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatTexasPoker`;
         CREATE TABLE `playerCombatTexasPoker`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -349,7 +303,6 @@ return {
         -- ----------------------------
         -- Table structure for playerCombatMahjongKF
         -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMahjongKF`;
         CREATE TABLE `playerCombatMahjongKF`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -378,10 +331,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatMahjongZZ
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMahjongZZ`;
         CREATE TABLE `playerCombatMahjongZZ`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -410,10 +359,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatMahjongHNTDH
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMahjongHNTDH`;
         CREATE TABLE `playerCombatMahjongHNTDH`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -443,10 +388,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatMahjongLYGC
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMahjongLYGC`;
         CREATE TABLE `playerCombatMahjongLYGC`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -479,10 +420,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatMahjongKWX
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMahjongKWX`;
         CREATE TABLE `playerCombatMahjongKWX`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',
@@ -513,10 +450,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-        -- ----------------------------
-        -- Table structure for playerCombatMahjongXZ
-        -- ----------------------------
-        DROP TABLE IF EXISTS `playerCombatMahjongXZ`;
         CREATE TABLE `playerCombatMahjongXZ`  (
           `rid` int(11) NOT NULL COMMENT '游戏角色',
           `baseScore` bigint(20) NOT NULL COMMENT '游戏基础分数',

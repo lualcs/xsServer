@@ -15,11 +15,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      
-      -- ----------------------------
-      -- Table structure for alliances
-      -- ---------------------------- 
-      DROP TABLE IF EXISTS `alliances`;
       CREATE TABLE `alliances`  (
         `allianceID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
         `name` VARCHAR(32) NOT NULL COMMENT '联盟名字',
@@ -41,11 +36,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for agencys
-      -- ----------------------------
-      DROP TABLE IF EXISTS `agencys`;
       CREATE TABLE `agencys`  (
         `agentID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '代理ID',
         `rid` INT(11) NOT NULL COMMENT '所属角色',
@@ -61,11 +51,6 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-
-      -- ----------------------------
-      -- Table structure for members
-      -- ----------------------------
-      DROP TABLE IF EXISTS `members`;
       CREATE TABLE `members`  (
         `memberID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '成员ID',
         `rid` INT(11) NOT NULL COMMENT '联盟成员',
@@ -83,11 +68,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-
-        -- ----------------------------
-        -- Table structure for statisticsTaxes
-        -- ----------------------------
-        DROP TABLE IF EXISTS `statisticsTaxes`;
         CREATE TABLE `statisticsTaxes`  (
           `memberID` INT(11) NOT NULL COMMENT '联盟成员',
           `taxScore` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '税收贡献',
@@ -105,11 +85,6 @@ return {
     [[
         SET NAMES utf8mb4;
         SET FOREIGN_KEY_CHECKS = 0;
-
-        -- ----------------------------
-        -- Table structure for statisticsEarnings
-        -- ----------------------------
-        DROP TABLE IF EXISTS `statisticsEarnings`;
         CREATE TABLE `statisticsEarnings`  (
           `memberID` INT(11) NOT NULL COMMENT '联盟成员',
           `earningsScore` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '收益分数',
