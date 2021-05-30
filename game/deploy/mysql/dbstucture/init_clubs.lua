@@ -15,7 +15,7 @@ return {
         INSERT INTO `alliances`
         (`name`,`personality`, `rid`, `assignRule`, `gameInfos`) 
         VALUES 
-        ('系统联盟','欢迎大家加入俱乐部！', @leaderRID, '{}', '{}');
+        ('虾聊联盟','虾聊一整天,瞎聊联盟欢迎您！(￣～￣) 嚼！', @leaderRID, '{}', '{}');
 
         #系统盟主ID
         SET @leaderALID = LAST_INSERT_ID();

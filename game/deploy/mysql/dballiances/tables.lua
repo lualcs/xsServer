@@ -18,7 +18,7 @@ return {
       CREATE TABLE `alliances`  (
         `allianceID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
         `name` VARCHAR(32) NOT NULL COMMENT '联盟名字',
-        `personality` VARCHAR(16) NOT NULL DEFAULT '欢迎大家加入俱乐部！' COMMENT '个性签名',
+        `personality` VARCHAR(32) NOT NULL DEFAULT '欢迎大家加入俱乐部！' COMMENT '个性签名',
         `rid` INT(11) NOT NULL COMMENT '归属角色',
         `profitPlatformRate` INT(11) NOT NULL DEFAULT 20 COMMENT '平台分润比例千分比',
         `profitAllianceRate` INT(11) NOT NULL DEFAULT 30 COMMENT '盟主分润比例千分比',

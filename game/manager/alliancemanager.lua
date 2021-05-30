@@ -75,11 +75,11 @@ function alliancemanager:online(rid,fd)
         end
 
         alliance.onlineMapping[rid] = fd
-        alliance.onlineMember = alliance.onlineMember + 1
+        alliance.onlineNumber = alliance.onlineNumber + 1
         ---代理在线人数
         local agency = self._agencyHash[member.agentID]
         agency.onlineMapping[rid] = fd
-        agency.onlineMember = agency.onlineMember + 1
+        agency.onlineNumber = agency.onlineNumber + 1
         ---成员在线标志
         member.online = true
 
@@ -103,11 +103,11 @@ function alliancemanager:offline(rid)
         end
 
         alliance.onlineMapping[rid] = nil
-        alliance.onlineMember = alliance.onlineMember - 1
+        alliance.onlineNumber = alliance.onlineNumber - 1
         ---代理在线人数
         local agency = self._agencyHash[member.agentID]
         agency.onlineMapping[rid] = nil
-        agency.onlineMember = agency.onlineMember - 1
+        agency.onlineNumber = agency.onlineNumber - 1
         ---成员在线标志
         member.online = false
     end
@@ -163,7 +163,8 @@ function alliancemanager:agencysInfo(ret)
         local targe = self._allianceHash[data.allianceID]
         table.insert(targe.agencyList,data)
         targe.agencyHash[data.agentID] = data
-        data.onlineNumber = 0
+        data.onlineNumber   = 0
+        data.combatNumber   = 0
     end
 end
 
@@ -176,9 +177,9 @@ function alliancemanager:membersInfo(ret)
         ---保存数据
         table.insert(list,info)
         hash[info.memberID] = info
-        local clubs = self._memberUser[info.rid] or {nil}
-        self._memberUser[info.rid] = clubs
-        table.insert(clubs,info)
+        local members = self._memberUser[info.rid] or {nil}
+        self._memberUser[info.rid] = members
+        table.insert(members,info)
 
          ---组织数据
         ---@type memberData
@@ -268,6 +269,7 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
     ---数据信息
     ---@type memberData[]
     local list = self._memberUser[rid]
+    debug.error(list)
     for _,member in ipairs(list) do
         local alliance = self._allianceHash[member.allianceID]
         local agency = self._agencyHash[member.agentID]
@@ -278,14 +280,14 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
                 personality     = alliance.personality,
                 logoGs          = alliance.logoGs,
                 memberNumber    = #alliance.memberList,
-                onlineNumber    = #alliance.onlineNumber,
-                combatNumber    = #alliance.combatNumber,
+                onlineNumber    = alliance.onlineNumber,
+                combatNumber    = alliance.combatNumber,
             },
             agency = {
                 agentID         = agency.agentID,
                 memberNumber    = #agency.memberList,
-                onlineNumber    = #alliance.onlineNumber,
-                combatNumber    = #alliance.combatNumber,
+                onlineNumber    = agency.onlineNumber,
+                combatNumber    = agency.combatNumber,
             },
             member = {
                 memberID = member.memberID,
