@@ -13,8 +13,9 @@
 
 ---@class allianceInfo              @联盟信息
 ---@field allianceID    allianceID  @盟主标识
----@field name          name        @盟主昵称
+---@field name          name        @联盟昵称
 ---@field rid           userID      @盟主用户
+---@field logoGs        url[]       @展示头像
 ---@field assignRule    json        @分配规则
 ---@field gameInfos     json        @创建日期
 ---@field birthday      string      @创建日期
@@ -34,7 +35,7 @@
 ---@field memberID      number      @成员标识
 ---@field rid           userID      @成员用户
 ---@field office        senum       @成员身份
----@field agentID    agentID     @上级代理
+---@field agentID       agentID     @上级代理
 ---@field allianceID    allianceID  @所属联盟
 ---@field birthday      string      @创建日期
 

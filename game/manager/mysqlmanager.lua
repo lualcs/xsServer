@@ -189,6 +189,17 @@ function mysqlmanager:loadingAlliance()
                 SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;
                 SELECT MIN(`allianceID`) AS `start` FROM `dballiances`.`alliances` WHERE `allianceID` > %d;
             ]],
+
+            cmdHead = [[
+                SELECT 
+                    `ac`.`logo`
+                FROM 
+                	`dballiances`.`members` AS `me` 
+                	INNER JOIN 
+                	`dbaccounts`.`accounts` AS `ac` 
+                	ON `me`.`rid` = `ac`.`rid`
+                WHERE `me`.`allianceID` = %d ORDER BY `me`.`memberID` LIMIT 9;
+            ]]
         },
 
         {
@@ -217,41 +228,49 @@ function mysqlmanager:loadingAlliance()
         local close = 100
         while true do
             local cmd = format(info.cmdFormat,start,close,close)
-            local result = mysql:query(cmd)
+            local ret = mysql:query(cmd)
             --执行错误
-            if result.err then
+            if ret.err then
                 debug.logServiceMySQL({
-                    ret = result,
+                    ret = ret,
                     sql = cmd,
                 })
                 goto leave
             end
 
-            debug.logServiceMySQL({
-                names = info.methodnam,
-                start = start,
-                close = close,
-                row = #result[1]
-            })
+            local list = ret[1]
+            if "allianceInfo" == info.methodnam  then
+                for _,club in ipairs(list) do
+                    local logoPack = mysql:query(format(info.cmdHead,club.allianceID))
+                    local logoGs = {nil}
+                    for _,iter in ipairs(logoPack) do
+                        table.insert(logoGs,iter.logo)
+                    end
+                    club.logoGs = logoGs
+                end
+            end
 
             ---通知数据
-            skynet.call(services.alliance,"lua",info.methodnam,result[1])
+            skynet.send(services.alliance,"lua",info.methodnam,list)
 
             --加载完成
-            if table.empty(result[2]) then
+            local step = ret[2]
+            if table.empty(step) then
                 break
-            elseif table.empty(result[2][1]) then
+            elseif table.empty(step[1]) then
                 break
             end
-            start = result[2][1].start
+            ---下次信息
+            start = step[1].start
             close = start + 100 - 1
         end
     end
 
+
     ::leave::
 
     ---加载完成
-    skynet.call(services.alliance,"lua","overAlliance")
+    skynet.send(services.alliance,"lua","overAlliance")
 end
 
 ---请求

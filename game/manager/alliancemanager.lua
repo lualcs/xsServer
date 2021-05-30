@@ -242,6 +242,8 @@ function alliancemanager:message(fd,rid,msg)
     local cmd = table.remove(msg.cmds)
     if senum.c2s_allianceClubs() == cmd then
         self:c2s_allianceClubs(fd,rid,msg)
+    elseif senum.c2s_allianceClubs() == cmd then
+        self:c2s_allianceClubs(fd,rid,msg)
     end
 end
 
@@ -274,6 +276,7 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
                 allianceID      = alliance.allianceID,
                 allianceName    = alliance.name,
                 personality     = alliance.personality,
+                logoGs          = alliance.logoGs,
                 memberNumber    = #alliance.memberList,
                 onlineNumber    = #alliance.onlineNumber,
                 combatNumber    = #alliance.combatNumber,
