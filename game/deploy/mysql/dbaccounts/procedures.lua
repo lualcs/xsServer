@@ -31,8 +31,7 @@ return {
             SET @maxRid = 0;
             SET @logolnk = "";
             SELECT COUNT(1) INTO @maxRid FROM `accounts`;
-            SELECT `logo` INTO @logolnk FROM `library_logo` WHERE `use` = 0 LIMIT 1;
-            CALL procedureRegisteredAccounts(CONCAT("tourists:",@maxRid + 1),CONCAT("游客:",@maxRid + 1),@logolnk,@bindrid);
+            CALL procedureRegisteredAccounts(CONCAT("tourists:",@maxRid + 1),CONCAT("游客:",@maxRid + 1),"",@bindrid);
             #绑定游客
             INSERT INTO `bind_tourists`(`rid`,`key`) VALUES (@bindrid, `@accredit`); 
         END IF;

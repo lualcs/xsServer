@@ -251,7 +251,7 @@ function mysqlmanager:loadingAlliance()
             end
 
             ---通知数据
-            skynet.send(services.alliance,"lua",info.methodnam,list)
+            skynet.call(services.alliance,"lua",info.methodnam,list)
 
             --加载完成
             local step = ret[2]
@@ -270,7 +270,7 @@ function mysqlmanager:loadingAlliance()
     ::leave::
 
     ---加载完成
-    skynet.send(services.alliance,"lua","overAlliance")
+    skynet.call(services.alliance,"lua","overAlliance")
 end
 
 ---请求

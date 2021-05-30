@@ -60,12 +60,15 @@ return {
         IN  `@rid`          INT(10)   #申请角色
       )
       BEGIN
+
+            #盟主角色
+            SELECT `rid` INTO @rootRID FROM `dbaccounts`.`accounts` WHERE `office` = "root";
             #系统联盟
             SET @allianceID = 0;
-            SELECT `allianceID` INTO @allianceID FROM `alliances` WHERE `rid` = 0;  
+            SELECT `allianceID` INTO @allianceID FROM `alliances` WHERE `rid` = @rootRID;  
             #系统联盟
             SET @agentID = 0;
-            SELECT `agentID` INTO @agentID FROM `agencys` WHERE `rid` = 0; 
+            SELECT `agentID` INTO @agentID FROM `agencys` WHERE `rid` = @rootRID; 
       
             #重复检查
       	    IF EXISTS(SELECT 1 FROM `members` WHERE `rid` = @rid AND `allianceID` = @allianceID) THEN
