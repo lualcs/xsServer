@@ -1,7 +1,8 @@
 
 #include "../lua/lua.h"
 #include "../lua/lauxlib.h"
- 
+#include <stdlib.h> 
+
 struct sBuffer 
 {
   int   lenght;
@@ -51,6 +52,9 @@ static struct sBuffer buffer;
 #define wirteInt56(v)				writeByte(v>>48);wirteInt48(v)
 #define wirteInt64(v)				writeByte(v>>56);wirteInt56(v)
 #define writeDouble(v)				*(double*)&buffer.buffer[buffer.lenght]=v;buffer.lenght+=8
+
+#define luaIsNumber(L,n)		(lua_type(L, (n)) == LUA_TNUMBER)
+#define luaIsString(L,n)		(lua_type(L, (n)) == LUA_TSTRING)
 
 //数字大小
 static int numberSize(double number)
@@ -279,7 +283,7 @@ static int luaDecode(lua_State *L)
 	lua_newtable(L);
 
 	//压入参数
-	int itype, ISize;
+	int itype, isize;
 	double value_number;
 	int count = 0;
 
@@ -327,9 +331,9 @@ static int luaDecode(lua_State *L)
 		case luaText:
 		{
 			//字符串
-			ISize = strlen(buffer.buffer+start) + 1;
+			isize = strlen(buffer.buffer+start) + 1;
 			lua_pushstring(L, buffer.buffer);
-			start+=ISize;
+			start+=isize;
 		}
 		case luaInt08:
 		case luaInt16:
@@ -340,11 +344,11 @@ static int luaDecode(lua_State *L)
 		case luaInt56:
 		case luaInt64:
 		{
-			ISize = itype - luaInt08 + 1;
+			isize = itype - luaInt08 + 1;
 			int64_t val = 0;
-			memcpy(&val, buffer.buffer+start, ISize);
+			memcpy(&val, buffer.buffer+start, isize);
 			lua_pushnumber(L, val);
-			start+=ISize;
+			start+=isize;
 		}
 		default:
 		{
