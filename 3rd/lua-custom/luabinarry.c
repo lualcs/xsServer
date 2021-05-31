@@ -2,12 +2,12 @@
 #include "../lua/lua.h"
 #include "../lua/lauxlib.h"
  
-//微秒
+//编码
 static int luaEncode(lua_State *L) {
     
 }
 
-//微秒
+//解码
 static int luaDecode(lua_State *L) {
     
 }
