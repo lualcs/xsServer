@@ -13,12 +13,6 @@ local services = {nil}
 ---启动
 skynet.start(function()
 
-    local luabinarry = require("luabinarry")
-    local encode = luabinarry.luaEncode
-    local decode = luabinarry.luaDecode
-
-    debug.error("encode",skynet.unpack(skynet.pack({lcs=1,cnm=2,[{}]=2})))
-
     local timer = clock.new("Welecome client count down %05d 🕛🕛🕛")
     ---倒计时监听
     timer:append(12,1,function()

@@ -23,8 +23,10 @@ function robotmanager:ctor(service)
     ---@type timer
     self._timer = timer.new()
     ---空闲机器人
+    ---@type userID[]
     self._idles = {nil}
     ---工作机器人
+    ---@type userID[]
     self._works = {nil}
 end
 
@@ -36,6 +38,13 @@ end
 ---@return serviceInf @服务信息
 function robotmanager:getServices()
     return self._service._services
+end
+
+---服务
+---@param rlist userID[] @机器列表
+function robotmanager:feachRobotList(rlist)
+    local _idles = self._idles
+    table.push_list(_idles,rlist)
 end
 
 ---请求

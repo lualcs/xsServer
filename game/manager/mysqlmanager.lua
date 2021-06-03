@@ -40,10 +40,12 @@ end
 
 ---重置
 function mysqlmanager:dataReboot()
-    ---构造数据库
+    ---初始化数据库
     self:dbstructure()
-    ---加载联盟
-    self:loadingAlliance()
+    ---读取联盟数据
+    self:fetchClubs()
+    ---读取机器数据
+    self:feachRobot()
     
     skynet.error("mysqlmanager finish")
 end
@@ -176,7 +178,7 @@ function mysqlmanager:changeLogolink(rid,logolink)
 end
 
 ---加载联盟信息
-function mysqlmanager:loadingAlliance()
+function mysqlmanager:fetchClubs()
     local services = self:getServices()
     local mysql = self._mysql
 
@@ -279,22 +281,58 @@ function mysqlmanager:applyForInSystemAlliance(fd,rid,msg)
     local services = self:getServices()
     local mysql = self._mysql
     local excmd = format([[CALL `dballiances`.`procedureApplyForInSystemAlliance`(%d);]],rid)
-    local result = mysql:query(excmd)
-    if result.err then
+    local ret = mysql:query(excmd)
+    if ret.err then
         debug.normal({
-            ret = result,
+            ret = ret,
             sql = excmd,
         })
         return
     end
 
-    local list = result[1]
+    local list = ret[1]
     if table.empty(list) then
         debug.normal("empty list:",list)
     end
 
     skynet.call(services.alliance,"lua","membersInfo",list)
     skynet.call(services.alliance,"lua","c2s_allianceClubs",fd,rid,msg)
+end
+
+
+---读取机器人数据
+function mysqlmanager:feachRobot()
+    local services = self:getServices()
+    local mysql = self._mysql
+    local rlist = {nil}
+    local start = 0
+    while true do
+        ---查询数据
+        local cmd = format([[SELECT * FROM `dbaccounts`.`bind_robots` WHERE `rid` > %d ORDER BY `rid` LIMIT 100;]],start)
+        local ret = mysql:query(cmd)
+        ---结束检查
+        if ret.err then
+            debug.normal({
+                ret = ret,
+                sql = cmd,
+            })
+            break
+        end
+
+        if table.empty(ret) then
+            break
+        end
+
+        table.clear(rlist)
+        for _,inf in ipairs(ret) do
+            table.insert(rlist,inf.rid)
+        end
+
+        start = rlist[#rlist]
+
+        ---回调机器人
+        skynet.send(services.robot,"lua","feachRobotList",rlist)
+    end
 end
 
 return mysqlmanager
