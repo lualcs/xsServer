@@ -106,8 +106,8 @@ end
 
 ---创建桌子
 ---@param gameID        gameID      @游戏ID
----@param gameCustom    gameCustom  @房间定制
-function assignSuper:createTable(gameID,gameCustom)
+---@param custom        gameCustom  @房间定制
+function assignSuper:createTable(gameID,custom)
     
     local gameInfo = gameInfos[gameID]
     --检查数据
@@ -124,10 +124,10 @@ function assignSuper:createTable(gameID,gameCustom)
     local address  = skynet.queryservice("service_sole")
     local tableID  = skynet.call(address,"lua","getTableID")
     local historID = skynet.call(address,"lua","getHistorID")
-    gameCustom.historID = historID
+    custom.historID = historID
     --桌子服务
     local service = skynet.newservice("service_table")
-    skynet.call(service,"lua","start",gameID,gameCustom)
+    skynet.call(service,"lua","start",skynet.self(),gameID,custom)
 
     --桌子服务
     self._tables[tableID] = service

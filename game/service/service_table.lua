@@ -21,9 +21,13 @@ local service = {}
 local this = service
 
 ---服务启动
----@param gameID     gameID @游戏ID
----@param gameCustom gameCustom @定制
-function service.start(gameID,gameCustom)
+---@param handle     service    @分配服务
+---@param gameID     gameID     @游戏ID
+---@param custom     gameCustom @定制
+function service.start(handle,gameID,custom)
+    ---分配服务
+    ---@type service
+    this._assign = handle
     ---服务信息
     ---@type serviceInf
     this._services = sharedata.query(senum.mapServices())
@@ -38,7 +42,7 @@ function service.start(gameID,gameCustom)
     ---创建桌子
     local import = require(gameInfo.importTable)
     ---@type gameTable @游戏桌子
-    this._table = import.new(this,gameInfo,gameCustom)
+    this._table = import.new(this,gameInfo,custom)
     this._table:gameStart()
     ---组播对象
     this.multicast()
