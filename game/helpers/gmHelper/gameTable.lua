@@ -396,6 +396,8 @@ function gameTable:checkStart()
         timer:append(0,1,function()
             self:gameStart()
         end)
+    ---百人
+    elseif opt == senum.hundred() then
 
     end
 

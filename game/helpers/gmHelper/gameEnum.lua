@@ -33,6 +33,12 @@ function gameEnum.timer()
     return "timer"
 end
 
+---百人
+---@return senum
+function gameEnum.hundred()
+    return "hundred"
+end
+
 ---准备
 ---@return senum
 function gameEnum.ready()
