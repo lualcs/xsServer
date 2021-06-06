@@ -10,10 +10,10 @@ local table = table
 local math = math
 local ipairs,pairs = ipairs,pairs
 
-local is_number = require("is_number")
-local is_string = require("is_string")
-local is_table = require("is_table")
-local is_types = require("is_types")
+local ifNumber = require("ifNumber")
+local ifString = require("ifString")
+local ifTable = require("ifTable")
+local ifTypes = require("ifTypes")
 
 local sort = require("sort")
 
@@ -28,22 +28,22 @@ local random = {}
 ]]
 function random.no_repetiton(random_list,random_lib,num,exclude)
 	 --参数检查
-	if not is_table(random_list) then return -1 end
-	if not is_table(random_lib) then return -2 end
-	if not is_number(num) then return -3 end
+	if not ifTable(random_list) then return -1 end
+	if not ifTable(random_lib) then return -2 end
+	if not ifNumber(num) then return -3 end
 	table.clr(random_list)
 	--筛选随机索引
 	if not exclude then
         --没有排除项
 		for k,v in pairs(random_lib) do
-			if is_number(k) then
+			if ifNumber(k) then
 				random_list[#random_list + 1] = k
 			end
 		end
 	else
         --有排除项
 		for k,v in pairs(random_lib) do
-			if is_number(k) and not exclude[k] then
+			if ifNumber(k) and not exclude[k] then
 				random_list[#random_list + 1] = k
 			end
 		end

@@ -2,9 +2,9 @@
 	查找算法
 ]]
 
-local is_number = require("is_number")
-local is_string = require("is_string")
-local is_table = require("is_table")
+local ifNumber = require("ifNumber")
+local ifString = require("ifString")
+local ifTable = require("ifTable")
 local math = math
 local pairs = pairs
 

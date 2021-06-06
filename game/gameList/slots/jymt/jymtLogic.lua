@@ -7,8 +7,8 @@ local math = math
 local table = table
 local pairs = pairs
 local ipairs = ipairs
-local is_number = require("is_number")
-local is_number = require("is_number")
+local ifNumber = require("ifNumber")
+local ifNumber = require("ifNumber")
 local class = require("class")
 local slotsLogic = require("slotsLogic")
 ---@class jymtLogic:slotsLogic
@@ -212,7 +212,7 @@ function jymtLogic:getFreeBudgeExpect()
         local fefExpect = 0
         local scatter_free = self.config.scatter_free
         for _len,_pro in pairs(lPro[ficn]) do
-            if is_number(_len) then
+            if ifNumber(_len) then
                 fefExpect = fefExpect + (_pro * scatter_free[_len])
             end
         end

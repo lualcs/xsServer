@@ -9,7 +9,7 @@ local pairs = pairs
 local ipairs = ipairs
 local random = require("random")
 local class = require("class")
-local is_number = require("is_number")
+local ifNumber = require("ifNumber")
 local hundredLogic = require("hundredLogic")
 local senum = require("dragonTiger.dragonTigerEnum")
 ---@class drangonTigerLogic:hundredLogic

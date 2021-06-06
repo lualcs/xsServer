@@ -320,7 +320,6 @@ end
 function mysqlmanager:feachRobot()
     local services = self:getServices()
     local mysql = self._mysql
-    local rlist = {nil}
     local start = 0
     while true do
         ---查询数据
@@ -339,15 +338,16 @@ function mysqlmanager:feachRobot()
             break
         end
 
-        table.clear(rlist)
+        ---取出角色
+        local list = {nil}
         for _,inf in ipairs(ret) do
-            table.insert(rlist,inf.rid)
+            table.insert(list,inf.rid)
         end
 
-        start = rlist[#rlist]
+        start = list[#list]
 
         ---回调机器人
-        skynet.send(services.robot,"lua","feachRobotList",rlist)
+        skynet.send(services.robot,"lua","feachRobotList",list)
     end
 end
 

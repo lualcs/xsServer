@@ -1,3 +1,4 @@
+local ifUInt = require("ifUInt")
 local internal = require "http.internal"
 local socket = require "skynet.socket"
 local crypt = require "skynet.crypt"
@@ -467,10 +468,12 @@ end
 
 
 function M.write(id, data, fmt, masking_key)
-    local ws_obj = ws_pool[id] or {write = sockethelper.writefunc(id)}
-    fmt = fmt or "text"
-    assert(fmt == "text" or fmt == "binary")
-    write_frame(ws_obj, fmt, data, masking_key)
+    if id and ifUint(id) then
+        local ws_obj = ws_pool[id] or {write = sockethelper.writefunc(id)}
+        fmt = fmt or "text"
+        assert(fmt == "text" or fmt == "binary")
+        write_frame(ws_obj, fmt, data, masking_key)
+    end
 end
 
 

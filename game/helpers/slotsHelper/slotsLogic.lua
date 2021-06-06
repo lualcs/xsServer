@@ -9,7 +9,7 @@ local math = math
 local class = require("class")
 local sort = require("sort")
 local table = require("extend_table")
-local is_number = require("is_number")
+local ifNumber = require("ifNumber")
 local gameLogic = require("gameLogic")
 local slotsEnum = require("slotsEnum")
 ---@class slotsLogic:gameLogic

@@ -6,19 +6,19 @@
 
 local table = require("extend_table")
 local string = require("extend_string")
-local is_boolean = require("is_boolean")
-local is_number = require("is_number")
-local is_table = require("is_table")
-local is_string = require("is_string")
+local ifBoolean = require("ifBoolean")
+local ifNumber = require("ifNumber")
+local ifTable = require("ifTable")
+local ifString = require("ifString")
 
 local tostring = tostring
 local print = print
 local pairs = pairs
 
 local function _tablestring(strlist,val,level,key)
-	if is_string(val) then
+	if ifString(val) then
 		table.insert( strlist,val)
-	elseif not is_table(val) then
+	elseif not ifTable(val) then
 		table.insert(strlist,tostring(val))
 	end
 
@@ -30,13 +30,13 @@ local function _tablestring(strlist,val,level,key)
 		indent = ""
 	end
 
-	if is_string(key) then
+	if ifString(key) then
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,indent)
 		table.insert( strlist,key)
 		table.insert( strlist," = ")
 		table.insert( strlist,"{")
-	elseif is_number(key) then
+	elseif ifNumber(key) then
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,indent)
 		table.insert( strlist,"[")
@@ -44,14 +44,14 @@ local function _tablestring(strlist,val,level,key)
 		table.insert( strlist,"]")
 		table.insert( strlist," = ")
 		table.insert( strlist,"{")
-	elseif is_table(key) then
+	elseif ifTable(key) then
 		_tablestring(strlist,key,level)
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,indent)
 		table.insert( strlist," = ")
 		table.insert( strlist,"\r\n")
-	elseif is_boolean(key) then
+	elseif ifBoolean(key) then
 		table.insert( strlist,"[")
 		table.insert(strlist,tostring(key))
 		table.insert( strlist,"]")
@@ -59,7 +59,7 @@ local function _tablestring(strlist,val,level,key)
 		table.insert( strlist,"{")
 	end
 	
-	if is_table(val) then
+	if ifTable(val) then
 		table.insert( strlist,"\r\n")
 		table.insert( strlist,indent)
 	else
@@ -68,17 +68,17 @@ local function _tablestring(strlist,val,level,key)
 	
 	for k,v in pairs(val) do
 		--v是table k非table
-		if is_table(v) then
+		if ifTable(v) then
 			_tablestring(strlist,v, level + 1,k)
 		else
 			table.insert( strlist,"\r\n")
 			table.insert( strlist,indent)
 			table.insert( strlist,"\t")
 
-			if is_string(k) then
+			if ifString(k) then
 				table.insert( strlist,k)
 				table.insert( strlist," = ")
-				if is_string(v) then
+				if ifString(v) then
 					table.insert( strlist,"\"")
 					table.insert( strlist,v)
 					table.insert( strlist,"\"")
@@ -90,7 +90,7 @@ local function _tablestring(strlist,val,level,key)
 				table.insert( strlist,tostring(k))
 				table.insert( strlist,"]")
 				table.insert( strlist," = ")
-				if is_string(v) then
+				if ifString(v) then
 					table.insert( strlist,"\"")
 					table.insert( strlist,v)
 					table.insert( strlist,"\"")
@@ -116,7 +116,7 @@ end
 
 local strlist = {}
 return function(v)
-	if is_table(v) then
+	if ifTable(v) then
 		table.clear(strlist)
 		_tablestring(strlist,v,0)
 		return table.concat(strlist)

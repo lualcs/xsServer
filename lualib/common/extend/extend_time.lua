@@ -4,7 +4,7 @@
 ]]
 
 local os = os
-local is_number = require("is_number")
+local ifNumber = require("ifNumber")
 
 local MIN_SEC = 60
 local HOUR_SEC = MIN_SEC * 60
@@ -37,16 +37,16 @@ end
 ---@param date 	date	@日期表
 function time.toSecond(date)
 	local second = 0
-	if is_number(date.day) then
+	if ifNumber(date.day) then
 		second = second + DAY_SEC * date.day
 	end
-	if is_number(date.hour) then
+	if ifNumber(date.hour) then
 		second = second + HOUR_SEC * date.hour
 	end
-	if is_number(date.min) then
+	if ifNumber(date.min) then
 		second = second + MIN_SEC * date.min
 	end
-	if is_number(date.sec) then
+	if ifNumber(date.sec) then
 		second = second + date.sec
 	end
 

@@ -10,8 +10,8 @@ local table = table
 local pairs = pairs
 local ipairs = ipairs
 local tostring = tostring
-local is_table = require("is_table")
-local is_boolean = require("is_boolean")
+local ifTable = require("ifTable")
+local ifBoolean = require("ifBoolean")
 local extend_tostring = require("extend_tostring")
 
 local skynet = require("skynet")
@@ -24,10 +24,10 @@ function debug.print(...)
     local args = {...}
     local res = ""
     for n, v in ipairs(args) do
-        if is_table(v) then
+        if ifTable(v) then
             table.insert(tb_lis,"\n")
             table.insert(tb_lis,extend_tostring(v))
-        elseif is_boolean(v) then
+        elseif ifBoolean(v) then
             table.insert(tb_lis,"\n")
             table.insert(tb_lis,tostring(v))
         else

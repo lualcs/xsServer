@@ -4,6 +4,7 @@
     auth:Caorl Luo
 ]]
 
+local format = string.format
 local table = require("extend_table")
 local debug = require("extend_debug")
 local websocket = require("api_websocket")
@@ -98,6 +99,32 @@ function loginmanager:loginSuccessfully(fd,ret)
     ---通知client
     ---返回结果
     websocket.sendpbc(fd,senum.s2c_loginResult(),{senum.login()},ret)
+end
+
+---机器登录
+---@param rid   userID              @机器
+---@param msg   c2s_loginTourists   @消息
+function loginmanager:robotLogin(rid)
+    local fd = format("robot%d",rid)
+    ---重复登录
+    if self:repeatLogin(fd) then
+        return
+    end
+
+    ---服务信息
+    ---@type serviceInf
+    local services = self:getServices()
+    ---登陆结果
+    ---@type s2c_loginResult
+    local login = skynet.call(services.mysql,"lua","robotLogin",rid)
+    if not login.failure then
+        ---登录模式
+        login.loginMod = senum.tourists()
+        login.loginBid = rid
+        
+        ---保存结果
+        self:loginSuccessfully(fd,login)
+    end
 end
 
 ---游客登陆

@@ -5,8 +5,8 @@
 ]]
 
 local ipairs = ipairs
-local is_number = require("is_number")
-local is_table = require("is_table")
+local ifNumber = require("ifNumber")
+local ifTable = require("ifTable")
 local table = require("extend_table")
 local math = require("extend_math")
 
@@ -18,7 +18,7 @@ local sort = {nil}
 ---@param num number  @结束位置
 function sort.bubble(arr,comp,num)  
 	local len = #arr
-	if not is_number(num) then
+	if not ifNumber(num) then
 		num = len - 1
 	elseif num > len then
 		num = len - 1--避免不必呀的循环
@@ -38,7 +38,7 @@ end
 ---@param num number  @结束位置
 function sort.select(arr,comp,num)  
 	local len = #arr
-	if not is_number(num) then
+	if not ifNumber(num) then
 		num = len - 1
 	elseif num > len then
 		num = len - 1--避免不必呀的循环

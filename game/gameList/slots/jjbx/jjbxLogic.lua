@@ -9,7 +9,7 @@ local pairs = pairs
 local ipairs = ipairs
 local random = require("random")
 local class = require("class")
-local is_number = require("is_number")
+local ifNumber = require("ifNumber")
 local slotsLogic = require("slotsLogic")
 local senum = require("jjbx.jjbxEnum")
 ---@class jjbxLogic:slotsLogic
@@ -473,7 +473,7 @@ function jjbxLogic:getFreeBudgeExpect()
         local fefExpect = 0
         local scatter_free = self.config.scatter_free
         for _len,_pro in pairs(lPro[ficn]) do
-            if is_number(_len) then
+            if ifNumber(_len) then
                 fefExpect = fefExpect + (_pro * scatter_free[_len])
             end
         end

@@ -11,9 +11,9 @@ local pairs = pairs
 local setmetatable = setmetatable
 local print = print
 local next = next
-local is_table = require("is_table")
-local is_string = require("is_string")
-local is_function = require("is_function")
+local ifTable = require("ifTable")
+local ifString = require("ifString")
+local ifFunction = require("ifFunction")
 
 ---浅拷贝
 ---@param t table @要拷贝的表
@@ -40,7 +40,7 @@ function table.copy_deep(t,out)
 	end
 	local new = out or {nil}
 	for k,v in pairs(t) do
-		if is_table(v) then
+		if ifTable(v) then
 			new[k]=table.copy_deep(v)
 		else
 			new[k]=v
@@ -321,7 +321,7 @@ end
 ---@param t table @表
 ---@return table|nil
 function table.clear(t)
-	if not is_table(t) then
+	if not ifTable(t) then
 		return
 	end
 
@@ -334,9 +334,9 @@ end
 ---清空数据 {a={1}} to {a={nil}}
 ---@param t table @表
 function table.clearEmpty(t)
-    if not is_table(t) then return end
+    if not ifTable(t) then return end
 	for k,v in pairs(t) do
-		if not is_table(v) then
+		if not ifTable(v) then
 			t[k] = nil
 		else
 			table.clearEmpty(v)
@@ -375,7 +375,7 @@ end
 ---@param tab table @表
 function table.read_only_deep(tab)
 	for k,v in pairs(tab) do
-		if is_table(v) then
+		if ifTable(v) then
 			table.read_only(v)
 		end
 	end
@@ -392,7 +392,7 @@ local _noassign_tm = {
 function table.noassign(tab)
 
     for k,v in pairs(tab) do
-        if is_table(v) then
+        if ifTable(v) then
             table.noassign(v)
         end
     end
@@ -405,7 +405,7 @@ end
 ---@param tab table @表
 function table.noassign_deep(tab)
 	for k,v in pairs(tab) do
-		if is_table(v) then
+		if ifTable(v) then
 			table.noassign(v)
 		end
 	end
@@ -429,7 +429,7 @@ end
 ---@param tab table @表
 function table.default_zero_deep(tab)
     for k,v in pairs(tab) do
-		if is_table(v) then
+		if ifTable(v) then
 			table.default_zero(v)
 		end
 	end
@@ -483,7 +483,7 @@ end
 ---循环执行一个函数
 function table.forFunction(tabs,...)
     for k,v in pairs(tabs) do
-        if is_function(v) then
+        if ifFunction(v) then
             v(...)
         end
     end
@@ -584,12 +584,12 @@ function table.include(a,b)
 	end
 
 	--不是table
-	if not is_table(a) then
+	if not ifTable(a) then
 		return false
 	end
 
 	--不是table
-	if not is_table(b) then
+	if not ifTable(b) then
 		return false
 	end
 

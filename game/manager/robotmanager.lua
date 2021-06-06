@@ -47,6 +47,8 @@ function robotmanager:feachRobotList(rlist)
     table.push_list(_idles,rlist)
 end
 
+---完成
+
 ---请求
 ---@param fd  socket      @套接字
 ---@param msg msgBody @数据
