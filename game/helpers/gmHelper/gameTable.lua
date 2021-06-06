@@ -100,7 +100,10 @@ function gameTable:ctor(service,gameInfo,gameCustom)
     self._combatID  = 0
     ---游戏状态
     ---@type senum                     
-    self._gmstatus  = senum.idle()
+    self._gmstatus  = senum.gameIdle()
+    ---机器配置
+    local cfg = require("sundry.robot")
+    self._gmrobots  = cfg[gameInfo.gameID]
 end
 
 ---重启
@@ -196,6 +199,12 @@ end
 ---@return table
 function gameTable:getGameConf()
     return self._cfg
+end
+
+---机器配置
+---@return robotEnter
+function gameTable:gaetRobotCfg()
+    return self._gmrobots
 end
 
 ---获取当前玩家
@@ -349,7 +358,7 @@ function gameTable:checkStart()
 
     --检查状态
     local status = self:getGameStatus()
-    if senum.statusIdle() ~= status then
+    if senum.gameIdle() ~= status then
         return
     end
 
@@ -396,9 +405,30 @@ function gameTable:checkStart()
         timer:append(0,1,function()
             self:gameStart()
         end)
-    ---百人
-    elseif opt == senum.hundred() then
-
+    ---庄闲
+    elseif opt == senum.banker() then
+        ---检查庄家
+        local bSatisfy = false
+        for _,player in pairs(self._mapPlayer) do
+            if player:ifBanker() then
+                bSatisfy = true
+                break
+            end
+        end
+        if not bSatisfy then
+            return
+        end
+        ---检查闲家
+        local bSatisfy = false
+        for _,player in pairs(self._mapPlayer) do
+            if not player:ifBanker() then
+                bSatisfy = true
+                break
+            end
+        end
+        if not bSatisfy then
+            return
+        end
     end
 
     --扩展开始检查

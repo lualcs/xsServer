@@ -21,6 +21,11 @@ return {
             SET `@rid` =  LAST_INSERT_ID();
         END IF;
       END]],
+    --创建机器登录存储过程
+    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureLoginRobot`(IN `@rid` INT(10))
+      BEGIN
+      	  SELECT * FROM `accounts` WHERE `rid` = @rid;
+      END]],
     --创建游客登陆存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureLoginTourists`(IN `@accredit` VARCHAR(256))
       BEGIN

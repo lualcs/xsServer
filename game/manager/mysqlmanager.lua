@@ -84,6 +84,22 @@ function mysqlmanager:dbstructure()
     ::leave::
 end
 
+---机器登录
+---@param rid userID @机器角色
+function mysqlmanager:robotLogin(rid)
+    ---拼接语句
+    local sqlex = format([[CALL dbaccounts.procedureLoginRobot("%d");]],rid)
+
+    ---执行语句
+    local mysql = self._mysql
+    local repak = mysql:query(sqlex)
+    if repak.err then
+        debug.error(repak)
+        return
+    end
+    --返回结果
+    return repak[1][1]
+end
 
 ---游客登陆
 ---@param accredit string @登录凭证

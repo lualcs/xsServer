@@ -27,6 +27,12 @@ function gameEnum.people()
     return "people"
 end
 
+---准备
+---@return senum
+function gameEnum.ready()
+    return "ready"
+end
+
 ---定时
 ---@return senum
 function gameEnum.timer()
@@ -37,12 +43,6 @@ end
 ---@return senum
 function gameEnum.hundred()
     return "hundred"
-end
-
----准备
----@return senum
-function gameEnum.ready()
-    return "ready"
 end
 
 ---旁观
@@ -155,6 +155,12 @@ end
 ---@return senum
 function gameEnum.player()
     return "player"
+end
+
+---空闲
+---@return senum
+function gameEnum.gameIdle()
+    return "gameIdle"
 end
 
 return gameEnum
