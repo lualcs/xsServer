@@ -250,6 +250,7 @@ local gameInfos = {
             "mahjong.deploy.scxzConfig",
         }
     },
+
 }
 
 ---自动填充

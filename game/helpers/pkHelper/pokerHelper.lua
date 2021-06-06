@@ -1,5 +1,4 @@
 --[[
-    file:pokerHelper.lua 
     desc:只做最简单的功能
     auth:Carol Luo
 ]]
@@ -26,12 +25,12 @@ function pokerHelper.getName(card)
     return mapNames[card]
 end
 
-local names = {}
+local copy1 = {nil}
 ---获取名字
 ---@param cards cardPoker[] @扑克牌值
 ---@return name
 function pokerHelper.getNames(cards)
-    table.clear(names)
+    local names = table.clear(copy1)
     for _,card in ipairs(cards) do
         local name = this.getName(card)
         table.insert(names,name)
@@ -75,35 +74,35 @@ end
 ---是否方块
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_fangKuai(card)
+function pokerHelper.ifDiamond(card)
     return 1 == this.getColor(card)
 end
 
 ---是否梅花
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_meiHua(card)
+function pokerHelper.ifPlumBlossom(card)
     return 2 == this.getColor(card)
 end
 
 ---是否红桃
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_hongTao(card)
+function pokerHelper.ifHearts(card)
     return 3 == this.getColor(card)
 end
 
 ---是否黑桃
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_heiTao(card)
+function pokerHelper.ifSpade(card)
     return 4 == this.getColor(card)
 end
 
 ---是否黑色
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_black(card)
+function pokerHelper.ifBlackColor(card)
     local color = this.getColor(card)
     return 1 == color or 3 == color
 end
@@ -111,7 +110,7 @@ end
 ---是否红色
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_red(card)
+function pokerHelper.ifRedColor(card)
     local color = this.getColor(card)
     return 0 == color or 2 == color
 end
@@ -119,21 +118,21 @@ end
 ---是否王牌
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_king(card)
+function pokerHelper.ifKing(card)
     return 0x4e == card or 0x4f == card
 end
 
 ---是否小王
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_kingMin(card)
+function pokerHelper.ifLittleKing(card)
     return 0x4e == card
 end
 
 ---是否大王
 ---@param card cardPoker @牌值
 ---@return boolean
-function pokerHelper.is_kingMax(card)
+function pokerHelper.ifLargeKing(card)
     return 0x4f == card
 end
 
