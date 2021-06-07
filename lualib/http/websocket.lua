@@ -468,7 +468,7 @@ end
 
 
 function M.write(id, data, fmt, masking_key)
-    if id and ifUint(id) then
+    if id and ifUInt(id) then
         local ws_obj = ws_pool[id] or {write = sockethelper.writefunc(id)}
         fmt = fmt or "text"
         assert(fmt == "text" or fmt == "binary")

@@ -3,6 +3,7 @@
     auth:Caorl Luo
 ]]
 
+local ipairs = ipairs
 local skynet = require("skynet")
 local class = require("class")
 local timer = require("timer")
@@ -48,6 +49,15 @@ function robotmanager:feachRobotList(rlist)
 end
 
 ---完成
+---@param rlist userID[] @机器列表
+function robotmanager:feachRobotOver()
+    local services = self:getServices()
+    local _idles = self._idles
+    for _,rid in ipairs(_idles) do
+        skynet.send(services.login,"lua","robotLogin",rid)
+    end
+    skynet.error("robotmanager finish")
+end
 
 ---请求
 ---@param fd  socket      @套接字

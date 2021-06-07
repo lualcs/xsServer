@@ -1,4 +1,4 @@
-
+local ifNumber = require("ifNumber")
 return function(v)
-	return 0 == v%1
+	return ifNumber(v) and 0 == v%1
 end

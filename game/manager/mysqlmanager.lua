@@ -349,6 +349,10 @@ function mysqlmanager:feachRobot()
         ---回调机器人
         skynet.send(services.robot,"lua","feachRobotList",list)
     end
+
+    ---通知完成
+    skynet.send(services.robot,"lua","feachRobotOver")
 end
+
 
 return mysqlmanager
