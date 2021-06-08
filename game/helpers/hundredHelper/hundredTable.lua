@@ -2,6 +2,8 @@
     desc:桌子
     auth:Caorl Luo
 ]]
+
+local ipairs = ipairs
 local table = require("extend_table")
 local class = require("class")
 local ranking  = require("ranking")
@@ -20,10 +22,10 @@ function hundredTable:ctor()
     ---@type ranking
     self._dfh_rank = ranking.new(10)
     ---庄家列表数据
-    ---@type seatID[]
+    ---@type hundredPlayer[]
     self._arrBanker = {nil}
     ---请求上庄列表
-    ---@type seatID[]
+    ---@type hundredPlayer[]
     self._arrUpBanker = {nil}
     ---闲家下注信息
     ---@type table<seatID,hundredBetInf[]>
@@ -51,6 +53,12 @@ end
 ---@return count
 function hundredTable:numBanker()
     return #self._arrBanker
+end
+
+---上庄数量
+---@return count
+function hundredTable:numUpBanker()
+    return #self._arrUpBanker
 end
 
 
@@ -162,6 +170,36 @@ end
 ---@param data xx 下注
 function hundredTable:ntfBroadcastBet(data)
     self:ntfMsgToTable("s2cHundredBetting",data)
+end
+
+---申请上庄
+---@param player hundredPlayer @申请玩家
+function hundredTable:applyForUpBanker(player)
+    local list = self._arrUpBanker
+    table.insert(list,player)
+end
+
+---申请下庄
+---@param player hundredPlayer @申请玩家
+function hundredTable:applyForDownBanker(player)
+
+    ---上庄列表
+    local list = self._arrUpBanker
+    for index,upBanker in ipairs(self._arrUpBanker) do
+        if player == upBanker then
+            table.remove(list,index)
+            return true
+        end
+    end
+
+    ---庄家列表
+    local list = self._arrBanker
+    for index,banker in ipairs(list) do
+        if player == banker then
+            table.remove(list,index)
+            return true
+        end
+    end 
 end
 
 return hundredTable
