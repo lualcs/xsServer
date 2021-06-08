@@ -66,6 +66,14 @@ function timer:append(elapse,count,call,...)
     return head:append(ulti,item)
 end
 
+---单次回调
+---@param  elapse   MS          @流逝时间
+---@param  call     function    @回调函数
+---@return timeID @定时ID
+function timer:appendCall(elapse,call,...)
+    return self:append(elapse,1,call,...)
+end
+
 ---无限回调
 ---@param  elapse   MS          @流逝时间
 ---@param  call     function    @回调函数

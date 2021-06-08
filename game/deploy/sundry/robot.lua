@@ -12,39 +12,42 @@ return {
         hotspot = {
             ---热度重置 分*秒*毫秒
             opportunity = 5*60*1000,
-            ---冷场配置
-            lonelyRange = {
-                sum = 10000,
-                lis = {
-                    {weight=1000,min=0,max=0},
-                    {weight=2000,min=1,max=3},
-                    {weight=3000,min=4,max=5},
-                    {weight=3000,min=6,max=8},
-                    {weight=1000,min=9,max=10},
+            seasonLists = {
+                 ---冷场配置
+                {
+                    sum = 10000,
+                    lis = {
+                        {weight=1000,min=0,max=0},
+                        {weight=2000,min=1,max=3},
+                        {weight=3000,min=4,max=5},
+                        {weight=3000,min=6,max=8},
+                        {weight=1000,min=9,max=10},
+                    },
+                },
+                ---改善配置
+                {
+                    sum = 10000,
+                    lis = {
+                        {weight=1000,min=11,max=20},
+                        {weight=2000,min=21,max=30},
+                        {weight=3000,min=31,max=40},
+                        {weight=3000,min=41,max=50},
+                        {weight=1000,min=51,max=60},
+                    },
+                },
+                ---火热配置
+                {
+                    sum = 10000,
+                    lis = {
+                        {weight=1000,min=50,max=60},
+                        {weight=2000,min=61,max=70},
+                        {weight=3000,min=71,max=80},
+                        {weight=3000,min=81,max=90},
+                        {weight=1000,min=91,max=100},
+                    },
                 },
             },
-            ---改善配置
-            betterRange = {
-                sum = 10000,
-                lis = {
-                    {weight=1000,min=11,max=20},
-                    {weight=2000,min=21,max=30},
-                    {weight=3000,min=31,max=40},
-                    {weight=3000,min=41,max=50},
-                    {weight=1000,min=51,max=60},
-                },
-            },
-            ---火热配置
-            fieryRange = {
-                sum = 10000,
-                lis = {
-                    {weight=1000,min=50,max=60},
-                    {weight=2000,min=61,max=70},
-                    {weight=3000,min=71,max=80},
-                    {weight=3000,min=81,max=90},
-                    {weight=1000,min=91,max=100},
-                },
-            },
+           
             ---热度时间
             seasonDate = {
                 [1] = {
@@ -105,6 +108,11 @@ return {
             lis = {
                 {weight=10000,asset = 10},
             },
+        },
+        ---机器入场
+        enter = {
+            ---时机
+            opportunity = 10*1000,
         },
         ---离开配置
         leave = {

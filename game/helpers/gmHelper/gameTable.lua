@@ -9,6 +9,9 @@ local ipairs = ipairs
 local format = string.format
 local wsnet = require("api_websocket")
 local table = require("extend_table")
+local time = require("extend_time")
+local math = require("extend_math")
+local debug = require("extend_debug")
 local occupy = require("occupy")
 local caches = require("caches")
 local skynet = require("skynet")
@@ -102,8 +105,85 @@ function gameTable:ctor(service,gameInfo,gameCustom)
     ---@type senum                     
     self._gmstatus  = senum.gameIdle()
     ---机器配置
+    ---@type robotEnter
     local cfg = require("sundry.robot")
-    self._gmrobots  = cfg[gameInfo.gameID]
+    local rbt = cfg[gameInfo.gameID]
+    self._gmrobots  = rbt
+
+    if rbt then
+        ---首次执行
+        self._tim:appendCall(5*1000,function()
+            self:refershRobotHotspot()
+        end)
+        ---重置热度
+        self._tim:appendEver(rbt.hotspot.opportunity,function()
+            self:refershRobotHotspot()
+        end)
+        ---机器入场
+        self._tim:appendEver(rbt.enter.opportunity,function()
+            self:refershRobotEnter()
+        end)
+    end
+
+    ---真人玩家数据
+    ---@type count
+    self._realCount = 0
+    ---机器玩家数据
+    ---@type count
+    self._robotCount = 0
+
+end
+
+---服务
+---@return serviceInf @服务信息
+function gameTable:getServices()
+    return self._service._services
+end
+
+---分配
+---@return service
+function gameTable:getAssignID()
+    return self._service._assign
+end
+
+---刷新热度
+function gameTable:refershRobotHotspot()
+    local hotspot =  self._gmrobots.hotspot
+    local week    =  time.todayWeekID()
+    local hour    =  time.hour()
+    local hotLeve =  hotspot.seasonDate[week][hour]
+    local hotWgts =  hotspot.seasonLists[hotLeve]
+    local hotRand =  math.random(1,10000)
+    for _,wgts in ipairs(hotWgts.lis) do
+        hotRand = hotRand - wgts.weight
+        if hotRand <= 0 then
+            self._robotTarget = math.random(wgts.min,wgts.max)
+        end
+    end
+end
+
+---机器入场
+function gameTable:refershRobotEnter()
+    ---邀请机器人目标
+    local target = self._robotTarget
+    if not target then
+        return
+    end
+
+    for _,player in ipairs(self._arrPlayer) do
+        if player:ifRobot() then
+            target = target - 1
+        end
+    end
+
+    local services = self:getServices()
+
+    ---邀请机器人
+    if target > 0 then
+        local assign = self._service._assign
+        skynet.send(services.robot,"lua","inviteEnter",assign,skynet.self())
+    end
+
 end
 
 ---重启
@@ -309,32 +389,49 @@ function gameTable:playerEnter(playerInfo)
 
     --人数检查
     local occpyobj = self:getOccpyObj()
-    if occpyobj:fetch() then
+    if not occpyobj:fetch() then
         return false,"爆满了"
     end
 
     --玩家座位
     playerInfo.seatID = occpyobj:read()
-
     --玩家实例
     local import = self:getImportPlayer()
-    local protot = require(import)
-    local newobj = protot.new(self,playerInfo)
+    local object = require(import)
+    local player = object.new(self,playerInfo)
 
     --玩家保存
     local map = self:getMapPlayer()
-    map[playerInfo.userID] = newobj
+    map[playerInfo.userID] = player
 
     local lis = self:getArrPlayer()
-    lis[playerInfo.seatID] = newobj
+    lis[playerInfo.seatID] = player
+
+    ---数量统计
+    if player:ifRobot() then
+        self._robotCount = self._robotCount + 1
+    else
+        self._realCount = self._realCount + 1
+    end
 
     ---检查开始
     self:checkStart()
 
+    ---通知分配
+    local handle = self:getAssignID()
+    local origin = skynet.self()
+    skynet.send(handle,"lua","liveTable",playerInfo.userID,origin)
 end
 
 ---玩家退出
-function gameTable:playerQuit()
+---@param player gamePlayer @游戏玩家
+function gameTable:playerLeave(player)
+    ---数量统计
+    if player:ifRobot() then
+        self._robotCount = self._robotCount - 1
+    else
+        self._realCount = self._realCount - 1
+    end
     ---检查开始
     self:checkStart()
 end
@@ -381,7 +478,7 @@ function gameTable:checkStart()
 
         ---游戏开始
         local timer = self._tim
-        timer:append(0,1,function()
+        timer:appendCall(0,function()
             self:gameStart()
         end)
 
@@ -402,7 +499,7 @@ function gameTable:checkStart()
 
         ---游戏开始
         local timer = self._tim
-        timer:append(0,1,function()
+        timer:appendCall(0,function()
             self:gameStart()
         end)
     ---庄闲

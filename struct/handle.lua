@@ -1,5 +1,4 @@
 --[[
-    file:handle.lua 
     desc:结构
     auth:Caorl Luo
 ]]

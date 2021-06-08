@@ -28,7 +28,10 @@ function gatemanager:ctor(gate)
     self._gate = gate
     ---client映射
     ---@type table<fd,loginClient>
-    self._clients = {nil}
+    self._clientLis = {nil}
+     ---client映射
+    ---@type table<userID,loginClient>
+    self._clientMap = {nil}
     ---定时器
     self._timer = timer.new()
     ---堆结构
@@ -66,7 +69,7 @@ end
 ---@param fd scoket @上线用户
 function gatemanager:online(fd)
 
-    local client = self._clients[fd]
+    local client = self._clientLis[fd]
     if not client then
         return
     end
@@ -92,7 +95,7 @@ end
 ---断线
 ---@param rid userID @套接字
 function gatemanager:offline(fd)
-    local clients = self._clients
+    local clients = self._clientLis
     local client = clients[fd]
     if not client then
         return
@@ -127,7 +130,7 @@ function gatemanager:message(fd,msg)
     tsort.reverse(msg.cmds)
     local cmd = table.remove(msg.cmds)
     local services = self:getServices()
-    local client = self._clients[fd]
+    local client = self._clientLis[fd]
     if senum.heartbeat() == cmd then
         debug.normal(fd,cmd)
         return
@@ -169,8 +172,48 @@ end
 ---登陆成功
 ---@param client client @登陆成功
 function gatemanager:loginSuccessfully(client)
-    self._clients[client.fd] = client
+    self._clientLis[client.fd] = client
+    self._clientMap[client.role.rid] = client
     self:online(client.fd)
+end
+
+---@class playerInfo      @游戏玩家
+---@field fd        socket   @套接字
+---@field userID    userID   @玩家ID
+---@field seatID    seatID   @座位ID
+---@field coin      score    @玩家分数
+---@field name      name     @玩家名子
+---@field logo      url      @玩家头像
+---@field line      senum    @在线状态
+---@field robot     boolean  @true:机器人 false:真人
+
+---邀请进桌
+---@param assign        service @分配服务
+---@param competition   service @游戏桌子
+---@param rid           userID  @用户角色
+function gatemanager:inviteEnterTable(assign,competition,rid)
+    local client = self._clientMap[rid]
+    local role = client.role
+    skynet.send(assign,"lua","inviteEnterTable",competition,{
+        fd        = client.fd,
+        userID    = role.rid,
+        coin      = role.coin,
+        name      = role.nickname,
+        logo      = role.logolink,
+        line      = client.online,
+        robot     = role.office == senum.robot(),
+    })
+end
+
+---成功入桌子
+---@param rid           userID          @用户角色
+---@param assign        service         @分配服务
+---@param competition   service         @游戏桌台
+function gatemanager:liveTable(rid,assign,competition)
+    ---数据保存
+    local client = self._clientMap[rid]
+    client.assign = assign
+    client.table = competition
 end
 
 return gatemanager

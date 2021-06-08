@@ -123,7 +123,7 @@ end
 ---@param time 	time	@时间戳
 function time.weekID(time)
 	local date = this.todate(time)
-	local wday = date.wday
+	local wday = date.wday - 1
 	if 0 == wday then
 		wday = 7
 	end
@@ -138,5 +138,11 @@ function time.todayWeekID()
 end
 
 
+---现在是几点钟
+---@return hour 
+function time.hour()
+	local date = os.date('*t')
+	return date.hour
+end
 
 return time

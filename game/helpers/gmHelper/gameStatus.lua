@@ -40,13 +40,13 @@ end
 ---游戏状态跳转
 function gameStatus:jumpGameStatus()
     local status = self._table:getGameStatus()
-    self._tim:append(0,1,function()
+    self._tim:appendCall(0,function()
         self:switchGameProcess(status)
     end)
     ---记录时间
     self._statusTimer = os.getmillisecond()
     ---设置回调
-    self._table._tim:append(self:leftMilliscond(),1,function()
+    self._table._tim:appendCall(self:leftMilliscond(),function()
         self:clostGameStatus(status)
     end)
 end

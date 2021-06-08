@@ -179,6 +179,31 @@ function managerEnum.delete()
 end
 
 
+---机器人
+---@return senum
+function managerEnum.robot()
+    return "robot"
+end
+
+---真人
+---@return senum
+function managerEnum.player()
+    return "player"
+end
+
+---root
+---@return senum
+function managerEnum.root()
+    return "root"
+end
+
+---admin
+---@return senum
+function managerEnum.admin()
+    return "admin"
+end
+
+
 ---游客登录
 ---@return senum
 function managerEnum.c2s_loginTourists()

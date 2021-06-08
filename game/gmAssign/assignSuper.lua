@@ -33,6 +33,9 @@ function assignSuper:ctor(service,allianceID)
     ---桌子列表
     ---@type mapping_tables @桌子隐射
     self._tables = {nil}
+    ---玩家列表
+    ---@type table<userID,service>
+    self._mapPlayer = {nil}
     ---定时器
     ---@type timer @定时器
     self._timer = timer.new()
@@ -148,6 +151,26 @@ function assignSuper:message(fd,msg)
     ---离卓
     elseif cmd == senum.leave() then
     end
+end
+
+---邀请进桌
+---@param competition   service         @游戏桌子
+---@param playerInfo    playerInfo      @用户角色
+function assignSuper:inviteEnterTable(competition,playerInfo)
+    skynet.call(competition,"lua","playerEnter",playerInfo)
+end
+
+---成功入桌子
+---@param rid           userID          @用户角色
+---@param competition   service         @游戏桌台
+function assignSuper:liveTable(rid,competition)
+    ---数据保存
+    local mapPlayer = self._mapPlayer
+    mapPlayer[rid] = competition
+    local services = self:getServices()
+    ---通知入口
+    local handle = skynet.self()
+    skynet.send(services.gates,"lua","liveTable",rid,handle,competition)
 end
 
 return assignSuper

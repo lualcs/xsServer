@@ -15,7 +15,7 @@ skynet.start(function()
 
     local timer = clock.new("Welecome client count down %05d 🕛🕛🕛")
     ---倒计时监听
-    timer:append(12,1,function()
+    timer:appendCall(12,function()
         skynet.call(services.gates,"lua","listen")
     end)
 

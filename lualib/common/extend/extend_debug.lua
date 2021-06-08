@@ -18,7 +18,7 @@ local skynet = require("skynet")
 
 function debug.print(...)
     local tb_lis = {}
-    table.insert(tb_lis,"[")
+    table.insert(tb_lis,"\n[")
     table.insert(tb_lis,os.date("%Y-%m-%d %H:%M:%S"))
     table.insert(tb_lis,"]")
     local args = {...}

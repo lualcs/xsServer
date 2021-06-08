@@ -26,6 +26,8 @@ function robotmanager:ctor(service)
     ---空闲机器人
     ---@type userID[]
     self._idles = {nil}
+    ---邀请机器人
+    self._invis = {nil}
     ---工作机器人
     ---@type userID[]
     self._works = {nil}
@@ -57,6 +59,16 @@ function robotmanager:feachRobotOver()
         skynet.send(services.login,"lua","robotLogin",rid)
     end
     skynet.error("robotmanager finish")
+end
+
+---邀请 
+---@param assign        service @分配服务
+---@param competition   service @桌子服务
+function robotmanager:inviteEnter(assign,competition)
+    local services = self:getServices()
+    local userID = table.remove(self._idles)
+    table.insert(self._invis,userID)
+    skynet.send(services.gates,"lua","inviteEnterTable",assign,competition,userID)
 end
 
 ---请求
