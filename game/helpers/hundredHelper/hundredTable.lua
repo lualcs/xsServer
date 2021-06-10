@@ -181,7 +181,24 @@ end
 
 ---申请下庄
 ---@param player hundredPlayer @申请玩家
-function hundredTable:applyForDownBanker(player)
+---@return boolean,string|nil
+function hundredTable:tryUpBanker(player)
+    
+    if player:ifBanker() then
+        return false,"alreadyBookmaker"
+    end
+
+    local list = self._arrUpBanker
+    if table.exist(list,player) then
+        return false,"hadAppliedFor"
+    end
+    
+    return true
+end
+
+---申请下庄
+---@param player hundredPlayer @申请玩家
+function hundredTable:tryDownBanker(player)
 
     ---上庄列表
     local list = self._arrUpBanker
@@ -190,6 +207,12 @@ function hundredTable:applyForDownBanker(player)
             table.remove(list,index)
             return true
         end
+    end
+
+    ---状态检查
+    local status = self:getGameStatus()
+    if senum.gameIdle() ~= status then
+        return
     end
 
     ---庄家列表

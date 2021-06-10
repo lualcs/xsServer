@@ -49,7 +49,7 @@ function hundredSystem:autoUpBanker(robot)
         return
     end
 
-    competition:applyForUpBanker(robot)
+    competition:tryUpBanker(robot)
 end
 
 
