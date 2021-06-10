@@ -6,6 +6,8 @@
 local c2sCODE           = 1000000000000000000
 local s2cCODE           = 2000000000000000000
 local s2sCODE           = 3000000000000000000
+local s2wCODE           = 4000000000000000000
+local w2sCODE           = 5000000000000000000
 local mbeCODE           = 100000000000000
 local dveCODE           = 10000000000
 local docCODE           = 1000000
@@ -46,4 +48,17 @@ end
 function iMesg.s2s(code)
     return s2sCODE + self._tail + self._deve + self._file + code
 end
+
+---消息号
+---@param code integer @消息号
+function iMesg.s2w(code)
+    return s2wCODE + self._tail + self._deve + self._file + code
+end
+
+---消息号
+---@param code integer @消息号
+function iMesg.w2s(code)
+    return w2sCODE + self._tail + self._deve + self._file + code
+end
+
 return iMesg
