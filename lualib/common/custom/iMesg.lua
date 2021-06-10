@@ -12,15 +12,15 @@ local docCODE           = 1000000
 
 
 local class = require("class")
----@class IMesg @错误码辅助
-local IMesg = class()
-local this = IMesg
+---@class iMesg @错误码辅助
+local iMesg = class()
+local this = iMesg
 
 ---构造函数
 ---@param deve integer @开发模块
 ---@param file integer @文件模块
 ---@param tail integer @手机尾号
-function IMesg:ctor(deve,file,tail)
+function iMesg:ctor(deve,file,tail)
     ---功能模块
     self._deve = deve * dveCODE
     ---文件模块
@@ -31,19 +31,19 @@ end
 
 ---消息号
 ---@param code integer @消息号
-function IMesg:c2s(code)
+function iMesg:c2s(code)
     return c2sCODE + self._tail + self._deve + self._file + code
 end
 
 ---消息号
 ---@param code integer @消息号
-function IMesg:s2c(code)
+function iMesg:s2c(code)
     return s2cCODE + self._tail  + self._deve + self._file + code
 end
 
 ---消息号
 ---@param code integer @消息号
-function IMesg.s2s(code)
+function iMesg.s2s(code)
     return s2sCODE + self._tail + self._deve + self._file + code
 end
-return IMesg
+return iMesg
