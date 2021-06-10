@@ -3,12 +3,12 @@
     auth:Carol Luo
 ]]
 
-local normalCode        = 10000000000000000
-local debugCode         = 20000000000000000
-local errorCode         = 30000000000000000
-local mobileCode        = 1000000000000
-local moduleCode        = 100000000
-local documeCode        = 10000
+local normalCode        = 1000000000000000000
+local debugCode         = 2000000000000000000
+local errorCode         = 3000000000000000000
+local mobileCode        = 100000000000000
+local moduleCode        = 10000000000
+local documeCode        = 1000000
 
 
 local class = require("class")
@@ -27,7 +27,6 @@ function iError:ctor(deve,file,tail)
     self._file = file * documeCode
     ---手机尾号
     self._tail = tail * mobileCode
-
 end
 
 ---错误码
