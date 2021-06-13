@@ -19,9 +19,9 @@ return {
                 VALUES 
                 (@name,@personality, @rid, '{}', '{}');
                 SET @clubID = LAST_INSERT_ID();
-                INSERT INTO `agencys`(`rid`, `clubID`) VALUES (@rid, @clubID);
+                INSERT INTO `admins`(`rid`, `clubID`) VALUES (@rid, @clubID);
                 SET @agentID = LAST_INSERT_ID();
-                INSERT INTO `agencys`
+                INSERT INTO `admins`
                 (`rid`,`office`,`agentID`, `clubID`,``) 
                 VALUES 
                 (@rid,"club",@agentID,@clubID);
@@ -39,7 +39,7 @@ return {
       BEGIN
           #联盟ID
           SET @clubID = 0;
-          SELECT `clubID` INTO @clubID FROM `agencys` WHERE `agentID` = @agentID; 
+          SELECT `clubID` INTO @clubID FROM `admins` WHERE `agentID` = @agentID; 
 
           #数据检查
           IF @clubID <= 0 THEN
@@ -68,7 +68,7 @@ return {
             SELECT `clubID` INTO @clubID FROM `clubs` WHERE `rid` = @rootRID;  
             #系统联盟
             SET @agentID = 0;
-            SELECT `agentID` INTO @agentID FROM `agencys` WHERE `rid` = @rootRID; 
+            SELECT `agentID` INTO @agentID FROM `admins` WHERE `rid` = @rootRID; 
       
             #重复检查
       	    IF EXISTS(SELECT 1 FROM `members` WHERE `rid` = @rid AND `clubID` = @clubID) THEN
@@ -81,7 +81,7 @@ return {
       END
     ]],
     --创建升级代理身份
-    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureUpgradeAgencys`(
+    [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureUpgradeadmins`(
         IN  `@memberID`          INT(10)   #申请成员
       )
       BEGIN
@@ -90,7 +90,7 @@ return {
                 SET @clubID = 0;
                 SELECT `rid`,`clubID` INTO @rid,@clubID 
                 FROM `dbclubs`.`members` WHERE `memberID` = @memberID;
-                INSERT INTO `agencys`(`rid`, `clubID`) VALUES (@rid, @clubID); 
+                INSERT INTO `admins`(`rid`, `clubID`) VALUES (@rid, @clubID); 
             ELSE
                 SELECT "申请成员数据错误!" AS failure;
             END IF;

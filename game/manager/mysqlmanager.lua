@@ -222,11 +222,11 @@ function mysqlmanager:fetchClubs()
 
         {
             serviceid = services.club,
-            methodnam = "agencysInfo",
+            methodnam = "adminsInfo",
             cmdFormat = 
             [[
-                SELECT * FROM `dbclubs`.`agencys` WHERE `agentID` BETWEEN %d AND %d;
-                SELECT MIN(`agentID`) AS `start` FROM `dbclubs`.`agencys` WHERE `agentID` > %d;
+                SELECT * FROM `dbclubs`.`admins` WHERE `agentID` BETWEEN %d AND %d;
+                SELECT MIN(`agentID`) AS `start` FROM `dbclubs`.`admins` WHERE `agentID` > %d;
             ]],
         },
 

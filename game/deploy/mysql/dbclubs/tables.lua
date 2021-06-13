@@ -36,7 +36,7 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      CREATE TABLE `agencys`  (
+      CREATE TABLE `admins`  (
         `agentID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '代理ID',
         `rid` INT(11) NOT NULL COMMENT '所属角色',
         `clubID` INT(11) NOT NULL COMMENT '所属联盟',
@@ -74,7 +74,7 @@ return {
           `taxProfit` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '已分税收',
           `taxProfitPlatformat` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '平台已分税收',
           `taxProfitclub` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '盟主已分税收',
-          `taxProfitAgencys` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '代理已分税收',
+          `taxProfitadmins` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '代理已分税收',
           PRIMARY KEY (`memberID`) USING BTREE
         ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '税收统计' ROW_FORMAT = Dynamic;
 

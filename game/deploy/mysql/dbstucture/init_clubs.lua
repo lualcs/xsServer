@@ -21,7 +21,7 @@ return {
         SET @leaderALID = LAST_INSERT_ID();
 
         #系统盟主代理
-        INSERT INTO `agencys`
+        INSERT INTO `admins`
         (`rid`, `clubID`) 
         VALUES 
         (@leaderRID,@leaderALID);
@@ -36,7 +36,7 @@ return {
         (@leaderRID,'club',@leaderAGID,@leaderALID);
 
         #管理代理
-        INSERT INTO `agencys`
+        INSERT INTO `admins`
         (`rid`, `clubID`) 
         SELECT `rid`,@leaderAGID
         FROM `dbaccounts`.`accounts`
@@ -47,7 +47,7 @@ return {
         INSERT INTO `members`
         (`rid`,`office`,`agentID`, `clubID`) 
         SELECT `rid`,'agency',`agentID`,clubID
-        FROM `agencys`
+        FROM `admins`
         WHERE `clubID` = @leaderALID AND `agentID` !=  @leaderAGID
         ORDER BY `agentID`;
 
@@ -66,7 +66,7 @@ return {
 
         #系统盟主代理ID
         SELECT `agentID` INTO @systemAGID
-        FROM `agencys`
+        FROM `admins`
         WHERE `clubID` = @systemALID AND `rid` = @systemRID;
 
         #机器人入盟

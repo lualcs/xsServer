@@ -34,7 +34,7 @@ function clubmanager:ctor(service)
     self._clubHash = {nil}
     ---代理数据
     ---@type agencyInfos
-    self._agencys = {nil}
+    self._admins = {nil}
     ---代理数据
     ---@type agencyHash
     self._agencyHash = {nil}
@@ -144,8 +144,8 @@ end
 
 ---代理数据
 ---@param ret agencyInfos @联盟信息
-function clubmanager:agencysInfo(ret)
-    local list = self._agencys
+function clubmanager:adminsInfo(ret)
+    local list = self._admins
     local hash = self._agencyHash
     for _,info in ipairs(ret) do
         ---解析数据
