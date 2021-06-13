@@ -9,7 +9,7 @@ local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
 local protobuff = require("api_pbc")
-local alliancemanager = require("alliancemanager")
+local clubmanager = require("clubmanager")
 local queue = require("skynet.queue")
 local cs = queue()
 
@@ -20,7 +20,7 @@ local this = service
 ---启动
 function service.start()
     this.shareFech()
-    this._manager = alliancemanager.new(this)
+    this._manager = clubmanager.new(this)
 end
 
 ---退出

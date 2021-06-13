@@ -14,13 +14,13 @@ local debug = require("extend_debug")
 local senum = require("managerEnum")
 local websocket = require("api_websocket")
 
----@class alliancemanager @gate管理
-local alliancemanager = class()
-local this = alliancemanager
+---@class clubmanager @gate管理
+local clubmanager = class()
+local this = clubmanager
 
 ---构造
 ---@param service service_robot         @gate服务
-function alliancemanager:ctor(service)
+function clubmanager:ctor(service)
     ---联盟管理服务
     self._service = service
     ---创建定时器
@@ -48,12 +48,12 @@ function alliancemanager:ctor(service)
 end
 
 ---重置
-function alliancemanager:dataReboot()
+function clubmanager:dataReboot()
 end
 
 ---服务
 ---@return serviceInf @服务信息
-function alliancemanager:getServices()
+function clubmanager:getServices()
     return self._service._services
 end
 
@@ -61,7 +61,7 @@ end
 ---上线
 ---@param rid userID @用户ID
 ---@param loginCount count @登录次数
-function alliancemanager:online(rid,fd)
+function clubmanager:online(rid,fd)
     local members = self._memberUser[rid]
     if not members then
         return
@@ -89,7 +89,7 @@ end
 
 ---断线
 ---@param rid userID @用户ID
-function alliancemanager:offline(rid)
+function clubmanager:offline(rid)
     local members = self._memberUser[rid]
     if not members then
         return
@@ -115,7 +115,7 @@ end
 
 ---联盟数据
 ---@param ret allianceInfos @联盟信息
-function alliancemanager:allianceInfo(ret)
+function clubmanager:allianceInfo(ret)
     local list = self._alliances
     local hash = self._allianceHash
     for _,info in ipairs(ret) do
@@ -144,7 +144,7 @@ end
 
 ---代理数据
 ---@param ret agencyInfos @联盟信息
-function alliancemanager:agencysInfo(ret)
+function clubmanager:agencysInfo(ret)
     local list = self._agencys
     local hash = self._agencyHash
     for _,info in ipairs(ret) do
@@ -170,7 +170,7 @@ end
 
 ---成员数据
 ---@param ret memberInfos @联盟信息
-function alliancemanager:membersInfo(ret)
+function clubmanager:membersInfo(ret)
     local list = self._members
     local hash = self._memberHash
     for _,info in ipairs(ret) do
@@ -198,7 +198,7 @@ function alliancemanager:membersInfo(ret)
 end
 
 ---加载完成
-function alliancemanager:overAlliance()
+function clubmanager:overAlliance()
     ---全局服务
     local services = self:getServices()
     ---分配管理
@@ -210,7 +210,7 @@ function alliancemanager:overAlliance()
         end
     end
 
-    skynet.error("alliancemanager finish")
+    skynet.error("clubmanager finish")
 end
 
 local assignKyes = {
@@ -219,7 +219,7 @@ local assignKyes = {
     [senum.assignKilling()] = "assignKilling",
 }
 ---构建分配服务
-function alliancemanager:assignCtor(assignClass,allianceID)
+function clubmanager:assignCtor(assignClass,allianceID)
     local service = skynet.newservice("service_assign")
     skynet.call(service,"lua","start",assignClass,allianceID)
     skynet.call(service,"lua","mapServices",senum.mapServices())
@@ -239,7 +239,7 @@ end
 ---@param fd   socket         @套接字
 ---@param rid  userID         @用户ID
 ---@param msg  msgBody        @数据
-function alliancemanager:message(fd,rid,msg)
+function clubmanager:message(fd,rid,msg)
     local cmd = table.remove(msg.cmds)
     if senum.c2s_allianceClubs() == cmd then
         self:c2s_allianceClubs(fd,rid,msg)
@@ -252,7 +252,7 @@ end
 ---请求
 ---@param fd   socket         @套接字
 ---@param rid  userID         @用户ID
-function alliancemanager:c2s_allianceClubs(fd,rid,msg)
+function clubmanager:c2s_allianceClubs(fd,rid,msg)
     
     ---系统联盟
     if  not self._memberUser[rid] then
@@ -299,4 +299,4 @@ function alliancemanager:c2s_allianceClubs(fd,rid,msg)
     websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.login()},packs)
 end
 
-return alliancemanager
+return clubmanager
