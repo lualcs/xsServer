@@ -39,8 +39,8 @@ end
 
 ---联盟
 ---@return senum
-function managerEnum.alliance()
-    return "alliance"
+function managerEnum.club()
+    return "club"
 end
 
 ---代理
@@ -236,8 +236,8 @@ end
 
 ---联盟信息
 ---@return senum
-function managerEnum.s2c_allianceInfo()
-    return "s2c_allianceInfo"
+function managerEnum.s2c_clubInfo()
+    return "s2c_clubInfo"
 end
 
 ---代理信息
@@ -266,26 +266,26 @@ end
 
 ---联盟信息
 ---@return senum
-function managerEnum.c2s_allianceBase()
-    return "c2s_allianceBase"
+function managerEnum.c2s_clubBase()
+    return "c2s_clubBase"
 end
 
 ---联盟信息
 ---@return senum
-function managerEnum.s2c_allianceBase()
-    return "s2c_allianceBase"
+function managerEnum.s2c_clubBase()
+    return "s2c_clubBase"
 end
 
 ---联盟数据
 ---@return senum
-function managerEnum.c2s_allianceClubs()
-    return "c2s_allianceClubs"
+function managerEnum.c2s_clubClubs()
+    return "c2s_clubClubs"
 end
 
 ---联盟数据
 ---@return senum
-function managerEnum.s2c_allianceClubs()
-    return "s2c_allianceClubs"
+function managerEnum.s2c_clubClubs()
+    return "s2c_clubClubs"
 end
 
 return managerEnum

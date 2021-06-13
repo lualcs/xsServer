@@ -31,7 +31,7 @@
 ---@field share         service  @共享服务
 ---@field debug         service  @调试服务
 ---@field soles         service  @唯一服务
----@field alliance      service  @联盟服务
+---@field club      service  @联盟服务
 ---@field gates         service  @入口服务
 ---@field login         service  @登陆服务
 ---@field mysql         service  @数据服务
@@ -41,7 +41,7 @@
 ---@field http_client   service  @http服务
 ---@field http_server   service  @http服务
 
----@class allianceAssign @联盟分配
+---@class clubAssign @联盟分配
 ---@field single        service  @单人游戏
 ---@field hundre        service  @百人游戏
 ---@field killing       service  @竞技游戏

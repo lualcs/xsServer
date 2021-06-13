@@ -27,11 +27,11 @@ function clubmanager:ctor(service)
     ---@type timer
     self._timer = timer.new()
     ---联盟数据
-    ---@type allianceInfos
-    self._alliances = {nil}
+    ---@type clubInfos
+    self._clubs = {nil}
     ---联盟数据
-    ---@type allianceHash
-    self._allianceHash = {nil}
+    ---@type clubHash
+    self._clubHash = {nil}
     ---代理数据
     ---@type agencyInfos
     self._agencys = {nil}
@@ -69,13 +69,13 @@ function clubmanager:online(rid,fd)
 
     for _,member in ipairs(members) do
         ---联盟在线人数
-        local alliance = self._allianceHash[member.allianceID]
-        if not alliance then
+        local club = self._clubHash[member.clubID]
+        if not club then
             return
         end
 
-        alliance.onlineMapping[rid] = fd
-        alliance.onlineNumber = alliance.onlineNumber + 1
+        club.onlineMapping[rid] = fd
+        club.onlineNumber = club.onlineNumber + 1
         ---代理在线人数
         local agency = self._agencyHash[member.agentID]
         agency.onlineMapping[rid] = fd
@@ -97,13 +97,13 @@ function clubmanager:offline(rid)
 
     for _,member in ipairs(members) do
         ---联盟在线人数
-        local alliance = self._allianceHash[member.allianceID]
-        if not alliance then
+        local club = self._clubHash[member.clubID]
+        if not club then
             return
         end
 
-        alliance.onlineMapping[rid] = nil
-        alliance.onlineNumber = alliance.onlineNumber - 1
+        club.onlineMapping[rid] = nil
+        club.onlineNumber = club.onlineNumber - 1
         ---代理在线人数
         local agency = self._agencyHash[member.agentID]
         agency.onlineMapping[rid] = nil
@@ -114,19 +114,19 @@ function clubmanager:offline(rid)
 end
 
 ---联盟数据
----@param ret allianceInfos @联盟信息
-function clubmanager:allianceInfo(ret)
-    local list = self._alliances
-    local hash = self._allianceHash
+---@param ret clubInfos @联盟信息
+function clubmanager:clubInfo(ret)
+    local list = self._clubs
+    local hash = self._clubHash
     for _,info in ipairs(ret) do
         ---解析数据
         info.assignRule = cjson.decode(info.assignRule)
         info.gameInfos = cjson.decode(info.gameInfos)
         table.insert(list,info)
-        hash[info.allianceID] = info
+        hash[info.clubID] = info
 
         ---组织数据
-        ---@type allianceData
+        ---@type clubData
         local data = info
         data.agencyHash     = {nil}
         data.memberHash     = {nil}
@@ -150,7 +150,7 @@ function clubmanager:agencysInfo(ret)
     for _,info in ipairs(ret) do
         ---解析数据
         table.insert(list,info)
-        hash[info.allianceID] = info
+        hash[info.clubID] = info
 
         ---组织数据
         ---@type agencyData
@@ -159,8 +159,8 @@ function clubmanager:agencysInfo(ret)
         data.memberList     = {nil}
         data.onlineMapping  = {nil}
         ---填充代理
-        ---@type allianceData
-        local targe = self._allianceHash[data.allianceID]
+        ---@type clubData
+        local targe = self._clubHash[data.clubID]
         table.insert(targe.agencyList,data)
         targe.agencyHash[data.agentID] = data
         data.onlineNumber   = 0
@@ -186,27 +186,27 @@ function clubmanager:membersInfo(ret)
         local data = info
 
         ---填充联盟
-        ---@type allianceData
-        local alliance = self._allianceHash[data.allianceID]
-        table.insert(alliance.memberList,data)
+        ---@type clubData
+        local club = self._clubHash[data.clubID]
+        table.insert(club.memberList,data)
 
         ---填充代理
-        local targe = alliance.agencyHash[data.agentID]
+        local targe = club.agencyHash[data.agentID]
         table.insert(targe.memberList,data)
         targe.memberHash[data.memberID] = data
     end
 end
 
 ---加载完成
-function clubmanager:overAlliance()
+function clubmanager:overclub()
     ---全局服务
     local services = self:getServices()
     ---分配管理
     local assigns = {senum.assignSingle(),senum.assignHundred(),senum.assignKilling()}
     
-    for allianceID,info in pairs(self._allianceHash) do
+    for clubID,info in pairs(self._clubHash) do
         for index,assignClass in ipairs(assigns) do
-           self:assignCtor(assignClass,allianceID)
+           self:assignCtor(assignClass,clubID)
         end
     end
 
@@ -219,14 +219,14 @@ local assignKyes = {
     [senum.assignKilling()] = "assignKilling",
 }
 ---构建分配服务
-function clubmanager:assignCtor(assignClass,allianceID)
+function clubmanager:assignCtor(assignClass,clubID)
     local service = skynet.newservice("service_assign")
-    skynet.call(service,"lua","start",assignClass,allianceID)
+    skynet.call(service,"lua","start",assignClass,clubID)
     skynet.call(service,"lua","mapServices",senum.mapServices())
     skynet.call(service,"lua","multicast")
     skynet.call(service,"lua","dataReboot")
     ---所有分配服务
-    local info = self._allianceHash[allianceID]
+    local info = self._clubHash[clubID]
     table.insert(info.assignList,service)
     ---单机分配
     local key = assignKyes[assignClass]
@@ -241,10 +241,10 @@ end
 ---@param msg  msgBody        @数据
 function clubmanager:message(fd,rid,msg)
     local cmd = table.remove(msg.cmds)
-    if senum.c2s_allianceClubs() == cmd then
-        self:c2s_allianceClubs(fd,rid,msg)
-    elseif senum.c2s_allianceClubs() == cmd then
-        self:c2s_allianceClubs(fd,rid,msg)
+    if senum.c2s_clubClubs() == cmd then
+        self:c2s_clubClubs(fd,rid,msg)
+    elseif senum.c2s_clubClubs() == cmd then
+        self:c2s_clubClubs(fd,rid,msg)
     end
 end
 
@@ -252,18 +252,18 @@ end
 ---请求
 ---@param fd   socket         @套接字
 ---@param rid  userID         @用户ID
-function clubmanager:c2s_allianceClubs(fd,rid,msg)
+function clubmanager:c2s_clubClubs(fd,rid,msg)
     
     ---系统联盟
     if  not self._memberUser[rid] then
         local services = self:getServices()
-        skynet.send(services.mysql,"lua","applyForInSystemAlliance",fd,rid,msg)
+        skynet.send(services.mysql,"lua","applyForInSystemclub",fd,rid,msg)
         return
     end
 
     local packs = {nil}
     ---联盟列表
-    ---@type s2c_allianceClub[]
+    ---@type s2c_clubClub[]
     local clubs = {nil}
     packs.clubs = clubs
     ---数据信息
@@ -271,17 +271,17 @@ function clubmanager:c2s_allianceClubs(fd,rid,msg)
     local list = self._memberUser[rid]
     debug.error(list)
     for _,member in ipairs(list) do
-        local alliance = self._allianceHash[member.allianceID]
+        local club = self._clubHash[member.clubID]
         local agency = self._agencyHash[member.agentID]
         table.insert(clubs,{
-            alliance = {
-                allianceID      = alliance.allianceID,
-                allianceName    = alliance.name,
-                personality     = alliance.personality,
-                logoGs          = alliance.logoGs,
-                memberNumber    = #alliance.memberList,
-                onlineNumber    = alliance.onlineNumber,
-                combatNumber    = alliance.combatNumber,
+            club = {
+                clubID      = club.clubID,
+                clubName    = club.name,
+                personality     = club.personality,
+                logoGs          = club.logoGs,
+                memberNumber    = #club.memberList,
+                onlineNumber    = club.onlineNumber,
+                combatNumber    = club.combatNumber,
             },
             agency = {
                 agentID         = agency.agentID,
@@ -296,7 +296,7 @@ function clubmanager:c2s_allianceClubs(fd,rid,msg)
         })
     end
     ---发送数据
-    websocket.sendpbc(fd,senum.s2c_allianceClubs(),{senum.login()},packs)
+    websocket.sendpbc(fd,senum.s2c_clubClubs(),{senum.login()},packs)
 end
 
 return clubmanager

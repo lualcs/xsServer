@@ -23,13 +23,13 @@ local this = assignSuper
 
 ---构造函数
 ---@param service service_assign    @分配服务
----@param allianceID  allianceID    @联盟标识
-function assignSuper:ctor(service,allianceID)
+---@param clubID  clubID    @联盟标识
+function assignSuper:ctor(service,clubID)
     ---分配服务
     ---@type service_assign @分配服务
     self._service = service
     ---联盟标识
-    self._allianceID = allianceID
+    self._clubID = clubID
     ---桌子列表
     ---@type mapping_tables @桌子隐射
     self._tables = {nil}

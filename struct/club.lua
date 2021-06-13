@@ -3,7 +3,7 @@
     auth:Carol Luo
 ]]
 
----@alias allianceID number 
+---@alias clubID number 
 ---联盟ID
 ---@alias agentID number 
 ---代理ID
@@ -11,8 +11,8 @@
 ---成员ID
 
 
----@class allianceInfo              @联盟信息
----@field allianceID    allianceID  @盟主标识
+---@class clubInfo              @联盟信息
+---@field clubID    clubID  @盟主标识
 ---@field name          name        @联盟昵称
 ---@field rid           userID      @盟主用户
 ---@field logoGs        url[]       @展示头像
@@ -20,12 +20,12 @@
 ---@field gameInfos     json        @创建日期
 ---@field birthday      string      @创建日期
 
----@alias allianceInfos allianceInfo[]
+---@alias clubInfos clubInfo[]
 
 ---@class agencyInfo                @代理信息
 ---@field agentID       agentID     @代理标识
 ---@field rid           userID      @盟主用户
----@field allianceID    allianceID  @联盟标识
+---@field clubID    clubID  @联盟标识
 ---@field birthday      string      @创建日期
 
 ---@alias agencyInfos agencyInfo[]
@@ -36,14 +36,14 @@
 ---@field rid           userID      @成员用户
 ---@field office        senum       @成员身份
 ---@field agentID       agentID     @上级代理
----@field allianceID    allianceID  @所属联盟
+---@field clubID    clubID  @所属联盟
 ---@field birthday      string      @创建日期
 
 ---@alias memberInfos memberInfo[]
 
 
 
----@class allianceData:allianceInfo                     @联盟数据
+---@class clubData:clubInfo                     @联盟数据
 ---@field agencyHash        table<agentID,agencyData>   @代理信息
 ---@field memberHash        table<memberID,memberData>  @成员信息
 ---@field agencyList        agencyData[]                @代理列表
@@ -70,7 +70,7 @@
 
 
 
----@alias allianceHash table<allianceID,allianceData>
+---@alias clubHash table<clubID,clubData>
 ---联盟映射
 ---@alias agencyHash table<agentID,agencyData>
 ---代理映射

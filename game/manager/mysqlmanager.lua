@@ -200,43 +200,43 @@ function mysqlmanager:fetchClubs()
 
     local loadings = {
         {
-            serviceid = services.alliance,
-            methodnam = "allianceInfo",
+            serviceid = services.club,
+            methodnam = "clubInfo",
             cmdFormat = 
             [[
-                SELECT * FROM `dballiances`.`alliances` WHERE `allianceID` BETWEEN %d AND %d;
-                SELECT MIN(`allianceID`) AS `start` FROM `dballiances`.`alliances` WHERE `allianceID` > %d;
+                SELECT * FROM `dbclubs`.`clubs` WHERE `clubID` BETWEEN %d AND %d;
+                SELECT MIN(`clubID`) AS `start` FROM `dbclubs`.`clubs` WHERE `clubID` > %d;
             ]],
 
             cmdHead = [[
                 SELECT 
                     `ac`.`logo`
                 FROM 
-                	`dballiances`.`members` AS `me` 
+                	`dbclubs`.`members` AS `me` 
                 	INNER JOIN 
                 	`dbaccounts`.`accounts` AS `ac` 
                 	ON `me`.`rid` = `ac`.`rid`
-                WHERE `me`.`allianceID` = %d ORDER BY `me`.`memberID` LIMIT 9;
+                WHERE `me`.`clubID` = %d ORDER BY `me`.`memberID` LIMIT 9;
             ]]
         },
 
         {
-            serviceid = services.alliance,
+            serviceid = services.club,
             methodnam = "agencysInfo",
             cmdFormat = 
             [[
-                SELECT * FROM `dballiances`.`agencys` WHERE `agentID` BETWEEN %d AND %d;
-                SELECT MIN(`agentID`) AS `start` FROM `dballiances`.`agencys` WHERE `agentID` > %d;
+                SELECT * FROM `dbclubs`.`agencys` WHERE `agentID` BETWEEN %d AND %d;
+                SELECT MIN(`agentID`) AS `start` FROM `dbclubs`.`agencys` WHERE `agentID` > %d;
             ]],
         },
 
         {
-            serviceid = services.alliance,
+            serviceid = services.club,
             methodnam = "membersInfo",
             cmdFormat = 
             [[
-                SELECT * FROM `dballiances`.`members` WHERE `memberID` BETWEEN %d AND %d;
-                SELECT MIN(`memberID`) AS `start` FROM `dballiances`.`members` WHERE `memberID` > %d;
+                SELECT * FROM `dbclubs`.`members` WHERE `memberID` BETWEEN %d AND %d;
+                SELECT MIN(`memberID`) AS `start` FROM `dbclubs`.`members` WHERE `memberID` > %d;
             ]],
         },
     }
@@ -257,9 +257,9 @@ function mysqlmanager:fetchClubs()
             end
 
             local list = ret[1]
-            if "allianceInfo" == info.methodnam  then
+            if "clubInfo" == info.methodnam  then
                 for _,club in ipairs(list) do
-                    local logoPack = mysql:query(format(info.cmdHead,club.allianceID))
+                    local logoPack = mysql:query(format(info.cmdHead,club.clubID))
                     local logoGs = {nil}
                     for _,iter in ipairs(logoPack) do
                         table.insert(logoGs,iter.logo)
@@ -269,7 +269,7 @@ function mysqlmanager:fetchClubs()
             end
 
             ---通知数据
-            skynet.call(services.alliance,"lua",info.methodnam,list)
+            skynet.call(services.club,"lua",info.methodnam,list)
 
             --加载完成
             local step = ret[2]
@@ -288,15 +288,15 @@ function mysqlmanager:fetchClubs()
     ::leave::
 
     ---加载完成
-    skynet.call(services.alliance,"lua","overAlliance")
+    skynet.call(services.club,"lua","overclub")
 end
 
 ---请求
 ---@param rid  userID         @用户ID
-function mysqlmanager:applyForInSystemAlliance(fd,rid,msg)
+function mysqlmanager:applyForInSystemclub(fd,rid,msg)
     local services = self:getServices()
     local mysql = self._mysql
-    local excmd = format([[CALL `dballiances`.`procedureApplyForInSystemAlliance`(%d);]],rid)
+    local excmd = format([[CALL `dbclubs`.`procedureApplyForInSystemclub`(%d);]],rid)
     local ret = mysql:query(excmd)
     if ret.err then
         debug.normal({
@@ -311,8 +311,8 @@ function mysqlmanager:applyForInSystemAlliance(fd,rid,msg)
         debug.normal("empty list:",list)
     end
 
-    skynet.call(services.alliance,"lua","membersInfo",list)
-    skynet.call(services.alliance,"lua","c2s_allianceClubs",fd,rid,msg)
+    skynet.call(services.club,"lua","membersInfo",list)
+    skynet.call(services.club,"lua","c2s_clubClubs",fd,rid,msg)
 end
 
 

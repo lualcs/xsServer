@@ -16,15 +16,15 @@ local this = service
 
 ---启动
 ---@param simport     string      @分配类型
----@param allianceID  allianceID  @联盟标识
-function service.start(simport,allianceID) 
+---@param clubID  clubID  @联盟标识
+function service.start(simport,clubID) 
     ---加载共享
     this.shareFech()    
     ---分配类型
     local import = require(simport)
     ---分配类型
     ---@type assignSuper
-    this.assign = import.new(this,allianceID)
+    this.assign = import.new(this,clubID)
 
     skynet.register("." .. simport)
 end

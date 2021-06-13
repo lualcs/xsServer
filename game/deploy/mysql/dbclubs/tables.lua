@@ -6,27 +6,27 @@
 return {
     --创建联盟数据库
     [[
-      DROP DATABASE IF EXISTS `dballiances`;
-      CREATE DATABASE `dballiances` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+      DROP DATABASE IF EXISTS `dbclubs`;
+      CREATE DATABASE `dbclubs` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
     ---切换数据库使用
-    [[USE `dballiances`;]],
+    [[USE `dbclubs`;]],
     ---创建联盟信息表
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      CREATE TABLE `alliances`  (
-        `allianceID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
+      CREATE TABLE `clubs`  (
+        `clubID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '联盟ID',
         `name` VARCHAR(32) NOT NULL COMMENT '联盟名字',
         `personality` VARCHAR(32) NOT NULL DEFAULT '欢迎大家加入俱乐部！' COMMENT '个性签名',
         `rid` INT(11) NOT NULL COMMENT '归属角色',
         `profitPlatformRate` INT(11) NOT NULL DEFAULT 20 COMMENT '平台分润比例千分比',
-        `profitAllianceRate` INT(11) NOT NULL DEFAULT 30 COMMENT '盟主分润比例千分比',
+        `profitclubRate` INT(11) NOT NULL DEFAULT 30 COMMENT '盟主分润比例千分比',
         `profitAgencyRate` INT(11) NOT NULL DEFAULT 50 COMMENT '代理分润比例千分比',
         `assignRule` JSON NOT NULL COMMENT '分配规则',
         `gameInfos` JSON NOT NULL COMMENT '游戏信息',
         `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
-        PRIMARY KEY (`allianceID`) USING BTREE
+        PRIMARY KEY (`clubID`) USING BTREE
       ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟信息' ROW_FORMAT = Dynamic;
 
       SET FOREIGN_KEY_CHECKS = 1;
@@ -39,7 +39,7 @@ return {
       CREATE TABLE `agencys`  (
         `agentID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '代理ID',
         `rid` INT(11) NOT NULL COMMENT '所属角色',
-        `allianceID` INT(11) NOT NULL COMMENT '所属联盟',
+        `clubID` INT(11) NOT NULL COMMENT '所属联盟',
         `birthday` DATeTIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`agentID`) USING BTREE
       ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '代理信息' ROW_FORMAT = Dynamic;
@@ -54,9 +54,9 @@ return {
       CREATE TABLE `members`  (
         `memberID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '成员ID',
         `rid` INT(11) NOT NULL COMMENT '联盟成员',
-        `office` enum('member','agency','alliance') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
+        `office` enum('member','agency','club') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
         `agentID` INT(11) NOT NULL COMMENT '上级代理',
-        `allianceID` INT(11) NOT NULL COMMENT '所属联盟',
+        `clubID` INT(11) NOT NULL COMMENT '所属联盟',
         `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
         PRIMARY KEY (`memberID`) USING BTREE
       ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '联盟成员' ROW_FORMAT = Dynamic;
@@ -73,7 +73,7 @@ return {
           `taxScore` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '税收贡献',
           `taxProfit` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '已分税收',
           `taxProfitPlatformat` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '平台已分税收',
-          `taxProfitAlliance` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '盟主已分税收',
+          `taxProfitclub` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '盟主已分税收',
           `taxProfitAgencys` BIGINT(20) NOT NULL DEFAULT 0 COMMENT '代理已分税收',
           PRIMARY KEY (`memberID`) USING BTREE
         ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT '税收统计' ROW_FORMAT = Dynamic;

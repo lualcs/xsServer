@@ -86,7 +86,7 @@ function debug.logAssignhSingle(...)
 end
 
 ---联盟服务
-function debug.logServiceAlliance(...)
+function debug.logServiceclub(...)
     debug.print(...)
 end
 

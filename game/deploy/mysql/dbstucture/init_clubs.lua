@@ -5,14 +5,14 @@
 
 return {
     ---切换数据库使用
-    [[  USE `dballiances`;]],
+    [[  USE `dbclubs`;]],
     ---构造系统联盟
     [[
         #超级管理员
         SELECT `rid` INTO @leaderRID FROM `dbaccounts`.`accounts` WHERE `office` = "root";
 
         #系统盟主号
-        INSERT INTO `alliances`
+        INSERT INTO `clubs`
         (`name`,`personality`, `rid`, `assignRule`, `gameInfos`) 
         VALUES 
         ('虾聊联盟','虾聊一整天,瞎聊联盟欢迎您！(￣～￣) 嚼！', @leaderRID, '{}', '{}');
@@ -22,7 +22,7 @@ return {
 
         #系统盟主代理
         INSERT INTO `agencys`
-        (`rid`, `allianceID`) 
+        (`rid`, `clubID`) 
         VALUES 
         (@leaderRID,@leaderALID);
 
@@ -31,13 +31,13 @@ return {
 
         #系统盟主成员
         INSERT INTO `members`
-        (`rid`,`office`,`agentID`, `allianceID`) 
+        (`rid`,`office`,`agentID`, `clubID`) 
         VALUES 
-        (@leaderRID,'alliance',@leaderAGID,@leaderALID);
+        (@leaderRID,'club',@leaderAGID,@leaderALID);
 
         #管理代理
         INSERT INTO `agencys`
-        (`rid`, `allianceID`) 
+        (`rid`, `clubID`) 
         SELECT `rid`,@leaderAGID
         FROM `dbaccounts`.`accounts`
         WHERE `office` = 'admin'
@@ -45,10 +45,10 @@ return {
 
         #代理成员
         INSERT INTO `members`
-        (`rid`,`office`,`agentID`, `allianceID`) 
-        SELECT `rid`,'agency',`agentID`,allianceID
+        (`rid`,`office`,`agentID`, `clubID`) 
+        SELECT `rid`,'agency',`agentID`,clubID
         FROM `agencys`
-        WHERE `allianceID` = @leaderALID AND `agentID` !=  @leaderAGID
+        WHERE `clubID` = @leaderALID AND `agentID` !=  @leaderAGID
         ORDER BY `agentID`;
 
     ]],
@@ -56,9 +56,9 @@ return {
     ---机器人默认联盟
     [[
         #系统联盟ID
-        SELECT `al`.`allianceID`,`al`.`rid` INTO @systemALID,@systemRID
+        SELECT `al`.`clubID`,`al`.`rid` INTO @systemALID,@systemRID
         FROM 
-            `alliances` AS `al` 
+            `clubs` AS `al` 
             INNER JOIN 
             `dbaccounts`.`accounts` AS `ac`
             USING (`rid`)
@@ -67,11 +67,11 @@ return {
         #系统盟主代理ID
         SELECT `agentID` INTO @systemAGID
         FROM `agencys`
-        WHERE `allianceID` = @systemALID AND `rid` = @systemRID;
+        WHERE `clubID` = @systemALID AND `rid` = @systemRID;
 
         #机器人入盟
         INSERT INTO `members`
-        (`rid`, `office`, `agentID`, `allianceID`)
+        (`rid`, `office`, `agentID`, `clubID`)
         SELECT `rid`,'member',@systemAGID ,@systemALID 
         FROM `dbaccounts`.`bind_robots`
         ORDER BY `rid`;

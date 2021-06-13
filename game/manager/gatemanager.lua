@@ -81,7 +81,7 @@ function gatemanager:online(fd)
     ---通知上线
     skynet.call(services.login,"lua","online",client.role.rid,fd)
     ---通知联盟
-    skynet.call(services.alliance,"lua","online",client.role.rid,fd)
+    skynet.call(services.club,"lua","online",client.role.rid,fd)
     ---分配服务
     if client.assign then
         skynet.call(client.assign,"lua","online",client.role.rid,fd)
@@ -111,7 +111,7 @@ function gatemanager:offline(fd)
     ---通知断线
     skynet.call(services.login,"lua","offline",client.role.rid)
     ---通知联盟
-    skynet.call(services.alliance,"lua","offline",client.role.rid)
+    skynet.call(services.club,"lua","offline",client.role.rid)
     ---分配服务
     if client.assign then
         skynet.call(client.assign,"lua","offline",client.role.rid)
@@ -146,9 +146,9 @@ function gatemanager:message(fd,msg)
         return
     end
 
-    if senum.alliance() == cmd then
+    if senum.club() == cmd then
         --联盟模块
-        skynet.send(services.alliance,"lua","message",fd,client.role.rid,msg)
+        skynet.send(services.club,"lua","message",fd,client.role.rid,msg)
     elseif senum.assignSingle() == cmd then
         --单机游戏
         skynet.send(services.single,"lua","message",fd,client.role.rid,msg)

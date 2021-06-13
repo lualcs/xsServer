@@ -168,7 +168,7 @@ function service.mapServices(name)
 	---@type userdata @共享protobuff
     skynet.send(services.login,"lua","protobuff",env)
 	---@type userdata @共享protobuff
-    skynet.send(services.alliance,"lua","protobuff",env)
+    skynet.send(services.club,"lua","protobuff",env)
 end
 
 ---组播
