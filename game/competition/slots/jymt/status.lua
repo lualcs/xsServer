@@ -4,7 +4,7 @@
 ]]
 
 local class = require("class")
-local slotsStatus = require("slots.Status")
+local slotsStatus = require("slots.status")
 ---@class jymtStatus:slotsStatus
 local status = class(slotsStatus)
 

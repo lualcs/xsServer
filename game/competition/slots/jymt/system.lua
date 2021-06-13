@@ -4,7 +4,7 @@
 ]]
 
 local class = require("class")
-local slotsSystem = require("slots.System")
+local slotsSystem = require("slots.system")
 ---@class jymtSystem:slotsSystem
 local system = class(slotsSystem)
 local this = system

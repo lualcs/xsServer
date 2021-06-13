@@ -16,9 +16,9 @@ root.."lualib/custom/?.lua;"..
 root.."lualib/extend/?.lua;"..
 root.."game/lualib/?.lua;"..
 root.."game/deploy/?.lua;"..
-root.."game/deploy/hundred?.lua;"..
-root.."game/deploy/slots?.lua;"..
-root.."game/deploy/tiger?.lua;"..
+root.."game/deploy/hundred/?.lua;"..
+root.."game/deploy/slots/?.lua;"..
+root.."game/deploy/tiger/?.lua;"..
 root.."game/manager/?.lua;"..
 root.."game/gameAssign/?.lua;"..
 root.."game/helpers/?.lua;"..
