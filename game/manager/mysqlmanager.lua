@@ -88,7 +88,7 @@ end
 ---@param rid userID @机器角色
 function mysqlmanager:robotLogin(rid)
     ---拼接语句
-    local sqlex = format([[CALL dbaccounts.procedureLoginRobot("%d");]],rid)
+    local sqlex = format([[CALL dbusers.procedureLoginRobot("%d");]],rid)
 
     ---执行语句
     local mysql = self._mysql
@@ -105,7 +105,7 @@ end
 ---@param accredit string @登录凭证
 function mysqlmanager:touristsLogin(accredit)
     ---拼接语句
-    local sqlex = format([[CALL dbaccounts.procedureLoginTourists("%s");]],accredit)
+    local sqlex = format([[CALL dbusers.procedureLoginTourists("%s");]],accredit)
 
     ---执行语句
     local mysql = self._mysql
@@ -123,7 +123,7 @@ end
 ---@param password string @登录密码
 function mysqlmanager:phoneLogin(phonenum,password)
     ---拼接语句
-    local sqlex = format([[CALL dbaccounts.procedureLoginPhone("%s","%s");]],phonenum,password)
+    local sqlex = format([[CALL dbusers.procedureLoginPhone("%s","%s");]],phonenum,password)
 
     ---执行语句
     local mysql = self._mysql
@@ -139,7 +139,7 @@ end
 ---@param accredit string @登录凭证
 function mysqlmanager:wechatLogin(accredit)
     ---拼接语句
-    local sqlex = format([[CALL dbaccounts.procedureLoginWechat("%s");]],accredit)
+    local sqlex = format([[CALL dbusers.procedureLoginWechat("%s");]],accredit)
 
     ---执行语句
     local mysql = self._mysql
@@ -156,7 +156,7 @@ end
 ---@param nickname  string  @更新昵称
 function mysqlmanager:changeNickname(rid,nickname)
     ---拼接语句
-    local sqlex = format([[UPDATE `dbaccounts`.`accounts` SET `nickname` = "%s"WHERE `rid` = %d;]],nickname,rid)
+    local sqlex = format([[UPDATE `dbusers`.`accounts` SET `nickname` = "%s"WHERE `rid` = %d;]],nickname,rid)
 
     ---执行语句
     local mysql = self._mysql
@@ -177,7 +177,7 @@ end
 ---@param logolink  string  @更新昵称
 function mysqlmanager:changeLogolink(rid,logolink)
     ---拼接语句
-    local sqlex = format([[UPDATE `dbaccounts`.`accounts` SET `logo` = "%s"WHERE `rid` = %d;]],logolink,rid)
+    local sqlex = format([[UPDATE `dbusers`.`accounts` SET `logo` = "%s"WHERE `rid` = %d;]],logolink,rid)
 
     ---执行语句
     local mysql = self._mysql
@@ -214,7 +214,7 @@ function mysqlmanager:fetchClubs()
                 FROM 
                 	`dbclubs`.`members` AS `me` 
                 	INNER JOIN 
-                	`dbaccounts`.`accounts` AS `ac` 
+                	`dbusers`.`accounts` AS `ac` 
                 	ON `me`.`rid` = `ac`.`rid`
                 WHERE `me`.`clubID` = %d ORDER BY `me`.`memberID` LIMIT 9;
             ]]
@@ -323,7 +323,7 @@ function mysqlmanager:feachRobot()
     local start = 0
     while true do
         ---查询数据
-        local cmd = format([[SELECT * FROM `dbaccounts`.`bind_robots` WHERE `rid` > %d ORDER BY `rid` LIMIT 100;]],start)
+        local cmd = format([[SELECT * FROM `dbusers`.`bind_robots` WHERE `rid` > %d ORDER BY `rid` LIMIT 100;]],start)
         local ret = mysql:query(cmd)
         ---结束检查
         if ret.err then

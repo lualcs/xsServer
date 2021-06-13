@@ -13,7 +13,7 @@ return {
         IN  `@personality`  VARCHAR(16)     #联盟签名
       )
         BEGIN
-            IF EXISTS(SELECT 1 FROM `dbaccounts`.`accounts` WHERE `rid` = @rid) THEN
+            IF EXISTS(SELECT 1 FROM `dbusers`.`accounts` WHERE `rid` = @rid) THEN
                 INSERT INTO `clubs`
                 (`name`,`personality`, `rid`, `assignRule`, `gameInfos`) 
                 VALUES 
@@ -62,7 +62,7 @@ return {
       BEGIN
 
             #盟主角色
-            SELECT `rid` INTO @rootRID FROM `dbaccounts`.`accounts` WHERE `office` = "root";
+            SELECT `rid` INTO @rootRID FROM `dbusers`.`accounts` WHERE `office` = "root";
             #系统联盟
             SET @clubID = 0;
             SELECT `clubID` INTO @clubID FROM `clubs` WHERE `rid` = @rootRID;  

@@ -1,12 +1,12 @@
 
 --[[
-    file:dbaccounts.lua 
+    file:dbusers.lua 
     desc:数据库结构
     auth:Caorl Luo
 ]]
 return {
     ---切换数据库使用
-    [[USE `dbaccounts`;]],
+    [[USE `dbusers`;]],
     --创建账号注册存储过程
     [[CREATE DEFINER=`root`@`%` PROCEDURE `procedureRegisteredAccounts`(
         IN  `@accounts`  VARCHAR(32),

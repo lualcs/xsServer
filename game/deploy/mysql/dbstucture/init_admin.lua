@@ -3,7 +3,7 @@
     auth:Carol Luo
 ]]
 return {
-	[[USE `dbaccounts`;]],
+	[[USE `dbusers`;]],
 	[[INSERT INTO `accounts`(`office`,`accounts`, `nickname`, `logo`) VALUES ('root','adminroot','超级系统管理员','%s');]],
 	[[INSERT INTO `accounts`(`office`,`accounts`, `nickname`, `logo`) VALUES ('admin','admin00001','系统管理员00001','%s');]],
 	[[INSERT INTO `accounts`(`office`,`accounts`, `nickname`, `logo`) VALUES ('admin','admin00002','系统管理员00002','%s');]],

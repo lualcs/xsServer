@@ -1,17 +1,17 @@
 
 --[[
-    file:dbaccounts.lua 
+    file:dbusers.lua 
     desc:数据库结构
     auth:Caorl Luo
 ]]
 return {
     --创建账号数据库
     [[
-      DROP DATABASE IF EXISTS `dbaccounts`;
-      CREATE DATABASE `dbaccounts` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+      DROP DATABASE IF EXISTS `dbusers`;
+      CREATE DATABASE `dbusers` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
     ---切换数据库使用
-    [[  USE `dbaccounts`;]],
+    [[  USE `dbusers`;]],
     --创建账号信息数据表
     [[
       SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      USE `dbaccounts`;
+      USE `dbusers`;
       CREATE TABLE `bind_robots`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '[代表这个账号是机器人]',
         PRIMARY KEY (`rid`) USING BTREE
@@ -49,7 +49,7 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      USE `dbaccounts`;
+      USE `dbusers`;
       CREATE TABLE `bind_wechat`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '角色id',
         `key` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '登陆凭证',
@@ -62,7 +62,7 @@ return {
     [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      USE `dbaccounts`;
+      USE `dbusers`;
       CREATE TABLE `bind_phone`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '角色id',
         `num` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '手机号码',
@@ -76,7 +76,7 @@ return {
      [[
       SET NAMES utf8mb4;
       SET FOREIGN_KEY_CHECKS = 0;
-      USE `dbaccounts`;
+      USE `dbusers`;
       CREATE TABLE `bind_tourists`  (
         `rid` INT(10) UNSIGNED NOT NULL COMMENT '角色id',
         `key` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '登陆凭证',

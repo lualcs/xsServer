@@ -4,12 +4,12 @@
 ]]
 
 return {
-    "mysql.dbaccounts.tables",
+    "mysql.dbusers.tables",
     "mysql.dbclubs.tables",
     "mysql.dbplatform.tables",
     "mysql.dbgameinfo.tables",
     "mysql.dbsundrys.tables",
-    "mysql.dbaccounts.procedures",
+    "mysql.dbusers.procedures",
     "mysql.dbclubs.procedures",
     "mysql.dbstucture.init_admin",
     "mysql.dbstucture.init_robot",
