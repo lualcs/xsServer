@@ -17,7 +17,9 @@ local reusable = require("reusable")
 local timer = class()
 local this = timer
 ---构造 
-function timer:ctor()
+function timer:ctor(interval)
+    ---@type number                 @轮询间隔
+    self._interval = interval
     ---@type heap                   @最大堆
     self._heap   = heap.new()
     ---@type table<string,timeID>   @定时器
@@ -184,7 +186,13 @@ end
 
 ---轮询器
 function timer:timeout()
-    skynet.timeout(10,self._poling)
+    skynet.timeout(self._interval or 10,self._poling)
+end
+
+---设置间隔
+---@param interval number @间隔 
+function timer:interval(interval)
+    self._interval = self._interval
 end
 
 ---检测器

@@ -130,7 +130,7 @@ function assignSuper:createTable(gameID,custom)
     custom.historID = historID
     --桌子服务
     local service = skynet.newservice("service_table")
-    skynet.call(service,"lua","start",skynet.self(),gameID,custom)
+    skynet.send(service,"lua","start",skynet.self(),gameID,custom)
 
     --桌子服务
     self._tables[tableID] = service

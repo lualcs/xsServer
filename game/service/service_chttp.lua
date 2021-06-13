@@ -3,6 +3,7 @@
     auth:Carol Luo
 ]]
 
+local ipairs = ipairs
 local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
@@ -16,7 +17,29 @@ local this = service
 
 ---启动
 function service.start()
+    this.shareFech()
     this._manager = chttpmanger.new(this)
+end
+
+
+---退出
+function service.exit()
+    skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+    local shareFech = sharedata.query("share.fech")
+      --通用部分
+      for _,name in ipairs(shareFech.general_fech) do
+          local deploy = sharedata.query(name)
+          _G.package.loaded[name] = deploy
+      end
+      --独属部分
+      for _,name in ipairs(shareFech.service_chttp) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
 end
 
 ---服务表
@@ -36,11 +59,6 @@ function service.multicast()
 	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
 		this._manager:multicastMsg(cmd,...)
 	end)
-end
-
----退出
-function service.exit()
-    skynet.exit()
 end
 
 

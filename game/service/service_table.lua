@@ -25,6 +25,7 @@ local this = service
 ---@param gameID     gameID     @游戏ID
 ---@param custom     gameCustom @定制
 function service.start(handle,gameID,custom)
+    this.shareFech()
     ---分配服务
     ---@type service
     this._assign = handle
@@ -33,7 +34,8 @@ function service.start(handle,gameID,custom)
     this._services = sharedata.query(senum.mapServices())
     ---游戏信息
     ---@type gameInfo
-    local gameInfo = this.infos[gameID]
+    local gameInfos = require("games.gameInfos")
+    local gameInfo = gameInfos[gameID]
     --共享内存
     for _,name in ipairs(gameInfo.sharedList) do
         local deploy = sharedata.query(name)
@@ -48,6 +50,27 @@ function service.start(handle,gameID,custom)
     this.multicast()
 end
 
+
+---退出
+function service.exit()
+    skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+    local shareFech = sharedata.query("share.fech")
+      --通用部分
+      for _,name in ipairs(shareFech.general_fech) do
+          local deploy = sharedata.query(name)
+          _G.package.loaded[name] = deploy
+      end
+      --独属部分
+      for _,name in ipairs(shareFech.service_table) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
+end
+
 ---组播
 function service.multicast()
 	---服务
@@ -60,14 +83,8 @@ function service.multicast()
 	end)
 end
 
----服务退出
-function service.exit()
-    skynet.exit()
-end
 
 skynet.init(function()
-    ---@type gameInfos
-    this.infos = sharedata.query("games.gameInfos")
 end)
 
 skynet.start(function()

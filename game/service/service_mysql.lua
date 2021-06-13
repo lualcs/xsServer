@@ -21,19 +21,30 @@ local this = service
 ---启动
 ---@param simport string @相对路径
 function service.start() 
-  --共享数据
-  local adrres = skynet.queryservice("service_share")
-  local shares = {
-    "listener.mapServers",
-  }
-  for _,name in ipairs(shares) do
-    local deploy = sharedata.query(name)
-    _G.package.loaded[name] = deploy
+    this.shareFech()
+    this._manger = mysqlmanager.new(this)
+    skynet.register(".mysql")
+end
+
+
+---退出
+function service.exit()
+  skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+  local shareFech = sharedata.query("share.fech")
+    --通用部分
+    for _,name in ipairs(shareFech.general_fech) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
+    --独属部分
+    for _,name in ipairs(shareFech.service_mysql) do
+      local deploy = sharedata.query(name)
+      _G.package.loaded[name] = deploy
   end
-
-  this._manger = mysqlmanager.new(this)
-
-  skynet.register(".mysql")
 end
 
 ---服务表
@@ -53,11 +64,6 @@ function service.multicast()
 	this._multicast:createBinding(services.mainChannel,function(channel,source,cmd,...)
 		this._manger:multicastMsg(cmd,...)
 	end)
-end
-
----退出
-function service.exit()
-  skynet.exit()
 end
 
 skynet.start(function()

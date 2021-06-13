@@ -120,12 +120,33 @@ end
 
 ---启动
 function service.start()
+	this.shareFech()
 	--协议
 	local list = require("protocol.protobuff")
 	protobuff.parser_register(list,"game_protobuff")
-	
 	---@type gatemanager
 	this._manger = gatemanager.new(this)
+end
+
+---退出
+function service.exit()
+    skynet.exit()
+end
+
+
+---加载共享
+function service.shareFech()
+	local shareFech = sharedata.query("share.fech")
+	  --通用部分
+	  for _,name in ipairs(shareFech.general_fech) do
+		  local deploy = sharedata.query(name)
+		  _G.package.loaded[name] = deploy
+	  end
+	  --独属部分
+	  for _,name in ipairs(shareFech.service_gate) do
+		local deploy = sharedata.query(name)
+		_G.package.loaded[name] = deploy
+	end
 end
 
 ---主动关闭

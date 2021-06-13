@@ -39,6 +39,7 @@ function hundredSystem:autoUpBanker(robot)
                 self:autoUpBanker(player)
             end
         end
+        return
     end
 
     local bankerCnt = competition:numBanker()

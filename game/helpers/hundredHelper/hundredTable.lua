@@ -38,14 +38,14 @@ end
 ---最少庄家
 ---@return count
 function hundredTable:minBanker()
-    local cfg = self:getGameConf()
+    local cfg = self:getGameInfo()
     return cfg.minBanker
 end
 
 ---最多庄家
 ---@return count
 function hundredTable:maxBanker()
-    local cfg = self:getGameConf()
+    local cfg = self:getGameInfo()
     return cfg.maxBanker
 end
 

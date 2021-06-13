@@ -25,7 +25,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [2] = {
@@ -35,7 +34,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [3] = {
@@ -45,7 +43,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [4] = {
@@ -55,7 +52,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [5] = {
@@ -65,7 +61,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 8,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     
@@ -76,7 +71,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [7] = {
@@ -86,7 +80,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 3,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [8] = {
@@ -96,7 +89,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 4,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [9] = {
@@ -106,7 +98,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 4,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [10] = {
@@ -116,7 +107,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [11] = {
@@ -126,7 +116,6 @@ local gameInfos = {
         curPlayer = 0,
         maxPlayer = 10,
         sharedList = { --共享模块
-            "sundry.robot"
         }
     },
     [10001] = {
@@ -158,7 +147,6 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "sundry.robot",
             "slots.games.jymtCfg",
         },
 
@@ -196,7 +184,6 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "sundry.robot",
             "slots.games.jjbxCfg",
         },
 
@@ -225,7 +212,6 @@ local gameInfos = {
         curBanker = 0,
         maxBanker = 1,
         sharedList = { --共享模块
-            "sundry.robot",
             "hundred.games.dragonTiger"
         }
     },
@@ -246,7 +232,6 @@ local gameInfos = {
         importType   = "mahjong_scxz.scxz_type",
         importStatus = "mahjong_scxz.scxz_status",
         sharedList = { --共享模块
-            "sundry.robot",
             "mahjong.mapHuCards",
             "mahjong.mapNames",
             "mahjong.mapSnaps",

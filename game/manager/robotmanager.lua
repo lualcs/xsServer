@@ -22,7 +22,7 @@ function robotmanager:ctor(service)
     self._service = service
     ---创建定时器
     ---@type timer
-    self._timer = timer.new()
+    self._timer = timer.new(1)
     ---空闲机器人
     ---@type userID[]
     self._idles = {nil}
@@ -31,6 +31,10 @@ function robotmanager:ctor(service)
     ---工作机器人
     ---@type userID[]
     self._works = {nil}
+    ---完成数量
+    self._count = 0
+    ---完成状态
+    self._finish = nil
 end
 
 ---重置
@@ -53,18 +57,43 @@ end
 ---完成
 ---@param rlist userID[] @机器列表
 function robotmanager:feachRobotOver()
-    local services = self:getServices()
+    
+    ---完成检查
     local _idles = self._idles
-    for _,rid in ipairs(_idles) do
-        skynet.send(services.login,"lua","robotLogin",rid)
+    local index = self._count + 1
+    local userID = _idles[index]
+    if not userID then
+        skynet.error("robotmanager finish")
+        self._finish = true
+        self._timer:interval(10)
+        return true
     end
-    skynet.error("robotmanager finish")
+
+    ---通知登录
+    local services = self:getServices()
+    self._count = index
+    skynet.send(services.login,"lua","robotLogin",userID)
+   
+    ---定时回调
+    self._timer:appendCall(10,function()
+        self:feachRobotOver()
+    end)
+
+    return false
 end
 
 ---邀请 
 ---@param assign        service @分配服务
 ---@param competition   service @桌子服务
 function robotmanager:inviteEnter(assign,competition)
+    if not self._finish then
+       return 
+    end
+
+    if table.empty(self._idles) then
+        return
+    end
+
     local services = self:getServices()
     local userID = table.remove(self._idles)
     table.insert(self._invis,userID)

@@ -6,6 +6,7 @@
 ]]
 
 local pairs = pairs
+local ipairs = ipairs
 local format = string.format
 local skynet = require("skynet")
 local queue = require ("skynet.queue")
@@ -19,75 +20,13 @@ local this = service
 
 ---服务启动
 function service.start()
-    --麻将成朴映射
-    local name = "mahjong.mapHuCards"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --麻将名字映射
-    local name = "mahjong.mapNames"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --麻将视图映射
-    local name = "mahjong.mapViews"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --麻将成扑隐射
-    local name = "mahjong.mapSnaps"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --扑克名字映射
-    local name = "poker.mapNames"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --服务信息数据
-    local name = "listener.mapServers"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --游戏信息数据
-    local name = "games.gameInfos"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --管理桌子数据
-    local name = "sundry.table"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --管理机器数据
-    local name = "sundry.robot"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-    --平台比例数据
-    local name = "sundry.ratio"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-
-    --百人龙虎配置
-    local name = "hundred.games.dragonTiger"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-
-    --金玉满堂配置
-    local name = "slots.games.jymtCfg"
-    local deploy = require(name)
-    sharedata.new(name,deploy)
-    _G.package.loaded[name] = nil
-
-     --金鸡报喜配置
-     local name = "slots.games.jjbxCfg"
-     local deploy = require(name)
-     sharedata.new(name,deploy)
-     _G.package.loaded[name] = nil
-
+    local name = "share.push"
+    local list = require(name)
+    for _,name in ipairs(list) do
+        local deploy = require(name)
+        sharedata.new(name,deploy)
+        _G.package.loaded[name] = nil
+    end
 end
 
 ---服务表

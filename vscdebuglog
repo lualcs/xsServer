@@ -22,7 +22,7 @@
 05/23/21 03:33:53.01 [:01000010] LAUNCH snlua service_mongo
 05/23/21 03:33:53.05 [:01000011] LAUNCH snlua service_chttp
 05/23/21 03:33:53.06 [:01000012] LAUNCH snlua service_shttp
-05/23/21 03:33:53.06 [:01000013] LAUNCH snlua service_alliance
+05/23/21 03:33:53.06 [:01000013] LAUNCH snlua service_clubs
 05/23/21 03:33:53.07 [:01000014] LAUNCH snlua service_login
 05/23/21 03:33:53.08 [:01000015] LAUNCH snlua service_gate
 05/23/21 03:33:53.11 [:01000016] LAUNCH snlua service_robot

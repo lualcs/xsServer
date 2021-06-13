@@ -18,23 +18,35 @@ local this = service
 ---@param simport     string      @分配类型
 ---@param allianceID  allianceID  @联盟标识
 function service.start(simport,allianceID) 
-  --共享数据
-  local adrres = skynet.queryservice("service_share")
-  local shares = { 
-      "games.gameInfos",
-      "sundry.table",
-  }
-  for _,name in ipairs(shares) do
-    local deploy = sharedata.query(name)
-    _G.package.loaded[name] = deploy
-  end
+    ---加载共享
+    this.shareFech()    
+    ---分配类型
+    local import = require(simport)
+    ---分配类型
+    ---@type assignSuper
+    this.assign = import.new(this,allianceID)
 
-  local import = require(simport)
-  ---分配类型
-  ---@type assignSuper
-  this.assign = import.new(this,allianceID)
-  
-  skynet.register("." .. simport)
+    skynet.register("." .. simport)
+end
+
+---退出
+function service.exit()
+  skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+  local shareFech = sharedata.query("share.fech")
+    --通用部分
+    for _,name in ipairs(shareFech.general_fech) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
+    --独属部分
+    for _,name in ipairs(shareFech.service_assign) do
+      local deploy = sharedata.query(name)
+      _G.package.loaded[name] = deploy
+  end
 end
 
 ---服务表
@@ -56,10 +68,6 @@ function service.multicast()
 	end)
 end
 
----退出
-function service.exit()
-  skynet.exit()
-end
 
 skynet.start(function()
     skynet.dispatch("lua",function(_, _, cmd, ...)

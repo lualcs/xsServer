@@ -20,8 +20,30 @@ local autoID  = 1
 
 ---启动
 function service.start(start)
+    this.shareFech()
     ---@type historID @历史战绩
     this.historID = start.historID
+end
+
+
+---退出
+function service.exit()
+    skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+    local shareFech = sharedata.query("share.fech")
+      --通用部分
+      for _,name in ipairs(shareFech.general_fech) do
+          local deploy = sharedata.query(name)
+          _G.package.loaded[name] = deploy
+      end
+      --独属部分
+      for _,name in ipairs(shareFech.service_sole) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
 end
 
 ---服务表
@@ -47,10 +69,6 @@ end
 function service.dataReboot()
 end
 
----退出
-function service.exit()
-    skynet.exit()
-end
 
 ---战绩ID
 function service.getHistorID()

@@ -3,6 +3,7 @@
     auth:Carol Luo
 ]]
 
+local ipairs = ipairs
 local debug = require("extend_debug")
 local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
@@ -12,13 +13,34 @@ local alliancemanager = require("alliancemanager")
 local queue = require("skynet.queue")
 local cs = queue()
 
----@class service_alliance @联盟服务
+---@class service_clubs @联盟服务
 local service = {}
 local this = service
 
 ---启动
 function service.start()
+    this.shareFech()
     this._manager = alliancemanager.new(this)
+end
+
+---退出
+function service.exit()
+    skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+    local shareFech = sharedata.query("share.fech")
+      --通用部分
+      for _,name in ipairs(shareFech.general_fech) do
+          local deploy = sharedata.query(name)
+          _G.package.loaded[name] = deploy
+      end
+      --独属部分
+      for _,name in ipairs(shareFech.service_clubs) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
 end
 
 ---服务表
@@ -44,12 +66,6 @@ function service.multicast()
 		this._manager:multicastMsg(cmd,...)
 	end)
 end
-
----退出
-function service.exit()
-    skynet.exit()
-end
-
 
 skynet.start(function()
     skynet.dispatch("lua",function(_, _, cmd, ...)

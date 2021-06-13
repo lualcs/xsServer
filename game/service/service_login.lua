@@ -24,6 +24,7 @@ local this = service
 
 ---服务启动
 function service.start()
+    this.shareFech()
     ---登陆管理
     ---@type loginmanager
     this._manger = loginmanager.new(this)
@@ -32,6 +33,21 @@ end
 ---服务退出
 function service.exit()
     skynet.exit()
+end
+
+---加载共享
+function service.shareFech()
+    local shareFech = sharedata.query("share.fech")
+      --通用部分
+      for _,name in ipairs(shareFech.general_fech) do
+          local deploy = sharedata.query(name)
+          _G.package.loaded[name] = deploy
+      end
+      --独属部分
+      for _,name in ipairs(shareFech.service_login) do
+        local deploy = sharedata.query(name)
+        _G.package.loaded[name] = deploy
+    end
 end
 
 ---服务表
