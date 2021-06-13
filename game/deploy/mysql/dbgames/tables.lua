@@ -6,11 +6,11 @@
 return {
     --创建游戏数据库
     [[
-        DROP DATABASE IF EXISTS `dbgameinfo`;
-        CREATE DATABASE `dbgameinfo` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
+        DROP DATABASE IF EXISTS `dbgames`;
+        CREATE DATABASE `dbgames` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci';
     ]],
     ---切换数据库使用
-    [[  USE `dbgameinfo`;]],
+    [[  USE `dbgames`;]],
 
     --创建金玉满堂玩家对局统计数据
     [[

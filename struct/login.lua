@@ -10,7 +10,7 @@
 ---@field accredit string @登录凭证
 
 ---@class c2s_loginAccount @账号登陆
----@field accounts string @用户账号
+---@field users string @用户账号
 ---@field password string @账号密码
 
 ---@class c2s_loginPhone @手机登录
@@ -30,7 +30,7 @@
 ---@field loginMod   string   @登录方式
 ---@field loginBid   string   @绑定账号
 ---@field nickname   string   @用户昵称
----@field accounts   string   @用户账号
+---@field users   string   @用户账号
 ---@field logolink   string   @用户头像
 ---@field rid        integer  @用户编号
 ---@field coin       score    @硬币分数

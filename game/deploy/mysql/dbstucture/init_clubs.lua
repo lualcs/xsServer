@@ -9,7 +9,7 @@ return {
     ---构造系统联盟
     [[
         #超级管理员
-        SELECT `rid` INTO @leaderRID FROM `dbusers`.`accounts` WHERE `office` = "root";
+        SELECT `rid` INTO @leaderRID FROM `dbusers`.`users` WHERE `office` = "root";
 
         #系统盟主号
         INSERT INTO `clubs`
@@ -39,7 +39,7 @@ return {
         INSERT INTO `admins`
         (`rid`, `clubID`) 
         SELECT `rid`,@leaderAGID
-        FROM `dbusers`.`accounts`
+        FROM `dbusers`.`users`
         WHERE `office` = 'admin'
         ORDER BY `rid`;
 
@@ -60,7 +60,7 @@ return {
         FROM 
             `clubs` AS `al` 
             INNER JOIN 
-            `dbusers`.`accounts` AS `ac`
+            `dbusers`.`users` AS `ac`
             USING (`rid`)
         WHERE `ac`.`office` = 'root';
 
@@ -73,7 +73,7 @@ return {
         INSERT INTO `members`
         (`rid`, `office`, `agentID`, `clubID`)
         SELECT `rid`,'member',@systemAGID ,@systemALID 
-        FROM `dbusers`.`bind_robots`
+        FROM `dbusers`.`robots`
         ORDER BY `rid`;
     ]]
 }

@@ -156,7 +156,7 @@ end
 ---@param nickname  string  @更新昵称
 function mysqlmanager:changeNickname(rid,nickname)
     ---拼接语句
-    local sqlex = format([[UPDATE `dbusers`.`accounts` SET `nickname` = "%s"WHERE `rid` = %d;]],nickname,rid)
+    local sqlex = format([[UPDATE `dbusers`.`users` SET `nickname` = "%s"WHERE `rid` = %d;]],nickname,rid)
 
     ---执行语句
     local mysql = self._mysql
@@ -177,7 +177,7 @@ end
 ---@param logolink  string  @更新昵称
 function mysqlmanager:changeLogolink(rid,logolink)
     ---拼接语句
-    local sqlex = format([[UPDATE `dbusers`.`accounts` SET `logo` = "%s"WHERE `rid` = %d;]],logolink,rid)
+    local sqlex = format([[UPDATE `dbusers`.`users` SET `logo` = "%s"WHERE `rid` = %d;]],logolink,rid)
 
     ---执行语句
     local mysql = self._mysql
@@ -214,7 +214,7 @@ function mysqlmanager:fetchClubs()
                 FROM 
                 	`dbclubs`.`members` AS `me` 
                 	INNER JOIN 
-                	`dbusers`.`accounts` AS `ac` 
+                	`dbusers`.`users` AS `ac` 
                 	ON `me`.`rid` = `ac`.`rid`
                 WHERE `me`.`clubID` = %d ORDER BY `me`.`memberID` LIMIT 9;
             ]]
@@ -323,7 +323,7 @@ function mysqlmanager:feachRobot()
     local start = 0
     while true do
         ---查询数据
-        local cmd = format([[SELECT * FROM `dbusers`.`bind_robots` WHERE `rid` > %d ORDER BY `rid` LIMIT 100;]],start)
+        local cmd = format([[SELECT * FROM `dbusers`.`robots` WHERE `rid` > %d ORDER BY `rid` LIMIT 100;]],start)
         local ret = mysql:query(cmd)
         ---结束检查
         if ret.err then
