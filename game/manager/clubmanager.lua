@@ -33,11 +33,11 @@ function clubmanager:ctor(service)
     ---@type clubHash
     self._clubHash = {nil}
     ---代理数据
-    ---@type agencyInfos
+    ---@type adminInfos
     self._admins = {nil}
     ---代理数据
-    ---@type agencyHash
-    self._agencyHash = {nil}
+    ---@type adminHash
+    self._adminHash = {nil}
     ---成员数据
     ---@type members
     self._members = {nil}
@@ -77,9 +77,9 @@ function clubmanager:online(rid,fd)
         club.onlineMapping[rid] = fd
         club.onlineNumber = club.onlineNumber + 1
         ---代理在线人数
-        local agency = self._agencyHash[member.agentID]
-        agency.onlineMapping[rid] = fd
-        agency.onlineNumber = agency.onlineNumber + 1
+        local admin = self._adminHash[member.agentID]
+        admin.onlineMapping[rid] = fd
+        admin.onlineNumber = admin.onlineNumber + 1
         ---成员在线标志
         member.online = true
 
@@ -105,9 +105,9 @@ function clubmanager:offline(rid)
         club.onlineMapping[rid] = nil
         club.onlineNumber = club.onlineNumber - 1
         ---代理在线人数
-        local agency = self._agencyHash[member.agentID]
-        agency.onlineMapping[rid] = nil
-        agency.onlineNumber = agency.onlineNumber - 1
+        local admin = self._adminHash[member.agentID]
+        admin.onlineMapping[rid] = nil
+        admin.onlineNumber = admin.onlineNumber - 1
         ---成员在线标志
         member.online = false
     end
@@ -128,9 +128,9 @@ function clubmanager:clubInfo(ret)
         ---组织数据
         ---@type clubData
         local data = info
-        data.agencyHash     = {nil}
+        data.adminHash     = {nil}
         data.memberHash     = {nil}
-        data.agencyList     = {nil}
+        data.adminList     = {nil}
         data.memberList     = {nil}
         data.assignList     = {nil}
         data.onlineMapping  = {nil}
@@ -143,17 +143,17 @@ function clubmanager:clubInfo(ret)
 end
 
 ---代理数据
----@param ret agencyInfos @联盟信息
+---@param ret adminInfos @联盟信息
 function clubmanager:adminsInfo(ret)
     local list = self._admins
-    local hash = self._agencyHash
+    local hash = self._adminHash
     for _,info in ipairs(ret) do
         ---解析数据
         table.insert(list,info)
         hash[info.clubID] = info
 
         ---组织数据
-        ---@type agencyData
+        ---@type adminData
         local data = info
         data.memberHash     = {nil}
         data.memberList     = {nil}
@@ -161,8 +161,8 @@ function clubmanager:adminsInfo(ret)
         ---填充代理
         ---@type clubData
         local targe = self._clubHash[data.clubID]
-        table.insert(targe.agencyList,data)
-        targe.agencyHash[data.agentID] = data
+        table.insert(targe.adminList,data)
+        targe.adminHash[data.agentID] = data
         data.onlineNumber   = 0
         data.combatNumber   = 0
     end
@@ -191,7 +191,7 @@ function clubmanager:membersInfo(ret)
         table.insert(club.memberList,data)
 
         ---填充代理
-        local targe = club.agencyHash[data.agentID]
+        local targe = club.adminHash[data.agentID]
         table.insert(targe.memberList,data)
         targe.memberHash[data.memberID] = data
     end
@@ -272,7 +272,7 @@ function clubmanager:c2s_clubClubs(fd,rid,msg)
     debug.error(list)
     for _,member in ipairs(list) do
         local club = self._clubHash[member.clubID]
-        local agency = self._agencyHash[member.agentID]
+        local admin = self._adminHash[member.agentID]
         table.insert(clubs,{
             club = {
                 clubID      = club.clubID,
@@ -283,11 +283,11 @@ function clubmanager:c2s_clubClubs(fd,rid,msg)
                 onlineNumber    = club.onlineNumber,
                 combatNumber    = club.combatNumber,
             },
-            agency = {
-                agentID         = agency.agentID,
-                memberNumber    = #agency.memberList,
-                onlineNumber    = agency.onlineNumber,
-                combatNumber    = agency.combatNumber,
+            admin = {
+                agentID         = admin.agentID,
+                memberNumber    = #admin.memberList,
+                onlineNumber    = admin.onlineNumber,
+                combatNumber    = admin.combatNumber,
             },
             member = {
                 memberID = member.memberID,

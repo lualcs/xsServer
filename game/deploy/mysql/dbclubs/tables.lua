@@ -22,7 +22,7 @@ return {
         `rid` INT(11) NOT NULL COMMENT '归属角色',
         `profitPlatformRate` INT(11) NOT NULL DEFAULT 20 COMMENT '平台分润比例千分比',
         `profitclubRate` INT(11) NOT NULL DEFAULT 30 COMMENT '盟主分润比例千分比',
-        `profitAgencyRate` INT(11) NOT NULL DEFAULT 50 COMMENT '代理分润比例千分比',
+        `profitadminRate` INT(11) NOT NULL DEFAULT 50 COMMENT '代理分润比例千分比',
         `assignRule` JSON NOT NULL COMMENT '分配规则',
         `gameInfos` JSON NOT NULL COMMENT '游戏信息',
         `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',
@@ -54,7 +54,7 @@ return {
       CREATE TABLE `members`  (
         `memberID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '成员ID',
         `rid` INT(11) NOT NULL COMMENT '联盟成员',
-        `office` enum('member','agency','club') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
+        `office` enum('member','admin','club') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联盟身份',
         `agentID` INT(11) NOT NULL COMMENT '上级代理',
         `clubID` INT(11) NOT NULL COMMENT '所属联盟',
         `birthday` DATETIME(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建日期',

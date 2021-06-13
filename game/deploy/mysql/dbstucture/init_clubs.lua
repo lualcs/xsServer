@@ -46,7 +46,7 @@ return {
         #代理成员
         INSERT INTO `members`
         (`rid`,`office`,`agentID`, `clubID`) 
-        SELECT `rid`,'agency',`agentID`,clubID
+        SELECT `rid`,'admin',`agentID`,clubID
         FROM `admins`
         WHERE `clubID` = @leaderALID AND `agentID` !=  @leaderAGID
         ORDER BY `agentID`;

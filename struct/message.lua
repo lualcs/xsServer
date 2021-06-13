@@ -15,7 +15,7 @@
 ---@field combatNumber  count       @对局数量
 
 
----@class s2c_agencyInfo  @联盟信息
+---@class s2c_adminInfo  @联盟信息
 ---@field agentID       agentID     @代理ID
 ---@field memberNumber  count       @成员数量 
 ---@field memberNumber  count       @成员数量
@@ -28,7 +28,7 @@
 
 ---@class s2c_clubClub @俱乐部信息
 ---@field club  s2c_clubInfo @联盟信息 
----@field agency    s2c_agencyInfo   @联盟信息 
+---@field admin    s2c_adminInfo   @联盟信息 
 ---@field member    s2c_memberInfo   @成员信息 
 ---@field logoGs    url[]            @成员头像
 

@@ -22,13 +22,13 @@
 
 ---@alias clubInfos clubInfo[]
 
----@class agencyInfo                @代理信息
+---@class adminInfo                @代理信息
 ---@field agentID       agentID     @代理标识
 ---@field rid           userID      @盟主用户
 ---@field clubID    clubID  @联盟标识
 ---@field birthday      string      @创建日期
 
----@alias agencyInfos agencyInfo[]
+---@alias adminInfos adminInfo[]
 
 
 ---@class memberInfo
@@ -44,9 +44,9 @@
 
 
 ---@class clubData:clubInfo                     @联盟数据
----@field agencyHash        table<agentID,agencyData>   @代理信息
+---@field adminHash        table<agentID,adminData>   @代理信息
 ---@field memberHash        table<memberID,memberData>  @成员信息
----@field agencyList        agencyData[]                @代理列表
+---@field adminList        adminData[]                @代理列表
 ---@field memberList        memberData[]                @成员列表
 ---@field assignList        service[]                   @分配服务
 ---@field assignSingle      service[]                   @单机分配
@@ -57,7 +57,7 @@
 ---@field combatNumber      count                       @对局数量
 
 
----@class agencyData:agencyInfo @代理数据
+---@class adminData:adminInfo @代理数据
 ---@field memberHash        table<memberID,memberData>  @成员信息
 ---@field memberList        memberData[]                @成员列表
 ---@field onlineMapping     table<rid,fd>               @在线映射
@@ -72,7 +72,7 @@
 
 ---@alias clubHash table<clubID,clubData>
 ---联盟映射
----@alias agencyHash table<agentID,agencyData>
+---@alias adminHash table<agentID,adminData>
 ---代理映射
 ---@alias memberHash table<memberID,memberData>
 ---成员映射

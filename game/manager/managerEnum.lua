@@ -45,8 +45,8 @@ end
 
 ---代理
 ---@return senum
-function managerEnum.agency()
-    return "agency"
+function managerEnum.admin()
+    return "admin"
 end
 
 ---成员
@@ -242,8 +242,8 @@ end
 
 ---代理信息
 ---@return senum
-function managerEnum.s2c_agencyInfo()
-    return "s2c_agencyInfo"
+function managerEnum.s2c_adminInfo()
+    return "s2c_adminInfo"
 end
 
 ---联盟成员
