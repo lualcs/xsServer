@@ -31,9 +31,9 @@ return {
     --编码配置数据
     "sundry.code",
     --百人龙虎配置
-    "hundred.games.dragonTiger",
+    "dragonTiger.Cfg",
     --金玉满堂配置
-    "slots.games.jymtCfg",
+    "jymt.Cfg",
     --金鸡报喜配置
-    "slots.games.jjbxCfg",
+    "jjbx.Cfg",
 }

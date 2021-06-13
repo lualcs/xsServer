@@ -12,7 +12,7 @@ local table = require("extend_table")
 local multicast = require("api_multicast")
 local sharedata = require("skynet.sharedata")
 local queue = require("skynet.queue")
-local senum = require("gameEnum")
+local senum = require("game.enum")
 local cs = queue()
 
 
@@ -42,8 +42,8 @@ function service.start(handle,gameID,custom)
         _G.package.loaded[name] = deploy
     end
     ---创建桌子
-    local import = require(gameInfo.importTable)
-    ---@type gameTable @游戏桌子
+    local import = require(gameInfo.importCompetition)
+    ---@type gameCompetition @游戏桌子
     this._table = import.new(this,gameInfo,custom)
     this._table:gameStart()
     ---组播对象
@@ -71,6 +71,13 @@ function service.shareFech()
     end
 end
 
+---服务表
+function service.mapServices(name)
+    local services = sharedata.query(name)
+     ---@type serviceInf @服务地址信息
+     this._services = services
+end
+
 ---组播
 function service.multicast()
 	---服务
@@ -84,8 +91,6 @@ function service.multicast()
 end
 
 
-skynet.init(function()
-end)
 
 skynet.start(function()
     skynet.info_func(function()

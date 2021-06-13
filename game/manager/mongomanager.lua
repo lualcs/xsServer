@@ -55,6 +55,10 @@ end
 ---构造数据库
 function mongomanager:dbstructure()
     local mongo = self._mongo
+    ---错误信息数据
+    local db = mongo._db.databaseError
+    ---错误信息集合
+    self._errorDetails =  db._errorDetails
     ---玩家邮件数据
     local db = mongo._db.databaseEmail
     ---用户未读邮件
@@ -65,6 +69,17 @@ function mongomanager:dbstructure()
     local db = mongo._db.databaseSlots
     ---金玉满堂日志
     self._jymtDetails = db.jymtDetails
+end
+
+---写入错误编码记录
+---@param code integer @错误编码
+---@param trac integer @跟踪信息
+function mongomanager:writeError(code,trac)
+    local coll = self._errorDetails
+    coll:safe_insert({
+        code = code,
+        trac = trac
+    })
 end
 
 ---写入玩家邮件数据

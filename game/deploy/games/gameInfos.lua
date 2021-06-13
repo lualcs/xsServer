@@ -4,22 +4,24 @@
     auth:Carol Luo
 ]]
 
-local senum = require("gameEnum")
+local senum = require("game.enum")
 
 ---@type table<gameID,gameInfo>
 local gameInfos = {
     [1] = {
         name = "炸金花",
-        assignClass  = false,--senum.assignKilling(),
-        importDeploy = "poker.poker_zjh_cfg",
-        importTable  = "poker_zjh.zjh_table",
-        importPlayer = "poker_zjh.zjh_Player",
-        importAlgor  = "poker_zjh.zjh_algor",
-        importHelper = "poker_zjh.zjh_helper",
-        importSystem = "poker_zjh.zjh_system",
-        importLogic  = "poker_zjh.zjh_algor",
-        importType   = "poker_zjh.zjh_type",
-        importStatus = "poker_zjh.zjh_status",
+        assignClass         = false,
+        importDeploy        = "poker.zjh.Cfg",
+        importCompetition   = "poker.zjh.competition",
+        importPlayer        = "poker.zjh.player",
+        importAlgor         = "poker.zjh.algor",
+        importHelper        = "poker.zjh.helper",
+        importSystem        = "poker.zjh.system",
+        importLogic         = "poker.zjh.logic",
+        importType          = "poker.zjh.type",
+        importStatus        = "poker.zjh.status",
+        importError         = "poker.zjh.error",
+        importMessage       = "poker.zjh.message",
         open = senum.people(),
         minPlayer = 2,
         curPlayer = 0,
@@ -121,16 +123,18 @@ local gameInfos = {
     [10001] = {
         name = "金玉满堂",
         open = true,
-        assignClass  = senum.assignSingle(),
-        importDeploy = "slots.games.jymtCfg",
-        importTable  = "slots.jymt.jymtTable",
-        importPlayer = "slots.jymt.jymtPlayer",
-        importAlgor  = "slots.jymt.jymtAlgor",
-        importHelper = "slots.jymt.jymtHelper",
-        importSystem = "slots.jymt.jymtSystem",
-        importLogic  = "slots.jymt.jymtAlgor",
-        importType   = "slots.jymt.jymtType",
-        importStatus = "slots.jymt.jymtStatus",
+        assignClass         = senum.assignSingle(),
+        importDeploy        = "jymt.Cfg",
+        importCompetition   = "jymt.competition",
+        importPlayer        = "jymt.player",
+        importAlgor         = "jymt.algor",
+        importHelper        = "jymt.helper",
+        importSystem        = "jymt.system",
+        importLogic         = "jymt.algor",
+        importType          = "jymt.type",
+        importStatus        = "jymt.status",
+        importError         = "jymt.error",
+        importMessage       = "jymt.message",
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 1000,
@@ -147,7 +151,7 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "slots.games.jymtCfg",
+            "jymt.Cfg",
         },
 
         ---@type boolean @是否双向
@@ -158,16 +162,18 @@ local gameInfos = {
     [10002] = {
         name = "金鸡报喜",
         open = true,
-        assignClass  = senum.assignSingle(),
-        importDeploy = "slots.games.jjbxCfg",
-        importTable  = "jjbx.jjbxTable",
-        importPlayer = "jjbx.jjbxPlayer",
-        importAlgor  = "jjbx.jjbxAlgor",
-        importHelper = "jjbx.jjbxHelper",
-        importSystem = "jjbx.jjbxSystem",
-        importLogic  = "jjbx.jjbxAlgor",
-        importType   = "jjbx.jjbxType",
-        importStatus = "jjbx.jjbxStatus",
+        assignClass         = senum.assignSingle(),
+        importDeploy        = "jjbx.Cfg",
+        importCompetition   = "jjbx.competition",
+        importPlayer        = "jjbx.player",
+        importAlgor         = "jjbx.algor",
+        importHelper        = "jjbx.helper",
+        importSystem        = "jjbx.system",
+        importLogic         = "jjbx.algor",
+        importType          = "jjbx.type",
+        importStatus        = "jjbx.status",
+        importError         = "jjbx.error",
+        importMessage       = "jjbx.message",
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 1000,
@@ -184,7 +190,7 @@ local gameInfos = {
 
         ---@type path[]
         sharedList = { --共享模块
-            "slots.games.jjbxCfg",
+            "jjbx.Cfg",
         },
 
         ---@type boolean @是否双向
@@ -195,16 +201,18 @@ local gameInfos = {
     [20001] = {
         name = "龙虎斗",
         open = senum.timer(),
-        assignClass  = senum.assignSingle(),
-        importDeploy = "hundred.games.dragonTiger",
-        importTable  = "dragonTiger.dragonTigerTable",
-        importPlayer = "dragonTiger.dragonTigerPlayer",
-        importAlgor  = "dragonTiger.dragonTigerAlgor",
-        importHelper = "dragonTiger.dragonTigerHelper",
-        importSystem = "dragonTiger.dragonTigerSystem",
-        importLogic  = "dragonTiger.dragonTigerAlgor",
-        importType   = "dragonTiger.dragonTigerType",
-        importStatus = "dragonTiger.dragonTigerStatus",
+        assignClass         = senum.assignSingle(),
+        importDeploy        = "dragonTiger.Cfg",
+        importCompetition   = "dragonTiger.competition",
+        importPlayer        = "dragonTiger.player",
+        importAlgor         = "dragonTiger.algor",
+        importHelper        = "dragonTiger.helper",
+        importSystem        = "dragonTiger.system",
+        importLogic         = "dragonTiger.algor",
+        importType          = "dragonTiger.type",
+        importStatus        = "dragonTiger.status",
+        importError         = "dragonTiger.error",
+        importMessage       = "dragonTiger.message",
         minPlayer = 1,
         curPlayer = 0,
         maxPlayer = 100,
@@ -212,7 +220,7 @@ local gameInfos = {
         curBanker = 0,
         maxBanker = 1,
         sharedList = { --共享模块
-            "hundred.games.dragonTiger"
+            "dragonTiger.Cfg"
         }
     },
     [30001] = {
@@ -221,16 +229,18 @@ local gameInfos = {
         minPlayer = 4,
         curPlayer = 0,
         maxPlayer = 4,
-        assignClass  = "assignKilling",
-        importDeploy = "mahjong.deploy.scxzConfig",
-        importTable  = "mahjong_scxz.scxz_table",
-        importPlayer = "mahjong_scxz.scxz_Player",
-        importAlgor  = "mahjong_scxz.scxz_algor",
-        importHelper = "mahjong_scxz.scxz_helper",
-        importSystem = "mahjong_scxz.scxz_system",
-        importLogic  = "mahjong_scxz.scxz_algor",
-        importType   = "mahjong_scxz.scxz_type",
-        importStatus = "mahjong_scxz.scxz_status",
+        assignClass         = "assignKilling",
+        importDeploy        = "mahjong.deploy.scxzConfig",
+        importCompetition   = "mahjong.scxz.competition",
+        importPlayer        = "mahjong.scxz.player",
+        importAlgor         = "mahjong.scxz.algor",
+        importHelper        = "mahjong.scxz.helper",
+        importSystem        = "mahjong.scxz.system",
+        importLogic         = "mahjong.scxz.algor",
+        importType          = "mahjong.scxz.type",
+        importStatus        = "mahjong.scxz.status",
+        importError         = "mahjong.scxz.error",
+        importMessage       = "mahjong.scxz.message",
         sharedList = { --共享模块
             "mahjong.mapHuCards",
             "mahjong.mapNames",
