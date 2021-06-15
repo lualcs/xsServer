@@ -47,13 +47,14 @@ end
 
 ---设置游戏状态
 ---@param status senum @游戏状态
-function status:settingStatus(status)
+function status:setGameStatus(status)
     self._competition:setGameStatus(status)
+    self:jumpGameStatus()
 end
 
 ---获取游戏状态
 ---@param status senum @游戏状态
-function status:gettingStatus(status)
+function status:getGameStatus(status)
     return self._competition:getGameStatus(status)
 end
 

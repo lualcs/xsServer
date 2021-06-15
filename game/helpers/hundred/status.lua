@@ -21,14 +21,13 @@ function status:dataReboot()
     ---重置处理
     self:super(this,"dataReboot")
     ---开启流程
-    self:enterGameProcess(self:idle())
+    self:setGameStatus(self:idle())
 end
 
 ---游戏流程切换
 ---@param status senum @游戏状态 
 function status:enterGameProcess(status)
-    ---设置状态
-    self:settingStatus(status)
+    print("enterGameProcess:",status)
     ---空闲状态
     if status == self:idle() then
         self:enterIdle()
@@ -37,14 +36,14 @@ function status:enterGameProcess(status)
         self:enterStart()
     ---下注状态
     elseif status == self:betting() then
-        self:enterStart()
+        self:enterBetting()
     ---结束状态
     elseif status == self:close() then
         self:enterClose()
     end
 
     ---状态结束
-    self._tim:appendCall(self:totalMilliscond(),function()
+    self._tim:appendBy("leaveGameProcess",self:totalMilliscond(),1,function()
         self:leaveGameProcess(status)
     end)
 end
@@ -72,7 +71,7 @@ end
 ---获取总共时间
 ---@return number @毫秒
 function status:totalMilliscond()
-    local status = self:gettingStatus()
+    local status = self:getGameStatus()
     ---空闲状态
     if status == self:idle() then
         return self:idleTimer()
@@ -99,7 +98,7 @@ end
 ---是否空闲
 ---@return senum
 function status:ifIdle()
-    return self:idle() == self:gettingStatus()
+    return self:idle() == self:getGameStatus()
 end
 
 ---空闲时间
@@ -111,7 +110,7 @@ end
 ---设置空闲
 ---@return senum
 function status:setIdle()
-    self:settingStatus(self:idle())
+    self:setGameStatus(self:idle())
 end
 
 ---进入空闲
@@ -123,9 +122,9 @@ end
 ---离开空闲
 function status:leaveIdle()
     if self._competition:checkStart() then
-        self:enterGameProcess(self:start())
+        self:setGameStatus(self:start())
     else
-        self:enterGameProcess(self:idle())
+        self:setGameStatus(self:idle())
     end
 end
 
@@ -146,13 +145,13 @@ end
 ---开局状态
 ---@return senum
 function status:ifStart()
-    return self:start() == self:gettingStatus()
+    return self:start() == self:getGameStatus()
 end
 
 ---开局状态
 ---@return senum
 function status:setStart()
-    self:settingStatus(self:start())
+    self:setGameStatus(self:start())
 end
 
 ---进入开局
@@ -162,7 +161,7 @@ end
 
 ---离开开局
 function status:leaveStart()
-    self:enterGameProcess(self:betting())
+    self:setGameStatus(self:betting())
 end
 
 ------------------------------------------------------下注状态------------------------------------------------
@@ -182,13 +181,13 @@ end
 ---是否下注
 ---@return senum
 function status:ifBetting()
-    return self:betting() == self:gettingStatus()
+    return self:betting() == self:getGameStatus()
 end
 
 ---设置下注
 ---@return senum
 function status:setBetting()
-    self:settingStatus(self:betting())
+    self:setGameStatus(self:betting())
 end
 
 ---进入下注
@@ -218,13 +217,13 @@ end
 ---是否结束
 ---@return senum
 function status:ifClose()
-    return self:close() == self:gettingStatus()
+    return self:close() == self:getGameStatus()
 end
 
 ---设置结束
 ---@return senum
 function status:setClose()
-    self:settingStatus(self:close())
+    self:setGameStatus(self:close())
 end
 
 ---进入结束

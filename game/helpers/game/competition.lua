@@ -268,7 +268,6 @@ end
 ---@param status number @状态
 function competition:setGameStatus(status)
     self._gmstatus = status
-    self._stu:jumpGameStatus()
 end
 
 ---定制规则
