@@ -13,22 +13,14 @@ local this = error
 function error:ctor()
 end
 
+---清除数据
+function error:dataClear()
+end
+
 ---已经是庄家
 ---@return integer
 function error.alreadyBanker()
     return 1
-end
-
----最小错误码
----@return integer
-function error.minimumError()
-    return 1
-end
-
----最大错误码
----@return integer
-function error.maximumError()
-    return 100
 end
 
 return error

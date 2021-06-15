@@ -135,9 +135,9 @@ local expect2
 function logic:getFreeBudgeExpect()
     if not expect1 then
         ---@type jymtTable             @桌子
-        local game = self._table
+        local game = self._competition
         ---@type jymtAlgor             @算法
-        local agor = self._table._gor
+        local agor = self._competition._gor
         ---@type slots_wight_info[]     @免费概率表
         local fwgt = game:getFreeIconWeights()
         ---@type slots_icon             @免费图标ID
@@ -238,7 +238,7 @@ end
 ---@return double
 function logic:getAxleBudgeExpect(result)
     ---@type jymtAlgor             @金玉满堂
-    local algor = self._table._gor
+    local algor = self._competition._gor
     ---@type postx                  @重转转轴x
     local axle_xpost  = self:getCurAxle()
     ---@type slots_icon             @wild图标

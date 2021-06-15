@@ -40,13 +40,13 @@ end
 ---@param comp function @比较函数
 function heap:ctor(comp)
     ---@type heapNode[]     @列表
-    self.list = {nil}--数据
+    self._list = {nil}--数据
     ---@type function       @比较
-    self.comp = comp or default_compare
+    self._comp = comp or default_compare
     ---@type function       @自动
-    self.fauto = fauto()
+    self._fauto = fauto()
     ---@type reusable       @仓库
-    self.store = reusable.new()
+    self._store = reusable.new()
 end
 
 ---添加节点
@@ -54,9 +54,9 @@ end
 ---@param   data      table       @数据
 ---@return  number                @自动
 function heap:append(ticks,data)
-    local auto  = self.fauto()
-    local store = self.store
-    local list  = self.list
+    local auto  = self._fauto()
+    local store = self._store
+    local list  = self._list
     local node  = store:get()
     node.ticks  = ticks
     node.data   = data
@@ -69,8 +69,8 @@ end
 ---@param   data      table       @数据
 ---@return  number                @自动
 function heap:appendBy(ticks,atuo,data)
-    local store = self.store
-    local list  = self.list
+    local store = self._store
+    local list  = self._list
     local node  = store:get()
     node.ticks  = ticks
     node.data   = data
@@ -82,7 +82,7 @@ end
 ---@param node heapNode  @节点
 ---@return number   @标示
 function heap:insert(node)
-    local list = self.list
+    local list = self._list
     insert(list,node)
     self:upward(#list)
     return node.auto
@@ -117,7 +117,7 @@ end
 ---@param   auto    number      @唯一标识
 ---@return  index,heapNode      @节点
 function heap:search(auto)
-    local list = self.list
+    local list = self._list
     for index,node in ipairs(list) do
         if auto == node.auto then
             return index,node
@@ -128,7 +128,7 @@ end
 ---查看节点
 ---@return heapNode
 function heap:reder()
-    local list = self.list
+    local list = self._list
     return list[1]
 end
 
@@ -142,7 +142,7 @@ end
 ---@return heapNode @堆节点
 function heap:delete(pos)
     ---检查节点
-    local list = self.list
+    local list = self._list
     local node = list[pos]
     if node then
         --取出最后
@@ -153,7 +153,7 @@ function heap:delete(pos)
             self:downward(pos)
         end
     end
-    local store = self.store
+    local store = self._store
     store:set(node)
     return node
 end
@@ -171,11 +171,11 @@ end
 ---上升-上小-左小
 function heap:upward(pos)
     ---@type heapNode[]     @所有节点
-    local list = self.list
+    local list = self._list
     ---@type heapNode       @上升节点
     local node = list[pos]
     ---@type function       @比较函数
-    local comp = self.comp
+    local comp = self._comp
     ---@type boolean        @非最高层
     while pos > 1 do
         ---@type index      @上层位置
@@ -200,11 +200,11 @@ end
 ---下降-下大-右大
 function heap:downward(pos)
     ---@type heapNode[]     @所有节点
-    local list = self.list
+    local list = self._list
     ---@type heapNode       @下降节点
     local node = list[pos]
     ---@type function       @比较函数
-    local comp = self.comp
+    local comp = self._comp
     ---@type index          @最后节点
     local last = #list
     ---@type boolea         @节点向下
@@ -234,7 +234,7 @@ function heap:downward(pos)
 end
 --清空数据
 function heap:clear()
-    local list = self.list
+    local list = self._list
     table.clear(list)
 end
 

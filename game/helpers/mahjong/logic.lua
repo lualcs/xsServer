@@ -17,7 +17,7 @@ local senum = require("mahjong.enum")
 ---构造函数
 ---@param table mahjongCompetition
 function logic:ctor(table)
-    self._table = table
+    self._competition = table
 end
 
 
@@ -25,39 +25,39 @@ end
 ------@param senum senum @索引
 ---@return table<senum,any>
 function logic:getDriver(senum)
-    return self._table:getDriver(senum)
+    return self._competition:getDriver(senum)
 end
 
 ---数据设置
 ------@param senum senum @索引
 ------@param data  any   @数据
 function logic:setDriver(senum,data)
-    return self._table:setDriver(senum,data)
+    return self._competition:setDriver(senum,data)
 end
 
 ---最大玩家
 ---@return mjCount
 function logic:maxPlayer()
-    return self._table:getMaxPlayer()
+    return self._competition:getMaxPlayer()
 end
 
 ---保存数据
 ---@param senum senum @映射值
 ---@param data  any   @数据值
 function logic:setData(senum,data)
-    self._table:setData(senum,data)
+    self._competition:setData(senum,data)
 end
 
 ---获取数据
 ---@return any
 function logic:getData(senum)
-    return self._table:getData(senum)
+    return self._competition:getData(senum)
 end
 
 ---玩家数组
 ---@return mahjongPlayer[]
 function logic:arrPlayer()
-    return self._table:getArrPlayer()
+    return self._competition:getArrPlayer()
 end
 
 ---剩余牌库

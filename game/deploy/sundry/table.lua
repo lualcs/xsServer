@@ -9,61 +9,18 @@ local senum = require("managerEnum")
 return {
     ---竞技场
     [senum.assignKilling()] = {
-        [1] = {
-            unit = 1,   ---单元积分
-            mini = 2,   ---最少桌子
-            maxi = 100, ---最多桌子
-            idle = 2,   ---保持空闲
-        },
-        [2] = {
-            unit = 5,   ---单元积分
-            mini = 2,   ---最少桌子
-            maxi = 100, ---最多桌子
-            idle = 2,   ---保持空闲
-        },
-        
     },
     ---百人场
     [senum.assignHundred()] = {
         [1] = {
             unit = 1,   ---单元积分
-            mini = 3,   ---最少桌子
-            maxi = 3,   ---最多桌子
+            mini = 1,   ---最少桌子
+            maxi = 1,   ---最多桌子
             idle = nil, ---保持空闲
         }, 
-        [2] = {
-            unit = 10,  ---单元积分
-            mini = 3,   ---最少桌子
-            maxi = 3,   ---最多桌子
-            idle = nil, ---保持空闲
-        },   
-        [3] = {
-            unit = 20,  ---单元积分
-            mini = 3,   ---最少桌子
-            maxi = 3,   ---最多桌子
-            idle = nil, ---保持空闲
-        },                
     },
-     ---单人场
-     [senum.assignSingle()] = {
-        [1] = {
-            unit = 1,   ---单元积分
-            mini = 1,   ---最少桌子
-            maxi = 1,   ---最多桌子
-            idle = nil, ---保持空闲
-        },   
-        [2] = {
-            unit = 10,  ---单元积分
-            mini = 1,   ---最少桌子
-            maxi = 1,   ---最多桌子
-            idle = nil, ---保持空闲
-        },       
-        [3] = {
-            unit = 20,  ---单元积分
-            mini = 1,   ---最少桌子
-            maxi = 1,   ---最多桌子
-            idle = nil, ---保持空闲
-        },            
+    ---单人场
+    [senum.assignSingle()] = {
     }
 }
 

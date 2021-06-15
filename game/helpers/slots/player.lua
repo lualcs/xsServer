@@ -37,7 +37,7 @@ function player:getJetton()
     local msg = self:getRequest()
     local idx = msg.details
     ---@type slots_cfg
-    local cfg = self._table:getGameConf()
+    local cfg = self._competition:getGameConf()
     return cfg.jetton_pair[idx]
 end
 

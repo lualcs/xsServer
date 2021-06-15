@@ -18,6 +18,27 @@ function competition:ctor()
 end
 
 
+----------------------------------------------------空闲状态--------------------------------------------------
+function competition:gameIdle()
+    self:super(this,"gameIdle")
+end
+
+----------------------------------------------------开始状态--------------------------------------------------
+function competition:gameStart()
+    self:super(this,"gameStart")
+end
+
+----------------------------------------------------下注状态--------------------------------------------------
+function competition:gameBetting()
+    self:super(this,"gameBetting")
+end
+
+----------------------------------------------------结束状态--------------------------------------------------
+function competition:gameClose()
+    self:super(this,"gameClose")
+end
+
+
 ---下注赔额
 ---@param area      senum               @区域
 ---@param score     score               @下注

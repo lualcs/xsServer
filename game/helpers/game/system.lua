@@ -13,23 +13,31 @@ local this = system
 ---构造函数
 ---@param table gameCompetition
 function system:ctor(table)
-    self._table = table
+    self._competition = table
 end
 
 ---重启
 function system:dataReboot()
     ---游戏算法
-    self._gor = self._table._gor
+    self._gor = self._competition._gor
     ---游戏类型
-    self._tye = self._table._tye
+    self._tye = self._competition._tye
     ---游戏辅助
-    self._hlp = self._table._hlp
+    self._hlp = self._competition._hlp
     ---游戏逻辑
-    self._lgc = self._table._lgc
+    self._lgc = self._competition._lgc
     ---游戏状态
-    self._stu = self._table._stu
+    self._stu = self._competition._stu
     ---游戏定时
-    self._tim = self._table._tim
+    self._tim = self._competition._tim
+    ---错误编码
+    self._err = self._competition._err
+    ---消息处理
+    self._msg = self._competition._msg
+end
+
+---清除数据
+function system:dataClear()
 end
 
 return system

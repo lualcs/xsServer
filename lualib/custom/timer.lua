@@ -7,11 +7,12 @@
 local select = select
 local ipairs = ipairs
 local table = table
+local heap = require("heap")
+local class = require("class")
 local os = require("extend_os")
 local skynet = require("skynet")
-local class = require("class")
-local heap = require("heap")
 local reusable = require("reusable")
+local debug = require("extend_debug")
 
 ---@class timer
 local timer = class()
@@ -115,7 +116,7 @@ end
 ---@param timeID    timeID      @定时器ID
 function timer:remove(timeID)
     local heap  = self._heap
-    local list  = heap.list
+    local list  = heap._list
     local store = self._store
     for index,node in ipairs(list) do
         if node.auto == timeID then
@@ -131,7 +132,7 @@ end
 ---@param timeID timeID
 function timer:remaining(timeID)
     local now = self._pauset or self:time()
-    for _,item in ipairs(self._heap.list) do
+    for _,item in ipairs(self._heap._list) do
         if item.auto == timeID then
             return now - item.ticks
         end
@@ -161,7 +162,7 @@ function timer:uPause()
         self._pauset = nil
         local now = self:time()
         local dif = now - pause
-        for _,item in ipairs(self._heap.list) do
+        for _,item in ipairs(self._heap._list) do
             item.ticks = item.ticks + dif
         end
         --启动轮询
@@ -172,6 +173,7 @@ end
 
 ---定时轮询
 function timer:poling()
+
     ---暂停
     if self._pauset then
         return
@@ -180,7 +182,7 @@ function timer:poling()
     self:timeout()
 
     --循环执行
-    while self:execute() do 
+    while self:execute() do
     end
 end
 

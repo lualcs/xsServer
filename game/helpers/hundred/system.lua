@@ -26,31 +26,41 @@ end
 
 
 ---自动上庄
-function system:autoUpBanker(robot)
-    ---比赛
+---@param player hundredPlayer
+function system:autoUpBanker(player)
+    ---百人游戏
     ---@type hundredTable
-    local competition = self._table
+    local game = self._competition
 
-    ---遍历
-    if not robot then
-        local mapPlayer = competition._mapPlayer
-        for _,player in pairs(mapPlayer) do
-            if player:ifRobot() then
-                self:autoUpBanker(player)
+    ---上庄数量
+    local maxBankerCount = game:maxBanker()
+    local bankerCount = game:numBanker()
+    local waitCount = game:numWaitBanker()
+    local wantCount = math.min(1,game:maxBanker() // 2)
+    if wantCount >= (bankerCount + waitCount) then
+        return
+    end
+
+    if not player then
+        ---遍历
+        local mapPlayer = game._mapPlayer
+        for _,_player in pairs(mapPlayer) do
+            if _player:ifRobot() then
+            if not _player:ifBanker() then
+            if not _player:ifWaitDownBanker() then
+                self:autoUpBanker(_player)
+            end
+            end
             end
         end
         return
+    else
+        ---概率
+        if math.radom(1,100) > 20 then
+            return
+        end
     end
-
-    local bankerCnt = competition:numBanker()
-    local upBankerCnt = competition:numUpBanker()
-    local maxBankerCnt = competition:maxBanker()
-    
-    if bankerCnt + upBankerCnt > math.min(1,maxBankerCnt / 2) then
-        return
-    end
-
-    competition:tryUpBanker(robot)
+    game:tryUpBanker(player)
 end
 
 

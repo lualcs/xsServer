@@ -7,7 +7,6 @@
 local pairs = pairs
 local ipairs = ipairs
 local format = string.format
-local wsnet = require("api_websocket")
 local table = require("extend_table")
 local time = require("extend_time")
 local math = require("extend_math")
@@ -19,6 +18,8 @@ local timer  = require("timer")
 local class = require("class")
 local ICode = require("ICode")
 local senum = require("game.enum")
+local mongo = require("game.mongo")
+local mysql = require("game.mysql")
 ---@class gameCompetition @游戏桌子
 local competition = class()
 
@@ -39,14 +40,21 @@ end
 ---@param gameInfo      gameInfo         @游戏信息
 ---@param gameCustom    gameCustom       @定制规则
 function competition:ctor(service,gameInfo,gameCustom)
+    local services = service._services
     ---代码编号
-    self._code = ICode.new(gameInfo.gameID + 10000,service._services)
+    self._code = ICode.new(gameInfo.gameID + 10000,services.mongo)
     ---游戏规则
     ---@type table<string,any>
     self._def = customDecode(gameCustom.customs)
     ---定制规则
     ---@type custom[]                   
     self._csm = gameCustom.customs
+     ---消息处理
+    ---@type gameMessage
+    self._msg = require(gameInfo.importMessage)    
+    ---错误编号
+    ---@type gameError
+    self._err = require(gameInfo.importError)      
     ---游戏配置
     ---@type table                     
     self._cfg = require(gameInfo.importDeploy)
@@ -71,7 +79,7 @@ function competition:ctor(service,gameInfo,gameCustom)
     ---@type gameType                    
     self._tye = import.new(self)
     local import = require(gameInfo.importStatus)
-     ---游戏状态
+    ---游戏状态
     ---@type gameStatus                 
     self._stu = import.new(self)
     ---游戏占位
@@ -82,7 +90,13 @@ function competition:ctor(service,gameInfo,gameCustom)
     self._cac = caches.new()
     --游戏定时
     ---@type timer                      
-    self._tim = timer.new()             
+    self._tim = timer.new()  
+    ---mongo 
+    ---@type competitionMongo
+    self._mgo = mongo.new(services.mongo)   
+    ---mysql 
+    ---@type competitionMongo
+    self._sql = mongo.new(services.mysql)      
     --桌子服务
     ---@type service_table              
     self._service = service
@@ -106,7 +120,7 @@ function competition:ctor(service,gameInfo,gameCustom)
     self._combatID  = 0
     ---游戏状态
     ---@type senum                     
-    self._gmstatus  = senum.gameIdle()
+    self._gmstatus  = nil
     ---机器配置
     ---@type robotEnter
     local cfg = require("sundry.robot")
@@ -115,7 +129,7 @@ function competition:ctor(service,gameInfo,gameCustom)
 
     if rbt then
         ---首次执行
-        self._tim:appendCall(5*1000,function()
+        self.lcsTimerID = self._tim:appendCall(5*1000,function()
             self:refershRobotHotspot()
         end)
         ---重置热度
@@ -135,6 +149,51 @@ function competition:ctor(service,gameInfo,gameCustom)
     ---@type count
     self._robotCount = 0
 
+end
+
+
+---重置数据
+function competition:dataReboot()
+    self._gor:dataReboot()   --算法
+    self._hlp:dataReboot()   --工具
+    self._sys:dataReboot()   --策略
+    self._ocp:dataReboot()   --占位
+    self._cac:dataReboot()   --缓存
+    self._tye:dataReboot()   --类型
+    self._stu:dataReboot()   --状态
+end
+
+---清除数据
+function competition:dateClear()
+
+    self._gor:dateClear()   --算法
+    self._hlp:dateClear()   --工具
+    self._sys:dateClear()   --策略
+    self._ocp:dateClear()   --占位
+    self._cac:dateClear()   --缓存
+    self._tye:dateClear()   --类型
+    self._stu:dateClear()   --状态
+
+     ---清空玩家
+     for _,player in ipairs(self._mapPlayer) do
+        player:dateClear()
+    end
+
+    ---初始玩家
+    local senum = senum.join()
+    for _,player in ipairs(self._arrPlayer) do
+        ---参与状态
+        player:setStatusBy(senum,true)
+    end
+
+    ---数据映射
+    ---@type table<senum,any>  
+    self._mapDriver = {nil}
+
+    ---@type gamePlayer       @当前玩家
+    self._player    = nil
+    ---@type combatID         @小局战绩
+    self._combatID  = self._combatID + 1
 end
 
 ---服务
@@ -167,6 +226,7 @@ end
 
 ---机器入场
 function competition:refershRobotEnter()
+
     ---邀请机器人目标
     local target = self._robotTarget
     if not target then
@@ -187,37 +247,6 @@ function competition:refershRobotEnter()
         skynet.send(services.robot,"lua","inviteEnter",assign,skynet.self())
     end
 
-end
-
----重启
-function competition:dataReboot()
-    self._gor:dataReboot()   --算法
-    self._hlp:dataReboot()   --工具
-    self._sys:dataReboot()   --策略
-    self._ocp:dataReboot()   --占位
-    self._cac:dataReboot()   --缓存
-    self._tye:dataReboot()   --类型
-    self._stu:dataReboot()   --状态
-    ---清空玩家
-    for _,player in ipairs(self._mapPlayer) do
-        player:dataReboot()
-    end
-
-    ---初始玩家
-    local senum = senum.join()
-    for _,player in ipairs(self._arrPlayer) do
-        ---参与状态
-        player:setStatusBy(senum,true)
-    end
-
-    ---数据映射
-    ---@type table<senum,any>  
-    self._mapDriver = {nil}
-
-    ---@type gamePlayer       @当前玩家
-    self._player    = nil
-    ---@type combatID         @小局战绩
-    self._combatID  = self._combatID + 1
 end
 
 ---大局
@@ -402,6 +431,7 @@ function competition:playerEnter(playerInfo)
     local import = self:getImportPlayer()
     local object = require(import)
     local player = object.new(self,playerInfo)
+    player:dataReboot()
 
     --玩家保存
     local map = self:getMapPlayer()
@@ -416,9 +446,6 @@ function competition:playerEnter(playerInfo)
     else
         self._realCount = self._realCount + 1
     end
-
-    ---检查开始
-    self:checkStart()
 
     ---通知分配
     local handle = self:getAssignID()
@@ -435,14 +462,10 @@ function competition:playerLeave(player)
     else
         self._realCount = self._realCount - 1
     end
-    ---检查开始
-    self:checkStart()
 end
 
 ---剔除玩家
 function competition:playerKickout()
-    ---检查开始
-    self:checkStart()
 end
 
 ---清空玩家
@@ -454,18 +477,18 @@ function competition:gameDelete()
 end
 
 ---检查开始
+---@return boolean
 function competition:checkStart()
 
     --检查状态
-    local status = self:getGameStatus()
-    if senum.gameIdle() ~= status then
-        return
+    if not self._stu:IfIdle() then
+        return false
     end
 
     ---玩家人数
     local playerNum = self:getNumPlayer()
     if playerNum <= 0 then
-        return
+        return false
     end
 
     local inf = self:getGameInfo()
@@ -476,15 +499,10 @@ function competition:checkStart()
         ---检查人数
         local mcnt = inf.minPlayer
         if mcnt <= playerNum then
-            return
+            return false
         end
 
-        ---游戏开始
-        local timer = self._tim
-        timer:appendCall(0,function()
-            self:gameStart()
-        end)
-
+        return true
     ---准备
     elseif opt == senum.ready() then
 
@@ -496,73 +514,20 @@ function competition:checkStart()
         local cnt = 0
         for _,player in pairs(lis) do
             if not player:getStatusBy(sts) then
-                return
+                return false
             end
         end
 
-        ---游戏开始
-        local timer = self._tim
-        timer:appendCall(0,function()
-            self:gameStart()
-        end)
-    ---庄闲
-    elseif opt == senum.banker() then
-        ---检查庄家
-        local bSatisfy = false
-        for _,player in pairs(self._mapPlayer) do
-            if player:ifBanker() then
-                bSatisfy = true
-                break
-            end
-        end
-        if not bSatisfy then
-            return
-        end
-        ---检查闲家
-        local bSatisfy = false
-        for _,player in pairs(self._mapPlayer) do
-            if not player:ifBanker() then
-                bSatisfy = true
-                break
-            end
-        end
-        if not bSatisfy then
-            return
-        end
+        return true
     end
 
-    --扩展开始检查
-    self:extendCheckStart()
-end
-
----检查开始
-function competition:extendCheckStart()
+    return false
 end
 
 ---游戏开始
 function competition:gameStart()
-    ---数据重置
-    self:dataReboot()
     ---初始缓存
     self:cacheStart()
-    ---扩展开始
-    self:extendStart() 
-end
-
----游戏结束
-function competition:gameClose()
-    ---检查开始
-    self:checkStart()
-    ---扩展结束
-    self:extendClose()
-end
-
----扩展开始
-function competition:extendStart()
-end
-
----扩展结束
-function competition:extendClose()
 end
 
 ---缓存开始
@@ -583,135 +548,6 @@ function competition:cacheStart()
         combatID    = self:getCombatID(),   --小局序号
         players     = players,              --玩家信息
     })
-end
-
-
----请求
----@param rid           userID          @玩家
----@param msg           messageInfo     @消息
----@return boolean,string|any
-function competition:message(rid,msg)
-    local player = self._mapPlayer[rid]
-    self:setCurPlayer(player)
-    self:messageBy(player,msg)
-end
-
----请求
----@param player        gamePlayer      @玩家
----@param msg           messageInfo     @消息
----@return boolean,string|any
-function competition:messageBy(player,msg)
-   
-end
-
-local copy1 = {nil}
----通知客户端-服务-私有的
----@param fd      socket        @服务地址
----@param name    string        @结构名字
----@param data    msgBody       @游戏数据
-local function ntfMsgToClient(fd,name,data)
-    local cmds = table.clear(copy1)
-    table.insert(cmds,senum.table())
-    wsnet.sendpbc(fd,name,cmds,data)
-end
-
-local copy1 = {nil}
----通知客户端-服务-私有的
----@param fds     socket[]      @服务地址
----@param name    string        @结构名字
----@param data    msgBody       @游戏数据
-local function ntfMsgToClients(fds,name,data)
-    local cmds = table.clear(copy1)
-    table.insert(cmds,senum.table())
-    wsnet.sendpbcs(fds,name,cmds,data)
-end
-
----通知客户端-玩家
----@param player  gamePlayer     @游戏玩家
----@param name    string         @结构名字
----@param cmd     senum          @消息命令
----@param data    msgBody    @游戏数据
-function competition:ntfMsgToPlayer(player,name,cmd,data)
-    ntfMsgToClient(player:fd(),name,cmd,data)
-end
-
----通知客户端-玩家-缓存
----@param player    gamePlayer     @游戏玩家
----@param name      string         @结构名字
----@param cmd       senum          @消息命令
----@param data      msgBody    @游戏数据
-function competition:ntfCacheMsgToPlayer(player,name,cmd,data)
-    self:ntfMsgToPlayer(player,name,cmd,data)
-    self._cac:dataPush({
-        msgName = name,
-        msgInfo = data,
-    })
-end
-
----通知客户端-玩家-缓存
----@param name      string              @结构名字
----@param cmd       senum               @消息命令
----@param data      msgBody         @游戏数据
----@param sees      message_see_info    @可见信息
-function competition:ntfCacheMsgToTable(name,data,sees)
-    self:ntfMsgToTable(name,data,sees)
-    self._cac:dataPush({
-        msgName = name,
-        msgInfo = table.copy_deep(data),
-        msgRoot = table.copy_deep(sees),
-    })
-end
-
-
-local copy1 = {nil}
-local copy2 = {nil}
----通知客户端-广播
----@param name    string            @服务地址
----@param data   msgBody            @游戏数据
----@param sees   message_see_info   @可见信息
-function competition:ntfMsgToTable(name,data,sees)
-    ---@type table<any,any>    @备份数据
-    local back = table.clear(copy1)
-    ---去除私有数据
-    if sees then
-        for _,field in ipairs(sees.fields) do
-            back[field] = table.delete(data,field)
-        end
-    end
-
-    --通知旁观玩家
-    local socs = table.clear(copy2)
-    for _,player in ipairs(self._mapPlayer) do
-        if not sees then
-            table.insert(socs,player:fd())
-        else
-            local seat = player:getSeatID()
-            if not table.exist(sees.chairs,seat) then
-                table.insert(socs,player:fd())
-            end
-        end
-    end
-    ---通知旁观玩家
-    ntfMsgToClients(socs,name,data)
-
-    ---隐私数据
-    if sees then
-        ---还原私有数据
-        socs = table.clear(copy2)
-        for _,field in ipairs(sees.fields) do
-            data[field] = back[field]
-        end
-
-        ---通知知情玩家
-        for seat,_ in ipairs(sees.chairs) do
-            --通知数据
-            local player = self._arrPlayer[seat]
-            table.insert(socs,player:fd())
-        end
-
-        ---通知知情玩家
-        ntfMsgToClients(socs,name,data)
-    end
 end
 
 return competition

@@ -12,22 +12,4 @@ local enum = class(gameEnum)
 function enum:ctor()
 end
 
----游戏开始
----@return senum 
-function enum.gameStart()
-    return "gameStart"
-end
-
----游戏下注
----@return senum 
-function enum.gameBetting()
-    return "gameBetting"
-end
-
----游戏结算
----@return senum 
-function enum.gameSettle()
-    return "gameBetting"
-end
-
 return enum

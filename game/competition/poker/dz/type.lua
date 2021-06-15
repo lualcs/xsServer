@@ -27,7 +27,7 @@ end
 function type:isZhaDan(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)
@@ -44,7 +44,7 @@ end
 function type:isHuLu(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)
@@ -62,7 +62,7 @@ end
 function type:isTongHua(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)
@@ -88,7 +88,7 @@ end
 function type:isShunZi(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)
@@ -129,7 +129,7 @@ end
 function type:isSanTiao(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)
@@ -147,7 +147,7 @@ end
 function type:isLiangDui(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)
@@ -165,7 +165,7 @@ end
 function type:isDuiZi(hands)
     ---德州桌子
     ---@type dzCompetition
-    local game = self._table
+    local game = self._competition
     local gongs = game:getGongPai()
     local cards = table.copy(gongs)
     table.push_list(cards,hands)

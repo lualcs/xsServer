@@ -20,12 +20,12 @@ local moduleCode = 10000
 
 ---构造函数
 ---@param mode integer      @开发模块
----@param slis serviceInf   @服务信息
-function ICode:ctor(mode,slis)
+---@param mogo service   @服务信息
+function ICode:ctor(mode,mogo)
     ---功能模块
     self._mode = mode * moduleCode
     ---服务信息
-    self._slis = slis
+    self._mogo = mogo
 end
 
 local i = regionCode
@@ -61,7 +61,7 @@ end
 ---错误码
 ---@param code integer @错误编号
 function ICode:err(code)
-    skynet.send(self._slis.mongo,"lua","writeError",code,debug.traceback())
+    skynet.send(self._mogo,"lua","writeError",code,debug.traceback())
     ---返回错误码
     return self:make(1,code)
 end

@@ -19,7 +19,7 @@ local logic = class(gameLogic)
 ---@param game.competition slotsCompetition
 function logic:ctor(gameCompetition)
     ---@type slotsCompetition
-    self._table = self._table
+    self._competition = self._competition
 end
 
 ---满线
@@ -169,19 +169,19 @@ end
 ---获取唯一配置
 ---@return slots_icon[]
 function logic:getSoleIcon()
-    return self._table:getSoleIcon()
+    return self._competition:getSoleIcon()
 end
 
 ---获取游戏布局
 ---@return slots_layout_info
 function logic:getLayoutInfo()
-    return self._table:getLayoutInfo()
+    return self._competition:getLayoutInfo()
 end
 
 ---获取使用权重
 ---@return slots_wight_info[]
 function logic:getRunIconWeithts()
-    return self._table:getRunIconWeithts()
+    return self._competition:getRunIconWeithts()
 end
 
 ---获取转轴权重
@@ -361,7 +361,7 @@ function logic:lineCheck(path,icons,path_index,left_right)
      ---@type table<leng,base>
      local line_bases = self:getLineBases()
      ---@type slotsHelper
-     local hlp = self._table._hlp
+     local hlp = self._competition._hlp
      ---@type score
      local lineBase = self:getLineBet()
     --定图标

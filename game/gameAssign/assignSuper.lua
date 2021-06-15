@@ -32,7 +32,7 @@ function assignSuper:ctor(service,clubID)
     self._clubID = clubID
     ---桌子列表
     ---@type mapping_tables @桌子隐射
-    self._tables = {nil}
+    self._competitions = {nil}
     ---玩家列表
     ---@type table<userID,service>
     self._mapPlayer = {nil}
@@ -67,7 +67,7 @@ end
 
 ---服务查询
 function assignSuper:serviceTable(tableID)
-    return self._tables[tableID]
+    return self._competitions[tableID]
 end
 
 ---巡查桌子
@@ -133,7 +133,7 @@ function assignSuper:createTable(gameID,custom)
     skynet.send(service,"lua","start",skynet.self(),gameID,custom)
 
     --桌子服务
-    self._tables[tableID] = service
+    self._competitions[tableID] = service
 end
 
 ---删除桌子

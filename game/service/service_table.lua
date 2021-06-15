@@ -44,8 +44,8 @@ function service.start(handle,gameID,custom)
     ---创建桌子
     local import = require(gameInfo.importCompetition)
     ---@type gameCompetition @游戏桌子
-    this._table = import.new(this,gameInfo,custom)
-    this._table:gameStart()
+    this._competition = import.new(this,gameInfo,custom)
+    this._competition:dataReboot()
     ---组播对象
     this.multicast()
 end
@@ -94,7 +94,7 @@ end
 
 skynet.start(function()
     skynet.info_func(function()
-        return this._table:getGameInfo()
+        return this._competition:getGameInfo()
     end)
     skynet.dispatch("lua",function(_,_,cmd,...)
         local f = this[cmd]
@@ -102,7 +102,7 @@ skynet.start(function()
         if f then
             pack = cs(f,...)
         else
-            local table = this._table
+            local table = this._competition
             local f = table[cmd]
             pack = cs(f,table,...)
         end

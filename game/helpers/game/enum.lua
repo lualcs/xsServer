@@ -15,6 +15,10 @@ local this = enum
 function enum:ctor()
 end
 
+---清除数据
+function enum:dataClear()
+end
+
 ---游戏单元
 ---@return senum
 function enum.unit()
@@ -155,12 +159,6 @@ end
 ---@return senum
 function enum.player()
     return "player"
-end
-
----空闲
----@return senum
-function enum.gameIdle()
-    return "gameIdle"
 end
 
 return enum

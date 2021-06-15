@@ -3,13 +3,15 @@
     auth:Caorl Luo
 ]]
 
+local pairs = pairs
 local ipairs = ipairs
+local debug = require("extend_debug")
 local table = require("extend_table")
 local class = require("class")
 local ranking  = require("ranking")
 local gameCompetition= require("game.competition")
 local senum = require("hundred.enum")
----@class hundredTable:gameCompetition
+---@class hundredCompetition:gameCompetition
 local competition = class(gameCompetition)
 local this = competition
 
@@ -26,7 +28,7 @@ function competition:ctor()
     self._arrBanker = {nil}
     ---请求上庄列表
     ---@type hundredPlayer[]
-    self._arrUpBanker = {nil}
+    self._arrWaitUpBanker = {nil}
     ---闲家下注信息
     ---@type table<seatID,hundredBetInf[]>
     self._mapBetInfo = {nil}
@@ -55,35 +57,64 @@ function competition:numBanker()
     return #self._arrBanker
 end
 
----上庄数量
+---等待上庄数量
 ---@return count
-function competition:numUpBanker()
-    return #self._arrUpBanker
+function competition:numWaitBanker()
+    return #self._arrWaitUpBanker
 end
 
 
 ---检查开始
+---@return boolean
 function competition:checkStart()
-    ---检查庄家数量
+    --检查状态
+    if not self._stu:ifIdle() then
+        return false
+    end
+
+    --检查庄家
     if self:numBanker() <= 0 then
-        return
+        return false
     end
 
-    self:super(this,"checkStart")
+    --检查闲家
+    for _,player in pairs(self._mapPlayer) do
+        if not player:ifBanker() then
+            return true
+        end
+    end
+
+    return false
 end
 
----请求
----@param player        gamePlayer      @玩家
----@param msg           messageInfo     @消息
----@return boolean,string|any
-function competition:messageBy(player,msg)
-    local cmd  = table.last(msg.cmds)
-    local info = msg.info
-    ---闲家下注
-    if cmd == senum.betting() then
-        self:tryBetting(player,info.area,info.score)
-    end
+----------------------------------------------------空闲状态--------------------------------------------------
+function competition:gameIdle()
 end
+
+
+----------------------------------------------------开始状态--------------------------------------------------
+function competition:gameStart()
+    self:dateClear()
+    ---上庄处理
+    while self:numBanker() < self:maxBanker() do
+        local list = self._arrWaitUpBanker
+        if table.empty(list) then
+            break
+        end
+        self:tryUpBanker(table.remove(list))
+    end
+
+    debug.error("开始状态")
+end
+
+----------------------------------------------------下注状态--------------------------------------------------
+function competition:gameBetting()
+end
+
+----------------------------------------------------结束状态--------------------------------------------------
+function competition:gameClose()
+end
+
 
 ---下注
 ---@param player    hundredPlayer      @玩家
@@ -166,33 +197,83 @@ end
 function competition:ifRepayment(area,score)
 end
 
----广播下注
----@param data xx 下注
-function competition:ntfBroadcastBet(data)
-    self:ntfMsgToTable("s2cHundredBetting",data)
-end
-
 ---申请上庄
 ---@param player hundredPlayer @申请玩家
 function competition:applyForUpBanker(player)
-    local list = self._arrUpBanker
-    table.insert(list,player)
+    ---游戏阶段
+    if not self._stu:ifIdle() then
+        self:tryWaitUpBanker(player)
+    ---庄家数量
+    elseif self:numBanker() >= self:maxBanker() then
+        self:tryWaitUpBanker(player)
+    else
+        self:tryUpBanker(player)
+    end
 end
 
----申请下庄
+---等待上庄
+---@param player hundredPlayer @玩家
+function competition:tryWaitUpBanker(player)
+
+    ---是否闲家
+    if player:ifBanker() then
+        return false
+    end
+
+    ---重复操作
+    if player:ifWaitDownBanker() then
+        return false
+    end
+
+    local list = self._arrWaitUpBanker
+    table.insert(list,player)
+
+    return true
+end
+
+---取消等待上庄
+---@param player hundredPlayer @玩家
+function competition:tryCancelWaitUpBanker(player)
+    ---检查状态
+    if not player:ifWaitDownBanker() then
+        return false
+    end
+
+    ---遍历检查
+    local list = self._arrWaitUpBanker
+    for index,waitPlayer in ipairs(list) do
+        if waitPlayer == player then
+            table.remove(list,index)
+            return true
+        end
+    end
+    return false
+end
+
+---尝试上庄
 ---@param player hundredPlayer @申请玩家
 ---@return boolean,string|nil
 function competition:tryUpBanker(player)
-    
+
+    ---闲家身份
     if player:ifBanker() then
-        return self._code:err()
+        return false
     end
 
-    local list = self._arrUpBanker
-    if table.exist(list,player) then
-        return false,"hadAppliedFor"
+    ---等待上庄
+    if player:ifWaitDownBanker() then
+        return false
     end
-    
+
+    if not self._stu:ifIdle() then
+        ---等待上庄
+        self:tryWaitUpBanker(player)
+    else
+        ---上庄成功
+        table.insert(self._arrBanker,player)
+        player:falseWaitDownBanker()
+    end
+
     return true
 end
 
@@ -200,19 +281,17 @@ end
 ---@param player hundredPlayer @申请玩家
 function competition:tryDownBanker(player)
 
-    ---上庄列表
-    local list = self._arrUpBanker
-    for index,upBanker in ipairs(self._arrUpBanker) do
-        if player == upBanker then
-            table.remove(list,index)
-            return true
-        end
+    ---是否庄家
+    if not player:ifBanker() then
+        return false
     end
 
     ---状态检查
+    ---@type hundredStatus
     local status = self:getGameStatus()
     if senum.gameIdle() ~= status then
-        return
+        player:trueWaitDownBanker()
+        return true
     end
 
     ---庄家列表
@@ -220,9 +299,11 @@ function competition:tryDownBanker(player)
     for index,banker in ipairs(list) do
         if player == banker then
             table.remove(list,index)
-            return true
+            break
         end
     end 
+
+    return true
 end
 
 return competition
