@@ -40,6 +40,25 @@ function math.itext(num)
     return fromat("%.f万",num / 10000)
 end
 
+---计算组合
+---@param n integer @集合
+---@param m integer @组合
+function math.CNM(n,m)
+	if m < n - m then
+		m = n - m;
+    end
+
+	local ans = 1;
+	for i = m + 1,n do
+		ans = ans * i
+    end
+
+	for i = 1,n - m do
+		ans = ans // i;
+    end
+	return ans;
+end
+
 return math
 
 --[[
