@@ -209,7 +209,7 @@ end
 ---@param rid           userID          @用户角色
 ---@param assign        service         @分配服务
 ---@param competition   service         @游戏桌台
-function gatemanager:liveTable(rid,assign,competition)
+function gatemanager:enterCompetition(rid,assign,competition)
     ---数据保存
     local client = self._clientMap[rid]
     client.assign = assign

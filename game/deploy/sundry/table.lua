@@ -29,3 +29,8 @@ return {
 ---@field mini  count   @最少桌子
 ---@field maxi  count   @最多桌子
 ---@field idle  count   @保持空闲
+
+---@class tableManagerData
+---@field count  count   @桌子数量
+---@field idler  count   @保持空闲
+

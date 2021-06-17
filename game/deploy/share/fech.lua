@@ -37,7 +37,7 @@ return {
     service_sole = {
         "sundry.code",
     },
-    service_table = {
+    service_competition = {
         "games.gameInfos",
         "sundry.code",
         "sundry.robot",

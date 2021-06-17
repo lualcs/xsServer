@@ -36,7 +36,7 @@ local function customDecode(customs)
 end
 
 ---构造函数
----@param service       service_table    @桌子服务
+---@param service       service_competition    @桌子服务
 ---@param gameInfo      gameInfo         @游戏信息
 ---@param gameCustom    gameCustom       @定制规则
 function competition:ctor(service,gameInfo,gameCustom)
@@ -98,7 +98,7 @@ function competition:ctor(service,gameInfo,gameCustom)
     ---@type competitionMongo
     self._sql = mongo.new(services.mysql)      
     --桌子服务
-    ---@type service_table              
+    ---@type service_competition              
     self._service = service
     ---游戏信息
     ---@type gameInfo                   
@@ -164,19 +164,17 @@ function competition:dataReboot()
 end
 
 ---清除数据
-function competition:dateClear()
+function competition:dataClear()
 
-    self._gor:dateClear()   --算法
-    self._hlp:dateClear()   --工具
-    self._sys:dateClear()   --策略
-    self._ocp:dateClear()   --占位
-    self._cac:dateClear()   --缓存
-    self._tye:dateClear()   --类型
-    self._stu:dateClear()   --状态
+    self._gor:dataClear()   --算法
+    self._hlp:dataClear()   --工具
+    self._sys:dataClear()   --策略
+    self._tye:dataClear()   --类型
+    self._stu:dataClear()   --状态
 
      ---清空玩家
      for _,player in ipairs(self._mapPlayer) do
-        player:dateClear()
+        player:dataClear()
     end
 
     ---初始玩家
@@ -449,18 +447,35 @@ function competition:playerEnter(playerInfo)
     ---通知分配
     local handle = self:getAssignID()
     local origin = skynet.self()
-    skynet.send(handle,"lua","liveTable",playerInfo.userID,origin)
+    skynet.send(handle,"lua","enterCompetition",playerInfo.userID,origin)
 end
 
 ---玩家退出
 ---@param player gamePlayer @游戏玩家
 function competition:playerLeave(player)
+
+    --人数检查
+    local occpyobj = self:getOccpyObj()
+    occpyobj:repay(player:getSeatID())
+    ---玩家映射
+    local map = self:getMapPlayer()
+    map[player:getUserID()] = false
+ 
+    local lis = self:getArrPlayer()
+    lis[player:getSeatID()] = false
+
     ---数量统计
     if player:ifRobot() then
         self._robotCount = self._robotCount - 1
     else
         self._realCount = self._realCount - 1
     end
+
+     ---通知分配
+     local handle = self:getAssignID()
+     local origin = skynet.self()
+     skynet.send(handle,"lua","leaveCompetition",player:getUserID(),origin)
+
 end
 
 ---剔除玩家

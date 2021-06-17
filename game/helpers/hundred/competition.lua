@@ -94,7 +94,7 @@ end
 
 ----------------------------------------------------开始状态--------------------------------------------------
 function competition:gameStart()
-    self:dateClear()
+    self:dataClear()
     ---上庄处理
     while self:numBanker() < self:maxBanker() do
         local list = self._arrWaitUpBanker
@@ -109,10 +109,12 @@ end
 
 ----------------------------------------------------下注状态--------------------------------------------------
 function competition:gameBetting()
+    debug.error("下注状态")
 end
 
 ----------------------------------------------------结束状态--------------------------------------------------
 function competition:gameClose()
+    debug.error("结束状态")
 end
 
 
@@ -274,6 +276,7 @@ function competition:tryUpBanker(player)
         player:falseWaitDownBanker()
     end
 
+    debug.error("尝试上庄")
     return true
 end
 

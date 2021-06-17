@@ -16,7 +16,7 @@ local senum = require("game.enum")
 local cs = queue()
 
 
----@class service_table @桌子服务
+---@class service_competition @桌子服务
 local service = {}
 local this = service
 
@@ -65,7 +65,7 @@ function service.shareFech()
           _G.package.loaded[name] = deploy
       end
       --独属部分
-      for _,name in ipairs(shareFech.service_table) do
+      for _,name in ipairs(shareFech.service_competition) do
         local deploy = sharedata.query(name)
         _G.package.loaded[name] = deploy
     end

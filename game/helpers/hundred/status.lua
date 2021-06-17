@@ -27,7 +27,6 @@ end
 ---游戏流程切换
 ---@param status senum @游戏状态 
 function status:enterGameProcess(status)
-    print("enterGameProcess:",status)
     ---空闲状态
     if status == self:idle() then
         self:enterIdle()
@@ -40,6 +39,8 @@ function status:enterGameProcess(status)
     ---结束状态
     elseif status == self:close() then
         self:enterClose()
+    else
+        assert(false,"error hundred status")
     end
 
     ---状态结束

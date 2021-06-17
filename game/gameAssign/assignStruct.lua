@@ -4,6 +4,6 @@
     auth:Caorl Luo
 ]]
 
----@alias service_table_address number
+---@alias service_competition_address number
 
----@alias mapping_tables table<tableID,service_table_address>
+---@alias mapping_tables table<tableID,service_competition_address>

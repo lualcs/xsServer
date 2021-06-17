@@ -32,7 +32,13 @@ function assignSuper:ctor(service,clubID)
     self._clubID = clubID
     ---桌子列表
     ---@type mapping_tables @桌子隐射
-    self._competitions = {nil}
+    self._competitionServices = {nil}
+    ---桌子信息
+    ---@type mapping_tables @桌子隐射
+    self._competitionGameIdens = {nil}
+    ---管理信息
+    ---@type tableManagerData
+    self._competitionMangerLis = {nil}
     ---玩家列表
     ---@type table<userID,service>
     self._mapPlayer = {nil}
@@ -66,8 +72,17 @@ function assignSuper:assignClass()
 end
 
 ---服务查询
-function assignSuper:serviceTable(tableID)
-    return self._competitions[tableID]
+---@param competitionID competitionID @比赛
+---@return gameID
+function assignSuper:serviceTable(competitionID)
+    return self._competitionServices[competitionID]
+end
+
+---对于游戏
+---@param competitionID competitionID @比赛
+---@return gameID
+function assignSuper:gameIdenTable(competitionID)
+    return self._competitionGameIdens[competitionID]
 end
 
 ---巡查桌子
@@ -92,7 +107,7 @@ function assignSuper:inspectTable()
         ---创建游戏桌子
         for _,mgr in ipairs(cfgs) do
             for i = 1,mgr.mini do
-                self:createTable(gameID,{
+                self:createCompetition(gameID,{
                     custom = {
                         {---单元分数
                             field = senum.unit(),
@@ -110,7 +125,7 @@ end
 ---创建桌子
 ---@param gameID        gameID      @游戏ID
 ---@param custom        gameCustom  @房间定制
-function assignSuper:createTable(gameID,custom)
+function assignSuper:createCompetition(gameID,custom)
     
     local gameInfo = gameInfos[gameID]
     --检查数据
@@ -123,34 +138,67 @@ function assignSuper:createTable(gameID,custom)
         debug.error(format("[%s] [gameID:%s] 2",self:assignClass(),tostring(gameID)))
         return
     end
-    --桌子ID
+    --比赛ID
     local address  = skynet.queryservice("service_sole")
-    local tableID  = skynet.call(address,"lua","getTableID")
+    local competitionID  = skynet.call(address,"lua","getcompetitionID")
     local historID = skynet.call(address,"lua","getHistorID")
     custom.historID = historID
     --桌子服务
-    local service = skynet.newservice("service_table")
+    local service = skynet.newservice("service_competition")
     skynet.send(service,"lua","start",skynet.self(),gameID,custom)
 
-    --桌子服务
-    self._competitions[tableID] = service
+    ---桌子服务
+    self._competitionServices[competitionID] = service
+    ---对应游戏
+    self._competitionGameIdens[competitionID] = gameID
+    ---分配管理
+    ---@type tableManagerData
+    local mangerData = self._competitionMangerLis[gameID] or {
+        count = 0,
+        idler = 0,
+    }
+    mangerData.count = mangerData.count + 1
+    mangerData.idler = mangerData.idler + 1
+    self._competitionMangerLis[gameID] = mangerData
 end
 
 ---删除桌子
-function assignSuper:deleteTable()
+---@param competitionID competitionID @比赛ID
+function assignSuper:deleteCompetition(competitionID)
+    ---比赛ID
+    local address = skynet.queryservice("service_sole")
+    skynet.send(address,"lua","getcompetitionID")
+    local gameID = self._competitionServices[competitionID]
+    ---桌子服务
+    self._competitionServices[competitionID] = nil
+    ---对应游戏
+    self._competitionGameIdens[competitionID] = nil
+
+    ---分配管理
+    ---@type tableManagerData
+    local mangerData = self._competitionMangerLis[gameID]
+    mangerData.count = mangerData.count - 1
 end
 
----请求
----@param fd  socket      @套接字
----@param msg messageInfo @数据
-function assignSuper:message(fd,msg)
-    local cmd = table.remove(msg.cmds)
-    local inf = msg.info
-    ---进桌
-    if cmd == senum.enter() then
-    ---离卓
-    elseif cmd == senum.leave() then
-    end
+
+---比赛空闲
+---@param competitionID     competitionID   @比赛ID
+function assignSuper:idlerCompetition(competitionID)
+    local gameID = self._competitionServices[competitionID]
+    ---分配管理
+    ---@type tableManagerData
+    local mangerData = self._competitionMangerLis[gameID]
+    mangerData.idler = mangerData.idler + 1
+end
+
+---比赛工作
+---@param competitionID     competitionID   @比赛ID
+function assignSuper:workCompetition(competitionID)
+    local gameID = self._competitionServices[competitionID]
+    ---分配管理
+    ---@type tableManagerData
+    local mangerData = self._competitionMangerLis[gameID]
+    mangerData.idler = mangerData.idler - 1
 end
 
 ---邀请进桌
@@ -163,14 +211,28 @@ end
 ---成功入桌子
 ---@param rid           userID          @用户角色
 ---@param competition   service         @游戏桌台
-function assignSuper:liveTable(rid,competition)
+function assignSuper:enterCompetition(rid,competition)
     ---数据保存
     local mapPlayer = self._mapPlayer
     mapPlayer[rid] = competition
     local services = self:getServices()
     ---通知入口
     local handle = skynet.self()
-    skynet.send(services.gates,"lua","liveTable",rid,handle,competition)
+    skynet.send(services.gates,"lua","enterCompetition",rid,handle,competition)
+end
+
+
+---请求
+---@param fd  socket      @套接字
+---@param msg messageInfo @数据
+function assignSuper:message(fd,msg)
+    local cmd = table.remove(msg.cmds)
+    local inf = msg.info
+    ---进桌
+    if cmd == senum.enter() then
+    ---离卓
+    elseif cmd == senum.leave() then
+    end
 end
 
 return assignSuper

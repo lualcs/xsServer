@@ -79,7 +79,7 @@ end
 
 
 ---申请
-function service.getTableID()
+function service.getcompetitionID()
     if table.empty(idlels) then
         --没有空闲
         local soleID = autoID
@@ -94,7 +94,7 @@ function service.getTableID()
 end
 
 ---回收
-function service.setTableID(ID)
+function service.setcompetitionID(ID)
     idlels[ID] = true
 end
 

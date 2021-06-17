@@ -27,15 +27,15 @@
 05/23/21 03:33:53.08 [:01000015] LAUNCH snlua service_gate
 05/23/21 03:33:53.11 [:01000016] LAUNCH snlua service_robot
 05/23/21 03:33:53.13 [:01000017] LAUNCH snlua service_assign
-05/23/21 03:33:53.13 [:01000018] LAUNCH snlua service_table
-05/23/21 03:33:53.15 [:01000019] LAUNCH snlua service_table
-05/23/21 03:33:53.16 [:0100001a] LAUNCH snlua service_table
-05/23/21 03:33:53.16 [:0100001b] LAUNCH snlua service_table
-05/23/21 03:33:53.18 [:0100001c] LAUNCH snlua service_table
-05/23/21 03:33:53.18 [:0100001d] LAUNCH snlua service_table
-05/23/21 03:33:53.20 [:0100001e] LAUNCH snlua service_table
-05/23/21 03:33:53.20 [:0100001f] LAUNCH snlua service_table
-05/23/21 03:33:53.21 [:01000020] LAUNCH snlua service_table
+05/23/21 03:33:53.13 [:01000018] LAUNCH snlua service_competition
+05/23/21 03:33:53.15 [:01000019] LAUNCH snlua service_competition
+05/23/21 03:33:53.16 [:0100001a] LAUNCH snlua service_competition
+05/23/21 03:33:53.16 [:0100001b] LAUNCH snlua service_competition
+05/23/21 03:33:53.18 [:0100001c] LAUNCH snlua service_competition
+05/23/21 03:33:53.18 [:0100001d] LAUNCH snlua service_competition
+05/23/21 03:33:53.20 [:0100001e] LAUNCH snlua service_competition
+05/23/21 03:33:53.20 [:0100001f] LAUNCH snlua service_competition
+05/23/21 03:33:53.21 [:01000020] LAUNCH snlua service_competition
 05/23/21 03:33:53.23 [:01000021] LAUNCH snlua service_assign
 05/23/21 03:33:53.24 [:01000022] LAUNCH snlua service_assign
 05/23/21 03:33:54.63 [:01000002] KILL self

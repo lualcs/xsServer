@@ -37,7 +37,7 @@ function system:autoUpBanker(player)
     local bankerCount = game:numBanker()
     local waitCount = game:numWaitBanker()
     local wantCount = math.min(1,game:maxBanker() // 2)
-    if wantCount >= (bankerCount + waitCount) then
+    if wantCount < (bankerCount + waitCount) then
         return
     end
 
@@ -55,11 +55,13 @@ function system:autoUpBanker(player)
         end
         return
     else
+        
         ---概率
-        if math.radom(1,100) > 20 then
+        if math.random(1,100) > 20 then
             return
         end
     end
+
     game:tryUpBanker(player)
 end
 
