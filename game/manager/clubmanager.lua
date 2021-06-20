@@ -269,14 +269,13 @@ function clubmanager:c2s_clubClubs(fd,rid,msg)
     ---数据信息
     ---@type memberData[]
     local list = self._memberUser[rid]
-    debug.error(list)
     for _,member in ipairs(list) do
         local club = self._clubHash[member.clubID]
         local admin = self._adminHash[member.agentID]
         table.insert(clubs,{
             club = {
-                clubID      = club.clubID,
-                clubName    = club.name,
+                clubID          = club.clubID,
+                clubName        = club.name,
                 personality     = club.personality,
                 logoGs          = club.logoGs,
                 memberNumber    = #club.memberList,
@@ -290,8 +289,8 @@ function clubmanager:c2s_clubClubs(fd,rid,msg)
                 combatNumber    = admin.combatNumber,
             },
             member = {
-                memberID = member.memberID,
-                office = member.office
+                memberID        = member.memberID,
+                office          = member.office
             },
         })
     end
