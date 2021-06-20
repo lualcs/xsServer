@@ -42,7 +42,7 @@ end
 
 ---桌子
 ---@return gameCompetition
-function logic:getgame.competition()
+function logic:competition()
     return self._competition
 end
 

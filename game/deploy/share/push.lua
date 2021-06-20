@@ -23,7 +23,7 @@ return {
     --游戏信息数据
     "games.gameInfos",
     --管理桌子数据
-    "sundry.table",
+    "sundry.competition",
     --管理机器数据
     "sundry.robot",
     --平台比例数据

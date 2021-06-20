@@ -24,7 +24,9 @@ function timer:ctor(interval)
     ---@type heap                   @最大堆
     self._heap   = heap.new()
     ---@type table<string,timeID>   @定时器
-    self._list   = {}
+    self._names   = {nil}
+    ---@type table<timeID,string>   @定时器
+    self._idens   = {nil}
     ---@type reusable               @回收库
     self._store  = reusable.new()
     ---@type function               @轮询函数
@@ -35,14 +37,21 @@ function timer:ctor(interval)
     skynet.timeout(0,self._poling)
 end
 
----重置
+---重置数据
 function timer:dataReboot()
+    self:dataClear()
+end
+
+---清除数据
+function timer:dataClear()
     ---@type integer                @暂停时间
     self._pauset = nil
     ---@type heap                   @清空数据
     self._heap:clear()
     ---@type table<string,timeID>   @定时器
-    self._list   = {}
+    table.clear(self._names)
+    ---@type table<timeID,string>   @定时器
+    table.clear(self._idens)
 end
 
 ---获取时间
@@ -93,13 +102,17 @@ end
 ---@param  call     function    @回调函数
 ---@return timeID @定时ID
 function timer:appendBy(name,elapse,count,call,...)
-    local list = self._list
-    local iden = list[name]
+    local idens = self._idens
+    local names = self._names
+    local iden = names[name]
     local indx,node = self._heap:search(iden)
     if node then
         self._heap:delete(indx)
+        idens[iden] = nil
     end
-    list[name] = self:append(elapse,count,call,...)
+    iden = self:append(elapse,count,call,...)
+    names[name] = iden
+    idens[iden] = name
 end
 
 ---无限回调
@@ -113,28 +126,36 @@ end
 
 
 ---删除定时
----@param timeID    timeID      @定时器ID
-function timer:remove(timeID)
+---@param iden    timeID      @定时器ID
+function timer:remove(iden)
     local heap  = self._heap
     local list  = heap._list
     local store = self._store
+    local idens = self._idens
+    local names = self._names
     for index,node in ipairs(list) do
-        if node.auto == timeID then
-            --每次只能删除一个
+        if node.auto == iden then
+            --删除数据
             heap:delete(index)
             store:set(node.data)
+            --删除数据
+            local name = idens[iden]
+            if name then
+                names[name] = nil
+                idens[iden] = nil
+            end
             break
         end
     end
 end
 
 ---剩余时间
----@param timeID timeID
-function timer:remaining(timeID)
+---@param iden timeID
+function timer:remaining(iden)
     local now = self._pauset or self:time()
     for _,item in ipairs(self._heap._list) do
-        if item.auto == timeID then
-            return now - item.ticks
+        if item.auto == iden then
+            return item.ticks - now
         end
     end
     return 0
@@ -143,8 +164,8 @@ end
 ---剩余时间
 ---@param name name @定时名字
 function timer:remainingBy(name)
-    local list = self._list
-    local iden = list[name]
+    local names = self._names
+    local iden = names[name]
    return self:remaining(iden)
 end
 
@@ -241,6 +262,17 @@ function timer:execute()
         ---回收数据
         local store = self._store
         store:set(item)
+
+        --删除数据
+        local names = self._names
+        local idens = self._idens
+        local iden = rede.auto
+        local name = idens[iden]
+        if name then
+            names[name] = nil
+            idens[iden] = nil
+        end
+
     else
         ---下次触发
         rede.ticks = iend + item.elapse

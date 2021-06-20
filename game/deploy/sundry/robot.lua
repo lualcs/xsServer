@@ -103,10 +103,12 @@ return {
             ---最小浮动 
             floatMini = 1,
             ---最大浮动
-            floatMini = 1,
+            floatMaxi = 1,
+            ---浮动总和
+            floatSumm = 1,
             ---权重列表
             lis = {
-                {weight=10000,asset = 10},
+                {weight=10000,asset = 1000},
             },
         },
         ---机器入场
@@ -124,6 +126,76 @@ return {
                 max = 30*60*1000,
             }
         },
+        ---下注策略
+        strategy = {
+            sumProbability = 100,
+            betProbability = 50,
+            betAreas = {
+                sum = 100,
+                lis = {
+                    {
+                        weight = 45,
+                        areas = {
+                            "dragon",
+                        },
+                    },
+                    {
+                        weight = 45,
+                        areas = {
+                            "tiger",
+                        },
+                    },
+                    {
+                        weight = 6,
+                        areas = {
+                            "peace",
+                        },
+                    },
+                    {
+                        weight = 2,
+                        areas = {
+                            "dragon",
+                            "peace",
+                        },
+                    },
+                    {
+                        weight = 2,
+                        areas = {
+                            "tiger",
+                            "peace",
+                        },
+                    },
+                },
+                
+            },
+            sum = 2000,
+            lis = {
+                ---100%
+                {weight = 400,ratio = 1.0},
+                ---50%
+                {weight = 200,ratio = 0.5},
+                ---20%
+                {weight = 200,ratio = 0.2},
+                ---10%
+                {weight = 200,ratio = 0.1},
+                ---筹码
+                {weight = 100,chips = {1},},
+                ---筹码
+                {weight = 100,chips = {2},},
+                ---筹码
+                {weight = 100,chips = {3},},
+                ---筹码
+                {weight = 100,chips = {4},},
+                ---筹码
+                {weight = 100,chips = {5},},
+                ---随机多个筹码
+                {weight = 500,rands = {
+                    min=1,
+                    max=10,
+                    lis={1,2,2,3,3,3,4,4,4,4,5,5,5,5,5}
+                },},
+            },
+        },
     }
 }
 
@@ -138,6 +210,7 @@ return {
 ---@class enterCarry          @入场携带
 ---@field floatMini number    @携带浮动
 ---@field floatMaxi number    @携带浮动
+---@field floatSumm number    @浮动比例
 ---@field sum integer         @总和权重 
 ---@field lis assetwt[]       @携带权重
 

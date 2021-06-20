@@ -15,7 +15,7 @@ local debug = require("extend_debug")
 local timer = require("timer")
 local senum = require("game.enum")
 local gameInfos = require("games.gameInfos")
-local tableDeploy = require("sundry.table")
+local competitionDeploy = require("sundry.competition")
 
 ---@class assignSuper @游戏调配基类
 local assignSuper = class()
@@ -37,7 +37,7 @@ function assignSuper:ctor(service,clubID)
     ---@type mapping_tables @桌子隐射
     self._competitionGameIdens = {nil}
     ---管理信息
-    ---@type tableManagerData
+    ---@type competitionManagerData
     self._competitionMangerLis = {nil}
     ---玩家列表
     ---@type table<userID,service>
@@ -90,8 +90,8 @@ function assignSuper:inspectTable()
     ---桌子管理
     ---@type senum
     local assign = self:assignClass()
-    ---@type tableManagerUnit[]
-    local cfgs = tableDeploy[assign]
+    ---@type competitionManagerUnit[]
+    local cfgs = competitionDeploy[assign]
     for gameID,game in pairs(gameInfos) do
 
         ---过滤未开启游戏
@@ -108,7 +108,7 @@ function assignSuper:inspectTable()
         for _,mgr in ipairs(cfgs) do
             for i = 1,mgr.mini do
                 self:createCompetition(gameID,{
-                    custom = {
+                    customs = {
                         {---单元分数
                             field = senum.unit(),
                             value = mgr.unit
@@ -152,7 +152,7 @@ function assignSuper:createCompetition(gameID,custom)
     ---对应游戏
     self._competitionGameIdens[competitionID] = gameID
     ---分配管理
-    ---@type tableManagerData
+    ---@type competitionManagerData
     local mangerData = self._competitionMangerLis[gameID] or {
         count = 0,
         idler = 0,
@@ -175,7 +175,7 @@ function assignSuper:deleteCompetition(competitionID)
     self._competitionGameIdens[competitionID] = nil
 
     ---分配管理
-    ---@type tableManagerData
+    ---@type competitionManagerData
     local mangerData = self._competitionMangerLis[gameID]
     mangerData.count = mangerData.count - 1
 end
@@ -186,7 +186,7 @@ end
 function assignSuper:idlerCompetition(competitionID)
     local gameID = self._competitionServices[competitionID]
     ---分配管理
-    ---@type tableManagerData
+    ---@type competitionManagerData
     local mangerData = self._competitionMangerLis[gameID]
     mangerData.idler = mangerData.idler + 1
 end
@@ -196,7 +196,7 @@ end
 function assignSuper:workCompetition(competitionID)
     local gameID = self._competitionServices[competitionID]
     ---分配管理
-    ---@type tableManagerData
+    ---@type competitionManagerData
     local mangerData = self._competitionMangerLis[gameID]
     mangerData.idler = mangerData.idler - 1
 end
@@ -215,10 +215,21 @@ function assignSuper:enterCompetition(rid,competition)
     ---数据保存
     local mapPlayer = self._mapPlayer
     mapPlayer[rid] = competition
-    local services = self:getServices()
     ---通知入口
     local handle = skynet.self()
+    local services = self:getServices()
     skynet.send(services.gates,"lua","enterCompetition",rid,handle,competition)
+end
+
+---离开比赛
+---@param rid           userID          @用户角色
+---@param competition   service         @游戏桌台
+function assignSuper:leaveCompetition(rid,competition)
+    local mapPlayer = self._mapPlayer
+    mapPlayer[rid] = nil
+    local handle = skynet.self()
+    local services = self:getServices()
+    skynet.send(services.gates,"lua","leaveCompetition",rid,handle,competition)
 end
 
 

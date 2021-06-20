@@ -117,10 +117,12 @@ end
 ---@param   auto    number      @唯一标识
 ---@return  index,heapNode      @节点
 function heap:search(auto)
-    local list = self._list
-    for index,node in ipairs(list) do
-        if auto == node.auto then
-            return index,node
+    if auto then
+        local list = self._list
+        for index,node in ipairs(list) do
+            if auto == node.auto then
+                return index,node
+            end
         end
     end
 end

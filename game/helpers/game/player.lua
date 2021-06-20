@@ -4,8 +4,10 @@
     auth:Caorl Luo
 ]]
 
+local ipairs = ipairs
 local tostring = tostring
 local format = string.format
+local math = require("extend_math")
 local debug = require("extend_debug")
 local table = require("extend_table")
 local class = require("class")
@@ -126,6 +128,7 @@ end
 function player:getCoin()
     return self._player.coin
 end
+
 
 ---设置金币
 ---@param coin score

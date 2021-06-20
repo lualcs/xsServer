@@ -108,7 +108,7 @@ end
 
 ---桌子消息
 ---@return senum
-function managerEnum.table()
+function managerEnum.competition()
     return "table"
 end
 
@@ -136,10 +136,10 @@ function managerEnum.chat()
     return "chat"
 end
 
----桌子
+---比赛
 ---@return senum
-function managerEnum.table()
-    return "table"
+function managerEnum.competition()
+    return "competition"
 end
 
 ---参与

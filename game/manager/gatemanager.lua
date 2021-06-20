@@ -158,7 +158,7 @@ function gatemanager:message(fd,msg)
     elseif senum.assignKilling() == cmd then
         --竞技游戏游戏
         skynet.send(services.single,"lua","message",fd,client.role.rid,msg)
-    elseif senum.table() == cmd then
+    elseif senum.competition() == cmd then
         --桌子消息
         local svc = client.tablesvc
         if svc then
@@ -213,7 +213,18 @@ function gatemanager:enterCompetition(rid,assign,competition)
     ---数据保存
     local client = self._clientMap[rid]
     client.assign = assign
-    client.table = competition
+    client.competition = competition
+end
+
+---成功入桌子
+---@param rid           userID          @用户角色
+---@param assign        service         @分配服务
+---@param competition   service         @游戏桌台
+function gatemanager:leaveCompetition(rid,assign,competition)
+    ---数据保存
+    local client = self._clientMap[rid]
+    client.assign = nil
+    client.competition = nil
 end
 
 return gatemanager

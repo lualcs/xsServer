@@ -53,4 +53,4 @@
 
 ---@class loginClient:client @网关用户信息
 ---@field assign        service         @所在分配
----@field table         service         @所在桌子
+---@field competition   service         @所在桌子

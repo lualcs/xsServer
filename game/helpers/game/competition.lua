@@ -58,28 +58,28 @@ function competition:ctor(service,gameInfo,gameCustom)
     ---游戏配置
     ---@type table                     
     self._cfg = require(gameInfo.importDeploy)
-    local import = require(gameInfo.importAlgor)
     ---游戏算法
+    local import = require(gameInfo.importAlgor)
     ---@type gameAlgor                  
     self._gor = import.new(self)
-    local import = require(gameInfo.importHelper)
     ---游戏辅助
+    local import = require(gameInfo.importHelper)
     ---@type gameHelper                 
     self._hlp = import.new(self)
-    local import = require(gameInfo.importSystem)
     ---游戏策略
+    local import = require(gameInfo.importSystem)
     ---@type gameSystem                 
     self._sys = import.new(self)
-    local import = require(gameInfo.importLogic)
     ---游戏逻辑
+    local import = require(gameInfo.importLogic)
     ---@type gameLogic                 
     self._lgc = import.new(self)
-    local import = require(gameInfo.importType)
     ---类型判断
+    local import = require(gameInfo.importType)
     ---@type gameType                    
     self._tye = import.new(self)
-    local import = require(gameInfo.importStatus)
     ---游戏状态
+    local import = require(gameInfo.importStatus)
     ---@type gameStatus                 
     self._stu = import.new(self)
     ---游戏占位
@@ -161,6 +161,7 @@ function competition:dataReboot()
     self._cac:dataReboot()   --缓存
     self._tye:dataReboot()   --类型
     self._stu:dataReboot()   --状态
+    self._lgc:dataReboot()   --逻辑
 end
 
 ---清除数据
@@ -171,6 +172,7 @@ function competition:dataClear()
     self._sys:dataClear()   --策略
     self._tye:dataClear()   --类型
     self._stu:dataClear()   --状态
+    self._lgc:dataClear()   --逻辑
 
      ---清空玩家
      for _,player in ipairs(self._mapPlayer) do
@@ -312,7 +314,7 @@ end
 
 ---机器配置
 ---@return robotEnter
-function competition:gaetRobotCfg()
+function competition:getRobotCfg()
     return self._gmrobots
 end
 
@@ -430,12 +432,16 @@ function competition:playerEnter(playerInfo)
     local player = object.new(self,playerInfo)
     player:dataReboot()
 
-    --玩家保存
+    ---玩家入桌子
     local map = self:getMapPlayer()
     map[playerInfo.userID] = player
 
+    ---玩家上座
     local lis = self:getArrPlayer()
     lis[playerInfo.seatID] = player
+
+    ---机器携带
+    self:robotCarry(player)
 
     ---数量统计
     if player:ifRobot() then
@@ -443,6 +449,8 @@ function competition:playerEnter(playerInfo)
     else
         self._realCount = self._realCount + 1
     end
+
+    
 
     ---通知分配
     local handle = self:getAssignID()
@@ -562,6 +570,30 @@ function competition:cacheStart()
         combatID    = self:getCombatID(),   --小局序号
         players     = players,              --玩家信息
     })
+end
+
+---机器携带
+---@param player gamePlayer @机器人
+function competition:robotCarry(player)
+    ---机器身份
+    if not player:ifRobot() then
+        return
+    end
+
+    local unit = self:getUnit()
+    ---携带配置
+    ---@type enterCarry
+    local cfg = self._gmrobots.carry
+    local weight = math.random(1,cfg.sum)
+    for _,awgt in ipairs(cfg.lis) do
+        weight = weight - awgt.weight
+        if weight <= 0 then
+            local asset = awgt.asset*unit
+            local float = math.random(cfg.floatMini,cfg.floatMaxi)
+            player:setCoin(asset*float/cfg.floatSumm//1)
+            break
+        end
+    end
 end
 
 return competition

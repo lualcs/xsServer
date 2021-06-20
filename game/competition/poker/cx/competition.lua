@@ -6,7 +6,7 @@
 
 local table = table
 local class = require("class")
-local cxEnum = require("poker.enum")
+local senum = require("cx.enum")
 local pokerCompetition = require("poker.competition")
 ---@class cx_table:pokerCompetition
 local cx_table = class(pokerCompetition)
@@ -26,16 +26,16 @@ function cx_table:message(player,msg)
         return ok,error
     end
     local cmd = table.last(msg.cmds) 
-    if cmd == cx_enum.cx_qp() then
+    if cmd == senum.cx_qp() then
         ok,error = self:gameCastCard(player)--弃牌
-    elseif cmd == cx_enum.cx_gz() then
+    elseif cmd == senum.cx_gz() then
         ok,error = self:gameWithBet(player)--跟注
-    elseif cmd == cx_enum.cx_jz() then
+    elseif cmd == senum.cx_jz() then
         local index = msg.details
         ok,error = self:gameRefuelBet(player,index)--加注
-    elseif cmd == cx_enum.cx_sh() then
+    elseif cmd == senum.cx_sh() then
         ok,error = self:gameShowhandBet(player)--梭哈
-    elseif cmd == cx_enum.cx_gdd() then
+    elseif cmd == senum.cx_gdd() then
         ok,error = self:gameTraceBet(player)--跟到底
     end
     return ok,error
@@ -45,13 +45,13 @@ end
 ---@param player       cx_player
 function cx_table:gameSeeCard(player)
     --本局玩家
-    local senum = cx_enum.join()
+    local senum = senum.join()
     if not player:getStatusBy(senum) then
         return false,"看牌:非参与者"
     end
 
     --重复检查
-    local senum = cx_enum.cx_kp()
+    local senum = senum.cx_kp()
     if player:getStatusBy(senum) then
         return false,"看牌:重复请求"
     end
@@ -67,13 +67,13 @@ end
 ---@param player       cx_player
 function cx_table:gameCastCard(player)
     --本局玩家
-    local senum = cx_enum.join()
+    local senum = senum.join()
     if not player:getStatusBy(senum) then
         return false,"弃牌:非参与者"
     end
 
     --重复检查
-    local senum = cx_enum.cx_qp()
+    local senum = senum.cx_qp()
     if player:getStatusBy(senum) then
         return false,"弃牌:重复请求"
     end
@@ -89,7 +89,7 @@ end
 ---@param player       cx_player
 function cx_table:gameWithBet(player)
     --本局玩家
-    local senum = cx_enum.join()
+    local senum = senum.join()
     if not player:getStatusBy(senum) then
         return false,"跟注:非参与者"
     end

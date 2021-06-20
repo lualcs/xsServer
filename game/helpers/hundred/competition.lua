@@ -5,12 +5,12 @@
 
 local pairs = pairs
 local ipairs = ipairs
+local class = require("class")
+local ranking = require("ranking")
 local debug = require("extend_debug")
 local table = require("extend_table")
-local class = require("class")
-local ranking  = require("ranking")
-local gameCompetition= require("game.competition")
 local senum = require("hundred.enum")
+local gameCompetition= require("game.competition")
 ---@class hundredCompetition:gameCompetition
 local competition = class(gameCompetition)
 local this = competition
@@ -29,12 +29,27 @@ function competition:ctor()
     ---请求上庄列表
     ---@type hundredPlayer[]
     self._arrWaitUpBanker = {nil}
-    ---闲家下注信息
-    ---@type table<seatID,hundredBetInf[]>
-    self._mapBetInfo = {nil}
+    ---上庄分成比例
+    ---@type number[]
+    self._arrBankerRights = {nil}
+    ---下注区域类型
+    ---@type senum[]
+    self._arrAreaEnum = {nil}
     ---区域下注信息
     ---@type table<senum,score>
     self._mapAreaBet = {nil}
+    ---闲家下注信息
+    ---@type table<userID,hundredBetInf[]>
+    self._mapBetInfo = {nil}
+    ---现价下注列表
+    ---@type hundredBetInf[]
+    self._arrBetInfo = {nil}
+    ---闲家下注统计
+    ---@type table<userID,score>
+    self._mapBetCoin = {nil}
+    ---闲家收益统计
+    ---@type table<userID,score>
+    self._mapBetBonus= {nil}
 end
 
 ---最少庄家
@@ -61,6 +76,24 @@ end
 ---@return count
 function competition:numWaitBanker()
     return #self._arrWaitUpBanker
+end
+
+---获取区域赔率
+---@param area senum @区域
+---@return count
+function competition:getAreaOdds(area)
+    local cfg = self:getGameConf()
+    return cfg.areas[area].odds
+end
+
+---清除数据
+function competition:dataClear()
+    self:super(this,"dataClear")
+    table.clear(self._mapAreaBet)
+    table.clear(self._mapBetInfo)
+    table.clear(self._arrBetInfo)
+    table.clear(self._mapBetBonus)
+    table.clear(self._arrBankerRights)
 end
 
 
@@ -95,6 +128,23 @@ end
 ----------------------------------------------------开始状态--------------------------------------------------
 function competition:gameStart()
     self:dataClear()
+    self:gameBanker()
+end
+
+----------------------------------------------------下注状态--------------------------------------------------
+function competition:gameBetting()
+end
+
+----------------------------------------------------结束状态--------------------------------------------------
+function competition:gameClose()
+    ---游戏结算
+    self:gameResults()
+    ---游戏结算
+    self:gameSettlement()
+end
+
+----------------------------------------------------上庄处理--------------------------------------------------
+function competition:gameBanker()
     ---上庄处理
     while self:numBanker() < self:maxBanker() do
         local list = self._arrWaitUpBanker
@@ -103,37 +153,50 @@ function competition:gameStart()
         end
         self:tryUpBanker(table.remove(list))
     end
-
-    debug.error("开始状态")
+    ---统计携带
+    local totalAssetNumber = 0
+    for _,player in ipairs(self._arrBanker) do
+        local assetNumber = player:getCoin()
+        totalAssetNumber = totalAssetNumber + assetNumber
+    end
+    ---分配比例
+    for index,player in ipairs(self._arrBanker) do
+        local assetNumber = player:getCoin()
+        self._arrBankerRights[index] = assetNumber / totalAssetNumber;
+    end
 end
 
-----------------------------------------------------下注状态--------------------------------------------------
-function competition:gameBetting()
-    debug.error("下注状态")
+----------------------------------------------------游戏结果--------------------------------------------------
+function competition:gameResults()
 end
 
-----------------------------------------------------结束状态--------------------------------------------------
-function competition:gameClose()
-    debug.error("结束状态")
+----------------------------------------------------游戏结算--------------------------------------------------
+function competition:gameSettlement()
 end
-
 
 ---下注
 ---@param player    hundredPlayer      @玩家
 ---@param score     score              @下注
 function competition:tryBetting(player,area,score)
     ---游戏状态
-    if self:getGameStatus() ~= senum.statusBet() then
+    if not self._stu:ifBetting() then
         return
     end
 
     ---携带分数
-    if player:getCoin() < score then
+    local rid = player:getUserID()
+    local playerBetCoin = self._mapBetCoin[rid] or 0
+    if player:getCoin() < score + playerBetCoin then
         return 
     end
 
     ---玩家身份
     if player:ifBanker() then
+        return
+    end
+
+    ---下注区域
+    if table.exist(self._arrAreaEnum,area) then
         return
     end
 
@@ -152,17 +215,22 @@ function competition:tryBetting(player,area,score)
     self._mapAreaBet[area] = areaBet + score
 
     ---玩家下注
-    local seat = player:getSeatID()
     ---@type hundredBetInf
-    local infos = self._mapBetInfo[seat] or {nil}
+    local infos = self._mapBetInfo[rid] or {nil}
     local betting = {
+        rid = rid,
         area = area,
-        bets = score,
+        coin = score,
     }
 
     ---信息保存
     table.insert(infos,betting)
-    self._mapBetInfo[seat] = infos
+    self._mapBetInfo[rid] = infos
+    local arrBets = self._arrBetInfo
+    table.insert(arrBets,betting)
+
+    ---统计下注
+    self._mapBetCoin[rid] = playerBetCoin + score
 
     ---广播下注
     self:ntfBroadcastBet(betting)
@@ -276,7 +344,6 @@ function competition:tryUpBanker(player)
         player:falseWaitDownBanker()
     end
 
-    debug.error("尝试上庄")
     return true
 end
 

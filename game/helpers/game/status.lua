@@ -71,14 +71,7 @@ end
 ---获取剩余时间
 ---@return number @毫秒
 function status:leftMilliscond()
-    ---获取总共时间
-    local statusTimer = self:totalMilliscond()
-    ---获取当前时间
-    local currentTimer = os.getmillisecond()
-    ---获取切换时间
-    local switchTimer = self._switchTimer
-
-    return statusTimer - (currentTimer - switchTimer)
+    return self._tim:remainingBy("leaveGameProcess")
 end
 
 ---获取总共时间
@@ -87,9 +80,19 @@ function status:totalMilliscond()
     
 end
 
+---获取剩余时间
+---@return number @毫秒
+function status:leaveMilliscond()
+    return self._tim:leftMilliscond("leaveGameProcess")
+end
+
 ---游戏流程切换
 ---@param status senum @游戏状态 
 function status:enterGameProcess(status)
+    ---状态结束
+    self._tim:appendBy("leaveGameProcess",self:totalMilliscond(),1,function()
+        self:leaveGameProcess(status)
+    end)
 end
 
 ---状态结束切换

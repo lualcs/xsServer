@@ -1,4 +1,4 @@
-local senum = require("poker.cx.cx_enum")
+local senum = require("cx.enum")
 ---扯旋配置
 ---@type cxConfig
 return {

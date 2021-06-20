@@ -3,10 +3,10 @@
     auth:Carol Luo
 ]]
 
----@class hundredBetInf     @下注配置
+---@class hundredBetInf     @下注分数
+---@field rid   userID      @下注用户
 ---@field area  senum       @下注区域
----@field maxi  base        @最大下注
----@field odds  base        @区域赔率
+---@field coin  score       @下注分数
 
 ---@class hundredBankerInf     @庄家配置
 ---@field doorsill  base       @上庄门槛
@@ -18,3 +18,12 @@
 ---@field areas     table<senum,hundredAreaInf> @下注区域
 ---@field jettons   double[]                    @下注筹码
 ---@field bankers   hundredBankerInf            @庄家配置
+
+
+
+---@class hundredRobotBetting
+---@field area  senum       @下注区域
+---@field chip  score       @下注分数
+
+---@class hundredRobotstrategy @龙虎下注策略
+---@field bets hundredRobotBetting[] @下注信息

@@ -27,6 +27,7 @@ end
 ---游戏流程切换
 ---@param status senum @游戏状态 
 function status:enterGameProcess(status)
+    self:super(this,"enterGameProcess",status)
     ---空闲状态
     if status == self:idle() then
         self:enterIdle()
@@ -39,20 +40,13 @@ function status:enterGameProcess(status)
     ---结束状态
     elseif status == self:close() then
         self:enterClose()
-    else
-        assert(false,"error hundred status")
     end
-
-    ---状态结束
-    self._tim:appendBy("leaveGameProcess",self:totalMilliscond(),1,function()
-        self:leaveGameProcess(status)
-    end)
 end
-
 
 ---状态结束切换
 ---@param status senum @游戏状态 
 function status:leaveGameProcess(status)
+    self:super(this,"leaveGameProcess",status)
     ---空闲状态
     if status == self:idle() then
         self:leaveIdle()
@@ -69,25 +63,6 @@ function status:leaveGameProcess(status)
 end
 
 
----获取总共时间
----@return number @毫秒
-function status:totalMilliscond()
-    local status = self:getGameStatus()
-    ---空闲状态
-    if status == self:idle() then
-        return self:idleTimer()
-    ---开局状态
-    elseif status == self:start() then
-        return self:startTimer()
-    ---下注状态
-    elseif status == self:betting() then
-        return self:bettingTimer()
-    ---下注状态
-    elseif status == self:close() then
-        return self:closeTimer()
-    end
-end
-
 ----------------------------------------------------空闲状态--------------------------------------------------
 
 ---空闲状态
@@ -100,12 +75,6 @@ end
 ---@return senum
 function status:ifIdle()
     return self:idle() == self:getGameStatus()
-end
-
----空闲时间
----@return integer
-function status:idleTimer()
-    return 1000
 end
 
 ---设置空闲
@@ -135,12 +104,6 @@ end
 ---@return senum
 function status:start()
     return "start"
-end
-
----空闲时间
----@return integer
-function status:startTimer()
-    return 5000
 end
 
 ---开局状态
@@ -173,12 +136,6 @@ function status:betting()
     return "betting"
 end
 
----空闲时间
----@return integer
-function status:bettingTimer()
-    return 10000
-end
-
 ---是否下注
 ---@return senum
 function status:ifBetting()
@@ -194,6 +151,8 @@ end
 ---进入下注
 function status:enterBetting()
     self._competition:gameBetting()
+    self._sys:robotStrategy()
+    self._sys:robotBetting()
 end
 
 ---离开下注
@@ -207,12 +166,6 @@ end
 ---@return senum
 function status:close()
     return "close"
-end
-
----空闲时间
----@return integer
-function status:closeTimer()
-    return 5000
 end
 
 ---是否结束

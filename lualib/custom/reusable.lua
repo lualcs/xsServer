@@ -16,15 +16,14 @@ local this = reusable
 
 ---构造
 function reusable:ctor()
-    self.list = {nil}
+    self._list = {nil}
 end
 
 
 ---申请
 ---@return table
 function reusable:get()
-    local list = self.list
-    local defa = self.defa
+    local list = self._list
     if next(list) then
         return table.remove(list)
     else
@@ -36,7 +35,7 @@ end
 ---回收
 ---@param t table @表
 function reusable:set(t)
-    table.insert(self.list,t)
+    table.insert(self._list,t)
 end
 
 return reusable

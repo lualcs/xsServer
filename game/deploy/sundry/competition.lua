@@ -5,7 +5,7 @@
 
 local senum = require("managerEnum")
 
----@type table<senum,tableManagerUnit[]>
+---@type table<senum,competitionManagerUnit[]>
 return {
     ---竞技场
     [senum.assignKilling()] = {
@@ -24,13 +24,13 @@ return {
     }
 }
 
----@class tableManagerUnit
+---@class competitionManagerUnit
 ---@field unit  score   @单元分数
 ---@field mini  count   @最少桌子
 ---@field maxi  count   @最多桌子
 ---@field idle  count   @保持空闲
 
----@class tableManagerData
+---@class competitionManagerData
 ---@field count  count   @桌子数量
 ---@field idler  count   @保持空闲
 

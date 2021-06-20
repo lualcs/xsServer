@@ -20,7 +20,7 @@ local copy1 = {nil}
 ---@param data    msgBody       @游戏数据
 local function ntfMsgToClient(fd,name,data)
     local cmds = table.clear(copy1)
-    table.insert(cmds,senum.table())
+    table.insert(cmds,senum.competition())
     proto.sendpbc(fd,name,cmds,data)
 end
 
@@ -31,7 +31,7 @@ local copy1 = {nil}
 ---@param data    msgBody       @游戏数据
 local function ntfMsgToClients(fds,name,data)
     local cmds = table.clear(copy1)
-    table.insert(cmds,senum.table())
+    table.insert(cmds,senum.competition())
     proto.sendpbcs(fds,name,cmds,data)
 end
 

@@ -9,14 +9,9 @@ local class = require("class")
 local error = class()
 local this = error
 
----构造
+---构造函数
 function error:ctor()
 end
 
----已经是庄家
----@return integer
-function error.alreadyBanker()
-    return 1
-end
 
 return error

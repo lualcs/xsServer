@@ -1,6 +1,5 @@
 --[[
-    file:dz_struct.lua 
-    desc:扯旋
+    desc:德州扑克
     auth:Caorl Luo
 ]]
 
