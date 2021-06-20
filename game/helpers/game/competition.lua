@@ -16,7 +16,7 @@ local caches = require("caches")
 local skynet = require("skynet")
 local timer  = require("timer")
 local class = require("class")
-local ICode = require("ICode")
+local code = require("code")
 local senum = require("game.enum")
 local mongo = require("game.mongo")
 local mysql = require("game.mysql")
@@ -42,7 +42,7 @@ end
 function competition:ctor(service,gameInfo,gameCustom)
     local services = service._services
     ---代码编号
-    self._code = ICode.new(gameInfo.gameID + 10000,services.mongo)
+    self._code = code.new(gameInfo.gameID + 10000,services.mongo)
     ---游戏规则
     ---@type table<string,any>
     self._def = customDecode(gameCustom.customs)
