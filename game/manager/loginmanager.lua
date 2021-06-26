@@ -75,7 +75,7 @@ function loginmanager:message(fd,msg)
 end
 
 ---重复登录
----@param fd scoket   @套接字
+---@param fd  scoket    @套接字
 function loginmanager:repeatLogin(fd)
     return self._sockets[fd]
 end
@@ -84,6 +84,17 @@ end
 ---@param fd        scoket             @套接字
 ---@param ret       s2c_loginResult    @登录结果
 function loginmanager:loginSuccessfully(fd,ret)
+
+    local services = self:getServices()
+    ---覆盖登录
+    local later = self._sockets[fd]
+    if later then
+        if later.online then
+            skynet.send(services.gates,"lua","shutdown",fd)
+        end
+    end
+
+    ---客户端
     ---@type client 
     local client = {
         fd = fd,
@@ -94,7 +105,6 @@ function loginmanager:loginSuccessfully(fd,ret)
     self._clients[ret.rid] = ret
 
     ---通知gate服务
-    local services = self:getServices()
     skynet.send(services.gates,"lua","loginSuccessfully",client)
     ---通知client
     ---返回结果
