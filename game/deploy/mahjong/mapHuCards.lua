@@ -1,5 +1,4 @@
 --[[
-    file:mapMeets.lua 
     desc:胡牌映射
     auth:Carol Luo
 ]]

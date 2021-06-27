@@ -1,5 +1,4 @@
 --[[
-    file:mapViews.lua 
     desc:麻将视图
     auth:Carol Luo
 ]]

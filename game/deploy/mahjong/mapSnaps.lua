@@ -1,6 +1,5 @@
 
 --[[
-    file:mapSnaps.lua 
     desc:成扑隐射
     auth:Carol Luo
 ]]

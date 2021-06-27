@@ -1,5 +1,4 @@
 --[[
-    file:mapNames.lua 
     desc:名字隐射
     auth:Carol Luo
 ]]
