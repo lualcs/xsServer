@@ -1,5 +1,4 @@
 --[[
-    file:pokerAlgor.lua 
     desc:扑克算法
     auth:Caorl Luo
 ]]
@@ -29,7 +28,7 @@ function algor:getMethod(hands,repe)
         singles = as,
         doubles = bs,
         triples = cs,
-        fourles = ds,
+        tetrads = ds,
     }
     local maps = table.arrToHas(hands)
     for v,c in ipairs(maps) do

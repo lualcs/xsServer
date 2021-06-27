@@ -1,5 +1,4 @@
 --[[
-    file:pokerStruct.lua 
     desc:扑克结构
     auth:Carol Luo
 ]]
@@ -18,4 +17,4 @@
 ---@field singles   pkCard[]    @单牌
 ---@field doubles   pkCard[]    @对牌
 ---@field triples   pkCard[]    @三条
----@field fourles   pkCard[]    @铁支
+---@field tetrads   pkCard[]    @铁支

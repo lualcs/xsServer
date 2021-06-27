@@ -1,15 +1,15 @@
 --[[
-    desc:扑克比赛
+    desc:扑克桌子
     auth:Carol Luo
 ]]
 
 local ipairs = ipairs
 local table = require("extend_table")
 local class = require("class")
-local pokerEnum = require("poker.enum")
-local gameCompetition= require("game.competition")
----@class pokerCompetition:gameCompetition
-local competition = class(gameCompetition)
+local bullEnum = require("bullEnum")
+local pokerCompetition = require("poker.competition")
+---@class bullTable:pokerCompetition
+local competition = class(pokerCompetition)
 local this = competition
 
 

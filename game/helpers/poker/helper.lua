@@ -1,5 +1,5 @@
 --[[
-    desc:只做最简单的功能
+    desc:扑克辅助
     auth:Carol Luo
 ]]
 
@@ -56,7 +56,7 @@ end
 ---@param color cardColor @花色
 ---@param value cardValue @牌值
 ---@return cardPoker
-function helper.getCardPoker(color,value)
+function helper.makePoker(color,value)
     return (color<<4) + value
 end
 

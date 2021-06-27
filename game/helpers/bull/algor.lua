@@ -16,34 +16,34 @@ local this = algor
 function algor:ctor()
     ---是否支持坎斗
     ---@type boolean
-    self._bfTriplet = false
+    self._bullFightTriplet = false
     ---是否支持顺斗
-    self._bfStraight = false
+    self._bullFightStraight = false
 end
 
 
 ---坎斗
 ---@return boolean
 function algor:setSupportTriplet(support)
-    self._bfTriplet = support
+    self._bullFightTriplet = support
 end
 
 ---顺斗
 ---@return boolean
 function algor:setSupportTriplet(support)
-    self._bfTriplet = support
+    self._bullFightStraight = support
 end
 
 ---坎斗
 ---@return boolean
 function algor:getSupportTriplet()
-    return self._bfTriplet
+    return self._bullFightTriplet
 end
 
 ---顺斗
 ---@return boolean
 function algor:getSupportStraight()
-    return self._bfStraight
+    return self._bullFightStraight
 end
 
 local copy1 = {nil}

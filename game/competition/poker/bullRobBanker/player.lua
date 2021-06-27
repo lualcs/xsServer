@@ -10,9 +10,6 @@ local player = class(pokerPlayer)
 
 ---构造
 function player:ctor()
-    ---@type pkCard[]       @玩家手牌
-    self._hands = {nil}
 end
-
 
 return player

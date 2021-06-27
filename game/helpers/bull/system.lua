@@ -1,5 +1,4 @@
 --[[
-    file:bullSystem.lua 
     desc:扑克策略
     auth:Carol Luo
 ]]

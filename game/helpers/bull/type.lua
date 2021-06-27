@@ -1,6 +1,5 @@
 --[[
-    file:bullType.lua 
-    desc:类型判断  所有牌型：  3162510
+    desc:类型判断
     auth:Carol Luo
 ]]
 
@@ -21,12 +20,12 @@ end
 ---获取牌型
 ---@param hands pkCard[] @手牌 
 ---@return senum
-function type:getCardType(hands)
+function type:getPokerType(hands)
     ---@type bullAlgor
     local algor = self._gor
     ---@type bullMethod
     local analy = algor:getMethod(hands,true)
-     --双王牛
+     --对王牛
     if self:asBullDoubleKing(hands,analy) then
         return bullEnum.bullDoubleKing()
     --五炸牛
@@ -100,12 +99,12 @@ function type:asBullFiveBomb(hands,analy)
 
     if 1 == #lzs then
         --普通炸弹
-        if not table.empty(analy.fourles) then
+        if not table.empty(analy.tetrads) then
             return true
         end
     elseif 5 == #lzs then
         --癞子炸弹
-        if not table.empty(analy.fourles) then
+        if not table.empty(analy.tetrads) then
             return true
         end 
     end
@@ -118,7 +117,7 @@ end
 ---@return boolean 
 function type:bullBomb(hands,analy)
     local lzs = analy.lzs
-    if not table.empty(analy.fourles) then
+    if not table.empty(analy.tetrads) then
         return true
     elseif not table.empty(analy.triples) then
         if not table.empty(analy.lzs) then

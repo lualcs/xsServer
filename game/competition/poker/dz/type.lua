@@ -35,7 +35,7 @@ function type:isZhaDan(hands)
     ---@type dz_algor
     local algor = self._gor
     local method = algor:getMethod(cards)
-    return not table.empty(method.fourles)
+    return not table.empty(method.tetrads)
 end
 
 ---葫芦

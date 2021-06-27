@@ -1,13 +1,14 @@
 --[[
+    file:bullSystem.lua 
     desc:扑克策略
     auth:Carol Luo
 ]]
 
 local class = require("class")
-local gameSystem = require("game.system")
+local pokerSystem = require("poker.system")
 
----@class pokerSystem
-local system = class(gameSystem)
+---@class bullSystem
+local system = class(pokerSystem)
 
 ---构造 
 function system:ctor()

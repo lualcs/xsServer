@@ -17,7 +17,7 @@ end
 ---获取牌型
 ---@param hands pkCard[] @手牌 
 ---@return senum
-function type:getCardType(hands)
+function type:getPokerType(hands)
     local len = #hands
 end
 

@@ -4,9 +4,9 @@
 ]]
 
 local class = require("class")
-local gameEnum = require("game.enum")
----@class pokerEnum:gameEnum
-local enum = class(gameEnum)
+local pokerEnum = require("poker.enum")
+---@class bullEnum:pokerEnum
+local enum = class(pokerEnum)
 local this = enum
 
 ---构造
