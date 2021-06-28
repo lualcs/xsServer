@@ -327,7 +327,7 @@ function type:ifStraight(hands,layout)
     local special = copy2
     local needlzi = 0
     local index = 1
-    for _,value in ipairs(cards) do
+    for _,value in ipairs(special) do
         if value ~= special[index] then
             if needlzi >= #laizis then
                 return false
