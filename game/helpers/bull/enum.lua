@@ -98,6 +98,12 @@ function enum.straight()
     return "straight"
 end
 
+---一条龙
+---@return senum
+function enum.aDragon()
+    return "aDragon"
+end
+
 ---葫芦牛
 ---@return senum
 function enum.calabash()
@@ -142,8 +148,8 @@ end
 
 ---小王牛
 ---@return senum
-function enum.samllKing ()
-    return "samllKing"
+function enum.leastKing ()
+    return "leastKing"
 end
 
 ---大王牛

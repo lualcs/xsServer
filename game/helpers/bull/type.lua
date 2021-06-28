@@ -3,6 +3,7 @@
     auth:Carol Luo
 ]]
 
+local math = math
 local pairs = pairs
 local ipairs = ipairs
 local class = require("class")
@@ -50,6 +51,9 @@ function type:getPokerType(hands)
     elseif self:ifStraightFlush(hands,layout) then
         algor:cardSort(hands,true)
         return bullEnum.straightFlush()
+    elseif self:ifDragon() then
+        algor:cardSort(hands,true)
+        return bullEnum.aDragon()
     ---炸弹牛
     elseif self:ifBomb(hands,layout) then
         algor:cardSort(hands,true)
@@ -72,13 +76,17 @@ function type:getPokerType(hands)
     ---顺子牛
     elseif self:ifStraight(hands,layout) then
         algor:cardSort(hands,true)
-    return bullEnum.straight()
+        return bullEnum.straight()
+    ---天牌牛
+    elseif self:ifHeavenCard(hands,layout) then
+        algor:cardSort(hands,true)
+        return bullEnum.straight()
     ---大王牛
     elseif self:ifLargeKing(hands,layout) then
         return bullEnum.largeKing()
     ---小王牛
-    elseif self:ifSmallKing(hands,layout) then
-        return bullEnum.smallKing()
+    elseif self:ifLeastKing(hands,layout) then
+        return bullEnum.leastKing()
     else
         local point = algor:getCattleWho(hands)
         if point == 10 then
@@ -159,12 +167,12 @@ function type:ifMythCattle(hands,layout)
     return true
 end
 
----天地对王牛
----@param hands  pkCard[] @手牌数据
----@param fixed  pkCard[] @必含扑克
----@param layout pokerLayout @分析数据
+---天王牛-地王牛-对王牛
+---@param hands  pkCard[]       @手牌数据
+---@param layout pokerLayout    @分析数据
+---@param fixed  pkCard[]       @必含扑克
 ---@return boolean 
-function type:ifWhoForKing(hands,layout,fixed)
+function type:ifWhoMatchKing(hands,layout,fixed)
     ---癞子列表
     ---@type pkCard[]
     local laizis = layout.laizis
@@ -175,10 +183,10 @@ function type:ifWhoForKing(hands,layout,fixed)
 
     ---牛牛辅助
     ---@type bullHelper
-    local help = self._hlp
+    local helper = self._hlp
     ---斗牛判断
-    local cards = help.getFilters(hands,fixed)
-    if not help:ifFightBull(cards) then
+    local cards = helper.getFilters(hands,fixed)
+    if not helper:ifFightBull(cards) then
         return false
     end
 
@@ -191,7 +199,7 @@ local fixedCards = {0x4f,0x5f}
 ---@param layout pokerLayout @分析数据
 ---@return boolean 
 function type:ifSkyKing(hands,layout)
-    return self:ifWhoForKing(hands,layout,fixedCards)
+    return self:ifWhoMatchKing(hands,layout,fixedCards)
 end
 
 local fixedCards = {0x4e,0x5f}
@@ -200,7 +208,7 @@ local fixedCards = {0x4e,0x5f}
 ---@param layout pokerLayout @分析数据
 ---@return boolean 
 function type:ifSkyKing(hands,layout)
-    return self:ifWhoForKing(hands,layout,fixedCards)
+    return self:ifWhoMatchKing(hands,layout,fixedCards)
 end
 
 local fixedCards = {0x4e,0x4f,0x5f}
@@ -209,7 +217,75 @@ local fixedCards = {0x4e,0x4f,0x5f}
 ---@param layout pokerLayout @分析数据
 ---@return boolean 
 function type:ifPairKing(hands,layout)
-    return self:ifWhoForKing(hands,layout,fixedCards)
+    return self:ifWhoMatchKing(hands,layout,fixedCards)
+end
+
+local copy1 = {nil}
+---大王牛-小王牛
+---@param hands  pkCard[] @手牌数据
+---@param poker  pkCard   @必含扑克
+---@param layout pokerLayout @分析数据
+---@return boolean 
+function type:ifWhoSingleKing(hands,layout,poker)
+    ---癞子列表
+    ---@type pkCard[]
+    local laizis = layout.laizis
+    ---检查对王
+    if not table.exist(laizis,poker) then
+        return false
+    end
+
+    ---三个癞子
+    if #laizis >= 3 then
+        return true
+    end
+
+    local pokers = layout.pokers
+    ---牛牛辅助
+    ---@type bullHelper
+    local helper = self._hlp
+
+    ---找一个10点
+    for _,card in ipairs(pokers) do
+        if 10 == helper.getValueForCount(card) then
+            if #laizis >= 2 then
+                return true
+            else
+                local donts = table.clear(copy1)
+                table.insert(donts,poker)
+                table.insert(donts,card)
+                ---斗牛判断
+                local cards = helper.getFilters(hands,donts)
+                return helper:ifFightBull(cards) 
+            end
+        end
+    end
+    
+    return false
+end
+
+---小王牛
+---@param hands pkCard[] @手牌数据
+---@param layout pokerLayout @分析数据
+---@return boolean 
+function type:ifLeastKing(hands,layout)
+    return self:ifWhoSingleKing(hands,layout,0x4e)
+end
+
+---大王牛
+---@param hands pkCard[] @手牌数据
+---@param layout pokerLayout @分析数据
+---@return boolean 
+function type:ifLargeKing(hands,layout)
+    return self:ifWhoSingleKing(hands,layout,0x4f)
+end
+
+---天牌牛
+---@param hands pkCard[] @手牌数据
+---@param layout pokerLayout @分析数据
+---@return boolean 
+function type:ifHeavenCard(hands,layout)
+    return self:ifWhoSingleKing(hands,layout,0x5f)
 end
 
 ---五炸牛
@@ -261,8 +337,8 @@ end
 function type:ifFiveLittle(hands,layout)
     ---@type bullHelper
     local helpe = self._hlp
-    local total = #(layout.lzs)
-    for _,card in ipairs(layout.sps) do
+    local total = #(layout.laizis)
+    for _,card in ipairs(layout.pokers) do
         local value = helpe.getValue(card)
         if value >= 5 then
             total = total + value
@@ -276,29 +352,41 @@ function type:ifFiveLittle(hands,layout)
     return true
 end
 
-
+local copy1 = {nil}
 ---一条龙
 ---@param hands pkCard[] @手牌数据
 ---@param layout pokerLayout @分析数据
 ---@return boolean 
-function type:asA2345(hands,layout)
-    if not self:ifStraight(hands,layout) then
-        return false
-    end
-    ---牛牛帮助
+function type:ifDragon(hands,layout)
+    ---牛牛算法
     ---@type bullHelper
-    ---单牌检查
-    local help = self._hlp
-    for _,card in ipairs(layout.sps) do
-        if help.getValue(card) > 5 then
-            return false
+    local helper = self._hlp
+    ---牛牛算法
+    ---@type bullAlgor
+    local algor = self._gor
+    local cards = table.clear(copy1)
+    for _,card in ipairs(hands) do
+        if not algor:ifRuffian(card) then
+            ---牌值检查
+            local value = helper.getValue(card)
+            if value < 1 or value > 5 then
+                return false
+            end
+
+            ---数量检查
+            local count = cards[value] or 0
+            cards[value] = count + 1
+            if count >= 1 then
+                return false
+            end
         end
     end
+
     return true
 end
 
 local copy1 = {nil}
-local copy2 = {0X1,0xa,0xb,0xc,0xd}
+local copy2 = {[0X1]=1,[0xa]=1,[0xb]=1,[0xc]=1,[0xd]=1}
 ---顺子牛
 ---@param hands pkCard[] @手牌数据
 ---@param layout pokerLayout @分析数据
@@ -306,40 +394,49 @@ local copy2 = {0X1,0xa,0xb,0xc,0xd}
 function type:ifStraight(hands,layout)
     ---癞子列表
     local laizis = layout.laizis
-    
     ---牛牛算法
     ---@type bullHelper
-    local help = self._hlp
+    local helper = self._hlp
     ---牛牛算法
     ---@type bullAlgor
     local algor = self._gor
     local cards = table.clear(copy1)
+    local leastValue = 0
+    local leastCount = 0
     for _,card in ipairs(hands) do
         if not algor:ifRuffian(card) then
-            local value = help.getValue(card)
-            table.insert(cards,value)
-        end
-    end
-
-    ---排序
-    table.sort(cards)
-    ---A10JQK
-    local special = copy2
-    local needlzi = 0
-    local index = 1
-    for _,value in ipairs(special) do
-        if value ~= special[index] then
-            if needlzi >= #laizis then
+            local value = helper.getValue(card)
+            local count = cards[value] or 0
+            cards[value] = count + 1
+            if count >= 1 then
                 return false
-            else
-                index = index + 1 
             end
+            leastValue = math.min(leastValue,value)
+            leastCount = leastCount + 1
         end
-        index = index + 1
     end
 
+    ---AK顺子检查
+    local akCards = copy2
+    local akCheck = true
+    for k,v in ipairs(cards) do
+        if akCards[k] ~= v then
+            akCheck = false
+            break
+        end
+    end
+    if akCheck then
+        return true
+    end
 
-    return true
+    ---顺子检查
+    for i = leastValue,leastValue + 4 do
+        if cards[i] then
+            leastCount = leastCount - 1
+        end
+    end
+
+    return 0 == leastCount
 end
 
 ---同花牛
@@ -348,7 +445,7 @@ end
 ---@return boolean 
 function type:ifFlush(hands,layout)
     local hlp = self._hlp
-    local sps = layout.sps
+    local sps = layout.pokers
     for i,card in ipairs(sps) do
         local n = i + 1
         if sps[n] then
@@ -376,65 +473,16 @@ end
 ---@return boolean 
 function type:ifFiveFlower(hands,layout)
     ---@type bullHelper
-    local hlp = self._hlp
-    local sps = layout.sps
-    for i,card in ipairs(sps) do
+    local helper = self._hlp
+    local pokers = layout.pokers
+    for i,card in ipairs(pokers) do
         local n = i + 1
-        if sps[n] then
-            if hlp:getValue(card) <= 10 then
+        if pokers[n] then
+            if helper.getValue(card) <= 10 then
                 return false
             end
         end
     end
-    return true
-end
-
-
----小王牛
----@param hands pkCard[] @手牌数据
----@param layout pokerLayout @分析数据
----@return boolean 
-function type:ifSmallKing(hands,layout)
-    
-    if not table.exist(layout.lzs,0x4e) then
-        return false
-    end
-
-    if table.arrElementtCount(layout.lzs) >= 2 then
-        return true
-    end
-
-    ---@type bullAlgor
-    local algor = self._gor
-    local point = algor:getCattleWho(hands)
-    if 10 ~= point then
-        return false
-    end
-    
-    return true
-end
-
----大王牛
----@param hands pkCard[] @手牌数据
----@param layout pokerLayout @分析数据
----@return boolean 
-function type:asBullKing(hands,layout)
-    
-    if not table.exist(layout.lzs,0x4e) then
-        return false
-    end
-
-    if table.arrElementtCount(layout.lzs) >= 2 then
-        return true
-    end
-
-    ---@type bullAlgor
-    local algor = self._gor
-    local point = algor:getCattleWho(hands)
-    if 10 ~= point then
-        return false
-    end
-    
     return true
 end
 
@@ -445,7 +493,7 @@ end
 function type:ifCalabash(hands,layout)
 
     --3个癞子
-    local lzCount = #(layout.lzs)
+    local lzCount = #(layout.laizis)
     if lzCount >= 3 then
         return true
     end
