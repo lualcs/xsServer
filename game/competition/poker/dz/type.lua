@@ -34,7 +34,7 @@ function type:isZhaDan(hands)
     ---德州算法
     ---@type dz_algor
     local algor = self._gor
-    local method = algor:getMethod(cards)
+    local method = algor:getLayout(cards)
     return not table.empty(method.tetrads)
 end
 
@@ -51,7 +51,7 @@ function type:isHuLu(hands)
     ---德州算法
     ---@type dz_algor
     local algor = self._gor
-    local method = algor:getMethod(cards)
+    local method = algor:getLayout(cards)
     local trips,doubles = method.triples,method.doubles
     return not table.empty(trips) and not table.empty(doubles)
 end
@@ -136,7 +136,7 @@ function type:isSanTiao(hands)
     ---德州算法
     ---@type dz_algor
     local algor  = self._gor
-    local method = algor:getMethod(cards)
+    local method = algor:getLayout(cards)
     local trips  = method.triples
     return not table.empty(trips)
 end
@@ -154,7 +154,7 @@ function type:isLiangDui(hands)
     ---德州算法
     ---@type dz_algor
     local algor  = self._gor
-    local method = algor:getMethod(cards)
+    local method = algor:getLayout(cards)
     local doubles  = method.doubles
     return table.arrElementtCount(doubles) >= 2
 end
@@ -172,7 +172,7 @@ function type:isDuiZi(hands)
     ---德州算法
     ---@type dz_algor
     local algor  = self._gor
-    local method = algor:getMethod(cards)
+    local method = algor:getLayout(cards)
     local doubles  = method.doubles
     return not table.empty(doubles)
 end

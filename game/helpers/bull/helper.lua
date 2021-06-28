@@ -29,9 +29,42 @@ end
 ---单牌点数
 ---@param card pkCard @扑克 
 ---@return bullNumber
-function helper:getPoint(card)
-    local value = self:getValue(card)
+function helper.getValueForCount(card)
+    local value = this.getValue(card)
     return math.min(value,10)
+end
+
+local copy1 = {nil}
+---过滤扑克
+---@param   hands pkCard[] @扑克列表
+---@param   donts pkCard[] @排除列表
+function helper.getFilters(hands,donts,out)
+    local cards = table.clear(out or copy1)
+    for _,card in ipairs(hands) do
+        if table.exist(donts,card) then
+            table.insert(cards,card)
+        end
+    end
+    return cards
+end
+
+
+---斗牛判断
+---@param   hands pkCard[] @扑克列表
+function helper:ifFightBull(hands)
+
+    ---牛牛算法
+    ---@type bullAlgor
+    local algor = self._gor
+    local count = 0
+    for _,card in ipairs(hands) do
+        if not algor:ifLaizi(card) then
+            return true
+        else
+            count = count + this.getValueForCount(card) 
+        end
+    end
+    return 0 == count % 10
 end
 
 return helper

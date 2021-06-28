@@ -13,8 +13,11 @@
 ---花色 
 
 
----@class pkMethod @扑克分析
+---@class pokerLayout @扑克分析
 ---@field singles   pkCard[]    @单牌
 ---@field doubles   pkCard[]    @对牌
 ---@field triples   pkCard[]    @三条
 ---@field tetrads   pkCard[]    @铁支
+---@field laizis    pkCard[]    @癞子
+---@field pokers    pkCard[]    @扑克
+---@field repeas    pkCard[]    @映射

@@ -46,42 +46,16 @@ function algor:getSupportStraight()
     return self._bullFightStraight
 end
 
-local copy1 = {nil}
-local copy2 = {nil}
----分析
----@param hands pkCard[]         @手牌
----@param repe boolean|nil      @true:重复 false:唯一
----@return bullMethod
-function algor:getMethod(hands,repe)
-    ---癞子
-    ---@type pkCard[]
-    local lzs = table.clear(copy1)
-    ---手牌
-    ---@type pkCard[]
-    local sps = table.clear(copy2)
-
-    for _,card in ipairs(hands) do
-        if self:isLaizi(card) then
-            table.insert(lzs,card)
-        else
-            table.insert(sps,card)
-        end
-    end
-    local ana = self:super(this,"getMethod",hands,repe)
-    ana.lzs = lzs
-    ana.sps = sps
-    return ana
-end
 
 local copy1 = {nil}
 local copy2 = {nil}
 ---点数
 ---@param hands pkCard[] @手牌数据
 ---@return bullNumber,pkCard[]
-function algor:getBullCount(hands)
+function algor:getCattleWho(hands)
     ---帮助
     ---@type bullHelper
-    local hp = self._hlp
+    local helper = self._hlp
     ---坎斗
     ---@type boolean
     local kd = self:getSupportTriplet()
@@ -89,10 +63,10 @@ function algor:getBullCount(hands)
     ---@type boolean
     local sd = self:getSupportStraight()
     ---扑克分析
-    local analy = self:getMethod(hands,true)
-    local cpyls = table.copy(analy.sps,copy2)
-    local lzs = analy.lzs
-    local cnt = #lzs
+    local layout = self:getLayout(hands,true)
+    local cpyls = table.copy(layout.sps,copy2)
+    local laizis = layout.laizis
+    local cnt = #laizis
 
     if cnt < 2 then
         --检查排除癞子是否有牛
@@ -104,9 +78,9 @@ function algor:getBullCount(hands)
                     for c,cCard in ipairs(cpyls) do
                         if c ~= a and c ~= a then
                             ---点数
-                            local ad = hp:getPoint(aCard)
-                            local bd = hp:getPoint(bCard)
-                            local cd = hp:getPoint(cCard)
+                            local ad = helper.getPoint(aCard)
+                            local bd = helper.getPoint(bCard)
+                            local cd = helper.getPoint(cCard)
                             ---有牛
                             ---@type boolean
                             local yd = false
@@ -123,9 +97,9 @@ function algor:getBullCount(hands)
                                     yd = true
                                 end
                             elseif sd then
-                                local av = hp:getValue(aCard)
-                                local bv = hp:getValue(bCard)
-                                local cv = hp:getValue(cCard)
+                                local av = helper:getValue(aCard)
+                                local bv = helper:getValue(bCard)
+                                local cv = helper:getValue(cCard)
                                 --顺斗
                                 if  (av+1 == bv and bv+1 == cv) or--123
                                     (av+1 == cv and cv+1 == bv) or--132
@@ -141,8 +115,8 @@ function algor:getBullCount(hands)
                             if yd then
                                 if 0 == cnt then
                                     --计算牌点数
-                                    local dd = hp:getPoint(table.remove(cpyls))
-                                    local ed = hp:getPoint(table.remove(cpyls))
+                                    local dd = helper.getPoint(table.remove(cpyls))
+                                    local ed = helper.getPoint(table.remove(cpyls))
                                     local sd = (dd + ed) % 10
                                     pd = 0 == sd and 10 or sd
                                 else
@@ -189,8 +163,8 @@ function algor:getBullCount(hands)
         for a,dCard in ipairs(cpyls) do
             for b,eCard in ipairs(cpyls) do
                 if a ~= b then
-                    local dd = hp:getPoint(dCard)
-                    local ed = hp:getPoint(eCard)
+                    local dd = helper.getPoint(dCard)
+                    local ed = helper.getPoint(eCard)
                     local sd = (dd + ed) % 10
                     local pd = 0 == sd and 10 or sd
                     if not max or max < pd then
@@ -199,7 +173,7 @@ function algor:getBullCount(hands)
                             --填充前三个
                             table.remove_args(cpyls,dCard,eCard)
                             table.push_list(ts,cpyls)
-                            table.insert(ts,table.remove(lzs))
+                            table.insert(ts,table.remove(laizis))
                             --降序前三个
                             self:cardSort(ts,true)
                             --填充后两个
@@ -219,8 +193,8 @@ function algor:getBullCount(hands)
     elseif cnt > 1 then
         local ts = table.clear(copy1)
         --填充前三个
-        while #lzs > 1 and #ts < 3 do
-            table.insert(ts,table.remove(lzs))
+        while #laizis > 1 and #ts < 3 do
+            table.insert(ts,table.remove(laizis))
         end
         while #ts < 3 do
             table.insert(ts,table.remove(cpyls))
@@ -228,7 +202,7 @@ function algor:getBullCount(hands)
         --降序前三个
         self:cardSort(ts,true)
         --填充后两个
-        table.push_list(cpyls,lzs)
+        table.push_list(cpyls,laizis)
         --降序后两个
         self:cardSort(cpyls,true)
         table.push_args(ts,cpyls)

@@ -33,13 +33,14 @@ function algor:ctor()
     self._support_dinglz         = nil
     ---癞子表-默认空表
     ---@type table<mjCard,boolean>      
-    ---固定将对-默认空表
     self._support_laizis         = {nil}
+    ---固定将对-默认空表
     ---@type table<mjCard,boolean>      
     self._support_jiangs         = {nil}
     ---顺子分组-默认空表
     ---@type table<mjCard,mjUnit>       
     self._support_classs         = {nil}
+    ---
     ---@type table<index,mjUnit>       
     self._support_mclass         = {nil}
     ---调用信息-默认空表
@@ -59,7 +60,7 @@ function algor:setSupport4laizi(sport)
     self._support_4laizi = sport
 end
 
----七癞开关
+---七对癞子参与开关
 ---@param sport boolean @true:开启 false:关闭
 function algor:setSupport7laizi(sport)
     self._support_7laizi = sport
@@ -165,7 +166,7 @@ end
 ---是癞子
 ---@param mj    mjCard      @麻将
 ---@return      boolean
-function algor:isLaizi(mj)
+function algor:ifRuffian(mj)
     local map = self._support_laizis
     if map[mj] then
         return true
@@ -235,7 +236,7 @@ function algor:getUnifyHands(hands)
         local cl = mjhelp.getColor(mj)
         local cn = mjMpacw[cl] or 0
         mjMpacw[cl] = cn + 1
-        if not self:isLaizi(mj) then
+        if not self:ifRuffian(mj) then
             table.insert(mjhands,mj)
         else
             ufy.lzcount = ufy.lzcount + 1
@@ -266,7 +267,7 @@ end
 ---@param kfd string  @记录键值
 function algor:clamp_unity(ufy,add,cmj,kfd)
     --如果是癞子
-    if self:isLaizi(cmj) then
+    if self:ifRuffian(cmj) then
         ufy.lzcount = ufy.lzcount + add
         return
     end
@@ -324,7 +325,7 @@ function algor:getWhoTings(hands)
         ---没有癞子
         if lzcount <= 0 then
             --不是癞子
-            if not self:isLaizi(deal) then
+            if not self:ifRuffian(deal) then
                 local ccnt = mjMpacw[clor] or 0
                 local mnum = (ccnt+1)%3
                 if 2 ~= mnum and 0 ~= mnum then

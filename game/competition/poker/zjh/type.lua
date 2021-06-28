@@ -20,7 +20,7 @@ end
 function type:isBaoZi(hands)
     ---@type zjhAlgor @游戏算法
     local algor = self._gor
-    local method = algor:getMethod(hands)
+    local method = algor:getLayout(hands)
     return not table.empty(method.triples)
 end
 

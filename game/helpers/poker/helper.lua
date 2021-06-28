@@ -99,6 +99,13 @@ function helper.ifSpade(card)
     return 4 == this.getColor(card)
 end
 
+---是否普通
+---@param card cardPoker @牌值
+---@return boolean
+function helper.ifGeneralCard(card)
+    return 4 > this.getColor(card)
+end
+
 ---是否黑色
 ---@param card cardPoker @牌值
 ---@return boolean

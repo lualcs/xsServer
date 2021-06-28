@@ -10,9 +10,9 @@ local class = require("class")
 local sort = require("sort")
 local table = require("extend_table")
 local bullEnum = require("bull.enum")
-local pokerType = require("poker.type")
----@class bullType:pokerType
-local type = class(pokerType)
+local bullType = require("bull.type")
+---@class bullRobBankerType:bullType
+local type = class(bullType)
 
 ---构造函数
 function type:ctor()

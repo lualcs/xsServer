@@ -176,11 +176,11 @@ function table.exist(t,v)
 end
 
 ---是否存在某个值
----@param t  table<any,any> @表数据
----@param ls  any[] 		@值数据
+---@param t   	any		 @表数据
+---@param list  any[]	 @值数据
 ---@return boolean
-function table.existlis(t,ls)
-	for _,v in ipairs(ls) do
+function table.existVals(t,list)
+	for _,v in ipairs(list) do
 		if not table.exist(t,v) then
 			return false
 		end
@@ -188,19 +188,6 @@ function table.existlis(t,ls)
 	return true
 end
 
----是否存在某个值
----@param t  table<any,any> @表数据
----@param ls  any[] 		@值数据
----@return boolean
-function table.existarg(t,...)
-	for i=1,select("#",...) do
-		local v = select(i,...)
-		if not table.exist(t,v) then
-			return false
-		end
-	end
-	return true
-end
 
 ---删除
 ---@param t table @表数据

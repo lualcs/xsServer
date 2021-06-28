@@ -16,146 +16,177 @@ end
 
 ---坎斗
 ---@return senum
-function enum.bfTriplet()
-    return "bfTriplet"
+function enum.bullFightTriplet()
+    return "bullFightTriplet"
 end
 
 ---顺斗
 ---@return senum
-function enum.bfStraight()
-    return "bfStraight"
+function enum.bullFightStraight()
+    return "bullFightStraight"
 end
 
 ---没牛
 ---@return senum
-function enum.bullZero()
-    return "bullZero"
+function enum.zeroCattle()
+    return "zeroCattle"
 end
 
 ---牛一
 ---@return senum
-function enum.bullOne()
-    return "bullOne"
+function enum.oneCattle()
+    return "oneCattle"
 end
 
 ---牛二
 ---@return senum
-function enum.bullTwo()
-    return "bullTwo"
+function enum.towCattle()
+    return "towCattle"
 end
 
 ---牛三
 ---@return senum
-function enum.bullThree()
-    return "bullThree"
+function enum.threeCattle()
+    return "threeCattle"
 end
 
 ---牛四
 ---@return senum
-function enum.bullFour()
-    return "bullThree"
+function enum.fourCattle()
+    return "fourCattle"
 end
 
 ---牛五
 ---@return senum
-function enum.bullFive()
-    return "bullFive"
+function enum.fiveCattle()
+    return "fiveCattle"
 end
 
 ---牛六
 ---@return senum
-function enum.bullSix()
-    return "bullFive"
+function enum.sixCattle()
+    return "sixCattle"
 end
 
 ---牛七
 ---@return senum
-function enum.bullSeven()
-    return "bullSeven"
+function enum.sevenCattle()
+    return "sevenCattle"
 end
 
 ---牛八
 ---@return senum
-function enum.bullEight()
-    return "bullEight"
+function enum.eightCattle()
+    return "eightCattle"
 end
 
 ---牛九
 ---@return senum
-function enum.bullNine()
-    return "bullNine"
+function enum.nineCattle()
+    return "nineCattle"
 end
 
 ---牛牛
 ---@return senum
-function enum.bullBull()
-    return "bullBull"
+function enum.bullCattle()
+    return "bullCattle"
 end
 
 ---顺子牛
 ---@return senum
-function enum.bullStraight()
-    return "bullStraight"
+function enum.straight()
+    return "straight"
 end
 
 ---葫芦牛
 ---@return senum
-function enum.bullCalabash()
-    return "bullCalabash"
+function enum.calabash()
+    return "calabash"
 end
 
 ---同花牛
 ---@return senum
-function enum.bullFlush()
-    return "bullFlush"
+function enum.flush()
+    return "flush"
 end
 
 ---五花牛
 ---@return senum
-function enum.bullFiveFlower()
-    return "bullFiveFlower"
+function enum.fiveFlower()
+    return "fiveFlower"
 end
 
 ---五小牛
 ---@return senum
-function enum.bullFiveSmall()
-    return "bullFiveSmall"
+function enum.fiveLittle()
+    return "fiveLittle"
 end
 
 ---炸弹牛
 ---@return senum
-function enum.bullBomb()
-    return "bullBomb"
+function enum.bombCattle()
+    return "bombCattle"
 end
 
 ---同花顺
 ---@return senum
-function enum.bullStraightFlush()
+function enum.straightFlush()
     return "bullStraightFlush"
 end
 
 ---五炸牛
 ---@return senum
-function enum.bullFiveBomb()
+function enum.fiveBomb()
     return "bullFiveBomb"
 end
 
----大王牛
+---小王牛
 ---@return senum
-function enum.bullKing ()
-    return "bullKing"
+function enum.samllKing ()
+    return "samllKing"
 end
 
 ---大王牛
 ---@return senum
-function enum.bullKinglet ()
-    return "bullKinglet"
+function enum.largeKing ()
+    return "largeKing"
 end
 
 ---对王牛
 ---@return senum
-function enum.bullDoubleKing ()
-    return "bullDoubleKing"
+function enum.pairKing()
+    return "pairKing"
 end
+
+---天牌牛
+---@return senum
+function enum.heavenCard()
+    return "heavenCard"
+end
+
+---地王牛
+---@return senum
+function enum.landKing()
+    return "landKing"
+end
+
+---天王牛
+---@return senum
+function enum.skyKing()
+    return "skyKing"
+end
+
+---神话牛
+---@return senum
+function enum.mythCattle()
+    return "mythCattle"
+end
+
+---神赖牛
+---@return senum
+function enum.godRuffian()
+    return "godRuffian"
+end
+
 
 return enum
