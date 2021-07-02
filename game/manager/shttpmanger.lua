@@ -9,6 +9,7 @@ local timer = require("timer")
 local table = require("extend_table")
 local debug = require("extend_debug")
 local senum = require("managerEnum")
+local ahttp = require("api_http")
 
 ---@class shttpmanger @http服务器管理
 local shttpmanger = class()
