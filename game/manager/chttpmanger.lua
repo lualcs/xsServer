@@ -9,6 +9,7 @@ local timer = require("timer")
 local table = require("extend_table")
 local debug = require("extend_debug")
 local senum = require("managerEnum")
+local ahttp = require("api_http")
 
 ---@class chttpmanger @http客户端管理
 local chttpmanger = class()
@@ -26,6 +27,11 @@ end
 
 ---重置
 function chttpmanger:dataReboot()
+    local respheader = {nil}
+    local status, body = ahttp.get("http://github.com.ipaddress.com", "/", respheader)
+    debug.error("respheader:",respheader)
+
+	
 end
 
 ---服务

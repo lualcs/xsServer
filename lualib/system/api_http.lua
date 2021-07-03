@@ -34,7 +34,7 @@ end
 ---@param recvheader    nil|table   @接收回应的hppt协议头
 ---@param content       string      @请求的内容
 function api_http.get(host, url, recvheader, header, content,...)
-	return httpc.get("GET", host, url, recvheader, header, content,...)
+	return httpc.get(host, url, recvheader, header, content,...)
 end
 
 ---http-POST
