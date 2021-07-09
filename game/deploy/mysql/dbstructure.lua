@@ -6,7 +6,7 @@
 return {
     "mysql.dbusers.tables",
     "mysql.dbclubs.tables",
-    "mysql.dbplatform.tables",
+    "mysql.dbthink.tables",
     "mysql.dbgames.tables",
     "mysql.dbsundrys.tables",
     "mysql.dbusers.procedures",

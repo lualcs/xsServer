@@ -28,7 +28,7 @@ end
 ---重置
 function chttpmanger:dataReboot()
     local respheader = {nil}
-    local status, body = ahttp.get("http://github.com.ipaddress.com", "/", respheader)
+    local status, body = ahttp.get("http://192.168.98.128", "/", respheader)
     debug.error("respheader:",respheader)
 
 	
