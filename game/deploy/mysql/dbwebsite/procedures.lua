@@ -5,6 +5,6 @@
 ]]
 return {
     ---切换数据库使用
-    [[  USE `dbthink`;]],
+    [[  USE `dbwebsite`;]],
     
 }

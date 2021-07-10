@@ -1,5 +1,5 @@
 --[[
-    desc:初始数据
+    desc:俱乐部管理成员
     auth:Carol Luo
 ]]
 
