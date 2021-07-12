@@ -40,7 +40,7 @@ end
 ---http-POST
 ---@param host          string                  @目标地址
 ---@param url           string                  @请求url
----@param form          table<string,string>    @请求的内容
+---@param form          table<string,string>    @表单数据
 ---@param recvheader    nil|table               @接收回应的hppt协议头
 function api_http.post(host, url, form, recvheader)
 	return httpc.post(host, url, form, recvheader)
