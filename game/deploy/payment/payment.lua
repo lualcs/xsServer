@@ -4,5 +4,7 @@
 ]]
 
 return {
-    
+
+    ---玖通银联
+    {host="https://pay.namaye.cn/api/index"}
 }

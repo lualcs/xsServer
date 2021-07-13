@@ -1,5 +1,5 @@
 --[[
-    desc:构造管理员
+    desc:用户管理账号
     auth:Carol Luo
 ]]
 return {
