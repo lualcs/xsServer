@@ -12,9 +12,6 @@ local services = {nil}
 
 ---启动
 skynet.start(function()
-    local md5 = require("api_md5")
-    skynet.error(md5.md5Lowercase("123456"));
-    skynet.error(md5.md5Uppercase("123456"));
     -- local timer = clock.new("Welecome client count down %05d 🕛🕛🕛")
     -- ---倒计时监听
     -- timer:appendCall(12,function()
