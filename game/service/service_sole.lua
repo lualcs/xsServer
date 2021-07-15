@@ -1,5 +1,4 @@
 --[[
-    file:service.lua 
     desc:全局唯一
     auth:Caorl Luo
 ]]
@@ -9,8 +8,6 @@ local table = require("extend_table")
 local multicast = require("api_multicast")
 local skynet = require("skynet.manager")
 local sharedata = require("skynet.sharedata")
-local queue = require("skynet.queue")
-local cs = queue()
 
 ---@class service_sole @唯一服务
 local service = {}
