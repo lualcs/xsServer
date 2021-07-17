@@ -5,9 +5,11 @@
 
 local next = next
 local table = require("extend_table")
-local multicast = require("api_multicast")
+local queue = require("skynet.queue")
 local skynet = require("skynet.manager")
+local multicast = require("api_multicast")
 local sharedata = require("skynet.sharedata")
+local cs = queue()
 
 ---@class service_sole @唯一服务
 local service = {}
