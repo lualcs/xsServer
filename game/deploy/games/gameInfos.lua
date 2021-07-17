@@ -225,7 +225,7 @@ local gameInfos = {
     },
     [30001] = {
         name = "血战麻将",
-        open = false,--senum.people(),
+        open = true,
         minPlayer = 4,
         curPlayer = 0,
         maxPlayer = 4,

@@ -6,15 +6,16 @@
 
 
 local class = require("class")
-local mahjongCompetition = require("mahjong.competition")
 local senum = require("scxz.enum")
----@class scxzTable:gameCompetition @四川血战
-local scxzTable = class(mahjongCompetition)
-local this = scxzTable
+local mahjongCompetition = require("mahjong.competition")
+---@class scxzCompetition:gameCompetition @四川血战
+local scxzCompetition = class(mahjongCompetition)
+local this = scxzCompetition
 
 
 ---构造函数
-function scxzTable:ctor()
+function scxzCompetition:ctor()
+    print("四川血战麻将")
     ---行为优先
     self._prioritys = {
         [senum.xiapao()]    = 1,
@@ -49,4 +50,4 @@ function scxzTable:ctor()
     }
 end
 
-return scxzTable
+return scxzCompetition
