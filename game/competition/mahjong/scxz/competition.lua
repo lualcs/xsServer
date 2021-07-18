@@ -32,9 +32,6 @@ function competition:ctor()
     local lgc = self._lgc
     ---行为数据
     self._behaviors = {
-        [senum.xiapao()] = {--下跑阶段
-            [senum.xiapao()]  = lgc.ableXiapao;
-        },
         [senum.game()] = {--摸打阶段
             [senum.chuPai()]    = lgc.ableChuPai;      --出牌
             [senum.pengPai()]   = lgc.ablePengPai;     --碰牌
