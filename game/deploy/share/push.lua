@@ -36,4 +36,6 @@ return {
     "jymt.Cfg",
     --金鸡报喜配置
     "jjbx.Cfg",
+    --血战麻将配置
+    "mahjong.scxz.Cfg",
 }

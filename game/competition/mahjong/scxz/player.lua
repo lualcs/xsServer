@@ -4,7 +4,7 @@
     auth:Carol Luo
 ]]
 
-local class = require("scxzPlayer")
+local class = require("class")
 local mahjongPlayer = require("mahjong.player")
 ---@class scxzPlayer:mahjongPlayer @玩家
 local scxzPlayer = class(mahjongPlayer)

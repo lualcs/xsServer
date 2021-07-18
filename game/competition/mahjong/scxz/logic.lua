@@ -4,7 +4,7 @@
     auth:Carol Luo
 ]]
 
-local class = require("scxzLogic")
+local class = require("class")
 local mahjongLogic = require("mahjong.logic")
 ---@class scxzLogic:mahjongLogic @扑克
 local scxzLogic = class(mahjongLogic)

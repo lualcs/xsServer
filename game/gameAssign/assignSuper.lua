@@ -93,17 +93,15 @@ function assignSuper:inspectTable()
     ---@type competitionManagerUnit[]
     local cfgs = competitionDeploy[assign]
     for gameID,game in pairs(gameInfos) do
-
+        
         ---过滤未开启游戏
         if not game.open then
             goto continue
         end
-
         ---过滤分配游戏
         if assign ~= game.assignClass then
             goto continue
         end
-
         ---创建游戏桌子
         for _,mgr in ipairs(cfgs) do
             for i = 1,mgr.mini do

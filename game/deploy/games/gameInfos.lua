@@ -229,8 +229,8 @@ local gameInfos = {
         minPlayer = 4,
         curPlayer = 0,
         maxPlayer = 4,
-        assignClass         = "assignKilling",
-        importDeploy        = "mahjong.deploy.scxzConfig",
+        assignClass         = senum.assignKilling(),
+        importDeploy        = "mahjong.scxz.Cfg",
         importCompetition   = "mahjong.scxz.competition",
         importPlayer        = "mahjong.scxz.player",
         importAlgor         = "mahjong.scxz.algor",
@@ -239,12 +239,14 @@ local gameInfos = {
         importLogic         = "mahjong.scxz.algor",
         importType          = "mahjong.scxz.type",
         importStatus        = "mahjong.scxz.status",
+        importMessage       = "mahjong.scxz.message",
+        importError         = "mahjong.scxz.error",
         sharedList = { --共享模块
             "mahjong.mapHuCards",
             "mahjong.mapNames",
             "mahjong.mapSnaps",
             "mahjong.mapViews",
-            "mahjong.deploy.scxzConfig",
+            "mahjong.scxz.Cfg",
         }
     },
 

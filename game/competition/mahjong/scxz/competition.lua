@@ -7,26 +7,24 @@
 
 local class = require("class")
 local senum = require("scxz.enum")
-local mahjongCompetition = require("mahjong.competition")
+local mjCompetition = require("mahjong.competition")
 ---@class scxzCompetition:gameCompetition @四川血战
-local scxzCompetition = class(mahjongCompetition)
-local this = scxzCompetition
+local competition = class(mjCompetition)
+local this = competition
 
 
 ---构造函数
-function scxzCompetition:ctor()
-    print("四川血战麻将")
+function competition:ctor()
     ---行为优先
     self._prioritys = {
-        [senum.xiapao()]    = 1,
-        [senum.chuPai()]    = 2,
-        [senum.pengPai()]   = 3,
-        [senum.zhiGang()]   = 4,
-        [senum.raoGang()]   = 5,
-        [senum.anGang()]    = 6,
-        [senum.dianPao()]   = 7,
-        [senum.qiangGang()] = 8,
-        [senum.ziMo()]      = 9,
+        [senum.chuPai()]    = 1,
+        [senum.pengPai()]   = 2,
+        [senum.zhiGang()]   = 3,
+        [senum.raoGang()]   = 4,
+        [senum.anGang()]    = 5,
+        [senum.dianPao()]   = 6,
+        [senum.qiangGang()] = 7,
+        [senum.ziMo()]      = 8,
     }
 
     ---扑克逻辑
@@ -50,4 +48,4 @@ function scxzCompetition:ctor()
     }
 end
 
-return scxzCompetition
+return competition

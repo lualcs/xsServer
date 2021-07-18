@@ -9,7 +9,7 @@ local senum = require("managerEnum")
 return {
     ---竞技场
     [senum.assignKilling()] = {
-        [30001] = {
+        [1] = {
             unit = 1,   ---单元积分
             mini = 1,   ---最少桌子
             maxi = 1,   ---最多桌子

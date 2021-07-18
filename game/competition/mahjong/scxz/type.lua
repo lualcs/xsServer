@@ -4,7 +4,7 @@
     auth:Carol Luo
 ]]
 
-local class = require("scxzType")
+local class = require("class")
 local mahjongType = require("mahjong.type")
 ---@class scxzType:mahjongType @类型
 local scxzType = class(mahjongType)
