@@ -4,7 +4,7 @@
 ]]
 local class = require("class")
 local gameType = require("game.type")
----@class killingType:gameType
+---@class singleType:gameType
 local type = class(gameType)
 local this = type
 

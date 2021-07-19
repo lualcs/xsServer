@@ -11,7 +11,7 @@ local debug = require("extend_debug")
 local table = require("extend_table")
 local senum = require("killing.enum")
 local gameCompetition= require("game.competition")
----@class killingCompetition:gameCompetition
+---@class singleCompetition:gameCompetition
 local competition = class(gameCompetition)
 local this = competition
 

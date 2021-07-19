@@ -5,7 +5,7 @@
 
 local class = require("class")
 local gameLogic = require("game.logic")
----@class killingLogic:gameLogic
+---@class singleLogic:gameLogic
 local logic = class(gameLogic)
 local this = logic
 

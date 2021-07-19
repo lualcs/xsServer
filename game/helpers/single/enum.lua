@@ -5,7 +5,7 @@
 
 local class = require("class")
 local gameEnum = require("game.enum")
----@class killingEnum:gameEnum
+---@class singleEnum:gameEnum
 local enum = class(gameEnum)
 
 ---构造 

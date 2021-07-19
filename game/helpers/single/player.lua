@@ -6,7 +6,7 @@
 local class = require("class")
 local gamePlayer = require("game.player")
 local senum = require("hundred.enum")
----@class killingPlayer:gamePlayer
+---@class singlePlayer:gamePlayer
 local player = class(gamePlayer)
 local this = player
 

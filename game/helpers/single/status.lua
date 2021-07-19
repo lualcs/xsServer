@@ -8,7 +8,7 @@ local skynet = require("skynet")
 local debug = require("extend_debug")
 local senum = require("hundred.enum")
 local gameStatus = require("game.status")
----@class killingStatus:gameStatus @状态机
+---@class singleStatus:gameStatus @状态机
 local status = class(gameStatus)
 local this = status
 

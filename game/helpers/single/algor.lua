@@ -5,7 +5,7 @@
 
 local class = require("class")
 local gameAlgor = require("game.algor")
----@class killingAlgor:gameAlgor
+---@class singleAlgor:gameAlgor
 local algor = class(gameAlgor)
 local this = algor
 
