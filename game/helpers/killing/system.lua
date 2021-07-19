@@ -10,7 +10,7 @@ local reusable = require("reusable")
 local table = require("extend_table")
 local debug = require("extend_debug")
 local gameSystem = require("game.system")
----@class hundredSystem:gameSystem
+---@class killingSystem:gameSystem
 local system = class(gameSystem)
 local this = system
 

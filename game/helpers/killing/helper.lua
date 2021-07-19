@@ -5,7 +5,7 @@
 
 local class = require("class")
 local gameHelper = require("game.helper")
----@class hundredHelper:gameHelper
+---@class killingdHelper:gameHelper
 local helper = class(gameHelper)
 local this = helper
 

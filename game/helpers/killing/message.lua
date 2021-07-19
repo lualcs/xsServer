@@ -10,7 +10,7 @@ local senum = require("game.enum")
 local table = require("extend_table")
 local proto = require("api_websocket")
 
----@class gameMessage @游戏消息
+---@class killingMessage @游戏消息
 local message = class()
 
 local copy1 = {nil}

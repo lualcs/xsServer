@@ -5,7 +5,7 @@
 ]]
 
 local class = require("class")
----@class gameError @游戏枚举
+---@class killingError @游戏枚举
 local error = class()
 local this = error
 
