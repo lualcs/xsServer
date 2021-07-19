@@ -13,10 +13,4 @@ local this = error
 function error:ctor()
 end
 
----已经是庄家
----@return integer
-function error.alreadyBanker()
-    return 1
-end
-
 return error
