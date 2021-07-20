@@ -42,7 +42,11 @@ end
 function mongomanager:dataReboot()
     ---构造结构
     self:dbstructure()
-    self:loadingEmail(nil,1,100)
+    ---测试数据
+    local trc = debug.traceback()
+    for i = 1,100000000 do
+        self:writeError(i,trc)
+    end
 end
 
 ---服务
@@ -96,16 +100,6 @@ function mongomanager:writeLog(name,text)
     })
 end
 
----写入错误编码记录
----@param code integer @错误编码
----@param trac integer @跟踪信息
-function mongomanager:writeError(code,trac)
-    local coll = self._errorDetails
-    coll:safe_insert({
-        code = code,
-        trac = trac
-    })
-end
 
 ---写入玩家邮件数据
 ---@param rid       userID @角色
