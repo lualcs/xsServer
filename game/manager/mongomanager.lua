@@ -42,11 +42,6 @@ end
 function mongomanager:dataReboot()
     ---构造结构
     self:dbstructure()
-    ---测试数据
-    -- local trc = debug.traceback()
-    -- for i = 1,100000000 do
-    --     self:writeError(i,trc)
-    -- end
 end
 
 ---服务
