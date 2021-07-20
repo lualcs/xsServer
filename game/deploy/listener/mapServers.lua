@@ -39,4 +39,13 @@ return {
             autodb = "admin",
         }
     },
+
+    ---redis
+    redis = {
+        host = "127.0.0.1",
+        port = 6379,
+        username = "lcs",
+        password = "123456",
+        autodb = "admin",
+    },
 }
