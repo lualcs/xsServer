@@ -12,13 +12,23 @@ local api_redis = class()
 local this = api_redis
 
 ---构造函数
-function api_redis:ctor()
+---@param cfg redis_connect_info
+function api_redis:ctor(cfg)
+    ---连接信息
+    self._connect = cfg
 end
 
 ---连接redis数据库
----@param info  redis_connect_info @连接信息
-function api_redis:connect(info)
-    return redis.connect(info)
+function api_redis:connect()
+    return redis.connect(self._connect)
+end
+
+---订阅redis数据库
+function api_redis:subscribe()
+end
+
+---订阅redis数据库
+function api_redis:psubscribe()
 end
 
 

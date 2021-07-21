@@ -44,8 +44,8 @@ return {
     redis = {
         host = "127.0.0.1",
         port = 6379,
-        username = "lcs",
-        password = "123456",
-        autodb = "admin",
+        auth = nil,
+        db = 0,
+        overload = nil,
     },
 }
