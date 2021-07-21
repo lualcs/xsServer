@@ -20,15 +20,28 @@ end
 
 ---连接redis数据库
 function api_redis:connect()
-    return redis.connect(self._connect)
+    self._db = redis.connect(self._connect)
 end
 
----订阅redis数据库
-function api_redis:subscribe()
+---监听redis数据库
+function api_redis:watch()
+    self._wh = redis
 end
 
----订阅redis数据库
-function api_redis:psubscribe()
+---订阅一个或多个频道的信息
+---@param channel string @频道
+function api_redis:subscribe(channel)
+    self._db:subscribe(channel)
+end
+
+---订阅一个或者多个模式消息
+---@param pattern string @模式
+function api_redis:psubscribe(pattern)
+    self._db:psubscribe(pattern)
+end
+
+---发布频道消息
+function api_redis:publish()
 end
 
 
